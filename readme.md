@@ -1,27 +1,65 @@
-## Laravel PHP Framework
+# CPMD Winter Gift Project
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
-
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
-
-## Official Documentation
-
+## We're using Laravel 5!
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Contributing
+### Requirements
+You're going to need **PHP >= 5.5** installed on your machine if you plan on using any of Laravel's command line tools. If you're strictly writing controllers, routes, etc. then read on! We'll get you set up with Vagrant so you won't need to worry about changing things!
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+Otheriwse OSX users can upgrade their local PHP installation (which is usually 5.3....) here: [http://php-osx.liip.ch/](http://php-osx.liip.ch/)
 
-## Security Vulnerabilities
+## Get set up!
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Clone the repo
+Of course you want to do this first. Rather than use composer to install things, all of the vendor components are included this way you don't have to figure out a workaround when composer complains it doesn't like your machine's setup.
 
-### License
+### Install Vagrant
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Instead of changing your environment to work with the software, you can install a Vagrant box with little hassle!
+
+#### Download these if you haven't already
+- Install [VirtualBox](http://virtualbox.org/)
+- Install [Vagrant](http://vagrantup.com)
+
+#### Edit your hosts file
+**OSX** - /etc/hosts
+
+Add the following line
+
+`192.168.10.10 homestead.app`
+
+#### Launch Vagrant from the command line
+Open a terminal / "command prompt" window (depending on your OS), cd (or dir...) into the project directory and run `vagrant up`.
+
+#### Access!
+You should now be able to access the application from [http://homestead.app](http://homestead.app)
+
+#### Vagrant Halt
+You will eventually want to shut down vagrant (so you're not running a virtual machine until your Mac needs its monthly reboot). Do that with
+
+`vagrant halt`
+
+## Get started!
+
+### database migrations
+Please use Laravel's artisan migrations to set up the database. That's how we started doing this and if you make changes on your own things are going to get bad real fast.
+
+Run your migrations with
+
+`php artisan migrate`
+
+[Learn about Migrations here](http://laravel.com/docs/5.1/migrations#generating-migrations)
+
+#### Troubleshooting
+
+##### "Class not found"
+If you receive a "class not found" error when running migrations, try running the composer dump-autoload command and re-issuing the migrate command.
+
+
+## API Reference
+
+### user
+
+### household
+
+### child
