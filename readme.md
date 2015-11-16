@@ -11,7 +11,14 @@ Otheriwse OSX users can upgrade their local PHP installation (which is usually 5
 ## Get set up!
 
 ### Clone the repo
-Of course you want to do this first. Rather than use composer to install things, all of the vendor components are included this way you don't have to figure out a workaround when composer complains it doesn't like your machine's setup.
+Of course you want to do this first. Clone the repository.
+
+### Install Dependencies!
+In a terminal, `cd` (or `dir` on Windows) into your project directory. Make sure composer is installed on your computer, then run
+
+`composer install`
+
+This may take a while. Keep the terminal open; we'll come back to it shortly. 
 
 ### Install Vagrant
 
@@ -28,6 +35,19 @@ Add the following line
 
 `192.168.10.10 homestead.app`
 
+### Configure Homestead (Vagrant Box)
+In your terminal, make sure you're in the project root and run...
+
+OSX:
+
+`php vendor/bin/homestead make`
+
+Windows 
+
+`vendor\bin\homestead make`
+
+This generates a homestead.yaml file and lets you launch vagrant from the command line; our next task.
+
 #### Launch Vagrant from the command line
 Open a terminal / "command prompt" window (depending on your OS), cd (or dir...) into the project directory and run `vagrant up`.
 
@@ -40,6 +60,13 @@ You will eventually want to shut down vagrant (so you're not running a virtual m
 `vagrant halt`
 
 ## Get started!
+
+### SSH into the Vagrant box
+You should be able to do
+
+`ssh vagrant@homestead.app`
+
+to work within the Vagrant box. 
 
 ### database migrations
 Please use Laravel's artisan migrations to set up the database. That's how we started doing this and if you make changes on your own things are going to get bad real fast.
@@ -55,8 +82,12 @@ Run your migrations with
 ##### "Class not found"
 If you receive a "class not found" error when running migrations, try running the composer dump-autoload command and re-issuing the migrate command.
 
+----
+### Package Reference 
+#### Permissions - [Entrust](https://github.com/Zizaco/entrust#models)
+---
 
-## API Reference
+# API Reference
 
 ### user
 
