@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::group(['prefix' => 'api'], function () {
+    Route::resource('household', 'HouseholdController',
+        ['only' => ['index', 'show']]);
+
+    Route::resource('user', 'UserController');
+
+    Route::resource('child', 'ChildController');
+});
