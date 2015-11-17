@@ -1287,7 +1287,5 @@ class AffiliateTableSeeder extends Seeder
             ]);
         }
 
-
-
     }
 }
