@@ -18,7 +18,7 @@ class HouseholdController extends Controller
      */
     public function index()
     {
-        $Households = Household::all();
+        $Households = Household::with("child", "address", "phone")->get();
         return $Households;
     }
 
@@ -29,7 +29,8 @@ class HouseholdController extends Controller
      */
     public function create()
     {
-        //
+        $household = Household::create(Input::except("children"));
+        return $household->id;
     }
 
     /**
