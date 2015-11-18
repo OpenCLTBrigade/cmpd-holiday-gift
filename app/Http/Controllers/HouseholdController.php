@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Models;
 use App\Household;
+use Illuminate\Support\Facades\Input;
 
 class HouseholdController extends Controller
 {
@@ -27,10 +28,9 @@ class HouseholdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $household = Household::create(Input::except("children"));
-        return $household->id;
+
     }
 
     /**
@@ -41,7 +41,8 @@ class HouseholdController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $household = Household::create(Input::get());
+        return response()->json(['id' => $household->id]);
     }
 
     /**

@@ -8,6 +8,19 @@ class Household extends Model
 {
     protected $table = "household";
 
+    protected $fillable = [
+        "nominator_user_id",
+        "name_first",
+        "name_middle",
+        "name_last",
+        "dob",
+        "race",
+        "gender",
+        "email",
+        "last4ssn",
+        "preferred_contact_method"
+    ];
+
     public function children() { return $this->children(); }
 
     public function child() {

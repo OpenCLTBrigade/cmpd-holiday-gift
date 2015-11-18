@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'api'], function () {
     Route::resource('household', 'HouseholdController',
-        ['only' => ['index', 'show']]);
+        ['only' => ['index', 'show', 'create', 'store']]);
 
     Route::resource('user', 'UserController');
 
