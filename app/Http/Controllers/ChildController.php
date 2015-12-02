@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class ChildController extends Controller
 {
@@ -15,7 +16,8 @@ class ChildController extends Controller
      */
     public function index()
     {
-        //
+        $Children = \App\Child::all();
+        return $Children;
     }
 
     /**
@@ -36,7 +38,8 @@ class ChildController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Child = \App\Child::create(Input::get());
+        return response()->json(['id' => $Child->id]);
     }
 
     /**

@@ -21,18 +21,16 @@ class Household extends Model
         "preferred_contact_method"
     ];
 
-    public function children() { return $this->children(); }
-
     public function child() {
-        return $this->hasMany("child");
+        return $this->hasMany("\App\Child");
     }
 
     public function address() {
-        return $this->hasMany("household_address");
+        return $this->hasMany("\App\HouseholdAddress");
     }
 
     public function phone() {
-        return $this->hasMany("household_phone");
+        return $this->hasMany("\App\HouseholdPhone");
     }
 }
 
