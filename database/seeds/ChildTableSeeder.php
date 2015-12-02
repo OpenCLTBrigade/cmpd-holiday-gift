@@ -15,12 +15,15 @@ class ChildTableSeeder extends Seeder
 
         // Add ten children to the DB
         for ($i=0; $i<10; $i++) {
+
+            $firstName = $faker->firstName;
+            $lastName = $faker->lastName;
             App\Child::create(
                 [
                     "household_id" => $faker->numberBetween(1, 5),
-                    "name_first" => $faker->firstName,
-                    "name_middle" => $faker->firstNAme,
-                    "name_last" => $faker->lastName,
+                    "name_first" => $firstName,
+                    "name_middle" => $faker->firstName,
+                    "name_last" => $lastName,
                     "dob" => $faker->date,
                     "race" => "race",
                     "last4ssn" => $faker->numerify("####"),
@@ -46,6 +49,9 @@ class ChildTableSeeder extends Seeder
                     "preferred_contact_method" => $faker->randomElement(['Phone', 'Email'])
                 ]
             );
+
+            $this->command->info("Seeded Child: {$firstName} {$lastName}");
+
         }
     }
 }

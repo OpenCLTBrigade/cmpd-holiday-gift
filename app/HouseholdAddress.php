@@ -7,4 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class HouseholdAddress extends Model
 {
     protected $table = "household_address";
+
+    protected $fillable = [
+        "household_id",
+        "type",
+        "address_street",
+        "address_street2",
+        "address_city",
+        "address_state",
+        "address_zip"
+    ];
 }
