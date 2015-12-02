@@ -11,15 +11,18 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        App\User::create(
-            [
+        $faker = Faker\Factory::create();
 
-                'name_first'    => "Test",
-                'name_last'     => "Buddy",
-                "affiliation_id"=> 57,
-                "email"         => "test@buddy.com",
-                'password'      => Hash::make('admin')
-            ]
-        );
+        for ($i=0; $i<5; $i++) {
+            App\User::create(
+                [
+                    'name_first'    => $faker->firstName,
+                    'name_last'     => $faker->lastName,
+                    "affiliation_id"=> $faker->numberBetween(1,57),
+                    "email"         => $faker->email,
+                    'password'      => Hash::make('admin')
+                ]
+            );
+        }
     }
 }
