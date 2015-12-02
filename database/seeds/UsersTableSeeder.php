@@ -14,15 +14,21 @@ class UsersTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         for ($i=0; $i<5; $i++) {
+
+            $firstName = $faker->firstName;
+            $lastName = $faker->lastName;
+
             App\User::create(
                 [
-                    'name_first'    => $faker->firstName,
-                    'name_last'     => $faker->lastName,
+                    'name_first'    => $firstName,
+                    'name_last'     => $lastName,
                     "affiliation_id"=> $faker->numberBetween(1,57),
                     "email"         => $faker->email,
                     'password'      => Hash::make('admin')
                 ]
             );
+
+            $this->command->info("Seeded user {$firstName} {$lastName}");
         }
     }
 }

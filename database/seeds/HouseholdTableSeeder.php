@@ -14,12 +14,15 @@ class HouseholdTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         for ($i=1; $i < 7; $i++) {
+            $firstName = $faker->firstName;
+            $middleName = $faker->firstName;
+            $lastName = $faker->lastName;
             App\Household::create(
                 [
                     "nominator_user_id" => 1,
-                    "name_first"    =>  $faker->firstName,
-                    "name_middle"   =>  $faker->firstName,
-                    "name_last" =>  $faker->lastName,
+                    "name_first"    =>  $firstName,
+                    "name_middle"   =>  $middleName,
+                    "name_last" =>  $lastName,
                     "dob"   =>  $faker->date,
                     "race"  =>  "race",
                     "gender"    =>  $faker->randomElement(["M","F"]),
@@ -28,6 +31,7 @@ class HouseholdTableSeeder extends Seeder
                     "preferred_contact_method" => $faker->randomElement(["phone","email",])
                 ]
             );
+            $this->command->info("Seeded household {$firstName} {$middleName} {$lastName}");
         }
     }
 }
