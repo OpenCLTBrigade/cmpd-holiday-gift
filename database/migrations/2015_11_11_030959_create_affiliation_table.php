@@ -17,10 +17,10 @@ class CreateAffiliationTable extends Migration
             $table->string("type");
             $table->string("name");
             $table->string("address_street");
-            $table->string("address_street2");
+            $table->string("address_street2")->nullable();
             $table->string("address_city");
             $table->string("address_state");
-            $table->string("address_zip");
+            $table->string("address_zip")->nullable();
             $table->string("phone");
             $table->timestamps();
         });
