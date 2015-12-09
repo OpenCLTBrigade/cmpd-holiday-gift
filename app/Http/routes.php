@@ -17,10 +17,32 @@ Route::get('/', function () {
 
 
 Route::group(['prefix' => 'api'], function () {
+
+    Route::resource('affiliation', 'AffiliationController',
+        ['only' => ['index']]
+    );
+
     Route::resource('household', 'HouseholdController',
-        ['only' => ['index', 'show', 'create', 'store']]);
+        ['only' => ['index', 'show', 'store', 'update']]
+    );
 
-    Route::resource('user', 'UserController');
+    Route::resource('household_address', 'HouseholdAddressController',
+        ['only' => ['show', 'store', 'update']]
+    );
 
-    Route::resource('child', 'ChildController');
+    Route::resource('household_phone', 'HouseholdPhoneController',
+        ['only' => ['show', 'store', 'update']]
+    );
+
+    Route::resource('child', 'ChildController',
+        ['only' => ['show', 'store', 'update']]
+    );
+
+    Route::resource('user', 'UserController',
+        ['only' => ['index', 'show', 'store', 'update']]
+    );
+
+
+
+
 });
