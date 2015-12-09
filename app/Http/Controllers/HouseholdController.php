@@ -50,7 +50,7 @@ class HouseholdController extends Controller
      */
     public function show($id)
     {
-        //
+        return \App\Household::with("child", "address", "phone")->where("id", "=", $id)->get();
     }
 
     /**
