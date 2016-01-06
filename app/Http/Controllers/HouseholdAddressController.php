@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HouseholdAddress;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -49,7 +50,7 @@ class HouseholdAddressController extends Controller
      */
     public function show($id)
     {
-        //
+        return HouseholdAddress::findOrFail($id);
     }
 
     /**
