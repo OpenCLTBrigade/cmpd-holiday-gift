@@ -50,7 +50,7 @@ class ChildController extends Controller
      */
     public function show($id)
     {
-        //
+        return \App\Child::findOrFail($id);
     }
 
     /**
