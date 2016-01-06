@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use DB;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $M = User::with("affiliation")->get();
+//        $M = User::all();
+
+        return $M;
     }
 
     /**
@@ -37,7 +41,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $M = User::create(Input::get());
+        return response()->json(['id' => $M->id]);
     }
 
     /**
@@ -71,7 +76,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $table = (new \App\User())->getTable();
+        try {
+            DB::table($table)->where('id', '=', $id)->update(array($request->all()));
+        } catch (Exception $e) {
+            // TODO: Something eventually
+        }
     }
 
     /**

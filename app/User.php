@@ -44,4 +44,9 @@ class User extends Model
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function affiliation() {
+        return $this->hasOne("\App\Affiliation", "id");
+    }
+
 }
