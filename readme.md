@@ -89,8 +89,35 @@ If you receive a "class not found" error when running migrations, try running th
 
 # API Reference
 
-### user
+## affiliation
+### GET `/affiliation/`
 
-### household
+## household
+The index and single record endpoints include the `child`, `household_phone`, and `household_address` records associated with the household. We do not allow reverse lookups by using those respective endpoints as a result.
 
-### child
+### GET `/household/`
+### GET `/household/{id}`
+### POST `/household/`
+### PUT `/household/{id}`
+
+## household_address
+### GET `/household_address/{id}`
+### POST `/household_address/`
+### PUT `/household_address/{id}`
+
+## household_phone
+### GET `/household_phone/{id}`
+### POST `/household_phone/`
+### PUT `/household_phone/{id}`
+
+## child
+### GET `/child/{id}`
+### POST `/child/`
+### PUT `/child/{id}`
+
+## user
+### GET `/user/`
+### GET `/user/{id}`
+### POST `/user/`
+### PUT `/user/{id}`
+
