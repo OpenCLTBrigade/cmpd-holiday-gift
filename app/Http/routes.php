@@ -35,7 +35,7 @@ Route::group(['prefix' => 'api'], function () {
     );
 
     Route::resource('child', 'ChildController',
-        ['only' => ['show', 'store', 'update']]
+        ['only' => ['index', 'show', 'store', 'update']]
     );
 
     Route::resource('user', 'UserController',
