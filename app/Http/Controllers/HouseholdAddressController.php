@@ -73,7 +73,12 @@ class HouseholdAddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $table = (new \App\HouseholdAddress())->getTable();
+        try {
+            DB::table($table)->where('id', '=', $id)->update(array($request->all()));
+        } catch (Exception $e) {
+
+        }
     }
 
     /**

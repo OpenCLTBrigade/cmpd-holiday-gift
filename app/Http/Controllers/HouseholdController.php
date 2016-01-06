@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Household;
@@ -73,7 +73,12 @@ class HouseholdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $table = (new \App\Household())->getTable();
+        try {
+            DB::table($table)->where('id', '=', $id)->update(array($request->all()));
+        } catch (\Exception $e) {
+            // TODO: Something eventually
+        }
     }
 
     /**

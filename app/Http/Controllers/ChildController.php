@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+#use Illuminate\Database\DatabaseManager as DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Mockery\CountValidator\Exception;
 
 class ChildController extends Controller
 {
@@ -73,7 +76,12 @@ class ChildController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $table = (new \App\Child())->getTable();
+        try {
+            DB::table($table)->where('id', '=', $id)->update(array($request->all()));
+        } catch (Exception $e) {
+            // TODO: Something eventually
+        }
     }
 
     /**
