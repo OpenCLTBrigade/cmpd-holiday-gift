@@ -24,6 +24,8 @@ class AddAffiliateFkToUsers extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('user', function($table) {
+            $table->dropForeign('affiliation_id');
+        });
     }
 }

@@ -47,6 +47,9 @@ class CreateHouseholdTable extends Migration
      */
     public function down()
     {
+        Schema::table('household', function($table) {
+            $table->dropForeign('nominator_user_id');
+        });
         Schema::drop('household');
     }
 }

@@ -67,6 +67,9 @@ class Child extends Migration
      */
     public function down()
     {
+        Schema::table('child', function($table) {
+            $table->dropForeign('household_id');
+        });
         Schema::drop('child');
     }
 }
