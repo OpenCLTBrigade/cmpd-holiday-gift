@@ -32,9 +32,6 @@ class CreateHouseholdPhone extends Migration
      */
     public function down()
     {
-        Schema::table('household_phone', function($table) {
-            $table->dropForeign('household_id');
-        });
         Schema::drop('household_phone');
     }
 }

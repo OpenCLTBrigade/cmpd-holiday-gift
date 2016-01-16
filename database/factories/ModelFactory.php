@@ -29,7 +29,7 @@
 $factory->define(App\HouseholdAddress::class, function (Faker\Generator $faker) {
     $aptNo = $faker->numberBetween(100,999);
     return [
-        "household_id"      => $faker->numberBetween(1,7),
+        "household_id"      => $faker->numberBetween(1,6),
         "type"              => $faker->randomElement(["Home","Work"]),
         "address_street"    => $faker->streetAddress,
         "address_street2"   => $faker->randomElement(["Apt {$aptNo}", ""]),

@@ -33,6 +33,5 @@ class CreateAffiliationTable extends Migration
      */
     public function down()
     {
-        Schema::drop('affiliation');
     }
 }

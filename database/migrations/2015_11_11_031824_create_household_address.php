@@ -36,9 +36,6 @@ class CreateHouseholdAddress extends Migration
      */
     public function down()
     {
-        Schema::table('household_address', function($table) {
-            $table->dropForeign('household_id');
-        });
         Schema::drop('household_address');
     }
 }

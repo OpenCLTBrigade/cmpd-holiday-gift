@@ -63,18 +63,6 @@ class EntrustSetupTables extends Migration
      */
     public function down()
     {
-        Schema::table('permission_role', function($table) {
-            $table->dropForeign('permission_id');
-            $table->dropForeign('role_id');
-        });
-
-        Schema::table('role_user', function($table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('role_id');
-        });
-
-
-
         Schema::drop('permission_role');
         Schema::drop('permissions');
         Schema::drop('role_user');
