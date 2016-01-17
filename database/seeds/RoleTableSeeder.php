@@ -22,11 +22,11 @@ class RoleTableSeeder extends Seeder
 
             This is just four CMPD officers that administer the program.
 
-            Permissions: - Approve account requests
+            Permissions: 
+            - Approve account requests
             - Approve nominations
             - Can view all nominees.
             - Reporting features for Salvation Army/Link109
-
          */
         $admin = new Role();
         $admin->name         = 'admin';
@@ -48,7 +48,56 @@ class RoleTableSeeder extends Seeder
         $nominator->display_name = 'Nominator';
         $nominator->save();
 
-        // Visitors not included for Phase One
+        /*
+         *Nominee
+
+         This group is the families that have been nominated 
+         and would like to verify status of nomination.  
+         They will have a user account with the ability to 
+         check status and update information on form.
+
+         Can
+         - Have account
+         - View nomination status
+         - Update Information
+        */
+        $nominee = new Role();
+        $nominee->name         = 'nominee';
+        $nominee->display_name = 'Nominee';
+        $nominee->save();
+
+        /* 
+         *Partners
+
+         This group is Salvation Army, Link 107.5 and other
+         partners that come online.  Salvation Army receives 
+         a report outlined in the reporting documentation.
+
+         Can 
+         - Receive reports
+        */
+        $partner = new Role();
+        $partner->name         = 'partner';
+        $partner->display_name = 'Partner';
+        $partner->save();
+
+        /*
+         *Volunteers
+
+         This group are the volunteers for delivery and present 
+         sorting.  They will be able to sign up for shifts and 
+         receive reminder notifications.
+
+         Can 
+         - Have account
+         - View shifts
+         - Sign-up for shifts
+         - Receive emails reminders 
+        */
+        $volunteer = new Role();
+        $volunteer->name         = 'volunteer';
+        $volunteer->display_name = 'Volunteer';
+        $volunteer->save();
 
     }
 }
