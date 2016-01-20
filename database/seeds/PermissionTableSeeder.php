@@ -105,13 +105,6 @@ class PermissionTableSeeder extends Seeder
         $editNomination->display_name = "Edit any Nominee";
         $editNomination->save();
 
-        /* Nominator View Any Nominee Status */
-        $viewNomination = new Permission();
-        $viewNomination->name = "nomination-edit";
-        $viewNomination->display_name = "Edit any Nominee";
-        $viewNomination->save();
-
-
         $createNomineeCMS = new Permission();
         $createNomineeCMS->name = "nomination-create-cms";
         $createNomineeCMS->display_name = "Enter Nominees from own School";
