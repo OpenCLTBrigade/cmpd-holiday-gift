@@ -149,7 +149,8 @@ return [
          * Things we added
          */
         'Zizaco\Entrust\EntrustServiceProvider',
-        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        'Barryvdh\Cors\ServiceProvider',
 
     ],
 
