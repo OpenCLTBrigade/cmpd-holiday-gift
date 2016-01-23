@@ -30,5 +30,17 @@ class UsersTableSeeder extends Seeder
 
             $this->command->info("Seeded user {$firstName} {$lastName}");
         }
+
+        // Add dev account until we enable registration
+        App\User::create(
+            [
+                'name_first'    => "Developer",
+                'name_last'     => "lastName",
+                "affiliation_id"=> 1,
+                "email"         => "developer@codeforcharlotte.org",
+                'password'      => Hash::make('admin')
+            ]
+        );
+
     }
 }

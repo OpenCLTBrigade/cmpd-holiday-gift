@@ -12,6 +12,12 @@ use Mockery\CountValidator\Exception;
 
 class ChildController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('jwt.auth');
+    }
+
     /**
      * Display a listing of the resource.
      *

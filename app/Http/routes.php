@@ -42,7 +42,8 @@ Route::group(['prefix' => 'api'], function () {
         ['only' => ['index', 'show', 'store', 'update']]
     );
 
-
+    Route::resource('auth', 'AuthenticateController', ['only' => ['index']]);
+    Route::post('auth', 'AuthenticateController@authenticate');
 
 
 });
