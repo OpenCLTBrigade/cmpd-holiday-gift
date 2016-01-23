@@ -17,4 +17,9 @@ class Affiliation extends Model
         "address_state",
         "phone"
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany("\App\User");
+    }
 }

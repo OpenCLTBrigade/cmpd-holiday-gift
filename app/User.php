@@ -46,10 +46,11 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = [
         'password', 'remember_token',
+        'email', 'created_at', 'updated_at'
     ];
 
     public function affiliation() {
-        return $this->hasOne("\App\Affiliation", "id");
+        return $this->hasOne("\App\Affiliation");
     }
 
 }
