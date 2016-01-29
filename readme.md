@@ -6,9 +6,29 @@
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
 ### Requirements
+
+##### PHP
 You're going to need **PHP >= 5.5** installed on your machine if you plan on using any of Laravel's command line tools. If you're strictly writing controllers, routes, etc. then read on! We'll get you set up with Vagrant so you won't need to worry about changing things!
 
 Otheriwse OSX users can upgrade their local PHP installation (which is usually 5.3....) here: [http://php-osx.liip.ch/](http://php-osx.liip.ch/)
+
+##### Composer
+- [https://getcomposer.org/download/](https://getcomposer.org/download/)
+
+##### VirtualBox
+- Install [VirtualBox](http://virtualbox.org/)
+
+##### Vagrant
+- Install [Vagrant](http://vagrantup.com)
+
+##### SSH Keys
+
+**Unix systems**
+`cd ~/.ssh && ls`
+
+ If you don't see `id_rsa` and `id_rsa.pub` run
+
+`ssh-keygen`
 
 ## Get set up!
 
@@ -20,17 +40,16 @@ In a terminal, `cd` (or `dir` on Windows) into your project directory. Make sure
 
 `composer install`
 
-This may take a while. Keep the terminal open; we'll come back to it shortly. 
-
-### Install Vagrant
-
-Instead of changing your environment to work with the software, you can install a Vagrant box with little hassle!
-
-#### Download these if you haven't already
-- Install [VirtualBox](http://virtualbox.org/)
-- Install [Vagrant](http://vagrantup.com)
-
 #### Edit your hosts file
+
+This will allow you to access the API locally through http://homestead.app
+
+**Method A**
+`vagrant plugin install vagrant-hostmanager`
+
+**Method B**
+Edit...
+
 **OSX** - /etc/hosts
 
 Add the following line
@@ -79,6 +98,12 @@ Run your migrations with
 
 [Learn about Migrations here](http://laravel.com/docs/5.1/migrations#generating-migrations)
 
+### database seeding
+
+This runs the seeders to populate your database with sample records to test with.
+
+`php artisan db:seed`
+
 #### Troubleshooting
 
 ##### "Class not found"
@@ -90,6 +115,19 @@ If you receive a "class not found" error when running migrations, try running th
 ---
 
 # API Reference
+
+*This readme-based guide is deprecated and will be replaced in the future.*
+
+For POST endpoints you can use either raw JSON data or form-encoded data.
+
+## login
+### POST `/login/`
+```
+{
+  "email": "user@account.com",
+  "password": "thisIsMyPassword"
+}
+```
 
 ## affiliation
 ### GET `/affiliation/`
