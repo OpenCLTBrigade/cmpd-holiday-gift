@@ -56,7 +56,6 @@ class Child extends Migration
             $table->text("interests");
             $table->text("additional_ideas");
 
-            $table->string('preferred_contact_method');
         });
     }
 
