@@ -19,6 +19,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @apiDescription Lists all users. Includes the data of their
+     * `affiliation` record.
+     *
+     * @api {GET} /api/user/ List users
+     * @apiName List Users
+     * @apiGroup User
+     * @apiVersion 1.0.0
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -42,6 +53,26 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @apiDescription Register a new user account
+     *
+     * @api {POST} /api/user/ Add User
+     * @apiName Add User
+     * @apiGroup User
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {string} name_first
+     * @apiParam {string} name_last
+     * @apiParam {string} rank
+     * @apiParam {string} phone
+     * @apiParam {int} affiliation_id References an `affiliation` record
+     * @apiParam {string} email
+     * @apiParam {string} password
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "id": 1
+     *     }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -63,18 +94,25 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
+     *
+     * @apiDescription Update a new user account
+     *
+     * @api {PUT} /api/user/:id Update User
+     * @apiName Update User
+     * @apiGroup User
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {string} [name_first]
+     * @apiParam {string} [name_last]
+     * @apiParam {string} [rank]
+     * @apiParam {string} [phone]
+     * @apiParam {int} [affiliation_id References an `affiliation` record
+     * @apiParam {string} [email]
+     * @apiParam {string} [password]
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
