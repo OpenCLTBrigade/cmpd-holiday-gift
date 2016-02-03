@@ -45,8 +45,7 @@ class ChildTableSeeder extends Seeder
                     "shoe_size" => $faker->numerify("#"),
                     "favourite_colour" => $faker->randomElement(['Red', 'Blue', 'Green', 'Orange']),
                     "interests" => $faker->text(30),
-                    "additional_ideas" => $faker->text(50),
-                    "preferred_contact_method" => $faker->randomElement(['Phone', 'Email'])
+                    "additional_ideas" => $faker->text(50)
                 ]
             );
 
