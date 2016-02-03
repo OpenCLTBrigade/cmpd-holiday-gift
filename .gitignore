@@ -6,3 +6,5 @@ Homestead.json
 .idea
 .vagrant
 Vagrantfile
+public/css
+public/docs

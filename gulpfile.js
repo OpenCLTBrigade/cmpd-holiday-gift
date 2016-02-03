@@ -1,4 +1,14 @@
 var elixir = require('laravel-elixir');
+var gulp = require('gulp');
+
+apidoc = require('gulp-apidocjs');
+
+gulp.task('apidoc', function(cb){
+    apidoc.exec({
+        src: "app/Http/Controllers",
+        dest: "public/docs/"
+    }, cb);
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +22,7 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.sass('app.scss')
+        .task('apidoc');
 });
+

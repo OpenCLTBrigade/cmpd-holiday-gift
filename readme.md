@@ -1,6 +1,6 @@
 # CPMD Winter Gift Project
 
-![](http://40.117.99.163/buildStatus/icon?job=cmpd-holiday-gift-backend)
+![](http://wintergift-ci.codeforcharlotte.org/buildStatus/icon?job=cmpd-holiday-gift-backend)
 
 ## We're using Laravel 5!
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
