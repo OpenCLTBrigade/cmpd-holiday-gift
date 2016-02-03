@@ -17,6 +17,42 @@ class AuthenticateController extends Controller
         // TODO: show users
     }
 
+    /**
+     * @apiDescription Create an access token. The token must be supplied with
+     * all requests that required authentication.<br/><br/>
+     *
+     * Token can be sent as a request parameter or in the request header with bearer authorization.<br/><br/>
+     *
+     * Information for the authenticated user account is returned along with the token.
+     *
+     * @api {POST} /api/login/ Create Token
+     * @apiName Log in
+     * @apiGroup Authentication
+     * @apiPermission guest
+     * @apiVersion 1.0.0
+     *
+     * @apiParam {string} email
+     * @apiParam {string} password
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     * {
+     *   "token": "authorization_token_here",
+     *   "user": {
+     *     "id": "6",
+     *     "name_first": "Developer",
+     *     "name_last": "lastName",
+     *     "rank": "",
+     *     "phone": "",
+     *     "affiliation_id": "1"
+     *   }
+     * }
+     *
+     * @apiSuccessExample Bad-Login:
+     *  HTTP/1.1 401 Unauthorized
+     * {"error":"invalid_credentials"}
+     *
+     */
     public function authenticate(Request $request)
     {
 
