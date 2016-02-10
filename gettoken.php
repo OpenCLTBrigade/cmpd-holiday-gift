@@ -1,4 +1,5 @@
 <?php
+(PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('cli only');
 if(empty($argv[1])) {
     $argv[1] = "dev";
 }

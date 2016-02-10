@@ -21,7 +21,7 @@ class ChildController extends Controller
     /**
      * @apiDescription Returns the list of all nominated children
      *
-     * @api {POST} /api/child/ List Children
+     * @api {GET} /api/child/ List Children
      * @apiName List Children
      * @apiGroup Child
      * @apiPermission user
@@ -135,7 +135,7 @@ class ChildController extends Controller
     /**
      * @apiDescription Returns a single nominated child
      *
-     * @api {POST} /api/child/:id Get Child Record
+     * @api {GET} /api/child/:id Get Child
      * @apiName Get Child
      * @apiGroup Child
      * @apiPermission user
