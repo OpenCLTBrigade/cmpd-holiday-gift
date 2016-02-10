@@ -19,7 +19,51 @@ class ChildController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @apiDescription Returns the list of all nominated children
+     *
+     * @api {POST} /api/child/ List Children
+     * @apiName List Children
+     * @apiGroup Child
+     * @apiPermission user
+     * @apiVersion 1.0.0
+     *
+     * @apiSuccessExample Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *    {
+     *        id: 1,
+     *        created_at: "2016-02-03 01:53:41",
+     *        updated_at: "2016-02-03 01:53:41",
+     *        household_id: 2,
+     *        name_first: "Buford",
+     *        name_middle: "Freddie",
+     *        name_last: "Dare",
+     *        dob: "1991-06-06",
+     *        race: "race",
+     *        last4ssn: 8357,
+     *        free_or_reduced_lunch: "N",
+     *        reason_for_nomination: "Eum eligendi eaque quis. Accusantium minus animi sed commodi eveniet.",
+     *        school_name: "Harum dicta illo neque velit.",
+     *        school_address: "9786 Nicolas Mills Suite 766 Lakinbury, WI 23217",
+     *        school_address2: "",
+     *        school_city: "West Al",
+     *        school_state: "WW",
+     *        school_zip: "51639",
+     *        school_phone: "1-964-404-6638",
+     *        bike_want: "N",
+     *        bike_size: 24,
+     *        bike_style: "C",
+     *        clothes_want: "Y",
+     *        clothes_size_shirt: "M",
+     *        clothes_size_pants: "L",
+     *        shoe_size: "9",
+     *        favourite_colour: "Red",
+     *        interests: "Nihil ut aut ex unde.",
+     *        additional_ideas: "Placeat quidem et distinctio sit aspernatur amet."
+     *    },
+     *    ...
+     * ]
+     *
      *
      * @return \Illuminate\Http\Response
      */
@@ -89,7 +133,47 @@ class ChildController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @apiDescription Returns a single nominated child
+     *
+     * @api {POST} /api/child/:id Get Child Record
+     * @apiName Get Child
+     * @apiGroup Child
+     * @apiPermission user
+     * @apiVersion 1.0.0
+     *
+     * @apiSuccessExample Success-Response:
+     * HTTP/1.1 200 OK
+     *    {
+     *        id: 1,
+     *        created_at: "2016-02-03 01:53:41",
+     *        updated_at: "2016-02-03 01:53:41",
+     *        household_id: 2,
+     *        name_first: "Buford",
+     *        name_middle: "Freddie",
+     *        name_last: "Dare",
+     *        dob: "1991-06-06",
+     *        race: "race",
+     *        last4ssn: 8357,
+     *        free_or_reduced_lunch: "N",
+     *        reason_for_nomination: "Eum eligendi eaque quis. Accusantium minus animi sed commodi eveniet.",
+     *        school_name: "Harum dicta illo neque velit.",
+     *        school_address: "9786 Nicolas Mills Suite 766 Lakinbury, WI 23217",
+     *        school_address2: "",
+     *        school_city: "West Al",
+     *        school_state: "WW",
+     *        school_zip: "51639",
+     *        school_phone: "1-964-404-6638",
+     *        bike_want: "N",
+     *        bike_size: 24,
+     *        bike_style: "C",
+     *        clothes_want: "Y",
+     *        clothes_size_shirt: "M",
+     *        clothes_size_pants: "L",
+     *        shoe_size: "9",
+     *        favourite_colour: "Red",
+     *        interests: "Nihil ut aut ex unde.",
+     *        additional_ideas: "Placeat quidem et distinctio sit aspernatur amet."
+     *    }
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
