@@ -150,7 +150,7 @@ return [
          */
         'Zizaco\Entrust\EntrustServiceProvider',
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
-        'Barryvdh\Cors\ServiceProvider',
+        \Neomerx\CorsIlluminate\Providers\LaravelServiceProvider::class,
 
     ],
 

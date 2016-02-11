@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "fzaninotto/faker": "^1.5",
         "tymon/jwt-auth": "0.5.*",
-        "barryvdh/laravel-cors": "0.7.x"
+        "barryvdh/laravel-cors": "0.7.x",
+        "neomerx/cors-illuminate": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
