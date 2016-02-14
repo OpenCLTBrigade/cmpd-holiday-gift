@@ -42,9 +42,7 @@ class AffiliationController extends Controller
      *     address_city: "Charlotte",
      *     address_state: "NC",
      *     address_zip: "28205",
-     *     phone: "704-336-8535",
-     *     created_at: "2016-02-03 01:54:41",
-     *     updated_at: "2016-02-03 01:54:41"
+     *     phone: "704-336-8535"
      *   },
      *   ...
      * ]

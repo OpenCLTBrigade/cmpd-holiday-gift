@@ -18,6 +18,11 @@ class Affiliation extends Model
         "phone"
     ];
 
+    protected $hidden = [
+        "created_at",
+        "updated_at"
+    ];
+
     public function users()
     {
         return $this->belongsToMany("\App\User");
