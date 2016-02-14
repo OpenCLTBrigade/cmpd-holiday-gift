@@ -50,7 +50,7 @@ class User extends Model implements AuthenticatableContract,
     ];
 
     public function affiliation() {
-        return $this->hasOne("\App\Affiliation");
+        return $this->hasOne("\App\Affiliation", "id", "affiliation_id");
     }
 
 }
