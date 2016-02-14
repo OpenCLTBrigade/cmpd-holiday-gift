@@ -44,8 +44,19 @@ class AuthenticateController extends Controller
      *     "name_last": "lastName",
      *     "rank": "",
      *     "phone": "",
-     *     "affiliation_id": "1"
-     *   }
+     *     "affiliation_id": "1",
+     *     "affiliation": {
+     *       "id": 1,
+     *       "type": "cmpd",
+     *       "name": "Eastway",
+     *       "address_street": "3024 Eastway Dr.",
+     *       "address_street2": null,
+     *       "address_city": "Charlotte",
+     *       "address_state": "NC",
+     *       "address_zip": "28205",
+     *       "phone": "704-336-8535"
+     *       }
+      *   }
      * }
      *
      * @apiSuccessExample Bad-Login:
@@ -69,6 +80,7 @@ class AuthenticateController extends Controller
         }
 
         $user = \Auth::user();
+        $user->affiliation; // Adds it to the response
         // if no errors are encountered we can return a JWT
         return response()->json(compact('token', 'user'));
     }
