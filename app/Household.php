@@ -21,6 +21,14 @@ class Household extends Model
         "preferred_contact_method"
     ];
 
+    protected $appends = [
+        'nominator_name'
+    ];
+
+    protected $hidden = [
+        'hidden'
+    ];
+
     public function child() {
         return $this->hasMany("\App\Child");
     }
@@ -29,8 +37,16 @@ class Household extends Model
         return $this->hasMany("\App\HouseholdAddress");
     }
 
+    public function nominator() {
+        return $this->belongsTo("\App\User", "nominator_user_id", "id");
+    }
+
     public function phone() {
         return $this->hasMany("\App\HouseholdPhone");
+    }
+
+    public function getNominatorNameAttribute() {
+        return $this->nominator->name_first . " " . $this->nominator->name_last;
     }
 }
 
