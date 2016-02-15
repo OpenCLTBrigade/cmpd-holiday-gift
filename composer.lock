@@ -4,101 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "367f672f11dc582c7f263c362ee90ef6",
-    "content-hash": "da6688b64c702e95f67b11f97ab6c7ca",
+    "hash": "11ea9c4c05c194f5f11c155d8e93c519",
+    "content-hash": "5e715f830df87a66e96b56788b50f76b",
     "packages": [
-        {
-            "name": "asm89/stack-cors",
-            "version": "0.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/asm89/stack-cors.git",
-                "reference": "2d77e77251a434e4527315313a672f5801b29fa2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/2d77e77251a434e4527315313a672f5801b29fa2",
-                "reference": "2d77e77251a434e4527315313a672f5801b29fa2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.1",
-                "symfony/http-kernel": "~2.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Asm89\\Stack": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexander",
-                    "email": "iam.asm89@gmail.com"
-                }
-            ],
-            "description": "Cross-origin resource sharing library and stack middleware",
-            "homepage": "https://github.com/asm89/stack-cors",
-            "keywords": [
-                "cors",
-                "stack"
-            ],
-            "time": "2014-07-28 07:22:35"
-        },
-        {
-            "name": "barryvdh/laravel-cors",
-            "version": "v0.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-cors.git",
-                "reference": "e4c4545879f5f00b8595a13fcf8e648b9bfdb40a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/e4c4545879f5f00b8595a13fcf8e648b9bfdb40a",
-                "reference": "e4c4545879f5f00b8595a13fcf8e648b9bfdb40a",
-                "shasum": ""
-            },
-            "require": {
-                "asm89/stack-cors": "0.2.x",
-                "illuminate/support": "~5.0.14|5.1.x|5.2.x",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Cors\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
-            "keywords": [
-                "api",
-                "cors",
-                "crossdomain",
-                "laravel"
-            ],
-            "time": "2015-12-20 20:32:17"
-        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
@@ -890,119 +798,6 @@
             "time": "2015-06-29 05:41:44"
         },
         {
-            "name": "neomerx/cors-illuminate",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/neomerx/cors-illuminate.git",
-                "reference": "3a89f512aa0791ffb049e2b20002c2fe98bd1946"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/neomerx/cors-illuminate/zipball/3a89f512aa0791ffb049e2b20002c2fe98bd1946",
-                "reference": "3a89f512aa0791ffb049e2b20002c2fe98bd1946",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "^5.1",
-                "neomerx/cors-psr7": "^0.2.0",
-                "php": ">=5.5.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^4.6",
-                "scrutinizer/ocular": "^1.1",
-                "squizlabs/php_codesniffer": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Neomerx\\CorsIlluminate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "neomerx",
-                    "email": "info@neomerx.com"
-                }
-            ],
-            "description": "CORS (Cross-Origin Resource Sharing) support for Laravel and Lumen",
-            "homepage": "https://github.com/neomerx/cors-illuminate",
-            "keywords": [
-                "Cross Origin Resource Sharing",
-                "Cross-Origin Resource Sharing",
-                "cors",
-                "laravel",
-                "lumen",
-                "neomerx"
-            ],
-            "time": "2015-12-22 05:44:24"
-        },
-        {
-            "name": "neomerx/cors-psr7",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/neomerx/cors-psr7.git",
-                "reference": "9d3db684c41e343bfe394c602bba9f6c76616e86"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/neomerx/cors-psr7/zipball/9d3db684c41e343bfe394c602bba9f6c76616e86",
-                "reference": "9d3db684c41e343bfe394c602bba9f6c76616e86",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9.4",
-                "phpunit/phpunit": "~4.6",
-                "scrutinizer/ocular": "~1.1",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Neomerx\\Cors\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "neomerx",
-                    "email": "info@neomerx.com"
-                }
-            ],
-            "description": "Framework agnostic (PSR-7) CORS implementation (www.w3.org/TR/cors/)",
-            "homepage": "https://github.com/neomerx/cors-psr7",
-            "keywords": [
-                "Cross Origin Resource Sharing",
-                "Cross-Origin Resource Sharing",
-                "cors",
-                "neomerx",
-                "psr-7",
-                "psr7",
-                "w3.org",
-                "www.w3.org"
-            ],
-            "time": "2015-08-16 14:49:38"
-        },
-        {
             "name": "nesbot/carbon",
             "version": "1.21.0",
             "source": {
@@ -1245,55 +1040,6 @@
                 "x509"
             ],
             "time": "2015-01-28 21:50:33"
-        },
-        {
-            "name": "psr/http-message",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP messages",
-            "keywords": [
-                "http",
-                "http-message",
-                "psr",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "time": "2015-05-04 20:22:00"
         },
         {
             "name": "psr/log",
@@ -2392,6 +2138,60 @@
     ],
     "packages-dev": [
         {
+            "name": "barryvdh/laravel-debugbar",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-debugbar.git",
+                "reference": "974fd16e328ca851a081449100d9509af59cf0ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/974fd16e328ca851a081449100d9509af59cf0ff",
+                "reference": "974fd16e328ca851a081449100d9509af59cf0ff",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0.17|5.1.*|5.2.*",
+                "maximebf/debugbar": "~1.11.0",
+                "php": ">=5.4.0",
+                "symfony/finder": "~2.6|~3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Debugbar\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "PHP Debugbar integration for Laravel",
+            "keywords": [
+                "debug",
+                "debugbar",
+                "laravel",
+                "profiler",
+                "webprofiler"
+            ],
+            "time": "2015-12-22 06:22:38"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
             "source": {
@@ -2530,6 +2330,67 @@
             ],
             "description": "A virtual machine for web artisans.",
             "time": "2016-01-05 19:19:26"
+        },
+        {
+            "name": "maximebf/debugbar",
+            "version": "v1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maximebf/php-debugbar.git",
+                "reference": "07741d84d39d10f00551c94284cdefcc69703e77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/07741d84d39d10f00551c94284cdefcc69703e77",
+                "reference": "07741d84d39d10f00551c94284cdefcc69703e77",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "^1.0",
+                "symfony/var-dumper": "^2.6|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0"
+            },
+            "suggest": {
+                "kriswallsmith/assetic": "The best way to manage assets",
+                "monolog/monolog": "Log using Monolog",
+                "predis/predis": "Redis storage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.11-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DebugBar\\": "src/DebugBar/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxime Bouroumeau-Fuseau",
+                    "email": "maxime.bouroumeau@gmail.com",
+                    "homepage": "http://maximebf.com"
+                },
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Debug bar in the browser for php application",
+            "homepage": "https://github.com/maximebf/php-debugbar",
+            "keywords": [
+                "debug",
+                "debugbar"
+            ],
+            "time": "2015-12-10 09:50:24"
         },
         {
             "name": "mockery/mockery",
@@ -3059,16 +2920,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.22",
+            "version": "4.8.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "dfb11aa5236376b4fc63853cf746af39fe780e72"
+                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dfb11aa5236376b4fc63853cf746af39fe780e72",
-                "reference": "dfb11aa5236376b4fc63853cf746af39fe780e72",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6e351261f9cd33daf205a131a1ba61c6d33bd483",
+                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483",
                 "shasum": ""
             },
             "require": {
@@ -3127,7 +2988,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-02 09:01:21"
+            "time": "2016-02-11 14:56:33"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

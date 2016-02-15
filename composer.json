@@ -15,7 +15,8 @@
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1",
         "laravel/homestead": "2.2.1",
-        "zizaco/entrust": "dev-laravel-5"
+        "zizaco/entrust": "dev-laravel-5",
+        "barryvdh/laravel-debugbar": "^2.1"
     },
     "autoload": {
         "classmap": [

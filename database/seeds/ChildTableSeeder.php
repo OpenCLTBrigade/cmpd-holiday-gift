@@ -20,7 +20,7 @@ class ChildTableSeeder extends Seeder
             $lastName = $faker->lastName;
             App\Child::create(
                 [
-                    "household_id" => $faker->numberBetween(1, 5),
+                    "household_id" => $faker->numberBetween(1, 49),
                     "name_first" => $firstName,
                     "name_middle" => $faker->firstName,
                     "name_last" => $lastName,

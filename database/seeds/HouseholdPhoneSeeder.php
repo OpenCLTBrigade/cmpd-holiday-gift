@@ -11,7 +11,7 @@ class HouseholdPhoneSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\HouseholdPhone::class, 10)->create()->each(function($u) {
+        factory(App\HouseholdPhone::class, 60)->create()->each(function($u) {
             // Do nothing inside...
         });
     }

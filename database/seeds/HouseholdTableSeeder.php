@@ -13,7 +13,7 @@ class HouseholdTableSeeder extends Seeder
     {
         $faker = Faker\Factory::create();
 
-        for ($i=1; $i < 7; $i++) {
+        for ($i=1; $i < 50; $i++) {
             $firstName = $faker->firstName;
             $middleName = $faker->firstName;
             $lastName = $faker->lastName;

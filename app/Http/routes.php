@@ -48,5 +48,4 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::post('login', 'AuthenticateController@authenticate');
 
-
 });

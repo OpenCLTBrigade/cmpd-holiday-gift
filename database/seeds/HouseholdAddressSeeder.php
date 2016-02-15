@@ -11,7 +11,7 @@ class HouseholdAddressSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\HouseholdAddress::class, 10)->create()->each(function($u) {
+        factory(App\HouseholdAddress::class, 61)->create()->each(function($u) {
             // Do nothing inside...
         });
     }
