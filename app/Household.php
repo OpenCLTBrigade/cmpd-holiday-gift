@@ -48,6 +48,14 @@ class Household extends Model
     public function getNominatorNameAttribute() {
         return $this->nominator->name_first . " " . $this->nominator->name_last;
     }
+
+    public function getCreatedAtAttribute($value) {
+        return date("M j, Y", strtotime($value));
+    }
+
+    public function getUpdatedAtAttribute($value) {
+        return date("M j, Y", strtotime($value));
+    }
 }
 
 # Household::find(1)->children()

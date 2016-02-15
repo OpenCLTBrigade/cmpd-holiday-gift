@@ -41,8 +41,9 @@ class HouseholdController extends Controller
      *        email: "zThompson@hotmail.com",
      *        last4ssn: 1082,
      *        preferred_contact_method: "phone",
-     *        created_at: "2016-02-03 01:53:41",
-     *        updated_at: "2016-02-03 01:53:41",
+     *        nominator_name: "Jovanny Crona",
+     *        created_at: "Feb 3, 2016",
+     *        updated_at: "Feb 3, 2016",
      *        child: [
      *            {
      *                id: 7,
@@ -99,7 +100,15 @@ class HouseholdController extends Controller
      *                phone_type: "other",
      *                phone_number: "(076)328-5606"
      *            }
-     *        ]
+     *        ],
+     *        nominator: {
+     *          id: 1,
+     *          name_first: "Jovanny",
+     *          name_last: "Crona",
+     *          rank: "",
+     *          phone: "",
+     *          affiliation_id: 16
+     *       }
      *    }
      *  ]
      * @return \Illuminate\Http\Response
@@ -178,8 +187,9 @@ class HouseholdController extends Controller
      *        email: "zThompson@hotmail.com",
      *        last4ssn: 1082,
      *        preferred_contact_method: "phone",
-     *        created_at: "2016-02-03 01:53:41",
-     *        updated_at: "2016-02-03 01:53:41",
+     *        nominator_name: "Jovanny Crona",
+     *        created_at: "Feb 3, 2016",
+     *        updated_at: "Feb 3, 2016",
      *        child: [
      *            {
      *                id: 7,
@@ -236,7 +246,15 @@ class HouseholdController extends Controller
      *                phone_type: "other",
      *                phone_number: "(076)328-5606"
      *            }
-     *        ]
+     *        ],
+     *      nominator: {
+     *          id: 1,
+     *          name_first: "Jovanny",
+     *          name_last: "Crona",
+     *          rank: "",
+     *          phone: "",
+     *          affiliation_id: 16
+     *       }
      *    }
      *
      * @param  int  $id
