@@ -8,6 +8,10 @@ class Child extends Model
 {
     protected $table = "child";
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     protected $fillable = [
         "household_id",
         "name_first",

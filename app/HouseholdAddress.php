@@ -8,6 +8,10 @@ class HouseholdAddress extends Model
 {
     protected $table = "household_address";
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     protected $fillable = [
         "household_id",
         "type",
