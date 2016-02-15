@@ -14,7 +14,7 @@ class ChildTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         // Add ten children to the DB
-        for ($i=0; $i<10; $i++) {
+        for ($i=0; $i<55; $i++) {
 
             $firstName = $faker->firstName;
             $lastName = $faker->lastName;
@@ -49,7 +49,7 @@ class ChildTableSeeder extends Seeder
                 ]
             );
 
-            $this->command->info("Seeded Child: {$firstName} {$lastName}");
+//            $this->command->info("Seeded Child: {$firstName} {$lastName}");
 
         }
     }
