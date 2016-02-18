@@ -1,30 +1,32 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
-
-/*
-
- $factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
         'email' => $faker->email,
+        'name' => $faker->name,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
     ];
 });
-*/
 
-// Before I discovered model factories I was building them directly in the seeders...
-// ....so some of them are here but the rest are in the seeder files ^^; - Andrew N
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    return [
+        'color' => $faker->hexColor,
+        'description' => $faker->sentence(5),
+        'language_id' => $faker->numberBetween(1, 2),
+        'title' => $faker->sentence(5)
+    ];
+});
+
+$factory->define(App\Article::class, function (Faker\Generator $faker) {
+    return [
+        'category_id' => $faker->numberBetween(1, 5),
+        'content' => implode("<br/><br/>", $faker->paragraphs(8)),
+        'description' => $faker->sentence(5),
+        'published_at' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'title' => $faker->sentence(5)
+    ];
+});
 
 $factory->define(App\HouseholdAddress::class, function (Faker\Generator $faker) {
     $aptNo = $faker->numberBetween(100,999);

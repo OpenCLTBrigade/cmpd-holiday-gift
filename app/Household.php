@@ -28,10 +28,21 @@ class Household extends Model
     protected $hidden = [
         'hidden'
     ];
+    function __construct() {
+        if(HasRole("admin")) {
+            $this->fillable = [
+                "yay"
+            ];
+        }
+        parent::__construct();
+    }
 
     public function child() {
         return $this->hasMany("\App\Child");
     }
+    // $Household = new Household();
+    // $Household->child; $Household->address;
+    // $Household->child[0]->name_first;
 
     public function address() {
         return $this->hasMany("\App\HouseholdAddress");

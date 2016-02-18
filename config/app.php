@@ -1,7 +1,16 @@
 <?php
-
 return [
-
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services your application utilizes. Set this in your ".env" file.
+    |
+    */
+    'env' => env('APP_ENV', 'production'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -12,9 +21,7 @@ return [
     | application. If disabled, a simple generic error page is shown.
     |
     */
-
     'debug' => env('APP_DEBUG', false),
-
     /*
     |--------------------------------------------------------------------------
     | Application URL
@@ -25,9 +32,7 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-
     'url' => 'http://localhost',
-
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -38,9 +43,7 @@ return [
     | ahead and set this to a sensible default for you out of the box.
     |
     */
-
     'timezone' => 'UTC',
-
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -51,9 +54,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
     'locale' => 'en',
-
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -64,9 +65,7 @@ return [
     | the language folders that are provided through your application.
     |
     */
-
     'fallback_locale' => 'en',
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -77,11 +76,8 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
-
-    'key' => env('APP_KEY', 'SomeRandomStringgnirtsmodnaremos'),
-
+    'key' => env('APP_KEY'),
     'cipher' => 'AES-256-CBC',
-
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration
@@ -94,9 +90,7 @@ return [
     | Available Settings: "single", "daily", "syslog", "errorlog"
     |
     */
-
     'log' => env('APP_LOG', 'single'),
-
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -113,13 +107,11 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Illuminate\Foundation\Providers\ArtisanServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        Illuminate\Routing\ControllerServiceProvider::class,
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Encryption\EncryptionServiceProvider::class,
@@ -146,10 +138,23 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /*
-         * Things we added
+         * Application Custom Service Providers...
          */
-        'Zizaco\Entrust\EntrustServiceProvider',
-        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class
+        App\Providers\HelperServiceProvider::class,
+
+        /*
+         * Third Party Stuff
+         */
+        Barryvdh\Elfinder\ElfinderServiceProvider::class,
+        Baum\Providers\BaumServiceProvider::class,
+        Caffeinated\Menus\MenusServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class,
+        Spatie\LaravelAnalytics\LaravelAnalyticsServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*
@@ -169,7 +174,6 @@ return [
         'Artisan'   => Illuminate\Support\Facades\Artisan::class,
         'Auth'      => Illuminate\Support\Facades\Auth::class,
         'Blade'     => Illuminate\Support\Facades\Blade::class,
-        'Bus'       => Illuminate\Support\Facades\Bus::class,
         'Cache'     => Illuminate\Support\Facades\Cache::class,
         'Config'    => Illuminate\Support\Facades\Config::class,
         'Cookie'    => Illuminate\Support\Facades\Cookie::class,
@@ -180,8 +184,6 @@ return [
         'File'      => Illuminate\Support\Facades\File::class,
         'Gate'      => Illuminate\Support\Facades\Gate::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
-        'Input'     => Illuminate\Support\Facades\Input::class,
-        'Inspiring' => Illuminate\Foundation\Inspiring::class,
         'Lang'      => Illuminate\Support\Facades\Lang::class,
         'Log'       => Illuminate\Support\Facades\Log::class,
         'Mail'      => Illuminate\Support\Facades\Mail::class,
@@ -198,10 +200,20 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
-        'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory'=> Tymon\JWTAuth\Facades\JWTFactory::class
 
+        /*
+         * Custom Stuff
+         */
+
+        'Input'             => Illuminate\Support\Facades\Input::class,
+        'Flash'             => Laracasts\Flash\Flash::class,
+        'Form'              => Collective\Html\FormFacade::class,
+        'FormBuilder'       => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
+        'HTML'              => Collective\Html\HtmlFacade::class,
+        'Menu'              => Caffeinated\Menus\Facades\Menu::class,
+        'LaravelAnalytics'  => Spatie\LaravelAnalytics\LaravelAnalyticsFacade::class,
+        'Purifier'          => Mews\Purifier\Facades\Purifier::class,
+        'Datatables'        => Yajra\Datatables\Datatables::class,
     ],
 
 ];
