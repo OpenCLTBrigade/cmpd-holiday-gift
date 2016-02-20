@@ -31,8 +31,8 @@ class SetUserLoginCredentials
      */
     public function handle(Login $event)
     {
-        $event->user->logged_in_at = Carbon::now();
-        $event->user->ip_address = $this->request->getClientIp();
-        $event->user->save();
+        //$event->user->logged_in_at = Carbon::now();
+        //$event->user->ip_address = $this->request->getClientIp();
+        //$event->user->save();
     }
 }

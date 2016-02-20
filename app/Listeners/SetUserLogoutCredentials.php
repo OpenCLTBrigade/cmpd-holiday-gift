@@ -31,7 +31,7 @@ class SetUserLogoutCredentials
      */
     public function handle(Logout $event)
     {
-        $event->user->logged_out_at = Carbon::now();
-        $event->user->save();
+        //$event->user->logged_out_at = Carbon::now();
+        //$event->user->save();
     }
 }
