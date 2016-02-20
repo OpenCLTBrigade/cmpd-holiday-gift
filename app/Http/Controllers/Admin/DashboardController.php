@@ -56,6 +56,7 @@ class DashboardController extends AdminController
 
     public function getIndex()
     {
+        /*
         $statistics = [
             'keywords' => LaravelAnalytics::getTopKeywords($this->period, $this->limit),
             'referrers' => LaravelAnalytics::getTopReferrers($this->period, $this->limit),
@@ -74,6 +75,8 @@ class DashboardController extends AdminController
             'regions' => $this->getRegions(),
             'averages' => $this->getAverages()
         ];
+        */
+        $statistics = array();
         return view('admin.dashboard.index', compact('statistics'));
     }
 
