@@ -19,7 +19,7 @@ class CreateHouseholdTable extends Migration
              * Users nominate a household with children
              */
             $table->integer('nominator_user_id')->unsigned();
-            $table->foreign('nominator_user_id')->references('id')->on('user');
+            $table->foreign('nominator_user_id')->references('id')->on('users');
 
             $table->string('name_first');
             $table->string('name_middle');

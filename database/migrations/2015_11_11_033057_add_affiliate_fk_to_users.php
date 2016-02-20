@@ -12,7 +12,7 @@ class AddAffiliateFkToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('user', function ($table) {
+        Schema::table('users', function ($table) {
             $table->foreign('affiliation_id')->references('id')->on('affiliation');
         });
     }
