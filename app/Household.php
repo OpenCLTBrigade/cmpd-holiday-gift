@@ -25,17 +25,9 @@ class Household extends Model
         'nominator_name'
     ];
 
-    protected $hidden = [
-        'hidden'
-    ];
-    function __construct() {
-        if(HasRole("admin")) {
-            $this->fillable = [
-                "yay"
-            ];
-        }
-        parent::__construct();
-    }
+//    protected $hidden = [
+//        'hidden'
+//    ];
 
     public function child() {
         return $this->hasMany("\App\Child");

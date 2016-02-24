@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 
 class UsersTableSeeder extends Seeder
 {
@@ -24,7 +26,7 @@ class UsersTableSeeder extends Seeder
                     'name_last'     => $lastName,
                     "affiliation_id"=> $faker->numberBetween(1,57),
                     "email"         => $faker->email,
-                    'password'      => Hash::make('admin')
+                    'password'      => 'admin'
                 ]
             );
 
@@ -38,7 +40,7 @@ class UsersTableSeeder extends Seeder
                 'name_last'     => "lastName",
                 "affiliation_id"=> 1,
                 "email"         => "developer@codeforcharlotte.org",
-                'password'      => Hash::make('admin')
+                'password'      => 'admin'
             ]
         );
 
