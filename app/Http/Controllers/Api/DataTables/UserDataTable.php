@@ -12,14 +12,15 @@ class UserDataTable extends DataTableController
      *
      * @var array
      */
-    protected $columns = ['name', 'email', 'ip_address', 'logged_in_at', 'logged_out_at'];
+    protected $columns = ["name_first", "name_last"];
 
+    protected $pluck_columns = ["affiliation_id" => ["affiliation", "name"]];
     /**
      * Image columns to show
      *
      * @var array
      */
-    protected $image_columns = ['picture'];
+    protected $image_columns = [];
 
     /**
      * Get the query object to be processed by datatables.

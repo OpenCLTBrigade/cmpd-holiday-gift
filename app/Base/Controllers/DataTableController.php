@@ -48,7 +48,7 @@ abstract class DataTableController extends DataTable
      *
      * @var array
      */
-    protected $common_columns = ['created_at', 'updated_at'];
+    protected $common_columns = [];
 
     /**
      * Model name

@@ -118,7 +118,12 @@ return [
             "name"                  => "Name",
             "password"              => "Password",
             "password_confirmation" => "Password Confirmation",
-            "picture"               => "Avatar"
+            "picture"               => "Avatar",
+			"name_first"            => "Name",
+			"name_last"             => "Last Name",
+			"rank"                  => "Rank",
+			"phone"                 => "Phone",
+			"affiliation_id"        => "Affiliation",
         ]
     ],
     "language" => [
