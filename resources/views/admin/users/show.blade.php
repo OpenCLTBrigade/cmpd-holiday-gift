@@ -1,12 +1,25 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="text-center">
-        <img class="user-image img-circle" src="{{ !empty($object->picture) ? $object->picture : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png' }}" alt="{{ $object->name  }}" />
-        <h1> {{ $object->name  }} </h1>
-        <a href="mailto:{{ $object->email }}">
-            <h2> {{ $object->email  }}</h2>
-        </a>
-        <h2> {{ trans('admin.fields.user.ip_address') . ': ' . $object->ip_address  }}</h2>
-    </div>
+		<div class="row">
+			<div class="box-profile col-md-4"></div>
+			<div class="box-profile col-md-4">
+				<h3 class="profile-username text-center">
+					{{ $object->name_first }}  {{ $object->name_last  }} 
+				</h3>
+				<p class="text-muted text-center">{{ $object->rank }} </p>
+				<ul class="list-group list-group-unbordered">
+					<li class="list-group-item">
+					  <b>Affiliation</b> <a class="pull-right">{{$object->affiliation()->get()[0]->name}} ({{strtoupper($object->affiliation()->get()[0]->type)}})</a>
+					</li>
+					<li class="list-group-item">
+					  <b>Phone</b> <a class="pull-right">{{ $object->phone }}</a>
+					</li>
+					<li class="list-group-item">
+					  <b>Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a>
+					</li>
+				  </ul>
+			</div>
+			<div class="box-profile col-md-4"></div>
+		</div>
 @endsection
