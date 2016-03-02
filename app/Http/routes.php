@@ -3,10 +3,9 @@
 Route::group(['middleware' => 'web'], function () {
     // Application routes
     Route::group(['namespace' => 'Application'], function () {
-        Route::get('/', ['as' => 'root', 'uses' => 'HomeController@index']);
-        Route::get('article/{article_slug}', ['as' => 'article', 'uses' => 'ArticleController@index']);
-        Route::get('page/{page_slug}', ['as' => 'page', 'uses' => 'PageController@index']);
-        Route::get('category/{category_slug}', ['as' => 'category', 'uses' => 'CategoryController@index']);
+        Route::get('/', function(){
+			return redirect('admin');
+		});
         Route::post('language/change', ['as' => 'app.language.change' , 'uses' => 'LanguageController@postChange']);
     });
     // Auth routes
