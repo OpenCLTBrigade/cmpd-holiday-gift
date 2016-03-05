@@ -13,7 +13,7 @@ class CreateSettingsTable extends Migration
     public function up()
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->tinyInteger('id')->unsigned()->unique()->autoIncrement();
+            $table->increments('id');
             $table->string('logo')->nullable();
             $table->string('email');
             $table->string('facebook');
