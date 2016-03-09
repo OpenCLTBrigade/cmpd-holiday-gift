@@ -3,7 +3,8 @@ var elixir = require('laravel-elixir'),
     adminLess  = [
         bowerDir + 'admin-lte/build/less',
         bowerDir + 'bootstrap-datepicker/less',
-        bowerDir + 'font-awesome/less'
+        bowerDir + 'font-awesome/less',
+        "resources/assets/less/skin-cmpd.less"
     ],
     adminCss = [
         'bootstrap/dist/css/bootstrap.min.css',
@@ -11,8 +12,7 @@ var elixir = require('laravel-elixir'),
         'admin.css',
         'mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
         'datatables/media/css/dataTables.bootstrap.min.css',
-        'morris.js/morris.css',
-        'admin-lte/dist/css/skins/skin-blue.min.css'
+        'morris.js/morris.css'
     ],
     adminJs = [
         'jquery/dist/jquery.min.js',
