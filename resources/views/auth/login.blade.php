@@ -13,7 +13,7 @@
 
         {!! Form::open(['method' => 'POST', 'route' => 'auth.login']) !!}
 
-        <div class="body bg-gray-50">
+        <div class="body">
             @include('errors.validation')
             <div class="form-group has-feedback">
                 {!! Form::label('email', trans('auth.login.email')) !!}

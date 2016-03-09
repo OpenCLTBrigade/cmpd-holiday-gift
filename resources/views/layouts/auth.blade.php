@@ -13,7 +13,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="bg-black-50">
+<body class="bg-auth">
 <div class="auth-wrapper">
     <div class="auth-header login-box">
         <img src="{{ url('img/auth-logo.png') }}" title="CMPD Explorers Christmas Project">

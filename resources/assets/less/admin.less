@@ -15,9 +15,10 @@
 };
 
 @auth_color: #3c8dbc;
+@logo_blue: #00355d;
 
 .bg-auth {
-  background-color: @auth_color;
+  background-color: @logo_blue;
   color: white;
   font-weight: bold;
   &:hover {
@@ -47,6 +48,10 @@
   background-color: #222222;
 }
 
+body.bg-auth {
+  background-color: #eeeeee;
+}
+
 .bg-gray-50 {
   background-color: #eaeaec !important;
   color: #444;
@@ -70,14 +75,14 @@
 }
 
 .auth-wrapper {
-  margin-top: 7%;
-  margin-bottom: 7%;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 .login-box {
   margin: 10px auto;
   .header {
-    background: none repeat scroll 0 0 @auth_color;
+    background: none repeat scroll 0 0 @logo_blue;
     border-radius: 4px 4px 0 0;
     box-shadow: 0 -3px 0 rgba(0, 0, 0, 0.2) inset;
     color: #fff;

@@ -14,7 +14,7 @@
 
     {!! Form::open(['method' => 'POST', 'route' => 'password.email']) !!}
 
-    <div class="body bg-gray-50">
+    <div class="body">
         @include('errors.validation')
         @if (session('status'))
         <div class="alert alert-success">
