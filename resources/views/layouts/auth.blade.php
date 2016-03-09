@@ -14,7 +14,11 @@
     <![endif]-->
 </head>
 <body class="bg-black-50">
-<div class="wrapper">
+<div class="auth-wrapper">
+    <div class="auth-header login-box">
+        <img src="{{ url('img/auth-logo.png') }}" title="CMPD Explorers Christmas Project">
+        <div class="made-by">By Code For Charlotte</div>
+    </div>
     @yield('content')
 </div>
 <script src="{{ url( elixir('js/admin.js') ) }}" type="text/javascript"></script>

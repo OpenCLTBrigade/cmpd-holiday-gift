@@ -2,8 +2,12 @@
     <ul class="languages text-center">
         @foreach($languages as $lang)
             <li>
-                <img class="img-circle chosen-one" title="{{ $lang->title }}"
-                     src="{{ url($lang->flag) }}" alt="{{ $lang->code }}"  value="{{ $lang->code }}" />
+                @if($lang->flag)
+                    <img class="img-circle chosen-one" title="{{ $lang->title }}"
+                         src="{{ url($lang->flag) }}" alt="{{ $lang->code }}"  value="{{ $lang->code }}" />
+                @else
+                    {{ strtoupper($lang->code) }}
+                @endif
             </li>
         @endforeach
         {!! Form::open(['method' => 'POST', 'route' => $route, 'id' => 'anakin-skywalker']) !!}

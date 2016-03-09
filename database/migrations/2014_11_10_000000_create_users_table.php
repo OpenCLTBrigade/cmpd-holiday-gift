@@ -16,8 +16,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name_first');
             $table->string('name_last');
-            $table->string('rank');
-            $table->string('phone');
+            $table->string('rank')->nullable();
+            $table->string('phone')->nullable();
             $table->integer('affiliation_id')->unsigned();
             $table->string('email')->unique();
             $table->string('password', 60);
