@@ -46,4 +46,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('language', 'LanguageController');
     Route::resource('page', 'PageController');
     Route::resource('user', 'UserController');
+    Route::resource('household', 'HouseholdController');
 });
