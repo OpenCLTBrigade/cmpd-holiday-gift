@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\UserDataTable;
+use App\Http\Controllers\Api\DataTables\HouseholdDataTable;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
@@ -15,9 +15,9 @@ class HouseholdController extends AdminController
      *
      * @param UserDataTable $dataTable
      */
-    public function index(UserDataTable $dataTable)
+    public function index(HouseholdDataTable $dataTable)
     {
-        #return $dataTable->render($this->viewPath());
+        return $dataTable->render($this->viewPath());
     }
 
     /**
@@ -33,7 +33,7 @@ class HouseholdController extends AdminController
      */
     public function show(Household $household)
     {
-       # return $this->viewPath("show", $household);
+       return $this->viewPath("show", $household);
     }
 
     /**

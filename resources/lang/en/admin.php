@@ -83,6 +83,11 @@ return [
             'visits'                => "Visits",
             'world_visitors'        => "Visitor distribution: World"
         ],
+		"household" => [
+            "name_first"            => "Name",
+            "name_last"	            => "Last Name",
+            "email"                 => "Email",
+        ],
         "language" => [
             "code"                  => "Code",
             "flag"                  => "Flag",
@@ -125,6 +130,12 @@ return [
 			"phone"                 => "Phone",
 			"affiliation_id"        => "Affiliation",
         ]
+    ],
+	"household" => [
+        "create"                    => "Create household",
+        "edit"                      => "Edit household",
+        "index"                     => "Households",
+        "show"                      => "Show household"
     ],
     "language" => [
         "create"                    => "Create language",
