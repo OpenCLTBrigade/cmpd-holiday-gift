@@ -44,6 +44,19 @@ class MakeMenu
                 ->icon($this->circle)
                 ->prependIcon();
 
+            $household = $menu->add(trans('admin.menu.household.root'), '#')
+                ->icon("home")
+                ->prependIcon();
+
+            $household->add(trans('admin.menu.household.add'), ['route' => 'admin.household.create'])
+                ->icon($this->circle)
+                ->prependIcon();
+
+            $household->add(trans('admin.menu.household.all'), ['route' => 'admin.household.index'])
+                ->icon($this->circle)
+                ->prependIcon();
+
+            /*
             $pages = $menu->add(trans('admin.menu.page.root'), '#')
                 ->icon('folder')
                 ->prependIcon();
@@ -79,6 +92,8 @@ class MakeMenu
             $articles->add(trans('admin.menu.article.all'), ['route' => 'admin.article.index'])
                 ->icon($this->circle)
                 ->prependIcon();
+
+            */
 
             $users = $menu->add(trans('admin.menu.user.root'), '#')
                 ->icon('users')

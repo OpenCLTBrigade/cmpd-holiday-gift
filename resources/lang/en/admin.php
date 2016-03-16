@@ -155,6 +155,11 @@ return [
             "all"                   => "All Pages",
             "root"                  => "Pages"
         ],
+        "household" => [
+            "add"                   => "Nominate new Household",
+            "all"                   => "List nominations",
+            "root"                  => "Nominations"
+        ],
         "setting"                   => "Settings",
         "user" => [
             "add"                   => "Add a User",
