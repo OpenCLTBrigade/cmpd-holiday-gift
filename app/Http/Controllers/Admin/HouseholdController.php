@@ -41,6 +41,7 @@ class HouseholdController extends AdminController
      */
     public function edit(Household $household)
     {
+        $household->child;
         return $this->getForm($household);
     }
 

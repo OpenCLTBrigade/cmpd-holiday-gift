@@ -44,7 +44,7 @@ class Child extends Model
 
     public function household()
     {
-        return $this->belongsToOne("\App\Household");
+        return $this->belongsToOne("Household");
     }
 
 }

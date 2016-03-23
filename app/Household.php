@@ -22,8 +22,7 @@ class Household extends Model
     ];
 
     protected $appends = [
-        'nominator_name',
-		'child'
+        'nominator_name'
     ];
 
 //    protected $hidden = [
@@ -52,10 +51,6 @@ class Household extends Model
     public function getNominatorNameAttribute() {
         return $this->nominator->name_first . " " . $this->nominator->name_last;
     }
-	
-	public function getChildAttribute() {
-        return $this->child();
-    }
 
     public function getCreatedAtAttribute($value) {
         return date("M j, Y", strtotime($value));
@@ -65,7 +60,3 @@ class Household extends Model
         return date("M j, Y", strtotime($value));
     }
 }
-
-# Household::find(1)->children()
-# $household = Household::find(1);
-# $children = $household->children();
