@@ -1,5 +1,5 @@
 @extends('layouts.admin')
 
 @section('content')
-    {!! form($form) !!}
+    @include('partials.forms.household')
 @endsection

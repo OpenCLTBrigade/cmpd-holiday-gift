@@ -21,12 +21,9 @@ class HouseholdsForm extends AdminForm
             ->add('email', 'text', [
                 'label' => 'Email'
             ])
-			->add('Children', 'collection', [
+			->add('child', 'collection', [
                 'type' => 'form',
-                'prototype' => true,
-                'prototype_name' => '__NAME__',
-                'property' => 'child',
-                'options' => [   
+                'options' => [
                     'class' => 'App\Forms\Admin\ChildForm',
                     'label' => "Child",
                     'empty_row' => true
@@ -42,7 +39,9 @@ class ChildForm extends AdminForm
     {
         $this
             ->add('name_first', 'text')
-            ->add('name_last', 'text');
+            ->add('name_last', 'text')
+            ->add('reason_for_nomination', 'textarea')
+        ;
 		parent::buildForm();
     }
 
