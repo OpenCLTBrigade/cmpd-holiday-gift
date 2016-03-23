@@ -25,7 +25,8 @@ class HouseholdController extends AdminController
      */
     public function store(HouseholdRequest $request)
     {
-        return $this->createFlashRedirect(Household::class, $request, $this->imageColumn);
+        $request['nominator_user_id'] = Auth::user()->id;
+        return $this->createFlashRedirect(Household::class, $request);
     }
 
     /**
