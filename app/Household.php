@@ -30,7 +30,7 @@ class Household extends Model
 //    ];
 
     public function child() {
-        return $this->hasMany("\App\Child");
+		return $this->hasMany("\App\Child");
     }
     // $Household = new Household();
     // $Household->child; $Household->address;
@@ -60,7 +60,3 @@ class Household extends Model
         return date("M j, Y", strtotime($value));
     }
 }
-
-# Household::find(1)->children()
-# $household = Household::find(1);
-# $children = $household->children();

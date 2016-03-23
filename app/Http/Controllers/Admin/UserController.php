@@ -10,12 +10,6 @@ use Auth;
 
 class UserController extends AdminController
 {
-    /**
-     * Image column of the model
-     *
-     * @var string
-     */
-    private $imageColumn = "picture";
 
     /**
      * Display a listing of the users.
@@ -36,7 +30,7 @@ class UserController extends AdminController
      */
     public function store(UserRequest $request)
     {
-        return $this->createFlashRedirect(User::class, $request, $this->imageColumn);
+        return $this->createFlashRedirect(User::class, $request);
     }
 
     /**
@@ -70,7 +64,7 @@ class UserController extends AdminController
      */
     public function update(User $user, UserRequest $request)
     {
-        return $this->saveFlashRedirect($user, $request, $this->imageColumn);
+        return $this->saveFlashRedirect($user, $request);
     }
 
     /**
