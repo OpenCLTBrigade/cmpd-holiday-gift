@@ -25,14 +25,11 @@ class HouseholdRequest extends Request
      */
     public function rules()
     {
-        # TODO: Specify these
-        /*
+        # TODO: Specify these (using dummy)
+        
         return [
-            'email'     => 'required|email|min:6|unique:users,email,'.$this->segment(3),
-            'name'      => 'required|min:3',
-            'password'  => 'required|confirmed|min:6|max:20',
-            'picture'   => 'sometimes|max:2048|image'
+            // 'email'  => 'required|email|min:6|unique:users,email,'.$this->segment(3)
         ];
-        */
+        
     }
 }

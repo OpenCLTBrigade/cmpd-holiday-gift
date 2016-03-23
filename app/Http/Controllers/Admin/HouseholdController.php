@@ -25,7 +25,7 @@ class HouseholdController extends AdminController
      */
     public function store(HouseholdRequest $request)
     {
-        #return $this->createFlashRedirect(Household::class, $request, $this->imageColumn);
+        return $this->createFlashRedirect(Household::class, $request, $this->imageColumn);
     }
 
     /**
@@ -39,9 +39,9 @@ class HouseholdController extends AdminController
     /**
      * Show the form for editing the specified user.
      */
-    public function edit(Household $user)
+    public function edit(Household $household)
     {
-        #return $this->getForm($user);
+        return $this->getForm($household);
     }
 
     /**
@@ -49,7 +49,7 @@ class HouseholdController extends AdminController
      */
     public function update(Household $household, HouseholdRequest $request)
     {
-        #return $this->saveFlashRedirect($household, $request, $this->imageColumn);
+        return $this->saveFlashRedirect($household, $request);
     }
 
     /**

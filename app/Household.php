@@ -22,7 +22,8 @@ class Household extends Model
     ];
 
     protected $appends = [
-        'nominator_name'
+        'nominator_name',
+		'child'
     ];
 
 //    protected $hidden = [
@@ -30,7 +31,7 @@ class Household extends Model
 //    ];
 
     public function child() {
-        return $this->hasMany("\App\Child");
+		return $this->hasMany("\App\Child");
     }
     // $Household = new Household();
     // $Household->child; $Household->address;
@@ -50,6 +51,10 @@ class Household extends Model
 
     public function getNominatorNameAttribute() {
         return $this->nominator->name_first . " " . $this->nominator->name_last;
+    }
+	
+	public function getChildAttribute() {
+        return $this->child();
     }
 
     public function getCreatedAtAttribute($value) {

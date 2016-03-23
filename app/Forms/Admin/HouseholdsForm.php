@@ -3,7 +3,6 @@
 namespace App\Forms\Admin;
 
 use App\Base\Forms\AdminForm;
-
 class HouseholdsForm extends AdminForm
 {
     public function buildForm()
@@ -21,7 +20,26 @@ class HouseholdsForm extends AdminForm
             ])
             ->add('email', 'text', [
                 'label' => 'Email'
+            ])
+			->add('child', 'collection', [
+                'type' => 'form',
+                'options' => [   
+                    'class' => 'App\Forms\Admin\ChildForm',
+                    'label' => false
+                ]
             ]);
         parent::buildForm();
     }
 }
+
+class ChildForm extends AdminForm
+{
+    public function buildForm()
+    {
+        $this
+            ->add('name', 'text')
+            ->add('desc', 'textarea');
+		parent::buildForm();
+    }
+}
+

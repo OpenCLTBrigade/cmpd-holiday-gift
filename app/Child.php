@@ -42,6 +42,9 @@ class Child extends Model
         "preferred_contact_method"
     ];
 
-
+    public function household()
+    {
+        return $this->belongsToOne("\App\Household");
+    }
 
 }
