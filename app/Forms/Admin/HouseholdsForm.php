@@ -23,9 +23,10 @@ class HouseholdsForm extends AdminForm
             ])
 			->add('child', 'collection', [
                 'type' => 'form',
+                'template' => 'formtemplates.collection',
                 'options' => [
                     'class' => 'App\Forms\Admin\ChildForm',
-                    'label' => "Child",
+                    'label' => false,
                     'empty_row' => true
                 ]
             ]);

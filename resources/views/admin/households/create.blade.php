@@ -1,5 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.admin', ['no_boxes' => true])
 
 @section('content')
-    @include('partials.forms.household')
+<section class="content">
+    <div class="row">
+        @include('partials.forms.household')
+    </div>
+</section>
 @endsection
