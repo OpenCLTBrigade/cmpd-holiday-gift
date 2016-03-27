@@ -45,8 +45,8 @@
         </div>
         <div class="box-body">
             <div class="row">
-                <div class="collection-container-householdaddress" data-prototype="{{ form_row($form->household_address->prototype()) }}">
-                    {!! form_row($form->household_address) !!}
+                <div class="collection-container-householdaddress" data-prototype="{{ form_row($form->address->prototype()) }}">
+                    {!! form_row($form->address) !!}
                 </div>
             </div>
             <button type="button" class="add-household_address btn btn-default">Add Address</button>
@@ -96,8 +96,15 @@
             e.preventDefault();
             var container = $('.collection-container-householdaddress');
             var count = container.children().length;
-            var proto = container.data('prototype').replace(/household_address/g, count);
+            var proto = container.data('prototype').replace(/address/g, count);
             container.append("<hr>" + proto);
+        });
+
+        // Remove household address
+        $('.remove-household_address').on('click', function(e) {
+            e.preventDefault();
+            var a = $(".collection-Address");
+            a[a.length-1].remove();
         });
 
 
@@ -105,6 +112,11 @@
         @if (!count($object->child))
             if($(".collection-Child").length > 0)
                 $(".collection-Child").remove();
+        @endif
+
+        @if (!count($object->address))
+            if($(".collection-Address").length > 0)
+                $(".collection-Address").remove();
         @endif
     });
 </script>

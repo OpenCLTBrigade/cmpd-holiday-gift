@@ -50,13 +50,13 @@ class HouseholdsForm extends AdminForm
                 'label' => 'Reason for nomination'
             ])
 
-            ->add("household_address", "collection", [
+            ->add("address", "collection", [
                 "type" => "form",
                 "template" => "formtemplates.collection.in-box",
                 "options" => [
                     "class" => 'App\Forms\Admin\HouseholdAddressForm',
                     "label" => false,
-                    "empty_row" => false
+                    "empty_row" => true
                 ]
             ])
 
