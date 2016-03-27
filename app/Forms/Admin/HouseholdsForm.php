@@ -86,11 +86,26 @@ class HouseholdAddressForm extends Form
                     "Work"
                 ]
             ])
-            ->add("address_street", "text", [ "template" => "formtemplates.text.col-xs-12_col-sm-4" ])
-            ->add("address_street2", "text", [ "template" => "formtemplates.text.col-xs-12_col-sm-4" ])
-            ->add("address_city", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
-            ->add("address_state", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
-            ->add("address_zip", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
+            ->add("address_street", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "Street Address"
+            ])
+            ->add("address_street2", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "Street Address 2"
+            ])
+            ->add("address_city", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "City"
+            ])
+            ->add("address_state", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "State"
+            ])
+            ->add("address_zip", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "ZIP Code"
+            ])
         ;
     }
 }
