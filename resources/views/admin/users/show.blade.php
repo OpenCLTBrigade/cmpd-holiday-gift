@@ -12,12 +12,18 @@
 					<li class="list-group-item">
 					  <b>Affiliation</b> <a class="pull-right">{{$object->affiliation()->get()[0]->name}} ({{strtoupper($object->affiliation()->get()[0]->type)}})</a>
 					</li>
+
+                    <li class="list-group-item">
+                        <b>Rank / Position</b> {{ $object->rank }}</a>
+                    </li>
+                    
 					<li class="list-group-item">
-					  <b>Phone</b> <a class="pull-right">{{ $object->phone }}</a>
+					  <b>Phone Number</b> <a class="pull-right">{{ $object->phone }}</a>
 					</li>
-					<li class="list-group-item">
-					  <b>Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a>
-					</li>
+                    <li class="list-group-item">
+                        <b>E-Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a>
+                    </li>
+
 				  </ul>
 			</div>
 			<div class="box-profile col-md-4"></div>
