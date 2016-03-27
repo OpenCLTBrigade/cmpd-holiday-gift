@@ -50,7 +50,7 @@
                 </div>
             </div>
             <button type="button" class="add-household_address btn btn-default">Add Address</button>
-            <button type="button" class="remove-household_address btn btn-danger">Remove Address</button>
+            <button type="button" class="remove-household_address btn btn-danger">Remove Last Address</button>
         </div>
     </div>
 
