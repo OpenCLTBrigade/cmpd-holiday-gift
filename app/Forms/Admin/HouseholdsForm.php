@@ -3,6 +3,8 @@
 namespace App\Forms\Admin;
 
 use App\Base\Forms\AdminForm;
+use Kris\LaravelFormBuilder\Form;
+
 class HouseholdsForm extends AdminForm
 {
     public function buildForm()
@@ -11,6 +13,9 @@ class HouseholdsForm extends AdminForm
         $this
             ->add('name_first', 'text', [
                 'label' => 'First Name'
+            ])
+            ->add('name_middle', 'text', [
+                'label' => 'Middle Name'
             ])
             ->add('name_last', 'text', [
                 'label' => 'Last Name'
@@ -21,9 +26,43 @@ class HouseholdsForm extends AdminForm
             ->add('email', 'text', [
                 'label' => 'Email'
             ])
+            ->add('last4ssn', 'number', [
+                'label' => 'Last four digits of SSN'
+            ])
+            ->add('gender', 'select', [
+                'choices' => array(
+                    "M" => "Male",
+                    "F" => "Female"
+                ),
+                'empty_value' => '==== Select ====',
+                'label' => "Gender"
+            ])
+            ->add('preferred_contact_method', 'select', [
+                'choices' => array(
+                    "email" => "E-Mail",
+                    "text" => "Text",
+                    "mail" => "Mail"
+                ),
+                'label' => "Preferred Contact Method",
+                'empty_value' => '==== Select ===='
+            ])
+            ->add('reason_for_nomination', 'textarea', [
+                'label' => 'Reason for nomination'
+            ])
+
+            ->add("household_address", "collection", [
+                "type" => "form",
+                "template" => "formtemplates.collection.in-box",
+                "options" => [
+                    "class" => 'App\Forms\Admin\HouseholdAddressForm',
+                    "label" => false,
+                    "empty_row" => false
+                ]
+            ])
+
 			->add('child', 'collection', [
                 'type' => 'form',
-                'template' => 'formtemplates.collection',
+                'template' => 'formtemplates.collection.box',
                 'options' => [
                     'class' => 'App\Forms\Admin\ChildForm',
                     'label' => false,
@@ -34,7 +73,29 @@ class HouseholdsForm extends AdminForm
     }
 }
 
-class ChildForm extends AdminForm
+class HouseholdAddressForm extends Form
+{
+    public function buildForm()
+    {
+        $this
+            ->add("type", "select",
+            [
+                "template" => "formtemplates.select.col-xs-12_col-sm-4",
+                "choices" => [
+                    "Home",
+                    "Work"
+                ]
+            ])
+            ->add("address_street", "text", [ "template" => "formtemplates.text.col-xs-12_col-sm-4" ])
+            ->add("address_street2", "text", [ "template" => "formtemplates.text.col-xs-12_col-sm-4" ])
+            ->add("address_city", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
+            ->add("address_state", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
+            ->add("address_zip", "text", ["template" => "formtemplates.text.col-xs-12_col-sm-4"])
+        ;
+    }
+}
+
+class ChildForm extends Form
 {
     public function buildForm()
     {
@@ -46,8 +107,5 @@ class ChildForm extends AdminForm
 		parent::buildForm();
     }
 
-    protected function addButtons() {
-        // Do nothing
-    }
 }
 
