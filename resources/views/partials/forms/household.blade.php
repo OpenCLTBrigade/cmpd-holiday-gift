@@ -1,5 +1,3 @@
-
-
 <div class="col-md-12">
     {!! form_start($form) !!}
     <div class="box box-primary">
@@ -34,14 +32,16 @@
     </div>
 
     <div class="collection-container" data-prototype="{{ form_row($form->child->prototype()) }}">
-        {!! form_row($form->child) !!}
+        @if (count($object->child))
+            {!! form_row($form->child) !!}
+        @endif
     </div>
 
 
 
-        <button type="button" class="add-to-collection btn btn-default">Add Child</button>
+    <button type="button" class="add-to-collection btn btn-default">Add Child</button>
 
-        {!! form_end($form) !!}
+    {!! form_end($form) !!}
 
     </div>
 </div>
@@ -59,5 +59,10 @@
                 '</div></div>';
             container.append(html);
         });
+
+        @if (!count($object->child))
+            if($(".collection-Child").length > 0)
+                $(".collection-Child").remove();
+        @endif
     });
 </script>
