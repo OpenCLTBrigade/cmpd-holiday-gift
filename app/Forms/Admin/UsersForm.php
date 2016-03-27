@@ -9,9 +9,26 @@ class UsersForm extends AdminForm
     public function buildForm()
     {
         $this
-            ->add('name', 'text', [
-                'label' => trans('admin.fields.user.name')
+            ->add('name_first', 'text', [
+                'label' => "First Name"
             ])
+            ->add('name_last', 'text', [
+                'label' => "Last Name"
+            ])
+
+            ->add("affiliation_id", "select", [
+                "choices" => $this->parseAffiliationsIntoSelectArray(),
+                "label" => "Affiliation"
+            ])
+
+            ->add('rank', 'text', [
+                'label' => "Rank / Position"
+            ])
+
+            ->add('phone', 'text', [
+                'label' => "Phone Number"
+            ])
+
             ->add('email', 'email', [
                 'label' => trans('admin.fields.user.email')
             ])
@@ -20,11 +37,16 @@ class UsersForm extends AdminForm
             ])
             ->add('password_confirmation', 'password', [
                 'label' => trans('admin.fields.user.password_confirmation')
-            ])
-            ->add('picture', 'file', [
-                'label' => trans('admin.fields.user.picture'),
-                'attr' => ['class' => '']
             ]);
         parent::buildForm();
+    }
+
+    private function parseAffiliationsIntoSelectArray() {
+        $a = array();
+        $affiliations = \App\Affiliation::all(["id", "type", "name"]);
+        foreach ($affiliations as $affiliation) {
+            $a[$affiliation["id"]] = strtoupper($affiliation['type'] . " - " . ucwords($affiliation['name']));
+        }
+        return $a;
     }
 }
