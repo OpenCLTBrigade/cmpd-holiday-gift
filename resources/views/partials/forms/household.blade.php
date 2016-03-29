@@ -108,15 +108,16 @@
         });
 
 
+        @if ($object != null)
+            @if (!count($object->child))
+                if($(".collection-Child").length > 0)
+                    $(".collection-Child").remove();
+            @endif
 
-        @if (!count($object->child))
-            if($(".collection-Child").length > 0)
-                $(".collection-Child").remove();
-        @endif
-
-        @if (!count($object->address))
-            if($(".collection-Address").length > 0)
-                $(".collection-Address").remove();
+            @if (!count($object->address))
+                if($(".collection-Address").length > 0)
+                    $(".collection-Address").remove();
+            @endif
         @endif
     });
 </script>
