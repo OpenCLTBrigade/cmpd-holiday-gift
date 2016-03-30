@@ -235,6 +235,20 @@ class ChildController extends Controller
             // TODO: Something eventually
         }
     }
+	
+	public function updateAll($children)
+	{
+		$table = (new \App\Child())->getTable();   
+		foreach($children as $child)
+		{
+			try {
+				DB::table($table)->where('id', '=', $child['id'])->update($child);
+			} catch (Exception $e) {
+				return 'something failed';
+			}		
+		}
+		
+	}
 
     /**
      * Remove the specified resource from storage.

@@ -118,6 +118,7 @@ class ChildForm extends Form
             ->add('name_first', 'text')
             ->add('name_last', 'text')
             ->add('reason_for_nomination', 'textarea')
+			->add('id', 'hidden')
         ;
 		parent::buildForm();
     }

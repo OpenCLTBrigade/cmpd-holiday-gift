@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
 use App\Http\Controllers\Api\DataTables\HouseholdDataTable;
+use App\Http\Controllers\ChildController;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
 
 class HouseholdController extends AdminController
 {
+	
     /**
      * Display a listing of the users.
      *
@@ -51,7 +53,9 @@ class HouseholdController extends AdminController
      * Update the specified user in storage.
      */
     public function update(Household $household, HouseholdRequest $request)
-    {
+    {	
+		$childController = new ChildController();
+		$childController->updateAll($request['child']);
         return $this->saveFlashRedirect($household, $request);
     }
 
