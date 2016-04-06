@@ -28,7 +28,10 @@ class HouseholdController extends AdminController
     public function store(HouseholdRequest $request)
     {
         $request['nominator_user_id'] = Auth::user()->id;
-        return $this->createFlashRedirect(Household::class, $request);
+		$id = $this->createFlashParentRedirect(Household::class, $request);
+		$childController = new ChildController();
+		$childController->upsertAll($request['child'], $id);
+        return $this->redirectRoutePath("index");
     }
 
     /**
@@ -55,7 +58,7 @@ class HouseholdController extends AdminController
     public function update(Household $household, HouseholdRequest $request)
     {	
 		$childController = new ChildController();
-		$childController->updateAll($request['child']);
+		$childController->upsertAll($request['child'], $household['id']);
         return $this->saveFlashRedirect($household, $request);
     }
 

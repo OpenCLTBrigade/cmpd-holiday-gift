@@ -104,6 +104,22 @@ abstract class AdminController extends Controller
         $model->id ? Flash::success(trans('admin.create.success')) : Flash::error(trans('admin.create.fail'));
         return $this->redirectRoutePath($path);
     }
+	
+    /**
+     * Create, flash success or error then return the new id for future use
+     *
+     * @param $class
+     * @param $request
+     * @param bool|false $imageColumn
+     * @param string $path
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function createFlashParentRedirect($class, $request, $imageColumn = false, $path = "index")
+    {
+        $model = $class::create($this->getData($request, $imageColumn));
+        $model->id ? Flash::success(trans('admin.create.success')) : Flash::error(trans('admin.create.fail'));
+        return $model->id;
+    }
 
     /**
      * Save, flash success or error then redirect

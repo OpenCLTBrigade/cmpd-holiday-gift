@@ -83,7 +83,7 @@
             e.preventDefault();
             var container = $('.collection-container');
             var count = container.children().length;
-            var proto = container.data('prototype').replace(/child/g, count);
+            var proto = container.data('prototype'); 
             var html = '<div class="box"><div class="box-header with-border"><h3 class="box-title">Child</h3></div>' +
                 '<div class="box-body"' +
                 proto +
