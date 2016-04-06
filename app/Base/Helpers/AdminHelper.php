@@ -9,7 +9,7 @@ if (!function_exists('get_ops')) {
      * @param $class
      * @return string
      */
-    function get_ops($resource, $id, $class = "btn")
+    function get_ops($resource, $id, $class = "btn", array $ops)
     {
         if ($class=="btn") {
             $show_class = "btn btn-xs bg-navy";

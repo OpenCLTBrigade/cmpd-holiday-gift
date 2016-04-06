@@ -27,4 +27,12 @@ class Affiliation extends Model
     {
         return $this->belongsToMany("\App\User");
     }
+
+    public function getTypeAttribute($value) {
+        return strtoupper($value);
+    }
+
+    public function setTypeAttribute($value) {
+        $this->attributes['type'] = strtolower($value);
+    }
 }

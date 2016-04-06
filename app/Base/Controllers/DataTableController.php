@@ -9,9 +9,15 @@ abstract class DataTableController extends DataTable
     /**
      * Default parameters
      *
+     * ops_options can be show, edit, and delete.
+     *
      * @var array
      */
-    protected $parameters = ['dom' => 'Bfrtip', 'buttons' => ['csv', 'excel', 'pdf']];
+    protected $parameters = [
+        'dom' => 'Bfrtip',
+        'buttons' => ['csv', 'excel', 'pdf'],
+        'ops_options' => ['show', 'edit', 'delete']
+    ];
 
     /**
      * Columns to show
@@ -83,7 +89,7 @@ abstract class DataTableController extends DataTable
         }
         if ($this->ops === true) {
             $datatables = $datatables->addColumn('ops', function ($data) use ($model) {
-                return get_ops($model, $data->id);
+                return get_ops($model, $data->id, $this->ops_options);
             });
         }
         return $datatables->make(true);

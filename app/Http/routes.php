@@ -31,6 +31,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => 'api'], f
 });
 
 // Admin routes
+# myapp.com/admin/
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function () {
     // GET
     Route::get('/', ['as' => 'admin.root', 'uses' => 'DashboardController@getIndex']);
@@ -47,4 +48,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('page', 'PageController');
     Route::resource('user', 'UserController');
     Route::resource('household', 'HouseholdController');
+
+    Route::resource('affiliation', 'AffiliationController');
+
 });
