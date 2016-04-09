@@ -14,6 +14,8 @@ class AffiliationDataTable extends DataTableController
      */
     protected $columns = ['type', 'name'];
 
+    protected $ops_options = ['show'];
+
     /**
      * Get the query object to be processed by datatables.
      *
