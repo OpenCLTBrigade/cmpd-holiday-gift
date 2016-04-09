@@ -46,6 +46,11 @@ abstract class DataTableController extends DataTable
      */
     protected $ops = true;
 
+    /**
+     * Which buttons to under the Ops column.
+     *
+     * @var array
+     */
     protected $ops_options = ['show', 'edit', 'delete'];
 
     /**
