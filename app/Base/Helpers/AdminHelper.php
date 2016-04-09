@@ -9,8 +9,11 @@ if (!function_exists('get_ops')) {
      * @param $class
      * @return string
      */
-    function get_ops($resource, $id, $class = "btn")
+    function get_ops($resource, $id, $class = "btn", array $showable_ops)
     {
+        // No ops? No list!
+        if (!count($showable_ops)) return "";
+
         if ($class=="btn") {
             $show_class = "btn btn-xs bg-navy";
             $edit_class = "btn btn-xs bg-olive";
@@ -23,25 +26,36 @@ if (!function_exists('get_ops')) {
         $show_path = route('admin.'.$resource.'.show', ['id' => $id]);
         $edit_path = route('admin.'.$resource.'.edit', ['id' => $id]);
         $delete_path = route('admin.'.$resource.'.destroy', ['id' => $id]);
+
         $ops  = '<ul class="list-inline no-margin-bottom">';
-        $ops .=  '<li>';
-        $ops .=  '<a class="'.$show_class.'" href="'.$show_path.'">
-                  <i class="fa fa-search"></i>
-                  '.trans('admin.ops.show').'</a>';
-        $ops .=  '</li>';
-        $ops .=  '<li>';
-        $ops .=  '<a class="'.$edit_class.'" href="'.$edit_path.'">
-                 <i class="fa fa-pencil-square-o"></i>
-                  '.trans('admin.ops.edit').'</a>';
-        $ops .=  '</li>';
-        $ops .=  '<li>';
-        $ops .= Form::open(['method' => 'DELETE', 'url' => $delete_path]);
-        $ops .= Form::submit('&#xf1f8; ' .trans('admin.ops.delete'), [
-                'onclick' => "return confirm('".trans('admin.ops.confirmation')."');",
-                'class' => $delete_class
-            ]);
-        $ops .= Form::close();
-        $ops .=  '</li>';
+        if (in_array("show", $showable_ops))
+        {
+            $ops .=  '<li>';
+            $ops .=  '<a class="'.$show_class.'" href="'.$show_path.'">
+                      <i class="fa fa-search"></i>
+                      '.trans('admin.ops.show').'</a>';
+            $ops .=  '</li>';
+        }
+
+        if (in_array("edit", $showable_ops)) {
+            $ops .=  '<li>';
+            $ops .=  '<a class="'.$edit_class.'" href="'.$edit_path.'">
+                     <i class="fa fa-pencil-square-o"></i>
+                      '.trans('admin.ops.edit').'</a>';
+            $ops .=  '</li>';
+        }
+
+        if (in_array("delete", $showable_ops))
+        {
+            $ops .=  '<li>';
+            $ops .= Form::open(['method' => 'DELETE', 'url' => $delete_path]);
+            $ops .= Form::submit('&#xf1f8; ' .trans('admin.ops.delete'), [
+                    'onclick' => "return confirm('".trans('admin.ops.confirmation')."');",
+                    'class' => $delete_class
+                ]);
+            $ops .= Form::close();
+            $ops .=  '</li>';
+        }
         $ops .=  '</ul>';
         return $ops;
     }
@@ -90,7 +104,9 @@ if (!function_exists('header_title')) {
         $route = Route::currentRouteName();
         $title = '<h1>';
         $title .= trans(Route::getCurrentRoute()->getName());
-        if (strpos($route, 'index') !== false) {
+
+        /*
+        if (strpos($route, 'index') !== false && $show_add) {
             $new = substr($route, 0, strrpos($route, '.') + 1) . 'create';
             if (Route::has($new)) {
                 $title .= '<small>';
@@ -100,6 +116,7 @@ if (!function_exists('header_title')) {
                 $title .= '</small>';
             }
         }
+        */
         $title .= '</h1>';
         return $title;
     }

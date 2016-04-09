@@ -9,9 +9,14 @@ abstract class DataTableController extends DataTable
     /**
      * Default parameters
      *
+     * ops_options can be show, edit, and delete.
+     *
      * @var array
      */
-    protected $parameters = ['dom' => 'Bfrtip', 'buttons' => ['csv', 'excel', 'pdf']];
+    protected $parameters = [
+        'dom' => 'Bfrtip',
+        'buttons' => ['csv', 'excel', 'pdf']
+    ];
 
     /**
      * Columns to show
@@ -40,6 +45,13 @@ abstract class DataTableController extends DataTable
      * @var bool
      */
     protected $ops = true;
+
+    /**
+     * Which buttons to under the Ops column.
+     *
+     * @var array
+     */
+    protected $ops_options = ['show', 'edit', 'delete'];
 
     /**
      * Common columns such that used by more than one class, so that translation belongs to root, not to any model
@@ -83,7 +95,7 @@ abstract class DataTableController extends DataTable
         }
         if ($this->ops === true) {
             $datatables = $datatables->addColumn('ops', function ($data) use ($model) {
-                return get_ops($model, $data->id);
+                return get_ops($model, $data->id, "btn", $this->ops_options);
             });
         }
         return $datatables->make(true);

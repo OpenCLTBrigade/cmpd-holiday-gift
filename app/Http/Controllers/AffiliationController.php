@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use \App\Affiliation;
 
 class AffiliationController extends Controller
 {
@@ -53,4 +54,11 @@ class AffiliationController extends Controller
     {
         return \App\Affiliation::all();
     }
+
+    public function show(Affiliation $affiliation)
+    {
+        $Users = User::where("affiliation_id", "=", $affiliation->id);
+        return $this->viewPath("show", $affiliation);
+    }
+
 }

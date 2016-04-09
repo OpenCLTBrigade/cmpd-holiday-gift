@@ -107,6 +107,10 @@ class MakeMenu
                 ->icon($this->circle)
                 ->prependIcon();
 
+            $users->add("List Affiliations", ['route' => 'admin.affiliation.index'])
+                ->icon($this->circle)
+                ->prependIcon();
+
             $settings = $menu->add(trans('admin.menu.setting'), ['route' => 'admin.setting.index'])
                 ->icon('gears')
                 ->prependIcon();

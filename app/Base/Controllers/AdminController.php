@@ -258,6 +258,12 @@ abstract class AdminController extends Controller
         }
     }
 
+    public function viewPathWithData($path = "index", array $data = array())
+    {
+        $path = 'admin.' . str_plural(snake_case($this->model))  . '.' . $path;
+        return view($path, $data);
+    }
+
     /**
      * Get select list for languages
      *
