@@ -104,7 +104,9 @@ if (!function_exists('header_title')) {
         $route = Route::currentRouteName();
         $title = '<h1>';
         $title .= trans(Route::getCurrentRoute()->getName());
-        if (strpos($route, 'index') !== false) {
+
+        /*
+        if (strpos($route, 'index') !== false && $show_add) {
             $new = substr($route, 0, strrpos($route, '.') + 1) . 'create';
             if (Route::has($new)) {
                 $title .= '<small>';
@@ -114,6 +116,7 @@ if (!function_exists('header_title')) {
                 $title .= '</small>';
             }
         }
+        */
         $title .= '</h1>';
         return $title;
     }
