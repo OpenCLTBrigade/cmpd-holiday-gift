@@ -2,6 +2,7 @@
 
 namespace App\Base\Controllers;
 
+use DB;
 use App\Base\Services\ImageService;
 use App\Language;
 use App\Http\Controllers\Controller;
@@ -179,6 +180,40 @@ abstract class AdminController extends Controller
         return redirect($this->urlRoutePath($path));
     }
 
+	/**
+     * Inserts or updates as needed, linkinig new record to 
+	 * parent entity
+     *
+     * @param array $data
+     * @param int $parent_key
+     * @return
+     */
+	public function upsertAll($data, $parent_entity, $parent_key)
+	{
+		foreach($data as $class => $rows)
+		{
+			$class = "\\App\\".$class;
+			$table = (new $class())->getTable();   
+			foreach($rows as $child)
+			{
+				try {
+					if(empty($child['id']))
+					{
+						$child[$parent_entity] = $parent_key;
+						$class::create($child);
+					}	
+					else
+					{
+						DB::table($table)->where('id', '=', $child['id'])->update($child);
+					}
+				} catch (Exception $e) {
+					// TODO: Improve exception handling
+				}		
+			}			
+		}
+
+	}
+	
     /**
      * Returns full url
      *

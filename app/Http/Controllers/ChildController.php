@@ -236,27 +236,6 @@ class ChildController extends Controller
         }
     }
 	
-	public function upsertAll($children, $household_id)
-	{
-		$table = (new \App\Child())->getTable();   
-		foreach($children as $child)
-		{
-			try {
-				if(empty($child['id']))
-				{
-					$child["household_id"] = $household_id;
-					\App\Child::create($child);
-				}	
-				else
-				{
-					DB::table($table)->where('id', '=', $child['id'])->update($child);
-				}
-			} catch (Exception $e) {
-				// TODO: Improve exception handling
-			}		
-		}
-		
-	}
 	
     /**
      * Remove the specified resource from storage.

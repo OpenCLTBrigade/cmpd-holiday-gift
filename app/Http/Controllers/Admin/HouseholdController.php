@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
 use App\Http\Controllers\Api\DataTables\HouseholdDataTable;
-use App\Http\Controllers\ChildController;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
@@ -29,8 +28,7 @@ class HouseholdController extends AdminController
     {
         $request['nominator_user_id'] = Auth::user()->id;
 		$id = $this->createFlashParentRedirect(Household::class, $request);
-		$childController = new ChildController();
-		$childController->upsertAll($request['child'], $id);
+		$this->upsertAll(["Child" => $request['child']], "household_id", $id);
         return $this->redirectRoutePath("index");
     }
 
@@ -57,8 +55,7 @@ class HouseholdController extends AdminController
      */
     public function update(Household $household, HouseholdRequest $request)
     {	
-		$childController = new ChildController();
-		$childController->upsertAll($request['child'], $household['id']);
+		$this->upsertAll(["Child" => $request['child']], "household", $household['id']);
         return $this->saveFlashRedirect($household, $request);
     }
 
