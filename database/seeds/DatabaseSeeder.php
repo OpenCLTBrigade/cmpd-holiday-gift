@@ -13,8 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(SettingTableSeeder::class);
         $this->call(LanguageTableSeeder::class);
-        $this->call(CategoryTableSeeder::class);
-        $this->call(ArticleTableSeeder::class);
 
         // Project-specific seeders
         $this->call(RoleTableSeeder::class);

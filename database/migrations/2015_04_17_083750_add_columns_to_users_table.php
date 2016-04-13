@@ -16,7 +16,6 @@ class AddColumnsToUsersTable extends Migration
             $table->timestamp('logged_in_at')->nullable();
             $table->timestamp('logged_out_at')->nullable();
             $table->binary('ip_address')->nullable();
-            $table->string('picture')->nullable();
         });
     }
 
@@ -31,7 +30,6 @@ class AddColumnsToUsersTable extends Migration
             $table->dropColumn('logged_in_at');
             $table->dropColumn('logged_out_at');
             $table->dropColumn('ip_address');
-            $table->dropColumn('picture');
         });
     }
 }
