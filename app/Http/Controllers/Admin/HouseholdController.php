@@ -10,7 +10,7 @@ use Auth;
 
 class HouseholdController extends AdminController
 {
-	
+
     /**
      * Display a listing of the users.
      *
@@ -28,7 +28,9 @@ class HouseholdController extends AdminController
     {
         $request['nominator_user_id'] = Auth::user()->id;
 		$id = $this->createFlashParentRedirect(Household::class, $request);
-		$this->upsertAll(["Child" => $request['child']], "household_id", $id);
+		$this->upsertAll(["Child" => $request['child'],
+						"HouseholdAddress"  => $request['address'],
+						"HouseholdPhone"  => $request['phone']], "household_id", $id);
         return $this->redirectRoutePath("index");
     }
 
@@ -45,8 +47,10 @@ class HouseholdController extends AdminController
      */
     public function edit(Household $household)
     {
+			  //IMPORTANT: LOAD THE ATTRIBUTE WHEN ADDING TO FORM
         $household->child;
         $household->address;
+				$household->phone;
         return $this->getForm($household);
     }
 
@@ -54,8 +58,10 @@ class HouseholdController extends AdminController
      * Update the specified user in storage.
      */
     public function update(Household $household, HouseholdRequest $request)
-    {	
-		$this->upsertAll(["Child" => $request['child']], "household", $household['id']);
+    {
+		$this->upsertAll(["Child" => $request['child'],
+						"HouseholdAddress"  => $request['address'],
+						"HouseholdPhone"  => $request['phone']], "household_id", $household['id']);
         return $this->saveFlashRedirect($household, $request);
     }
 

@@ -60,6 +60,15 @@ class HouseholdsForm extends AdminForm
                 ]
             ])
 
+			->add("phone", "collection", [
+                "type" => "form",
+                "template" => "formtemplates.collection.in-box",
+                "options" => [
+                    "class" => 'App\Forms\Admin\HouseholdPhoneForm',
+                    "label" => false,
+                    "empty_row" => true
+                ]
+            ])
 			->add('child', 'collection', [
                 'type' => 'form',
                 'template' => 'formtemplates.collection.box',
@@ -82,8 +91,8 @@ class HouseholdAddressForm extends Form
             [
                 "template" => "formtemplates.select.col-xs-12_col-sm-4",
                 "choices" => [
-                    "Home",
-                    "Work"
+                    "Home" => "Home",
+                    "Work" => "Work"
                 ]
             ])
             ->add("address_street", "text", [
@@ -106,7 +115,36 @@ class HouseholdAddressForm extends Form
                 "template" => "formtemplates.text.col-xs-12_col-sm-4",
                 'label' => "ZIP Code"
             ])
+			->add('id', 'hidden')
         ;
+        // parent::buildForm();
+
+    }
+}
+
+
+class HouseholdPhoneForm extends Form
+{
+    public function buildForm()
+    {
+        $this
+            ->add("phone_type", "select",
+            [
+                "template" => "formtemplates.select.col-xs-12_col-sm-4",
+                "choices" => [
+                    "Home" => "Home",
+                    "Work" => "Work"
+                ],
+                "label" => "Phone Type"
+            ])
+            ->add("phone_number", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "Phone Number"
+            ])
+			->add('id', 'hidden')
+        ;
+        // parent::buildForm();
+
     }
 }
 
@@ -120,8 +158,7 @@ class ChildForm extends Form
             ->add('reason_for_nomination', 'textarea')
 			->add('id', 'hidden')
         ;
-		parent::buildForm();
+		// parent::buildForm();
     }
 
 }
-

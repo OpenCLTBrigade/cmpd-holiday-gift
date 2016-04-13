@@ -194,22 +194,26 @@ abstract class AdminController extends Controller
 		{
 			$class = "\\App\\".$class;
 			$table = (new $class())->getTable();   
-			foreach($rows as $child)
+			if (!empty($rows))
 			{
-				try {
-					if(empty($child['id']))
-					{
-						$child[$parent_entity] = $parent_key;
-						$class::create($child);
-					}	
-					else
-					{
-						DB::table($table)->where('id', '=', $child['id'])->update($child);
-					}
-				} catch (Exception $e) {
-					// TODO: Improve exception handling
-				}		
-			}			
+				foreach($rows as $child)
+				{
+					try {
+						if(empty($child['id']))
+						{
+							$child[$parent_entity] = $parent_key;
+							$class::create($child);
+						}	
+						else
+						{
+							DB::table($table)->where('id', '=', $child['id'])->update($child);
+						}
+					} catch (Exception $e) {
+						// TODO: Improve exception handling
+					}		
+				}					
+			}
+			
 		}
 
 	}

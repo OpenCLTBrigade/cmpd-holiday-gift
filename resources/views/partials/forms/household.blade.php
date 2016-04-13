@@ -44,13 +44,11 @@
             <h3 class="box-title">Addresses</h3>
         </div>
         <div class="box-body">
-            <div class="row">
-                <div class="collection-container-householdaddress" data-prototype="{{ form_row($form->address->prototype()) }}">
-                    {!! form_row($form->address) !!}
-                </div>
-            </div>
-            <button type="button" class="add-household_address btn btn-default">Add Address</button>
-            <button type="button" class="remove-household_address btn btn-danger">Remove Last Address</button>
+			<div class="collection-container-address" data-prototype="{{ form_row($form->address->prototype()) }}">
+				{!! form_row($form->address) !!}
+			</div>
+            <button type="button" class="add-address btn btn-default">Add Address</button>
+            <button type="button" class="remove-address btn btn-danger">Remove Last Address</button>
         </div>
     </div>
 
@@ -59,17 +57,21 @@
             <h3 class="box-title">Phone Numbers</h3>
         </div>
         <div class="box-body">
-            Coming Soon
+			<div class="collection-container-phone" data-prototype="{{ form_row($form->phone->prototype()) }}">
+				{!! form_row($form->phone) !!}
+			</div>
+            <button type="button" class="add-phone btn btn-default">Add Phone</button>
+            <button type="button" class="remove-phone btn btn-danger">Remove Phone</button>
         </div>
     </div>
 
-    <div class="collection-container" data-prototype="{{ form_row($form->child->prototype()) }}">
-            {!! form_row($form->child) !!}
+    <div class="collection-container-child" data-prototype="{{ form_row($form->child->prototype()) }}">
+        {!! form_row($form->child) !!}
     </div>
 
 
 
-    <button type="button" class="add-to-collection btn btn-default">Add Child</button>
+    <button type="button" class="add-child btn btn-default">Add Child</button>
 
     {!! form_end($form) !!}
 
@@ -78,46 +80,9 @@
 
 <script>
     $(document).ready(function() {
-        // Add child
-        $('.add-to-collection').on('click', function(e) {
-            e.preventDefault();
-            var container = $('.collection-container');
-            var count = container.children().length;
-            var proto = container.data('prototype'); 
-            var html = '<div class="box"><div class="box-header with-border"><h3 class="box-title">Child</h3></div>' +
-                '<div class="box-body"' +
-                proto +
-                '</div></div>';
-            container.append(html);
-        });
-
-        // Add household address
-        $('.add-household_address').on('click', function(e) {
-            e.preventDefault();
-            var container = $('.collection-container-householdaddress');
-            var count = container.children().length;
-            var proto = container.data('prototype').replace(/address/g, count);
-            container.append("<hr>" + proto);
-        });
-
-        // Remove household address
-        $('.remove-household_address').on('click', function(e) {
-            e.preventDefault();
-            var a = $(".collection-Address");
-            a[a.length-1].remove();
-        });
-
-
-        @if ($object != null)
-            @if (!count($object->child))
-                if($(".collection-Child").length > 0)
-                    $(".collection-Child").remove();
-            @endif
-
-            @if (!count($object->address))
-                if($(".collection-Address").length > 0)
-                    $(".collection-Address").remove();
-            @endif
-        @endif
+        @include('partials.forms.children-js', ['class'=> 'Child', 'container' => 'child', 'boxed' => true, "parent" => $object ])
+        @include('partials.forms.children-js', ['class'=> 'Phone', 'container' => 'phone', 'boxed' => false, "parent" => $object ])
+		    @include('partials.forms.children-js', ['class'=> 'Address', 'container' => 'address', 'boxed' => false, "parent" => $object ])
     });
+
 </script>
