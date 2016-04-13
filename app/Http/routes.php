@@ -6,7 +6,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/', function(){
 			return redirect('admin');
 		});
-        Route::post('language/change', ['as' => 'app.language.change' , 'uses' => 'LanguageController@postChange']);
     });
     // Auth routes
     Route::group(['namespace' => 'Auth'], function () {

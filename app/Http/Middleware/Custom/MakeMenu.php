@@ -32,18 +32,6 @@ class MakeMenu
                 ->icon('dashboard')
                 ->prependIcon();
 
-            $language  = $menu->add(trans('admin.menu.language.root'), '#')
-                ->icon('flag')
-                ->prependIcon();
-
-            $language->add(trans('admin.menu.language.add'), ['route' => 'admin.language.create'])
-                ->icon($this->circle)
-                ->prependIcon();
-
-            $language->add(trans('admin.menu.language.all'), ['route' => 'admin.language.index'])
-                ->icon($this->circle)
-                ->prependIcon();
-
             $household = $menu->add(trans('admin.menu.household.root'), '#')
                 ->icon("home")
                 ->prependIcon();
