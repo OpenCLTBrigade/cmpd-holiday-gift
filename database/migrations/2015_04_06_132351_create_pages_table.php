@@ -35,6 +35,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pages');
+        //Schema::drop('pages'); // Handled by newer migration
     }
 }

@@ -12,7 +12,7 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
         /*
          * Hey you! Yes, you there! TRY and keep this docblock up to date will ya pease? O:-)
 
@@ -38,7 +38,7 @@ class PermissionTableSeeder extends Seeder
         $manageNominations->save();
 
         $addNominations = new Permission();
-        $addNominations->name = "manage-users";
+        $addNominations->name = "add-nominations";
         $addNominations->display_name = "Add Nominations";
         $addNominations->description = "Add nominations from school";
         $addNominations->save();
