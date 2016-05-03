@@ -64,6 +64,9 @@ class UserController extends AdminController
      */
     public function update(User $user, UserRequest $request)
     {
+
+        die(print_r($request));
+//        $user->roles()->sync();
         return $this->saveFlashRedirect($user, $request);
     }
 

@@ -72,7 +72,11 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function affiliation() {
-        return $this->hasOne("\App\Affiliation", "id", "affiliation_id");
+        return $this->hasOne('\App\Affiliation', "id", "affiliation_id");
+    }
+
+    public function roles() {
+        return $this->belongsToMany('App\Role');
     }
 
 }

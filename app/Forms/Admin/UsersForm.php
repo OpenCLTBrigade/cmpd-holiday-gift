@@ -3,11 +3,15 @@
 namespace App\Forms\Admin;
 
 use App\Base\Forms\AdminForm;
+use App\Role;
 
 class UsersForm extends AdminForm
 {
     public function buildForm()
     {
+
+        $roles = Role::all()->pluck('name', 'id')->toArray();
+
         $this
             ->add('name_first', 'text', [
                 'label' => "First Name"
@@ -23,6 +27,11 @@ class UsersForm extends AdminForm
 
             ->add('rank', 'text', [
                 'label' => "Rank / Position"
+            ])
+
+            ->add('role', 'choice', [
+                'choices' => $roles,
+                'multiple' => false
             ])
 
             ->add('phone', 'text', [
