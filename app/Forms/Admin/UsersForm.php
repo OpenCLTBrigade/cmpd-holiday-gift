@@ -42,7 +42,8 @@ class UsersForm extends AdminForm
                 'label' => trans('admin.fields.user.email')
             ])
             ->add('password', 'password', [
-                'label' => trans('admin.fields.user.password')
+                'label' => trans('admin.fields.user.password'),
+                'value' => ''
             ])
             ->add('password_confirmation', 'password', [
                 'label' => trans('admin.fields.user.password_confirmation')
