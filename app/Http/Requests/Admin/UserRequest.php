@@ -26,9 +26,13 @@ class UserRequest extends Request
     public function rules()
     {
         $rules = [];
-        //$rules['password']  = 'sometimes|confirmed|min:6|max:20';
+        $rules['password']  = 'sometimes|confirmed|min:6|max:20';
         $rules['email']     = 'required|email|min:6|unique:users,email,'.$this->segment(3);
-       // $rules['name']      = 'required|min:3';
+        $rules['name_first']= 'required|min:3';
+        $rules['name_last']= 'required|min:3';
+        $rules['name_first']= 'required|min:3';
+        $rules['affiliation_id'] = 'required';
+        $rules['phone'] = 'required';
         return $rules;
     }
 }

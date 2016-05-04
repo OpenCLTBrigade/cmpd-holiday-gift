@@ -41,7 +41,6 @@ class UsersForm extends AdminForm
             ->add('email', 'email', [
                 'label' => trans('admin.fields.user.email')
             ])
-        /*
             ->add('password', 'password', [
                 'label' => trans('admin.fields.user.password'),
                 'value' => ''
@@ -49,7 +48,7 @@ class UsersForm extends AdminForm
             ->add('password_confirmation', 'password', [
                 'label' => trans('admin.fields.user.password_confirmation')
             ]);
-        */;
+
         parent::buildForm();
     }
 
