@@ -131,10 +131,15 @@ abstract class AdminController extends Controller
      * @param string $path
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function saveFlashRedirect($model, $request, $imageColumn = false, $path = "index")
+    public function saveFlashRedirect($model, $request, $imageColumn = false, $path = "index", $callable = null)
     {
         $model->fill($this->getData($request, $imageColumn));
         $model->save() ? Flash::success(trans('admin.update.success')) : Flash::error(trans('admin.update.fail'));
+
+        if ($callable != null) {
+            call_user_func($callable);
+        }
+
         return $this->redirectRoutePath($path);
     }
 
@@ -203,7 +208,7 @@ abstract class AdminController extends Controller
 						{
 							$child[$parent_entity] = $parent_key;
 							$class::create($child);
-						}	
+						}
 						else
 						{
 							DB::table($table)->where('id', '=', $child['id'])->update($child);
