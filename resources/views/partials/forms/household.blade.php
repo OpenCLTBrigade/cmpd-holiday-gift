@@ -78,6 +78,8 @@
     </div>
 </div>
 
+@include('partials.common.error-modal', ['id'=> 'errorMsg', 'title' => 'Something went wrong!', 'body' => 'Please verify that the address used is correct.'])
+
 <script src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('settings')->analytics_id }}&language=en"></script>
 <script>
 

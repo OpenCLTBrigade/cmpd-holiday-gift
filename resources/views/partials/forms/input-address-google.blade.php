@@ -15,6 +15,15 @@ $('form').on('blur','input[name$="[address_street]"]', function(e) {
       console.log(results[0].geometry.location.lat());
       console.log(results[0].geometry.location.lng());
       var addressElements = results[0].address_components;
+
+      //due to the componentRestrictions parameter in the request,
+      //even if the address is invalid, the response always has appended
+      //the state and the country.
+      if (addressElements.length < 3)
+      {
+        $('#errorMsg').modal()
+        return;
+      }
       for(var i in addressElements)
       {
           var typez = mapping[addressElements[i].types[0]];
@@ -25,7 +34,7 @@ $('form').on('blur','input[name$="[address_street]"]', function(e) {
           }
       }
      } else {
-       alert('Geocode was not successful for the following reason: ' + status);
+       $('#errorMsg').modal()
      }
   })
 });
