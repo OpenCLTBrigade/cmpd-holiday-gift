@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DataTables\UserDataTable;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
+use Laracasts\Flash\Flash;
 
 class UserController extends AdminController
 {
@@ -30,7 +31,13 @@ class UserController extends AdminController
      */
     public function store(UserRequest $request)
     {
-        return $this->createFlashRedirect(User::class, $request);
+        $class = User::class;
+        $model = $class::create($request->all());
+        $model->id ? Flash::success(trans('admin.create.success')) : Flash::error(trans('admin.create.fail'));
+        $model->roles()->sync([$request->get("role")]);
+
+        return $this->redirectRoutePath("index");
+
     }
 
     /**
