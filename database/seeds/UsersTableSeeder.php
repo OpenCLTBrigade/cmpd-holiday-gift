@@ -20,7 +20,8 @@ class UsersTableSeeder extends Seeder
             $firstName = $faker->firstName;
             $lastName = $faker->lastName;
 
-            App\User::create(
+
+            $newUser = App\User::create(
                 [
                     'name_first'    => $firstName,
                     'name_last'     => $lastName,
@@ -31,10 +32,17 @@ class UsersTableSeeder extends Seeder
             );
 
             $this->command->info("Seeded user {$firstName} {$lastName}");
+
+            $role_id = $faker->numberBetween(1, 5);
+            $role = \App\Role::find($role_id);
+
+            $newUser->attachRole($role);
+
+
         }
 
         // Add dev account until we enable registration
-        App\User::create(
+        $newUser = App\User::create(
             [
                 'name_first'    => "Developer",
                 'name_last'     => "lastName",
@@ -43,6 +51,10 @@ class UsersTableSeeder extends Seeder
                 'password'      => 'admin'
             ]
         );
+
+        $role = \App\Role::find(1);
+        $newUser->attachRole($role);
+
 
     }
 }
