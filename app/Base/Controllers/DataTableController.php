@@ -127,7 +127,7 @@ abstract class DataTableController extends DataTable
      *
      * @return string
      */
-    private function getModelName()
+    protected function getModelName()
     {
         return strtolower(
             empty($this->model) ?

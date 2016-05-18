@@ -37,16 +37,18 @@ class HouseholdController extends AdminController
     /**
      * Display the specified user.
      */
-    public function show(Household $household)
+    public function show($id)
     {
+        $household = Household::findOrFail($id);
        return $this->viewPath("show", $household);
     }
 
     /**
      * Show the form for editing the specified user.
      */
-    public function edit(Household $household)
+    public function edit($id)
     {
+        $household = Household::findOrFail($id);
 			  //IMPORTANT: LOAD THE ATTRIBUTE WHEN ADDING TO FORM
         $household->child;
         $household->address;
@@ -57,8 +59,9 @@ class HouseholdController extends AdminController
     /**
      * Update the specified user in storage.
      */
-    public function update(Household $household, HouseholdRequest $request)
+    public function update($id, HouseholdRequest $request)
     {
+        $household = Household::findOrFail($id);
 		$this->upsertAll(["Child" => $request['child'],
 						"HouseholdAddress"  => $request['address'],
 						"HouseholdPhone"  => $request['phone']], "household_id", $household['id']);
@@ -68,7 +71,7 @@ class HouseholdController extends AdminController
     /**
      * Remove the specified user from storage.
      */
-    public function destroy(Household $user)
+    public function destroy(Household $household)
     {
         # TODO: Not sure we want to do this... :S
     }

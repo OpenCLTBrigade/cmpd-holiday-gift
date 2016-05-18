@@ -14,7 +14,9 @@ class UserDataTable extends DataTableController
      */
     protected $columns = ["name_first", "name_last"];
 
-    protected $pluck_columns = ["affiliation_id" => ["affiliation", "name"]];
+    protected $pluck_columns = [
+        "affiliation_id" => ["affiliation", "name"]
+    ];
     /**
      * Image columns to show
      *
@@ -32,4 +34,8 @@ class UserDataTable extends DataTableController
         $users = User::query();
         return $this->applyScopes($users);
     }
+
+
+
+
 }

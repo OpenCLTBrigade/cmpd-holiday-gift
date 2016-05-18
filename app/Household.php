@@ -29,6 +29,18 @@ class Household extends Model
 //        'hidden'
 //    ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        if (!\Auth::user()->hasRole("admin"))
+        {
+            static::addGlobalScope('age', function(\Illuminate\Database\Eloquent\Builder $builder) {
+                $builder->where('nominator_user_id', '=', \Auth::user()->id);
+            });
+        }
+    }
+
     public function child() {
 		return $this->hasMany("\App\Child");
     }
