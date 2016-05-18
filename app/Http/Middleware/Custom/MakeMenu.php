@@ -83,25 +83,29 @@ class MakeMenu
 
             */
 
-            $users = $menu->add(trans('admin.menu.user.root'), '#')
-                ->icon('users')
-                ->prependIcon();
+            if (\Auth::user()->hasRole("admin"))
+            {
+                $users = $menu->add(trans('admin.menu.user.root'), '#')
+                    ->icon('users')
+                    ->prependIcon();
 
-            $users->add(trans('admin.menu.user.add'), ['route' => 'admin.user.create'])
-                ->icon($this->circle)
-                ->prependIcon();
+                $users->add(trans('admin.menu.user.add'), ['route' => 'admin.user.create'])
+                    ->icon($this->circle)
+                    ->prependIcon();
 
-            $users->add(trans('admin.menu.user.all'), ['route' => 'admin.user.index'])
-                ->icon($this->circle)
-                ->prependIcon();
+                $users->add(trans('admin.menu.user.all'), ['route' => 'admin.user.index'])
+                    ->icon($this->circle)
+                    ->prependIcon();
 
-            $users->add("List Affiliations", ['route' => 'admin.affiliation.index'])
-                ->icon($this->circle)
-                ->prependIcon();
+                $users->add("List Affiliations", ['route' => 'admin.affiliation.index'])
+                    ->icon($this->circle)
+                    ->prependIcon();
 
-            $settings = $menu->add(trans('admin.menu.setting'), ['route' => 'admin.setting.index'])
-                ->icon('gears')
-                ->prependIcon();
+                $settings = $menu->add(trans('admin.menu.setting'), ['route' => 'admin.setting.index'])
+                    ->icon('gears')
+                    ->prependIcon();
+
+            }
         });
     }
 }
