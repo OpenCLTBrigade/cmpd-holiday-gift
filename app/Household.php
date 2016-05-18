@@ -33,7 +33,8 @@ class Household extends Model
     {
         parent::boot();
 
-        if (!\Auth::user()->hasRole("admin"))
+        # Check \Auth::user() to fix db seeder
+        if (\Auth::user() && !\Auth::user()->hasRole("admin"))
         {
             static::addGlobalScope('age', function(\Illuminate\Database\Eloquent\Builder $builder) {
                 $builder->where('nominator_user_id', '=', \Auth::user()->id);
