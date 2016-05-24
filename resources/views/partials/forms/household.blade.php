@@ -78,8 +78,14 @@
     </div>
 </div>
 
+@include('partials.common.error-modal', ['id'=> 'errorMsg', 'title' => 'Something went wrong!', 'body' => 'Please verify that the address used is correct.'])
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ Config::get('settings')->analytics_id }}&language=en"></script>
 <script>
+
     $(document).ready(function() {
+        var geocoder = new google.maps.Geocoder();
+        @include('partials.forms.input-address-google')
         @include('partials.forms.children-js', ['class'=> 'Child', 'container' => 'child', 'boxed' => true, "parent" => $object ])
         @include('partials.forms.children-js', ['class'=> 'Phone', 'container' => 'phone', 'boxed' => false, "parent" => $object ])
 		    @include('partials.forms.children-js', ['class'=> 'Address', 'container' => 'address', 'boxed' => false, "parent" => $object ])
