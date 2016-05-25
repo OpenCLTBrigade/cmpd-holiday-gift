@@ -25,7 +25,7 @@ class AddActiveFieldToUsersTable extends Migration
     public function down()
     {
         Schema::table("users", function($table) {
-            $table->dropColumn('logged_in_at');
+            $table->dropColumn('active');
         });
     }
 }
