@@ -41,7 +41,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         "phone",
         "affiliation_id",
         "email",
-        "password", 
+        "password",
+        "active"
     ];
 
     /**

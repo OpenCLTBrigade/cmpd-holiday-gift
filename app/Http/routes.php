@@ -13,6 +13,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/', ['as' => 'auth.root', 'uses' => 'AuthController@getLogin']);
             Route::get('login', ['as' => 'auth.login', 'uses' => 'AuthController@getLogin']);
             Route::post('login', ['as' => 'auth.login', 'uses' => 'AuthController@postLogin']);
+            Route::get('register', ['as' => 'auth.register', 'uses' => 'AuthController@getRegister']);
+            Route::post('register', ['as' => 'auth.register', 'uses' => 'AuthController@postRegister']);
             Route::get('logout', ['as' => 'auth.logout', 'uses' => 'AuthController@getLogout']);
         });
         Route::group(['prefix' => 'password'], function () {

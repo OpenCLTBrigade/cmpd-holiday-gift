@@ -61,4 +61,14 @@ class AffiliationController extends Controller
         return $this->viewPath("show", $affiliation);
     }
 
+    public function getAll()
+    {
+        $a = array();
+        $affiliations = Affiliation::all(["id", "type", "name"]);
+        $a[""] = "";
+        foreach ($affiliations as $affiliation) {
+            $a[$affiliation["id"]] = strtoupper($affiliation['type'] . " - " . ucwords($affiliation['name']));
+        }
+        return $a;
+    }
 }

@@ -16,6 +16,19 @@ return [
         "submit"                => "Login",
         "title"                 => "Login"
     ],
+    "register" => [
+        "email"                 => "E-mail address",
+        "name_last"             => "Last Name",
+        "name_first"            => "First Name",
+        "phone"                 => "Phone",
+        "affiliation"           => "Affiliation",
+        "rank"                  => "Rank",
+        "password"              => "Password",
+        "submit"                => "Register",
+        "title"                 => "Register",
+        "password_confirmation" => "Confirm Password",
+        "success"               => "Your registration form has been submitted. Please wait for approval from administrator.",
+    ],
     "logout"                    => "Logout",
     "password" => [
         "email_content"         => "Click to this link to reset your password:",
