@@ -61,6 +61,11 @@
         <div class="footer">
             {!! Form::submit(trans('auth.register.submit'), ['class' => 'btn bg-auth btn-block btn-flat']) !!}
             <hr/>
+            <div class="row">
+                <div class="col-xs-6">
+                    <a class="btn btn-link" href="{{ route('auth.login') }}"> <i class="fa fa-sign-in"></i> {{ trans('auth.login.submit') }}</a>
+                </div>
+            </div>
         </div>
 
         {!!  Form::close() !!}

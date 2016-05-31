@@ -38,7 +38,7 @@
                     <a class="btn btn-link" href="{{ route('password.email') }}"> <i class="fa fa-lock"></i> {{ trans('auth.login.forgot') }}</a>
                 </div>
                 <div class="col-xs-6">
-                    <a class="btn btn-link" href="{{ route('auth.register') }}"> <i class="fa fa-user-plus"></i> {{ trans('auth.register.title') }}</a>
+                    <a class="btn btn-link pull-right" href="{{ route('auth.register') }}"> <i class="fa fa-user-plus"></i> {{ trans('auth.register.title') }}</a>
                 </div>
             </div>
         </div>
