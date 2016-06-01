@@ -7,6 +7,7 @@
 @section('content')
 
     <div class="login-box" id="login-box">
+        @include('flash::message')
         <div class="header">
             <i class="fa fa-sign-in"></i> {{ trans('auth.login.title') }}
         </div>

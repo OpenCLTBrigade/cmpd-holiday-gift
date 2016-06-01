@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Validator;
 use App\User;
 use Laracasts\Flash\Flash;
+use Illuminate\Http\Request;
+
 
 use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
@@ -28,7 +30,7 @@ class AuthController extends Controller
     /**
      * @var string
      */
-    protected $redirectTo = '/auth/logout';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new authentication controller instance.
@@ -82,7 +84,30 @@ class AuthController extends Controller
             'active' => 'N'
         ]);
         $model->roles()->sync([2]); //magic number: 2 is the nominator's role_id
-        Flash::success(trans('auth.register.success'));
         return $model;
     }
+
+    /**
+     * Define actions after registration is complete.
+     *
+     * @param  Requests  request
+     * @return User
+     */
+     public function postRegister(Request $request)
+     {
+         $validator = $this->validator($request->all());
+
+         if ($validator->fails())
+         {
+             $this->throwValidationException(
+                 $request, $validator
+             );
+         }
+         $user = $this->create($request->all());
+         if ($request->get('active')) {
+             $this->auth->login($user);
+         }
+         Flash::success(trans('auth.register.success'));
+         return redirect('/auth/login');
+     }
 }
