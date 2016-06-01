@@ -48,6 +48,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('language', 'LanguageController');
     Route::resource('page', 'PageController');
     Route::resource('user', 'UserController');
+    Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
     Route::resource('household', 'HouseholdController');
 
     Route::resource('affiliation', 'AffiliationController');
