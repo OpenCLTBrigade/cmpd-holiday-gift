@@ -1,6 +1,8 @@
 <?php
 
-// Prototype function for testing 
+// Determine which region contains a given location
+
+namespace App\Libraries\GeoContains;
 
 function test() {
   $data = json_decode(file_get_contents('data/CharlotteMecklenburg_Police_Response_Areas.geojson'), true);
@@ -76,7 +78,5 @@ function linearring_contains($ring, $lnglat) {
   }
   return $inside;
 }
-
-test();
 
 ?>
