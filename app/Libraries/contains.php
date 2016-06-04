@@ -6,6 +6,7 @@ function test() {
   $data = json_decode(file_get_contents('data/CharlotteMecklenburg_Police_Response_Areas.geojson'), true);
   foreach([[[1450406, 539119], 'not found'],
 	   [[0,0], 'not found'],
+	   [[-81.6141, 35.2861], 'not found'],
 	   [[-80.84, 35.227], 'Central Division'],
 	   [[-80.6716, 35.2346], 'Hickory Grove Division']]
 	  as $test) {
