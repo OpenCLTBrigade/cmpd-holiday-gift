@@ -27,7 +27,8 @@ class UsersTableSeeder extends Seeder
                     'name_last'     => $lastName,
                     "affiliation_id"=> $faker->numberBetween(1,57),
                     "email"         => $faker->email,
-                    'password'      => 'admin'
+                    'password'      => 'admin',
+                    'nomination_limit'=> 5
                 ]
             );
 

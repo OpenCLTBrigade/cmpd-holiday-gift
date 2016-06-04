@@ -34,6 +34,10 @@ class UsersForm extends AdminForm
                 'multiple' => false
             ])
 
+            ->add('nomination_limit', 'text', [
+                'label' => "Nomination Limit (Yearly)"
+            ])
+
             ->add('phone', 'text', [
                 'label' => "Phone Number"
             ])
