@@ -26,12 +26,19 @@ class HouseholdController extends AdminController
      */
     public function store(HouseholdRequest $request)
     {
-        $request['nominator_user_id'] = Auth::user()->id;
-		$id = $this->createFlashParentRedirect(Household::class, $request);
-		$this->upsertAll(["Child" => $request['child'],
-						"HouseholdAddress"  => $request['address'],
-						"HouseholdPhone"  => $request['phone']], "household_id", $id);
-        return $this->redirectRoutePath("index");
+        if(Auth::user()->max_nominations_reached)
+        {
+            return view("admin.households.error.maxnominations");
+        }
+        else
+        {
+            $request['nominator_user_id'] = Auth::user()->id;
+            $id = $this->createFlashParentRedirect(Household::class, $request);
+            $this->upsertAll(["Child" => $request['child'],
+                            "HouseholdAddress"  => $request['address'],
+                            "HouseholdPhone"  => $request['phone']], "household_id", $id);
+            return $this->redirectRoutePath("index");
+        }
     }
 
     /**
@@ -74,5 +81,16 @@ class HouseholdController extends AdminController
     public function destroy(Household $household)
     {
         # TODO: Not sure we want to do this... :S
+    }
+
+    public function create() {
+        if(Auth::user()->max_nominations_reached)
+        {
+            return view("admin.households.error.maxnominations");
+        }
+        else
+        {
+            return parent::create();
+        }
     }
 }

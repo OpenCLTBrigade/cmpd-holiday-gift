@@ -74,4 +74,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Role');
     }
 
+    /**
+     * Whether or not the user has reached their limit of nominations for the year
+     * @return bool
+     */
+    public function getMaxNominationsReachedAttribute()
+    {
+        $nominated_by_user = \DB::table('household')->where("nominator_user_id", "=", $this->id)->count();
+        return ($nominated_by_user >= $this->nomination_limit);
+    }
+
 }
