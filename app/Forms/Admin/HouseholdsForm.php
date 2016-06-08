@@ -154,11 +154,43 @@ class ChildForm extends Form
     {
         $this
             ->add('name_first', 'text')
+            ->add('name_middle', 'text')
             ->add('name_last', 'text')
+            ->add('race', 'text')
+            ->add('last4ssn', 'text')
+            ->add('free_or_reduced_lunch', 'text')
+            ->add('dob', 'date')
+            ->add("school_id", "select", [
+                "choices" => $this->parseSchoolArray(),
+                "label" => "School"
+            ])
+            ->add('bike_want', 'radio')
+            ->add('bike_style', 'text')
+            ->add('bike_size', 'text')
+            ->add('clothes_want', 'radio')
+            ->add('clothes_size_shirt', 'text')
+            ->add('clothes_size_pants', 'text')
+            ->add('shoe_size', 'text')
+            ->add('favourite_colour', 'text')
+            ->add('interests', 'textarea')
+            ->add('additional_ideas', 'textarea')
             ->add('reason_for_nomination', 'textarea')
 			->add('id', 'hidden')
         ;
 		// parent::buildForm();
     }
 
+    private function parseSchoolArray() {
+        $a = array();
+        $affiliations = \App\Affiliation::query()
+            ->where("type","=","cms")
+            ->get(["id", "type", "name"]);
+        foreach ($affiliations as $affiliation) {
+            $a[$affiliation["id"]] = strtoupper($affiliation['type'] . " - " . ucwords($affiliation['name']));
+        }
+        return $a;
+    }
+
 }
+
+
