@@ -45,11 +45,12 @@ class UsersTableSeeder extends Seeder
         // Add dev account until we enable registration
         $newUser = App\User::create(
             [
-                'name_first'    => "Developer",
-                'name_last'     => "lastName",
-                "affiliation_id"=> 1,
-                "email"         => "developer@codeforcharlotte.org",
-                'password'      => 'admin'
+                'name_first'        => "Developer",
+                'name_last'         => "lastName",
+                "affiliation_id"    => 1,
+                "email"             => "developer@codeforcharlotte.org",
+                'password'          => 'admin',
+                'nomination_limit'  => 5
             ]
         );
 
