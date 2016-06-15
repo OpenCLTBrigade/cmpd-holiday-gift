@@ -49,8 +49,10 @@ class HouseholdsForm extends AdminForm
             ->add('reason_for_nomination', 'textarea', [
                 'label' => 'Reason for nomination'
             ])
-
-            ->add("address", "collection", [
+	    ->add('case_number', 'text', [
+                'label' => 'Case Number'
+            ])
+	    ->add("address", "collection", [
                 "type" => "form",
                 "template" => "formtemplates.collection.in-box",
                 "options" => [
@@ -115,7 +117,15 @@ class HouseholdAddressForm extends Form
                 "template" => "formtemplates.text.col-xs-12_col-sm-4",
                 'label' => "ZIP Code"
             ])
-			->add('id', 'hidden')
+            ->add("cmpd_division", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "CMPD Division"
+            ])
+            ->add("cmpd_response_area", "text", [
+                "template" => "formtemplates.text.col-xs-12_col-sm-4",
+                'label' => "CMPD Response Area"
+            ])
+	    ->add('id', 'hidden')
         ;
         // parent::buildForm();
 

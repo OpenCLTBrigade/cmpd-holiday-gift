@@ -35,7 +35,11 @@
             {!! form_row($form->email) !!}
             {!! form_row($form->preferred_contact_method) !!}
             {!! form_row($form->reason_for_nomination) !!}
-
+	    <div class="row">
+	      <div class="col-xs-12 col-sm-4">
+		{!! form_row($form->case_number) !!}
+	      </div>
+	    </div>
         </div>
     </div>
 
