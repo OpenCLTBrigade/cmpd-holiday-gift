@@ -20,7 +20,8 @@ class UserController extends AdminController
      */
     public function index(UserDataTable $dataTable)
     {
-        return $dataTable->render($this->viewPath());
+        $users =  User::query()->orderBy("id", "name_first")->paginate(5);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -92,5 +93,20 @@ class UserController extends AdminController
         } else {
             return $this->redirectRoutePath("index", "admin.delete.self");
         }
+    }
+
+    /**
+     * Remove the specified user from storage.
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function toggleActive($id)
+    {
+      $user = User::findOrFail($id);
+      $newActive = $user['active'] == 'Y' ? 'N' : 'Y';
+      $user['active'] = $newActive;
+      $user->save();
+      return $this->redirectRoutePath("index");
     }
 }
