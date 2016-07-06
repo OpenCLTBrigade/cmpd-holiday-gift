@@ -29,12 +29,36 @@ $('form').on('blur','input[name$="[address_street]"]', function(e) {
           var typez = mapping[addressElements[i].types[0]];
           if (typez)
           {
-              var target = 'input[name$="'+ typez +'"]'
+            var target = 'input[name$="'+ typez +'"]';
+	    console.log(target);
               $(e.target).parentsUntil(".row").find(target).val(addressElements[i].long_name);
           }
       }
+      populate_cmpd_info(results[0].geometry.location);
      } else {
        $('#errorMsg').modal()
      }
   })
+  
+  var populate_cmpd_info = function(location) {
+    console.log('foo', location);
+    $.ajax({
+      url: '/api/cmpd_info',
+      data: {lat: location.lat(), lng: location.lng()},
+      success: function(info) {
+	console.log('bar', info);
+	if (info.error) {
+	  console.log('baz');
+	  // TODO: maybe don't ignore errors
+	} else {
+	  $(e.target).parentsUntil('.row').find('input[name$="[cmpd_division]"]').val(info.division);
+	  $(e.target).parentsUntil('.row').find('input[name$="[cmpd_response_area]"]').val(info.response_area);
+	}
+      },
+      error: function() {
+	console.log('quux');
+	// TODO: maybe don't ignore errors
+      }
+    })
+  };
 });
