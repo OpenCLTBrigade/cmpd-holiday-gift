@@ -16,6 +16,7 @@ var elixir = require('laravel-elixir'),
     ],
     adminJs = [
         'jquery/dist/jquery.min.js',
+        'vue/dist/vue.min.js',
         'nestable-fork/dist/jquery.nestable.min.js',
         'bootstrap/dist/js/bootstrap.min.js',
         'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
