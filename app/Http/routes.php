@@ -27,7 +27,8 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 // API routes
-Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => 'api'], function () {
+Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', 'admin']], function () {
+    Route::resource("user", 'UserController');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
 });
 
