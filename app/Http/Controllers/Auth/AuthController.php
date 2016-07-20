@@ -13,24 +13,34 @@ use Illuminate\Http\Request;
 
 use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
-// Register a validator for user emails
-Validator::extend('appropriate_email', function($attribute, $value, $parameters)
-{
-    static $APPROPRIATE_EMAIL_DOMAINS = [
+function appropriate_email_domains() {
+    return [
         "CMPD" => "cmpd.org",
         "CMS" =>  "cms.k12.nc.us",
         "CFD" => "ci.charlotte.nc.us"
     ];
+}
+
+// Register a validator for user emails
+Validator::extend('appropriate_email', function($attribute, $value, $parameters)
+{
     $parts = explode("@", $value, 2);
     if (count($parts) < 2) {
         return false;
     }
-    foreach ($APPROPRIATE_EMAIL_DOMAINS as $group => $domain) {
+    foreach (appropriate_email_domains() as $group => $domain) {
         if (!strcasecmp($domain, $parts[1])) {
             return true;
         }
     }
     return false;
+});
+
+// Insert the list of domains into the error message
+Validator::replacer('appropriate_email', function($message, $attribute, $rule, $parameters) {
+        $domains = appropriate_email_domains();
+        $pretty_domains = '@' . implode(', @', array_slice($domains, 0, -1)) . ' or @' . end($domains);
+        return str_replace(':domains', $pretty_domains, $message);
 });
 
 class AuthController extends Controller
@@ -82,7 +92,7 @@ class AuthController extends Controller
             'name_first.required'       => 'The first name is required',
             'name_last.required'        => 'The last name is required',
             'affiliation_id.required'   => 'The affiliation is required.',
-            'email.appropriate_email' => 'HAH',
+            'email.appropriate_email' => 'An email ending in :domains is required.',
         ]);
     }
 
