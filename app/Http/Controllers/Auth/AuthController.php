@@ -13,6 +13,26 @@ use Illuminate\Http\Request;
 
 use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
+// Register a validator for user emails
+Validator::extend('appropriate_email', function($attribute, $value, $parameters)
+{
+    static $APPROPRIATE_EMAIL_DOMAINS = [
+        "CMPD" => "cmpd.org",
+        "CMS" =>  "cms.k12.nc.us",
+        "CFD" => "ci.charlotte.nc.us"
+    ];
+    $parts = explode("@", $value, 2);
+    if (count($parts) < 2) {
+        return false;
+    }
+    foreach ($APPROPRIATE_EMAIL_DOMAINS as $group => $domain) {
+        if (!strcasecmp($domain, $parts[1])) {
+            return true;
+        }
+    }
+    return false;
+});
+
 class AuthController extends Controller
 {
     /*
@@ -55,13 +75,14 @@ class AuthController extends Controller
             'name_first'      => 'required|max:255',
             'name_last'       => 'required|max:255',
             'affiliation_id'  => 'required',
-            'email'           => 'required|email|max:255|unique:users',
+            'email'           => 'required|email|appropriate_email|max:255|unique:users',
             'password'        => 'required|min:6|confirmed',
         ],
         [
             'name_first.required'       => 'The first name is required',
             'name_last.required'        => 'The last name is required',
             'affiliation_id.required'   => 'The affiliation is required.',
+            'email.appropriate_email' => 'HAH',
         ]);
     }
 
