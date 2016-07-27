@@ -33,13 +33,13 @@ class Child extends Migration
 
             $table->text('reason_for_nomination');
 
-            $table->string('school_name');
-            $table->string('school_address');
-            $table->string('school_address2');
-            $table->string('school_city');
-            $table->string('school_state');
-            $table->string('school_zip');
-            $table->string('school_phone');
+            $table->string('school_name')->nullable();
+            $table->string('school_address')->nullable();
+            $table->string('school_address2')->nullable();
+            $table->string('school_city')->nullable();
+            $table->string('school_state')->nullable();
+            $table->string('school_zip')->nullable();
+            $table->string('school_phone')->nullable();
 
             $table->char('bike_want', 1);
             $table->integer("bike_size");
