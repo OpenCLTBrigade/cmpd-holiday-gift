@@ -18,7 +18,7 @@ Install the following requires (for all OSes):
 Of course you want to do this first. Clone the repository wherever you want!
 
 ### Getting Vagrant/Scotchbox Up-and-running
-In terminal/cmd, `cd` into your project directory, then run `**vagrant up**`. This should initialize
+In terminal/cmd, `cd` into your project directory, then run `vagrant up`. This should initialize
 the Scotchbox Vagrant setup. Once the setup is complete you'll be able to use Putty or your Terminal to SSH
 in to the box:
 
@@ -31,7 +31,7 @@ in to the box:
 1. Open Terminal
 2. Run "ssh -p 2222 localhost"
 
-The username and password are both `**vagrant**`
+The username and password are both **vagrant**
 
 ### Installing Dependencies!
 Once you are SSH'd into the server, run the following commands to configure the project for use:
@@ -45,7 +45,7 @@ Once you are SSH'd into the server, run the following commands to configure the 
 These will configure all of the dependencies. You'll next need to setup the environment variables. These allow you
 to change from the default MySQL db/user/pass:
 
-1. cp .env.example .env
+1. `cp .env.example .env`
 2. Modify the values in the new .env as necessary, by default you should not need to modify anything
 
 Next, run all of the database configuration commands:
