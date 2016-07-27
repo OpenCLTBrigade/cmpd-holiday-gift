@@ -2,7 +2,6 @@ Homestead.yaml
 Homestead.json
 .idea
 .vagrant
-Vagrantfile
 .env
 .phpstorm.meta.php
 node_modules
