@@ -135,9 +135,6 @@ class AuthController extends Controller
              );
          }
          $user = $this->create($request->all());
-         if ($request->get('active')) {
-             $this->auth->login($user);
-         }
          Flash::success(trans('auth.register.success'));
          return redirect('/auth/login');
      }
