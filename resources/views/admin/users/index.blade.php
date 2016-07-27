@@ -19,10 +19,14 @@
   @foreach ($users as $user)
   <div class="row">
     <div class="col-md-3">
-      {{ $user->name_first.' '.$user->name_first }}
+      {{ $user->name_first.' '.$user->name_last }}
     </div>
     <div class="col-md-3">
-      {{ $user->roles[0]->display_name }}
+    @if ($user->roles->isEmpty())
+      None
+    @else
+      {{ implode(", ", array_map(function($r){ return $r->display_name; }, $user->roles->all())) }}
+    @endif
     </div>
     <div class="col-md-3">
       {{ $user->affiliation['type'].' - '.$user->affiliation['name'] }}
@@ -37,5 +41,5 @@
   </div>
 
   @endforeach
-{{ $users->render() }}
+    {{ $users->render() }}
 @endsection
