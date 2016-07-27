@@ -11,7 +11,8 @@ class UserController extends Controller
 {
     public function index ()
     {
-        $Users = \App\User::query()->paginate(5);
+        // Don't select all fields to keep password hash and tokens private
+        $Users = \App\User::query()->select(["id", "name_first", "name_last", "rank", "phone", "affiliation_id", "email", "created_at", "updated_at"])->paginate(5);
         return $Users;
     }
 }
