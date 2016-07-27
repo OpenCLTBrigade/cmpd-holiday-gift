@@ -7,7 +7,6 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="nom_form.css">
     <!-- jQuery library: -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
@@ -21,16 +20,43 @@
 
       .box-primary {
         background: #fff;
-        padding: 10px 30px 20px 30px;
-        border-radius: 25px;
+        padding: 10px 15px 10px 15px;
+    //    border-radius: 25px;
       }
 
-      .component-root {
-        padding: 0 0 20px 0;
+      .box-danger {
+        background: #fff;
+        padding: 10px 15px 10px 15px;
+      //  border-radius: 25px;
+      }
+
+      .box-success {
+        background: #fff;
+        padding: 10px 15px 10px 15px;
+        //border-radius: 25px;
       }
 
       .box-body {
-        margin: 0 0 60px 0;
+        background: #fff;
+        padding: 10px 15px 10px 15px;
+        //border-radius: 25px;
+      }
+
+      .component-root {
+        padding: 0 0 0 0;
+      }
+
+      .box-body {
+        margin: 0 0 0px 0;
+      }
+
+      .box-danger {
+        padding-bottom: 40px;
+      }
+
+      .addbtn {
+        position: relative;
+        margin-left: 15px;
       }
     </style>
 
@@ -96,7 +122,7 @@
 
                 <div class="col-md-4 col-sm-12">
                   <div class="form-group">
-                    <label for="last4ssn" class="control-label">Last four digits of Social Security Number</label>
+                    <label for="last4ssn" class="control-label">Last four digits of SSN</label>
                     <input class="form-control" v-model="household.last4ssn" name="last4ssn" type="number" id="last4ssn">
                   </div>
                 </div>
@@ -104,14 +130,14 @@
               </div>
 
               <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
                     <label for="email" class="control-label">Email</label>
                     <input class="form-control" v-model="household.email" name="email" type="email" id="email">
                   </div>
                 </div>
 
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
                     <label for="preferred_contact_method" class="control-label">Preferred Contact Method</label>
                     <select class="form-control" id="preferred_contact_method" v-model="household.preferred_contact_method" name="preferred_contact_method">
@@ -122,600 +148,517 @@
                     </select>
                   </div>
                 </div>
-              </div>
 
-
-              <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
-                    <label for="reason_for_nomination" class="control-label">Reason for Nomination</label>
-                    <textarea class="form-control" v-model="child.reason_for_nom" name="reason_for_nom" type="text" id="reason_for_nom">
-                    </textarea>
+                    <label for="reason_for_nomination" class="control-label">Race</label>
+                    <input class="form-control" v-model="household.race" name="race" type="text" id="race">
+                  </in>
                   </div>
                 </div>
               </div>
             </div><!-- /box-body -->
+          </div>
+          <!-- /box-primary -->
+
 
             <!-- ADDRESS HEADER -->
 
             <div class="box box-danger">
-              <div class="box-header with-border">
-                <h1 class="box-title">Addresses</h1>
+                <div class="box-header with-border">
+                  <h1 class="box-title">Addresses</h1>
+                </div>
+
+              <!-- ADDRESS COMPONENT -->
+
+              <div v-for="address in household_address">
+
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label class="control-label">Type</label>
+                        <select class="form-control" v-model="address">
+                          <option value="Home">Home</option>
+                          <option value="Work">Work</option>
+                        </select>
+
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label for="address[0][address_street]" class="control-label">Street Address</label>
+                        <input class="form-control" name="address[0][address_street]" v-model="address[1]" type="text" id="address[0][address_street]">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label for="address[0][address_street2]" class="control-label">Street Address 2</label>
+                        <input class="form-control" name="address[0][address_street2]" type="text" id="address[0][address_street2]">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label for="address[0][address_city]" class="control-label">City</label>
+                        <input class="form-control" name="address[0][address_city]" type="text" id="address[0][address_city]">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label for="address[0][address_state]" class="control-label">State</label>
+                        <input class="form-control" name="address[0][address_state]" type="text" id="address[0][address_state]">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                      <div class="form-group">
+
+                        <label for="address[0][address_zip]" class="control-label">ZIP Code</label>
+                        <input class="form-control" name="address[0][address_zip]" type="text" id="address[0][address_zip]">
+                      </div>
+                    </div>
+                    <input class="form-control" name="address[0][id]" type="hidden" />
+
+                  </div>
+
+
+
+                </div><!-- /box-danger -->
               </div>
 
-            <!-- ADDRESS COMPONENT -->
+                <button class="btn addbtn" @click="addAddress">Add Address</button>
+                <button class="btn btn-danger" @click="removeAddress">Remove Address</button>
 
-              <address-form v-for="address in household_address" :address="address" :index="$index" :my-id="addressID" :parent-test.sync="parentTest" :address.sync="household_address">
+              </div>
 
-              </address-form>
-
-              <button class="btn" @click="addAddress">Add Address</button>
-              <button class="btn btn-danger" @click="removeAddress">Remove Address</button>
-            </div><!-- /box -->
 
 
           <!-- PHONE HEADER -->
 
             <div class="box box-danger">
               <div class="box-header with-border">
-            <h1 class="box-title">Phone Numbers</h1>
+                <h1 class="box-title">Phone Numbers</h1>
+              </div>
+
+
+              <!-- PHONE COMPONENT -->
+
+              <div v-for="phone in household_phone">
+                <div class="box-body">
+                  <div class="row">
+
+                    <div class="form-group">
+
+                      <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+
+                          <label class="control-label">Type</label>
+                          <select class="form-control" v-model="phone.phone_type">
+                            <option value="Home">Home</option>
+                            <option value="Work">Work</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-8">
+                        <div class="form-group">
+
+                          <label class="control-label">Phone</label>
+                          <input class="form-control" v-model="phone.phone_number" type="text">
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+
+                        </div>
+                        <input class="form-control" type="hidden" />
+
+                      </div>
+
+                </div>
+              </div>
+            </div><!--  /box  -->
           </div>
 
+                <button class="btn addbtn" @click="addPhone">Add Phone</button>
+                <button class="btn btn-danger" @click="removePhone">Remove Phone</button>
 
-          <!-- PHONE COMPONENT -->
 
-          <phone-form v-for="phone in household_phone" :phone="phone" :my-id="phoneID" :address.sync="household_address">
-
-          </phone-form>
-
-          <button class="btn" @click="addPhone">Add Phone</button>
-          <button class="btn btn-danger" @click="removePhone">Remove Phone</button>
-      </div>
-
+                </div>
 
       <!-- CHILD HEADER -->
 
-
-      <div class="box-header with-border">
-        <h1 class="box-title">Children</h1>
-      </div>
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h1 class="box-title">Children</h1>
+            </div>
 
 
       <!-- CHILD COMPONENT -->
 
-      <child-form v-for="record in child" :record="child" :my-id="childID" :child.sync="child">
+            <div v-for="thing in child">
 
-      </child-form>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-4">
+                    <div class="form-group">
 
-      <button class="btn" @click="addChild">Add Child</button>
-      <button class="btn btn-danger" @click="removeChild">Remove Child</button>
+                      <label class="control-label">Name first</label>
+                      <input class="form-control" type="text">
+
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Name middle</label>
+                      <input class="form-control" type="text">
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Name last</label>
+                      <input class="form-control"type="text">
 
 
+
+                    </div>
+                  </div>
+                </div>
+                <!-- /row -->
+                <!--</div> /box-body -->
+
+                <div class="row">
+                  <div class="col-xs-12 col-sm-4">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Race</label>
+                      <input class="form-control"type="text">
+
+                        <!-- Perhaps include a description of how / why race info is used? -->
+
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Last four digits of SSN</label>
+                      <input class="form-control" type="text">
+
+
+
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-4">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Free or reduced lunch?</label>
+                      <input class="form-control" type="text">
+
+
+
+                    </div>
+                  </div>
+                </div>
+                <!-- row -->
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Dob</label>
+                      <input class="form-control" name="child[0][dob]" type="date" id="child[0][dob]">
+
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">School</label>
+                      <select class="form-control" id="child[0][school_id]" name="child[0][school_id]">
+                        <option value="57">CMS - ALBEMARLE ROAD </option>
+                        <option value="58">CMS - ALLENBROOK</option>
+                        <option value="59">CMS - ASHLEY PARK</option>
+                        <option value="60">CMS - BAIN</option>
+                        <option value="61">CMS - BALLANTYNE</option>
+                        <option value="62">CMS - BARNETTE</option>
+                        <option value="63">CMS - BARRINGER ACADEMIC</option>
+                        <option value="64">CMS - BEREWICK</option>
+                        <option value="65">CMS - BERRYHILL</option>
+                        <option value="66">CMS - BEVERLY WOODS</option>
+                        <option value="67">CMS - BILLINGSVILLE</option>
+                        <option value="68">CMS - BLYTHE </option>
+                        <option value="69">CMS - BRIARWOOD</option>
+                        <option value="70">CMS - BRUNS</option>
+                        <option value="71">CMS - CHANTILLY </option>
+                        <option value="72">CMS - CLEAR CREEK</option>
+                        <option value="73">CMS - COLLINSWOOD LANGUAGE</option>
+                        <option value="74">CMS - CORNELIUS</option>
+                        <option value="75">CMS - COTSWOLD</option>
+                        <option value="76">CMS - CROFT COMMUNITY</option>
+                        <option value="77">CMS - CROWN POINT</option>
+                        <option value="78">CMS - DAVID COX</option>
+                        <option value="79">CMS - DAVIDSON</option>
+                        <option value="80">CMS - DEVONSHIRE</option>
+                        <option value="81">CMS - DILWORTH</option>
+                        <option value="82">CMS - DRUID HILLS ACADEMY</option>
+                        <option value="83">CMS - EASTOVER</option>
+                        <option value="84">CMS - EE WADDELL LANGUAGE</option>
+                        <option value="85">CMS - ELIZABETH LANE</option>
+                        <option value="86">CMS - ELIZABETH TRADITIONAL</option>
+                        <option value="87">CMS - ELON PARK</option>
+                        <option value="88">CMS - ENDHAVEN</option>
+                        <option value="89">CMS - FIRST WARD</option>
+                        <option value="90">CMS - GRAND OAK</option>
+                        <option value="91">CMS - GREENWAY PARK</option>
+                        <option value="92">CMS - GRIER ACADEMY</option>
+                        <option value="93">CMS - HAWK RIDGE</option>
+                        <option value="94">CMS - HICKORY GROVE</option>
+                        <option value="95">CMS - HIDDEN VALLEY</option>
+                        <option value="96">CMS - HIGHLAND CREEK</option>
+                        <option value="97">CMS - HIGHLAND MILL MONTESSORI</option>
+                        <option value="98">CMS - HIGHLAND RENAISSANCE</option>
+                        <option value="99">CMS - HORNET’S NEST</option>
+                        <option value="100">CMS - HUNTERSVILLE</option>
+                        <option value="101">CMS - HUNTINGTOWNE FARMS</option>
+                        <option value="102">CMS - IDLEWILD</option>
+                        <option value="103">CMS - IRWIN ACADEMIC</option>
+                        <option value="104">CMS - JH GUNN</option>
+                        <option value="105">CMS - JV WASHAM</option>
+                        <option value="106">CMS - LAKE WYLIE</option>
+                        <option value="107">CMS - LANSDOWNE</option>
+                        <option value="108">CMS - LAWRENCE ORR</option>
+                        <option value="109">CMS - LEBANON ROAD ELEMENTARY</option>
+                        <option value="110">CMS - LONG CREEK</option>
+                        <option value="111">CMS - MALLARD CREEK</option>
+                        <option value="112">CMS - MARIE G. DAVIS</option>
+                        <option value="113">CMS - MATTHEWS</option>
+                        <option value="114">CMS - MCALPINE</option>
+                        <option value="115">CMS - MCKEE ROAD</option>
+                        <option value="116">CMS - MERRY OAKS</option>
+                        <option value="117">CMS - MONTCLAIRE</option>
+                        <option value="118">CMS - MOREHEAD STEM</option>
+                        <option value="119">CMS - MOUNTAIN ISLAND</option>
+                        <option value="120">CMS - MYERS PARK TRADITIONAL</option>
+                        <option value="121">CMS - NATHANIEL ALEXANDER</option>
+                        <option value="122">CMS - NATIONS FORD</option>
+                        <option value="123">CMS - NEWELL</option>
+                        <option value="124">CMS - OAKDALE</option>
+                        <option value="125">CMS - OAKHURST STEAM ACADEMY</option>
+                        <option value="126">CMS - OAKLAWN LANGUAGE ACADEMY</option>
+                        <option value="127">CMS - OLDE PROVIDENCE</option>
+                        <option value="128">CMS - PALISADES PARK</option>
+                        <option value="129">CMS - PARK ROAD</option>
+                        <option value="130">CMS - PARKSIDE</option>
+                        <option value="131">CMS - PAW CREEK</option>
+                        <option value="132">CMS - PINEVILLE</option>
+                        <option value="133">CMS - PINEWOOD</option>
+                        <option value="134">CMS - PINEY GROVE</option>
+                        <option value="135">CMS - POLO RIDGE</option>
+                        <option value="136">CMS - PROVIDENCE SPRINGS</option>
+                        <option value="137">CMS - RAMA ROAD</option>
+                        <option value="138">CMS - REEDY CREEK</option>
+                        <option value="139">CMS - REID PARK ACADEMY</option>
+                        <option value="140">CMS - RIVER GATE</option>
+                        <option value="141">CMS - RIVER OAKS ACADEMY</option>
+                        <option value="142">CMS - SEDGEFIELD</option>
+                        <option value="143">CMS - SELWYN</option>
+                        <option value="144">CMS - SHAMROCK GARDENS</option>
+                        <option value="145">CMS - SHARON</option>
+                        <option value="146">CMS - SMITHFIELD</option>
+                        <option value="147">CMS - STARMOUNT ES</option>
+                        <option value="148">CMS - STATESVILLE ROAD</option>
+                        <option value="149">CMS - STEELE CREEK</option>
+                        <option value="150">CMS - STERLING</option>
+                        <option value="151">CMS - STONEY CREEK</option>
+                        <option value="152">CMS - THOMASBORO</option>
+                        <option value="153">CMS - TORRENCE CREEK</option>
+                        <option value="154">CMS - TRILLIUM SPRINGS MONTESSORI</option>
+                        <option value="155">CMS - TUCKASEEGEE</option>
+                        <option value="156">CMS - UNIVERSITY MEADOWS</option>
+                        <option value="157">CMS - UNIVERSITY PARK</option>
+                        <option value="158">CMS - WALTER G. BYERS</option>
+                        <option value="159">CMS - WESTERLY HILLS</option>
+                        <option value="160">CMS - WHITEWATER ACADEMY</option>
+                        <option value="161">CMS - WINDING SPRINGS</option>
+                        <option value="162">CMS - WINDSOR PARK</option>
+                        <option value="163">CMS - WINGET PARK</option>
+                        <option value="164">CMS - WINTERFIELD</option>
+                      </select>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <input id="child[0][bike_want]" name="child[0][bike_want]" type="radio" value="1">
+
+                      <label class="control-label">Bike want</label>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Bike style</label>
+                      <input class="form-control" name="child[0][bike_style]" type="text" id="child[0][bike_style]">
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Bike size</label>
+                      <input class="form-control" name="child[0][bike_size]" type="text" id="child[0][bike_size]">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <input id="child[0][clothes_want]" name="child[0][clothes_want]" type="radio" value="1">
+
+                      <label class="control-label">Clothes want</label>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Clothes size shirt</label>
+                      <input class="form-control" name="child[0][clothes_size_shirt]" type="text" id="child[0][clothes_size_shirt]">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Clothes size pants</label>
+                      <input class="form-control" name="child[0][clothes_size_pants]" type="text" id="child[0][clothes_size_pants]">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Shoe size</label>
+                      <input class="form-control" name="shoe_size" type="text" id="child[0][shoe_size]">
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Favourite colour</label>
+                      <input class="form-control" name="child[0][favourite_colour]" type="text" id="child[0][favourite_colour]">
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Interests</label>
+                      <textarea class="form-control" name="child[0][interests]" cols="50" rows="10" id="child[0][interests]"></textarea>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label for="child[0][additional_ideas]" class="control-label">Additional ideas</label>
+                      <textarea class="form-control" name="child[0][additional_ideas]" cols="50" rows="10" id="child[0][additional_ideas]"></textarea>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+
+                      <label class="control-label">Reason for nomination</label>
+                      <textarea class="form-control" name="child[0][reason_for_nomination]" cols="50" rows="10" id="child[0][reason_for_nomination]"></textarea>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- /row -->
+
+              </div>
+              <!-- /box-body -->
+
+            </div>
+
+            <button class="btn addbtn" @click="addChild">Add Child</button>
+            <button class="btn btn-danger" @click="removeChild">Remove Child</button>
+          </div><!--  /box box-success -->
 
     </div>
-    </div>
 
-
-          </div><!-- /box-primary -->
         </form>
+
+
+
       </div><!-- /app -->
     </div><!-- /container -->
-
-
-
-    <!-- START OF ADDRESS COMPONENT TEMPLATE -->
-
-
-
-    <template id="address-template">
-      <div name="address-root" class="component-root">
-        <div class="box-body">
-          <div class="row">
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][type]" class="control-label">Type</label>
-                <select class="form-control" id="" name="address[0][type]" v-model="address[0]">
-                  <option value="Home">Home</option>
-                  <option value="Work">Work</option>
-                </select>
-
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][address_street]" class="control-label">Street Address</label>
-                <input class="form-control" name="address[0][address_street]" v-model="address[1]" type="text" id="address[0][address_street]">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][address_street2]" class="control-label">Street Address 2</label>
-                <input class="form-control" name="address[0][address_street2]" type="text" id="address[0][address_street2]">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][address_city]" class="control-label">City</label>
-                <input class="form-control" name="address[0][address_city]" type="text" id="address[0][address_city]">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][address_state]" class="control-label">State</label>
-                <input class="form-control" name="address[0][address_state]" type="text" id="address[0][address_state]">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="address[0][address_zip]" class="control-label">ZIP Code</label>
-                <input class="form-control" name="address[0][address_zip]" type="text" id="address[0][address_zip]">
-              </div>
-            </div>
-            <input class="form-control" name="address[0][id]" type="hidden" />
-
-          </div>
-    </template>
-
-
-
-    <!-- START OF PHONE COMPONENT TEMPLATE -->
-
-
-
-    <template id="phone-template">
-      <div name="phone-root" class="component-root">
-
-        <div class="row">
-
-          <div class="form-group">
-
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="phone[0][type]" class="control-label">Type</label>
-                <select class="form-control" id="" name="phone[0][type]" v-model="phone[0]">
-                  <option value="Home">Home</option>
-                  <option value="Work">Work</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-8">
-              <div class="form-group">
-
-                <label for="phone[0][phone_street]" class="control-label">Phone</label>
-                <input class="form-control" name="phone[0][phone_street]" v-model="phone[1]" type="text" id="phone[0][phone_street]">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <div class="form-group">
-
-              </div>
-              <input class="form-control" name="phone[0][id]" type="hidden" />
-
-            </div>
-          </div>
-    </template>
-
-
-    <!-- START OF CHILD COMPONENT TEMPLATE -->
-
-
-
-    <template id="child-template">
-      <div name="child-root" class="component-root">
-
-        <div class="box-body">
-          <div class="row">
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group">
-
-                <label for="child[0][name_first]" class="control-label">Name first</label>
-                <input class="form-control" name="child[0][name_first]" type="text" id="child[0][name_first]">
-
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4">
-
-              <div class="form-group">
-
-                <label for="child[0][name_middle]" class="control-label">Name middle</label>
-                <input class="form-control" name="child[0][name_middle]" type="text" id="child[0][name_middle]">
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4">
-
-              <div class="form-group">
-
-                <label for="child[0][name_last]" class="control-label">Name last</label>
-                <input class="form-control" name="child[0][name_last]" type="text" id="child[0][name_last]">
-
-
-
-              </div>
-            </div>
-          </div>
-          <!-- /row -->
-          <!--</div> /box-body -->
-
-          <div class="row">
-            <div class="col-xs-12 col-sm-4">
-
-              <div class="form-group">
-
-                <label for="child[0][race]" class="control-label">Race</label>
-                <input class="form-control" name="child[0][race]" type="text" id="child[0][race]">
-
-
-
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4">
-
-              <div class="form-group">
-
-                <label for="child[0][last4ssn]" class="control-label">Last4ssn</label>
-                <input class="form-control" name="child[0][last4ssn]" type="text" id="child[0][last4ssn]">
-
-
-
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-
-              <div class="form-group">
-
-                <label for="child[0][free_or_reduced_lunch]" class="control-label">Free or reduced lunch</label>
-                <input class="form-control" name="child[0][free_or_reduced_lunch]" type="text" id="child[0][free_or_reduced_lunch]">
-
-
-
-              </div>
-            </div>
-          </div>
-          <!-- row -->
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][dob]" class="control-label">Dob</label>
-                <input class="form-control" name="child[0][dob]" type="date" id="child[0][dob]">
-
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][school_id]" class="control-label">School</label>
-                <select class="form-control" id="child[0][school_id]" name="child[0][school_id]">
-                  <option value="57">CMS - ALBEMARLE ROAD </option>
-                  <option value="58">CMS - ALLENBROOK</option>
-                  <option value="59">CMS - ASHLEY PARK</option>
-                  <option value="60">CMS - BAIN</option>
-                  <option value="61">CMS - BALLANTYNE</option>
-                  <option value="62">CMS - BARNETTE</option>
-                  <option value="63">CMS - BARRINGER ACADEMIC</option>
-                  <option value="64">CMS - BEREWICK</option>
-                  <option value="65">CMS - BERRYHILL</option>
-                  <option value="66">CMS - BEVERLY WOODS</option>
-                  <option value="67">CMS - BILLINGSVILLE</option>
-                  <option value="68">CMS - BLYTHE </option>
-                  <option value="69">CMS - BRIARWOOD</option>
-                  <option value="70">CMS - BRUNS</option>
-                  <option value="71">CMS - CHANTILLY </option>
-                  <option value="72">CMS - CLEAR CREEK</option>
-                  <option value="73">CMS - COLLINSWOOD LANGUAGE</option>
-                  <option value="74">CMS - CORNELIUS</option>
-                  <option value="75">CMS - COTSWOLD</option>
-                  <option value="76">CMS - CROFT COMMUNITY</option>
-                  <option value="77">CMS - CROWN POINT</option>
-                  <option value="78">CMS - DAVID COX</option>
-                  <option value="79">CMS - DAVIDSON</option>
-                  <option value="80">CMS - DEVONSHIRE</option>
-                  <option value="81">CMS - DILWORTH</option>
-                  <option value="82">CMS - DRUID HILLS ACADEMY</option>
-                  <option value="83">CMS - EASTOVER</option>
-                  <option value="84">CMS - EE WADDELL LANGUAGE</option>
-                  <option value="85">CMS - ELIZABETH LANE</option>
-                  <option value="86">CMS - ELIZABETH TRADITIONAL</option>
-                  <option value="87">CMS - ELON PARK</option>
-                  <option value="88">CMS - ENDHAVEN</option>
-                  <option value="89">CMS - FIRST WARD</option>
-                  <option value="90">CMS - GRAND OAK</option>
-                  <option value="91">CMS - GREENWAY PARK</option>
-                  <option value="92">CMS - GRIER ACADEMY</option>
-                  <option value="93">CMS - HAWK RIDGE</option>
-                  <option value="94">CMS - HICKORY GROVE</option>
-                  <option value="95">CMS - HIDDEN VALLEY</option>
-                  <option value="96">CMS - HIGHLAND CREEK</option>
-                  <option value="97">CMS - HIGHLAND MILL MONTESSORI</option>
-                  <option value="98">CMS - HIGHLAND RENAISSANCE</option>
-                  <option value="99">CMS - HORNET’S NEST</option>
-                  <option value="100">CMS - HUNTERSVILLE</option>
-                  <option value="101">CMS - HUNTINGTOWNE FARMS</option>
-                  <option value="102">CMS - IDLEWILD</option>
-                  <option value="103">CMS - IRWIN ACADEMIC</option>
-                  <option value="104">CMS - JH GUNN</option>
-                  <option value="105">CMS - JV WASHAM</option>
-                  <option value="106">CMS - LAKE WYLIE</option>
-                  <option value="107">CMS - LANSDOWNE</option>
-                  <option value="108">CMS - LAWRENCE ORR</option>
-                  <option value="109">CMS - LEBANON ROAD ELEMENTARY</option>
-                  <option value="110">CMS - LONG CREEK</option>
-                  <option value="111">CMS - MALLARD CREEK</option>
-                  <option value="112">CMS - MARIE G. DAVIS</option>
-                  <option value="113">CMS - MATTHEWS</option>
-                  <option value="114">CMS - MCALPINE</option>
-                  <option value="115">CMS - MCKEE ROAD</option>
-                  <option value="116">CMS - MERRY OAKS</option>
-                  <option value="117">CMS - MONTCLAIRE</option>
-                  <option value="118">CMS - MOREHEAD STEM</option>
-                  <option value="119">CMS - MOUNTAIN ISLAND</option>
-                  <option value="120">CMS - MYERS PARK TRADITIONAL</option>
-                  <option value="121">CMS - NATHANIEL ALEXANDER</option>
-                  <option value="122">CMS - NATIONS FORD</option>
-                  <option value="123">CMS - NEWELL</option>
-                  <option value="124">CMS - OAKDALE</option>
-                  <option value="125">CMS - OAKHURST STEAM ACADEMY</option>
-                  <option value="126">CMS - OAKLAWN LANGUAGE ACADEMY</option>
-                  <option value="127">CMS - OLDE PROVIDENCE</option>
-                  <option value="128">CMS - PALISADES PARK</option>
-                  <option value="129">CMS - PARK ROAD</option>
-                  <option value="130">CMS - PARKSIDE</option>
-                  <option value="131">CMS - PAW CREEK</option>
-                  <option value="132">CMS - PINEVILLE</option>
-                  <option value="133">CMS - PINEWOOD</option>
-                  <option value="134">CMS - PINEY GROVE</option>
-                  <option value="135">CMS - POLO RIDGE</option>
-                  <option value="136">CMS - PROVIDENCE SPRINGS</option>
-                  <option value="137">CMS - RAMA ROAD</option>
-                  <option value="138">CMS - REEDY CREEK</option>
-                  <option value="139">CMS - REID PARK ACADEMY</option>
-                  <option value="140">CMS - RIVER GATE</option>
-                  <option value="141">CMS - RIVER OAKS ACADEMY</option>
-                  <option value="142">CMS - SEDGEFIELD</option>
-                  <option value="143">CMS - SELWYN</option>
-                  <option value="144">CMS - SHAMROCK GARDENS</option>
-                  <option value="145">CMS - SHARON</option>
-                  <option value="146">CMS - SMITHFIELD</option>
-                  <option value="147">CMS - STARMOUNT ES</option>
-                  <option value="148">CMS - STATESVILLE ROAD</option>
-                  <option value="149">CMS - STEELE CREEK</option>
-                  <option value="150">CMS - STERLING</option>
-                  <option value="151">CMS - STONEY CREEK</option>
-                  <option value="152">CMS - THOMASBORO</option>
-                  <option value="153">CMS - TORRENCE CREEK</option>
-                  <option value="154">CMS - TRILLIUM SPRINGS MONTESSORI</option>
-                  <option value="155">CMS - TUCKASEEGEE</option>
-                  <option value="156">CMS - UNIVERSITY MEADOWS</option>
-                  <option value="157">CMS - UNIVERSITY PARK</option>
-                  <option value="158">CMS - WALTER G. BYERS</option>
-                  <option value="159">CMS - WESTERLY HILLS</option>
-                  <option value="160">CMS - WHITEWATER ACADEMY</option>
-                  <option value="161">CMS - WINDING SPRINGS</option>
-                  <option value="162">CMS - WINDSOR PARK</option>
-                  <option value="163">CMS - WINGET PARK</option>
-                  <option value="164">CMS - WINTERFIELD</option>
-                </select>
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <input id="child[0][bike_want]" name="child[0][bike_want]" type="radio" value="1">
-
-                <label for="child[0][bike_want]" class="control-label">Bike want</label>
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][bike_style]" class="control-label">Bike style</label>
-                <input class="form-control" name="child[0][bike_style]" type="text" id="child[0][bike_style]">
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][bike_size]" class="control-label">Bike size</label>
-                <input class="form-control" name="child[0][bike_size]" type="text" id="child[0][bike_size]">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <input id="child[0][clothes_want]" name="child[0][clothes_want]" type="radio" value="1">
-
-                <label for="child[0][clothes_want]" class="control-label">Clothes want</label>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][clothes_size_shirt]" class="control-label">Clothes size shirt</label>
-                <input class="form-control" name="child[0][clothes_size_shirt]" type="text" id="child[0][clothes_size_shirt]">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][clothes_size_pants]" class="control-label">Clothes size pants</label>
-                <input class="form-control" name="child[0][clothes_size_pants]" type="text" id="child[0][clothes_size_pants]">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][shoe_size]" class="control-label">Shoe size</label>
-                <input class="form-control" name="shoe_size" type="text" id="child[0][shoe_size]">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][favourite_colour]" class="control-label">Favourite colour</label>
-                <input class="form-control" name="child[0][favourite_colour]" type="text" id="child[0][favourite_colour]">
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][interests]" class="control-label">Interests</label>
-                <textarea class="form-control" name="child[0][interests]" cols="50" rows="10" id="child[0][interests]"></textarea>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][additional_ideas]" class="control-label">Additional ideas</label>
-                <textarea class="form-control" name="child[0][additional_ideas]" cols="50" rows="10" id="child[0][additional_ideas]"></textarea>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label for="child[0][reason_for_nomination]" class="control-label">Reason for nomination</label>
-                <textarea class="form-control" name="child[0][reason_for_nomination]" cols="50" rows="10" id="child[0][reason_for_nomination]"></textarea>
-
-              </div>
-            </div>
-          </div>
-          <!-- /row -->
-
-        </div>
-        <!-- /box-body -->
-      </div>
-      <!-- /child-root -->
-      </div>
-      <!-- /box -->
-
-    </template>
-
-
-
-
 
     <!-- START OF VUE.JS CODE -->
 
     <script src="http://cdn.jsdelivr.net/vue/1.0.25/vue.js"></script>
 
     <script>
-      //           ADDRESS COMPONENT
-
-      Vue.component('address-form', {
-        template: '#address-template',
-        data: function() {
-          return {
-            address: [],
-            IDN: this.index
-
-          };
-        },
-        props: ['myId', 'parentTest', 'householdAddress'],
-        methods: {
-
-        }
-      });
-
-
-      //           PHONE COMPONENT
-
-
-      Vue.component('phone-form', {
-        template: '#phone-template',
-        data: function() {
-          return {
-            phone: [],
-            IDN: this.myId
-          };
-        },
-        props: ['myId', 'householdPhone'],
-        methods: {
-
-        }
-      });
-
-      //         CHILD COMPONENT
-
-      Vue.component('child-form', {
-        template: '#child-template',
-        data: function() {
-          return {
-            child: [],
-            IDN: this.myId
-          };
-        },
-        props: ['myId', 'addChild'],
-        methods: {
-
-        }
-      });
-
-
-
       //                   MAIN VUE CODE
 
       var app = new Vue({
@@ -728,34 +671,29 @@
           childID: 0,
 
           household: {
-            name_first: '',
-            name_middle: '',
-            name_last: '',
-            gender: '',
-            dob: '',
-            race: '',
-            last4ssn: '',
-            email: '',
-            preferred_contact_method: '',
-            phones: {},
+            "name_first": "",
+            "name_middle": "",
+            "name_last": "",
+            "gender": "",
+            "dob": "",
+            "race": "",
+            "last4ssn": "",
+            "email": "",
+            "preferred_contact_method": "",
           },
 
           household_address: [
-            [
-              "",
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]
+            {
+
+            }
           ],
 
-          household_phone: [{
-            "number": 0
-          }, {
-            "number": 0
-          }],
+          household_phone: [
+            {
+            "phone_type": "",
+            "phone_number": ""
+            }
+        ],
 
           child: [
             [
@@ -767,40 +705,27 @@
 
         methods: {
           addAddress: function() {
-            this.household_address.push([
-              "",
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]);
+            this.household_address.push({
+
+          });
           },
           removeAddress: function() {
             this.household_address.pop();
           },
           addPhone: function() {
-            this.household_phone.push([
-              "",
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]);
+            this.household_phone.push(
+            {
+              "phone_type": "",
+              "phone_number": ""
+            });
           },
           removePhone: function() {
             this.household_phone.pop();
           },
           addChild: function() {
-            this.child.push([
-              "",
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]);
+            this.child.push({
+
+            });
           },
           removeChild: function() {
             this.child.pop();
