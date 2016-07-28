@@ -17,6 +17,7 @@ var elixir = require('laravel-elixir'),
     adminJs = [
         'jquery/dist/jquery.min.js',
         'vue/dist/vue.min.js',
+	'js-cookie/src/js.cookie.js',
         'nestable-fork/dist/jquery.nestable.min.js',
         'bootstrap/dist/js/bootstrap.min.js',
         'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
@@ -25,6 +26,9 @@ var elixir = require('laravel-elixir'),
         'datatables/media/js/dataTables.bootstrap.min.js',
         'datatables-buttons/js/dataTables.buttons.js',
         'datatables-buttons/js/buttons.bootstrap.js',
+        'datatables.net-fixedheader/js/dataTables.fixedHeader.js',
+        'datatables.net-responsive/js/dataTables.responsive.js',
+        'datatables.net-responsive-bs/js/responsive.bootstrap.js',
         'morris.js/morris.js',
         'admin-lte/dist/js/app.min.js'
     ],
@@ -34,6 +38,8 @@ var elixir = require('laravel-elixir'),
     applicationCss = [
         'bootstrap/dist/css/bootstrap.min.css',
         'jquery-floating-social-share/dist/jquery.floating-social-share.min.css',
+        'datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.css',
+        'datatables.net-responsive-bs/css/responsive.bootstrap.css',
         'application.css'
     ],
     applicationJs = [
