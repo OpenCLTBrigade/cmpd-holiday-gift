@@ -49,8 +49,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('category', 'CategoryController');
     Route::resource('language', 'LanguageController');
     Route::resource('page', 'PageController');
+    
+    // User Routes
     Route::resource('user', 'UserController');
+    Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
+    
+    // Household Routes
     Route::resource('household', 'HouseholdController');
 
     Route::resource('affiliation', 'AffiliationController');

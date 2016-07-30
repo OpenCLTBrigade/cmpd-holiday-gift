@@ -51,7 +51,7 @@
                         $.ajax ({
                             url: "./" + row.id,
                             type: "POST",
-                            data: { "_method": "DELETE", "_token": "need to generate token" },
+                            data: { "_method": "DELETE", "_token": "{{ csrf_token () }}" },
                             success: function (result) {
                                 table.refresh ();
                             }

@@ -114,9 +114,10 @@ var DataTable = function (table, details) {
             result.serverSide = true;
             result.deferRender = true;
             result.ajax = {
-                url: window.location.href + "?_" + (+new Date ()),
+                url: window.location.href +"/search",
                 type: "POST",
                 data: function (data) {
+                    data["_token"] = $('meta[name="_token"]').attr ("content");
                     data.ajax = +new Date();
 
                     // Loop through each checkbox and get the selected one's value

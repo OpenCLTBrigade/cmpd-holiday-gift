@@ -12,7 +12,7 @@
         </div>
     </form>
     
-    <table id="Users" class="table table-hover table-striped datatable" data-ajax="true">
+    <table id="Users" class="table table-hover table-striped datatable" data-server="true">
         <thead>
             <th class="sortable" data-name="name_first">First Name</th>
             <th class="sortable" data-name="name_last" data-order="asc">Last Name</th>

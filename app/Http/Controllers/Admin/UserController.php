@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Api\DataTables\UserDataTable;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
@@ -18,11 +19,9 @@ class UserController extends AdminController
      * @param UserDataTable $dataTable
      * @return Response
      */
-    public function index(UserDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
-        /*$users =  User::query()->orderBy("id", "name_first")->paginate(5);
-        return view('admin.users.index', ['users' => $users]);*/
+        return view('admin.users.index');
     }
 
     /**
@@ -109,5 +108,22 @@ class UserController extends AdminController
       $user['active'] = $newActive;
       $user->save();
       return $this->redirectRoutePath("index");
+    }
+    
+    public function search(Request $request) 
+    {
+        $search = trim ($request->input ("search")["value"], " ,");
+        $start = $request->input ("start") ?: 0;
+        $length = $request->input ("length") ?: 25;
+        
+        $users =  User::query()
+            ->where ("name_last", "LIKE", $search ."%")
+            ->orderBy("id", "name_first")
+            ->take($length)
+            ->skip ($start)
+            ->get ()
+            ->toArray ();
+        
+        return $this->dtResponse ($request, $users);
     }
 }
