@@ -9,7 +9,7 @@ use Validator;
 use App\User;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
-
+use Mail;
 
 use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
@@ -135,6 +135,15 @@ class AuthController extends Controller
              );
          }
          $user = $this->create($request->all());
+
+         Mail::queue("email.new_user_needs_activation", [ "user" => $user ], function($message){
+                 // TODO: what should the reply address be?
+                 $message->from("noreply@cmpd-gift-project.example.com");
+                 $message->to(env("NEW_USER_NOTIFICATION_EMAIL"));
+                 // TODO: improve the subject line
+                 $message->subject("CMPD Gift Project - New user needs validation");
+             });
+
          Flash::success(trans('auth.register.success'));
          return redirect('/auth/login');
      }

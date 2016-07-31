@@ -49,6 +49,7 @@ class UserController extends AdminController
      */
     public function show(User $user)
     {
+        // TODO ATN: show activate button if unapproved
         return $this->viewPath("show", $user);
     }
 
