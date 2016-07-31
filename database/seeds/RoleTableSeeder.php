@@ -29,6 +29,7 @@ class RoleTableSeeder extends Seeder
             - Reporting features for Salvation Army/Link109
          */
         $admin = new Role();
+        $admin->id = Role::$ADMIN_ID;
         $admin->name         = 'admin';
         $admin->display_name = 'Administrator';
         $admin->save();
@@ -44,6 +45,7 @@ class RoleTableSeeder extends Seeder
          * We create a Household and one/many child(ren) associated with it.
          */
         $nominator = new Role();
+        $admin->id = Role::$NOMINATOR_ID;
         $nominator->name         = 'nominator';
         $nominator->display_name = 'Nominator';
         $nominator->save();
@@ -62,6 +64,7 @@ class RoleTableSeeder extends Seeder
          - Update Information
         */
         $nominee = new Role();
+        $admin->id = Role::$NOMINEE_ID;
         $nominee->name         = 'nominee';
         $nominee->display_name = 'Nominee';
         $nominee->save();
@@ -77,6 +80,7 @@ class RoleTableSeeder extends Seeder
          - Receive reports
         */
         $partner = new Role();
+        $admin->id = Role::$PARTNER_ID;
         $partner->name         = 'partner';
         $partner->display_name = 'Partner';
         $partner->save();
@@ -95,6 +99,7 @@ class RoleTableSeeder extends Seeder
          - Receive emails reminders 
         */
         $volunteer = new Role();
+        $admin->id = Role::$VOLUNTEER_ID;
         $volunteer->name         = 'volunteer';
         $volunteer->display_name = 'Volunteer';
         $volunteer->save();

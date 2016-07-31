@@ -83,7 +83,7 @@ class AuthController extends Controller
             'password' => $data['password'],
             'active' => 'N'
         ]);
-        $model->roles()->sync([2]); //magic number: 2 is the nominator's role_id
+        $model->roles()->sync([Role::$NOMINATOR_ID]);
         return $model;
     }
 
