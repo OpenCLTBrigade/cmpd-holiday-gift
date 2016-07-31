@@ -45,6 +45,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         "active"
     ];
 
+    protected $hidden = ['password'];
+
     /**
      * Set password encrypted
      *
