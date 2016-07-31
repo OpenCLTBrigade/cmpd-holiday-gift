@@ -9,9 +9,8 @@ use App\Http\Controllers\Controller;
 
 class AffiliationController extends Controller
 {
-  public function school ()
+  public function cms()
   {
-    return Affiliation::CMS();
-    //Make a query scope which lets you do Affiliation::query()->cms();
+    return \App\Affiliation::query()->where('type', '=', 'cms')->get();
   }
 }
