@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4be70a3cdf903290aef5c166d5668695",
-    "content-hash": "42dbabba9e0386faf1d72c652b565d9c",
+    "hash": "2655458eef8adb64870c0e4c9b7514b5",
+    "content-hash": "74aa23b04b518c00d30738573ab1ac87",
     "packages": [
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -385,21 +385,20 @@
         },
         {
             "name": "delatbabel/elocryptfive",
-            "version": "v1.5.2",
+            "version": "v1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delatbabel/elocryptfive.git",
-                "reference": "3bb26ed95dadcc2d792f401d17d51521f0a8b75f"
+                "reference": "67c5c29a7aaa1aa36c8550910c566460bd89fb73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delatbabel/elocryptfive/zipball/3bb26ed95dadcc2d792f401d17d51521f0a8b75f",
-                "reference": "3bb26ed95dadcc2d792f401d17d51521f0a8b75f",
+                "url": "https://api.github.com/repos/delatbabel/elocryptfive/zipball/67c5c29a7aaa1aa36c8550910c566460bd89fb73",
+                "reference": "67c5c29a7aaa1aa36c8550910c566460bd89fb73",
                 "shasum": ""
             },
             "require": {
                 "illuminate/config": "^5.0",
-                "illuminate/console": "^5.0",
                 "illuminate/container": "^5.0",
                 "illuminate/contracts": "^5.0",
                 "illuminate/encryption": "^5.0",
@@ -444,7 +443,7 @@
                 "laravel5 aes",
                 "laravel5 encryption"
             ],
-            "time": "2016-05-17 09:18:27"
+            "time": "2016-04-22 02:36:44"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
