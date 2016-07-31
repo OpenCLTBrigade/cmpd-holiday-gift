@@ -7,13 +7,13 @@
             <div clsas="form-group">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <input type="search" class="form-control input-sm search" placeholder="Filter results" for="Households" autofocus />
-                    <div class="form-control-feedback" style="display: none;"><span class="fa fa-spinner fa-spin"></span></div>
+                    <div class="form-control-feedback"><span class="fa fa-spinner fa-spin"></span></div>
                 </div>
             </div>
         </div>
     </form>
     
-    <table id="Households" class="table table-hover table-striped datatable" data-ajax="true">
+    <table id="Households" class="table table-hover table-striped datatable" data-server="true">
         <thead>
             <th class="sortable" data-name="name_first">First Name</th>
             <th class="sortable" data-name="name_last">Last Name</th>
@@ -49,11 +49,11 @@
                 case "delete":
                     if (confirm ("Are you sure?")) {
                         $.ajax ({
-                            url: "./" + row.id,
+                            url: window.location.href +"/"+ row.id,
                             type: "POST",
                             data: { "_method": "DELETE", "_token": "{{ csrf_token () }}" },
                             success: function (result) {
-                                table.refresh ();
+                                table.trigger ("refresh");
                             }
                         });
                     }

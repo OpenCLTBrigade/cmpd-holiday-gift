@@ -374,4 +374,7 @@ hr {
   margin-top: 10px;
 }
 
-.table.datatable { width: 100% !IMPORTANT; }
+.table.datatable:not(.fixedHeader-floating) { width: 100% !IMPORTANT; }
+.table.datatable th, .table.datatable td { vertical-align: middle; }
+
+div:not(.has-feedback) > .form-control-feedback { display: none; }

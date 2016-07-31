@@ -6,18 +6,18 @@
             <div clsas="form-group">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <input type="search" class="form-control input-sm search" placeholder="Filter results" for="Affiliations" autofocus />
-                    <div class="form-control-feedback" style="display: none;"><span class="fa fa-spinner fa-spin"></span></div>
+                    <div class="form-control-feedback"><span class="fa fa-spinner fa-spin"></span></div>
                 </div>
             </div>
         </div>
     </form>
     
-    <table id="Affiliations" class="table table-hover table-striped datatable" data-ajax="true">
+    <table id="Affiliations" class="table table-hover table-striped datatable" data-server="true">
         <thead>
             <th class="sortable" data-name="type">Type</th>
             <th class="sortable" data-name="name">Name</th>
             <th class="sortable" data-name="phone">Phone</th>
-            <th class="sortable" data-name="" data-render="renderAddress">Address</th>
+            <th class="" data-name="" data-render="renderAddress">Address</th>
             <th data-render="renderActions"></th>
         </thead>
     </table>
@@ -32,8 +32,8 @@
         function renderActions (data, type, row) {
             let output = '<ul class="list-inline no-margin-bottom">';
             output += '<li><button class="btn btn-xs bg-navy action" data-action="show"><i class="fa fa-search"></i> Show</button></li>';
-            //output += '<li><button class="btn btn-xs bg-olive action" data-action="edit"><i class="fa fa-pencil-square-o"></i> Edit</button></li>';
-            //output += '<li><button class="btn btn-xs btn-danger action" data-action="delete"><i class="fa fa-trash-o"></i> Delete</button></li>';
+            output += '<li><button class="btn btn-xs bg-olive action" data-action="edit"><i class="fa fa-pencil-square-o"></i> Edit</button></li>';
+            output += '<li><button class="btn btn-xs btn-danger action" data-action="delete"><i class="fa fa-trash-o"></i> Delete</button></li>';
             output += '</ul>';
             
             return output;
@@ -51,11 +51,11 @@
                 case "delete":
                     if (confirm ("Are you sure?")) {
                         $.ajax ({
-                            url: "./" + row.id,
+                            url: window.location.href +"/"+ row.id,
                             type: "POST",
-                            data: { "_method": "DELETE", "_token": "need to generate token" },
+                            data: { "_method": "DELETE", "_token": "{{ csrf_token () }}" },
                             success: function (result) {
-                                table.refresh ();
+                                table.trigger ("refresh");
                             }
                         });
                     }

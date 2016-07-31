@@ -6,13 +6,13 @@ use App\Affiliation;
 use App\User;
 use App\Base\Controllers\AdminController;
 use App\Http\Requests\Admin\AffiliationRequest;
-use App\Http\Controllers\Api\DataTables\AffiliationDataTable;
+use Illuminate\Http\Request;
 
 class AffiliationController extends AdminController
 {
-    public function index(AffiliationDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
+        return view('admin.affiliations.index');
     }
 
     public function show(Affiliation $affiliation)
@@ -22,6 +22,30 @@ class AffiliationController extends AdminController
             'affiliation' => $affiliation,
             'users' => $Users
         ]);
+    }
+    
+    public function search(Request $request) 
+    {
+        $search = trim ($request->input ("search")["value"] ?: "", " ,");
+        $start = $request->input ("start") ?: 0;
+        $length = $request->input ("length") ?: 25;
+        $columns = $request->input ("columns");
+        $order = $request->input ("order");
+        
+        $affiliations =  Affiliation::query()
+            ->where ("type", "LIKE", "$search%")
+            ->orWhere ("name", "LIKE", "$search%")
+            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+        
+        $count = $affiliations->count ();
+        
+        $affiliations = $affiliations
+            ->take ($length)
+            ->skip ($start)
+            ->get ()
+            ->toArray ();
+        
+        return $this->dtResponse ($request, $affiliations, $count);
     }
 
 }

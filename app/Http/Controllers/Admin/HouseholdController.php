@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\HouseholdDataTable;
+use Illuminate\Http\Request;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
@@ -16,9 +16,9 @@ class HouseholdController extends AdminController
      *
      * @param UserDataTable $dataTable
      */
-    public function index(HouseholdDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
+        return view('admin.households.index');
     }
 
     /**
@@ -92,5 +92,29 @@ class HouseholdController extends AdminController
         {
             return parent::create();
         }
+    }
+    
+    public function search(Request $request) 
+    {
+        $search = trim ($request->input ("search")["value"] ?: "", " ,");
+        $start = $request->input ("start") ?: 0;
+        $length = $request->input ("length") ?: 25;
+        $columns = $request->input ("columns");
+        $order = $request->input ("order");
+        
+        $households =  Household::query()
+            ->where ("name_last", "LIKE", "$search%")
+            ->orWhere ("email", "LIKE", "%$search%")
+            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+        
+        $count = $households->count ();
+        
+        $households = $households
+            ->take ($length)
+            ->skip ($start)
+            ->get ()
+            ->toArray ();
+        
+        return $this->dtResponse ($request, $households, $count);
     }
 }

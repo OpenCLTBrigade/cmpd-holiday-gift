@@ -6,7 +6,7 @@
             <div clsas="form-group">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <input type="search" class="form-control input-sm search" placeholder="Filter results" for="Users" autofocus />
-                    <div class="form-control-feedback" style="display: none;"><span class="fa fa-spinner fa-spin"></span></div>
+                    <div class="form-control-feedback"><span class="fa fa-spinner fa-spin"></span></div>
                 </div>
             </div>
         </div>
@@ -52,11 +52,11 @@
                 case "delete":
                     if (confirm ("Are you sure?")) {
                         $.ajax ({
-                            url: "./" + row.id,
+                            url: window.location.href +"/"+ row.id,
                             type: "POST",
-                            data: { "_method": "DELETE", "_token": "need to generate token" },
+                            data: { "_method": "DELETE", "_token": "{{ csrf_token () }}" },
                             success: function (result) {
-                                table.refresh ();
+                                table.trigger ("refresh");
                             }
                         });
                     }

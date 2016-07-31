@@ -12,6 +12,8 @@ var elixir = require('laravel-elixir'),
         'admin.css',
         'mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
         'datatables/media/css/dataTables.bootstrap.min.css',
+	'datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.css',
+        'datatables.net-responsive-bs/css/responsive.bootstrap.css',
         'morris.js/morris.css'
     ],
     adminJs = [

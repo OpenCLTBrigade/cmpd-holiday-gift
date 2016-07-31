@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\DataTables\UserDataTable;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
@@ -112,18 +111,25 @@ class UserController extends AdminController
     
     public function search(Request $request) 
     {
-        $search = trim ($request->input ("search")["value"], " ,");
+        $search = trim ($request->input ("search")["value"] ?: "", " ,");
         $start = $request->input ("start") ?: 0;
         $length = $request->input ("length") ?: 25;
+        $columns = $request->input ("columns");
+        $order = $request->input ("order");
         
         $users =  User::query()
-            ->where ("name_last", "LIKE", $search ."%")
-            ->orderBy("id", "name_first")
-            ->take($length)
+            ->where ("name_last", "LIKE", "$search%")
+            ->orWhere ("email", "LIKE", "%$search%")
+            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+        
+        $count = $users->count ();
+        
+        $users = $users
+            ->take ($length)
             ->skip ($start)
             ->get ()
             ->toArray ();
         
-        return $this->dtResponse ($request, $users);
+        return $this->dtResponse ($request, $users, $count);
     }
 }

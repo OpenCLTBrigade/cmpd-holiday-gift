@@ -309,13 +309,14 @@ abstract class AdminController extends Controller
      * Formats the given data for a datatable and returns it back
      * @param Request $request
      * @param object $data Array of objects to return back
+     * @param int $total Total amount of results available
      * @param int $filtered Filtered count (defaults to 0)
      */
-    protected function dtResponse (Request $request, $data, $filtered = 0) {
+    protected function dtResponse (Request $request, $data, $total = null, $filtered = 0) {
         $response = (object)[];
         $response->draw = $request->input ("draw");
-        $response->recordsTotal = count ($data ?: array ());
-        $response->recordsFiltered = $filtered ?: 0;
+        $response->recordsTotal = $total ?: count ($data ?: array ());
+        $response->recordsFiltered = $filtered ?: $response->recordsTotal;
         $response->data = $data;
         
         return response ()->json ($response);

@@ -238,7 +238,7 @@ var DataTable = function (table, details) {
      * Setup the events for the table
      */
     this.setupEvents = function () {
-        this.table.refresh = this.refresh();
+        this.table.bind ("refresh", () => { this.refresh (); });
 
         // Handle drop-down menu clicks
         this.table.on("click", ".action a, .action[data-action]", function (e) {

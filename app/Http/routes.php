@@ -57,7 +57,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     
     // Household Routes
     Route::resource('household', 'HouseholdController');
+    Route::post('household/search', 'HouseholdController@search');
 
     Route::resource('affiliation', 'AffiliationController');
+    Route::post('affiliation/search', 'AffiliationController@search');
 
 });
