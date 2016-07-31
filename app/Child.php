@@ -3,13 +3,22 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Delatbabel\Elocrypt\Elocrypt;
 
 class Child extends Model
 {
+    use Elocrypt;
+
     protected $table = "child";
 
     protected $hidden = [
         'created_at', 'updated_at'
+    ];
+
+    protected $encrypts = [
+        'dob',
+        'last4ssn',
+        'email'
     ];
 
     protected $fillable = [
@@ -22,13 +31,7 @@ class Child extends Model
         "last4ssn",
         "free_or_reduced_lunch",
         "reason_for_nomination",
-        "school_name",
-        "school_address",
-        "school_address2",
-        "school_city",
-        "school_state",
-        "school_zip",
-        "school_phone",
+        "school_id",
         "bike_want",
         "bike_size",
         "bike_style",

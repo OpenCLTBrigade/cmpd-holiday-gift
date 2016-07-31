@@ -12,6 +12,10 @@ class HouseholdPhone extends Model
         'created_at', 'updated_at'
     ];
 
+    protected $encrypts = [
+        'phone_number',
+    ];
+
     protected $fillable = [
         "household_id",
         "phone_type",
