@@ -20,7 +20,7 @@ class UserController extends AdminController
      */
     public function index(UserDataTable $dataTable)
     {
-        $users =  User::query()->orderBy("id", "name_first")->paginate(5);
+        $users = $dataTable->query()->orderBy("active", "ASC")->orderBy("name_last")->orderBy("id")->paginate(5);
         return view('admin.users.index', ['users' => $users]);
     }
 
