@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Delatbabel\Elocrypt\Elocrypt;
 
 class Household extends Model
 {
+    use Elocrypt;
+
     protected $table = "household";
 
     protected $fillable = [
@@ -19,6 +22,12 @@ class Household extends Model
         "email",
         "last4ssn",
         "preferred_contact_method"
+    ];
+
+    protected $encrypts = [
+        'dob',
+        'last4ssn',
+        'email'
     ];
 
     protected $appends = [
