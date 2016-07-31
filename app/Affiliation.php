@@ -23,9 +23,9 @@ class Affiliation extends Model
         "updated_at"
     ];
 
-    public function scopeCMS($query)
+    public function scopeCms($query)
     {
-      return $query->where('type', 'cms');
+      return $query->where('type', '=', 'cms');
     }
 
     public function users()

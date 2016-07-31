@@ -11,6 +11,6 @@ class AffiliationController extends Controller
 {
   public function cms()
   {
-    return \App\Affiliation::query()->where('type', '=', 'cms')->get();
+    return \App\Affiliation::query()->cms()->get();
   }
 }
