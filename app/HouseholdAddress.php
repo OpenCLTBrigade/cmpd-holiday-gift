@@ -8,7 +8,7 @@ use Delatbabel\Elocrypt\Elocrypt;
 class HouseholdAddress extends Model
 {
     use Elocrypt;
-    
+
     protected $table = "household_address";
 
     protected $hidden = [

@@ -37,7 +37,6 @@ class ChildSchoolId extends Migration
             $existingTable = DB::table("child");
             if (Schema::hasColumn("child", "school_id"))
             {
-                $table->dropForeign("school_id");
                 $table->removeColumn("school_id");
             }
 

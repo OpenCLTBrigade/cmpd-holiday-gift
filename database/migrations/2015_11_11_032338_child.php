@@ -23,11 +23,11 @@ class Child extends Migration
             $table->string('name_middle');
             $table->string('name_last');
 
-            $table->date('dob');
+            $table->text('dob'); // Text because of encryption
 
             $table->string('race');
 
-            $table->integer('last4ssn');
+            $table->text('last4ssn'); // Text because of encryption
 
             $table->char('free_or_reduced_lunch', 1);
 

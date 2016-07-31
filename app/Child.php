@@ -17,8 +17,7 @@ class Child extends Model
 
     protected $encrypts = [
         'dob',
-        'last4ssn',
-        'email'
+        'last4ssn'
     ];
 
     protected $fillable = [
