@@ -123,10 +123,11 @@ class UserController extends AdminController
             ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
         
         $count = $users->count ();
-        
+
         $users = $users
             ->take ($length)
             ->skip ($start)
+            ->with("affiliation")
             ->get ()
             ->toArray ();
         

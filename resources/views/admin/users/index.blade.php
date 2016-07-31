@@ -14,11 +14,12 @@
     
     <table id="Users" class="table table-hover table-striped datatable" data-server="true">
         <thead>
-            <th class="sortable" data-name="name_first">First Name</th>
             <th class="sortable" data-name="name_last" data-order="asc">Last Name</th>
+            <th class="sortable" data-name="name_first">First Name</th>
             <th class="sortable" data-name="email">Email</th>
             <th class="sortable" data-name="phone">Phone</th>
-            <th class="sortable" data-name="affiliation_id">Affiliation</th>
+            <th class="sortable" data-name="affiliation.type">Affiliation</th>
+            <th class="sortable" data-name="affiliation.name">Location</th>
             <th data-render="renderActions"></th>
         </thead>
     </table>
