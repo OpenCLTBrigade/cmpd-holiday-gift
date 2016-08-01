@@ -2,7 +2,7 @@
 
 @section('content')
     
-    <form class="form-horizontal form-condensed" autocomplete="false">
+    <form class="form-horizontal form-condensed datatable-form" autocomplete="false">
         <div class="row">
             <div clsas="form-group">
                 <div class="col-xs-12 col-sm-6 col-md-4">

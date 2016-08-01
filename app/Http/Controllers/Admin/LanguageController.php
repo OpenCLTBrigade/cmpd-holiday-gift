@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\LanguageDataTable;
 use App\Http\Requests\Admin\LanguageRequest;
 use App\Language;
 use Input;
@@ -20,13 +19,11 @@ class LanguageController extends AdminController
 
     /**
      * Display a listing of the languages.
-     *
-     * @param LanguageDataTable $dataTable
      * @return Response
      */
-    public function index(LanguageDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
+        return view('admin.languages.index');
     }
 
     /**

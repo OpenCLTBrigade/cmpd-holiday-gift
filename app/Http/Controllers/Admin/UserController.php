@@ -14,8 +14,6 @@ class UserController extends AdminController
 
     /**
      * Display a listing of the users.
-     *
-     * @param UserDataTable $dataTable
      * @return Response
      */
     public function index()

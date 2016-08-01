@@ -16,7 +16,6 @@
 		"barryvdh/laravel-elfinder": "0.3.*",
 		"spatie/laravel-analytics": "~1.1",
 		"caffeinated/menus": "~2.0",
-		"yajra/laravel-datatables-oracle": "~6.0",
 		"zizaco/entrust": "dev-laravel-5",
 		"fzaninotto/faker": "~1.4",
         "tymon/jwt-auth": "0.5.*",

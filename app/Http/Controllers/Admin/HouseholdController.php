@@ -13,8 +13,6 @@ class HouseholdController extends AdminController
 
     /**
      * Display a listing of the users.
-     *
-     * @param UserDataTable $dataTable
      */
     public function index()
     {
