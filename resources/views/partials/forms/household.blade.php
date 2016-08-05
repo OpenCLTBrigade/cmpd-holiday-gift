@@ -1,8 +1,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOGLE_MAPS_API_KEY') }}&language=en"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en"></script>
 
     <style>
-      body {
+      /*body {
         background: #aaa;
       }
 
@@ -41,13 +41,13 @@
       .addbtn {
         position: relative;
         margin-left: 15px;
-      }
+      }*/
 
     </style>
 
     <div class="container">
       <div id="app">
-        <form @submit.prevent="">
+        <!-- <form v-on:submit.prevent=""> -->
           <div class="box box-primary">
             <div class="box-header with-border">
               <h1 class="box-title">Head of Household Information</h1>
@@ -174,7 +174,7 @@
                     <div class="form-group">
 
                       <label class="control-label">Street Address</label>
-                      <input class="form-control street-address"  type="text" v-model="address.address_street" v-on:blur="address_on_blur">
+                      <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-4">
@@ -205,7 +205,6 @@
                       <input class="form-control" type="text" v-model="address.address_zip">
                     </div>
                   </div>
-                  <input class="form-control" type="hidden" />
 
                 </div>
 
@@ -215,8 +214,8 @@
               <!-- /box-danger -->
             </div>
 
-            <button class="btn addbtn" @click="addAddress">Add Address</button>
-            <button class="btn btn-danger" @click="removeAddress">Remove Address</button>
+            <button class="btn addbtn" v-on:click="addAddress">Add Address</a>
+            <button class="btn btn-danger" v-on:click="removeAddress">Remove Address</button>
 
           </div>
 
@@ -270,8 +269,8 @@
               <!--  /box  -->
             </div>
 
-            <button class="btn addbtn" @click="addPhone">Add Phone</button>
-            <button class="btn btn-danger" @click="removePhone">Remove Phone</button>
+            <button class="btn addbtn" v-on:click="addPhone">Add Phone</button>
+            <button class="btn btn-danger" v-on:click="removePhone">Remove Phone</button>
 
 
           </div>
@@ -522,12 +521,12 @@
 
             </div>
 
-            <button class="btn addbtn" @click="addChild">Add Child</button>
-            <button class="btn btn-danger" @click="removeChild">Remove Child</button>
+            <button class="btn addbtn" v-on:click="addChild">Add Child</button>
+            <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
           </div>
           <!--  /box box-success -->
 
-        </form>
+        <!-- </form> -->
 
         @{{ $data | json }}
 
@@ -656,7 +655,7 @@ console.log(self);
        $('#errorMsg').modal()
      }
   })
-  
+
   var populate_cmpd_info = function(location) {
     console.log('foo', location);
     $.ajax({
@@ -727,6 +726,9 @@ console.log(self);
           },
           removeChild: function() {
             this.child.pop();
+          },
+
+          doNothing: function() {
           },
 
           fetchSchools: function () {
