@@ -200,7 +200,7 @@ return [
         "index"                     => "Settings"
     ],
     "submit"                        => "Submit",
-    "title"                         => "Control Panel",
+    "title"                         => "Winter Gift Project",
     "update" => [
         "fail"                      => "Update operation on resource has failed.",
         "success"                   => "Resource has been updated succesfully."

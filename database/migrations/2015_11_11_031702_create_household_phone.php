@@ -21,7 +21,7 @@ class CreateHouseholdPhone extends Migration
             $table->foreign('household_id')->references('id')->on('household');
 
             $table->string('phone_type');
-            $table->string('phone_number');
+            $table->text('phone_number'); // Text because of encryption
         });
     }
 

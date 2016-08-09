@@ -25,14 +25,14 @@ class CreateHouseholdTable extends Migration
             $table->string('name_middle');
             $table->string('name_last');
 
-            $table->date('dob');
+            $table->text('dob'); // Text because of encryption
 
             $table->string('race');
 
             $table->string('gender');
-            $table->string('email');
+            $table->text('email'); // Text because of encryption
 
-            $table->integer('last4ssn');
+            $table->text('last4ssn'); // Text because of encryption
 
             $table->string('preferred_contact_method');
 

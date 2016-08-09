@@ -18,6 +18,12 @@
 @auth_color: #3c8dbc;
 @logo_blue: #00355d;
 
+head, body {
+    background-color: #ecf0f5;
+}
+
+.content-wrapper { min-height: initial !important; }
+
 .bg-auth {
   background-color: @logo_blue;
   color: white;
@@ -357,4 +363,22 @@ ul.languages {
 hr {
   margin-bottom: 0;
   margin-top: 10px;
+}
+
+/** DataTables styling **/
+.table.datatable:not(.fixedHeader-floating) { width: 100% !IMPORTANT; }
+.table.datatable th, .table.datatable td { vertical-align: middle; }
+
+form.datatable-form {
+    .form-group .form-control-feedback { display: none; right: 16px !IMPORTANT; }
+    .form-group.has-feedback .form-control-feedback, .form-group .has-feedback .form-control-feedback { top: 36px; display: inline-block; }
+
+    .form-horizontal {
+        .form-group.has-feedback .form-control-feedback, .form-group .has-feedback .form-control-feedback { top: 10px; display: inline-block; }
+    }
+
+    .form-group.search-form.has-feedback .form-control-feedback, .form-group.search-form .has-feedback .form-control-feedback { top: 0px; }
+
+
+    div:not(.has-feedback) > .form-control-feedback { display: none; }
 }

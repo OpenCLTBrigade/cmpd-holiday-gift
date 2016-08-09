@@ -29,6 +29,8 @@ Route::group(['middleware' => 'web'], function () {
 // API routes
 Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', 'admin']], function () {
     Route::resource("user", 'UserController');
+    Route::resource("household", 'HouseholdController');
+    Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
 });
 
@@ -48,10 +50,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('category', 'CategoryController');
     Route::resource('language', 'LanguageController');
     Route::resource('page', 'PageController');
+    
+    // User Routes
     Route::resource('user', 'UserController');
+    Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
+    
+    // Household Routes
     Route::resource('household', 'HouseholdController');
+    Route::post('household/search', 'HouseholdController@search');
 
     Route::resource('affiliation', 'AffiliationController');
+    Route::post('affiliation/search', 'AffiliationController@search');
 
 });

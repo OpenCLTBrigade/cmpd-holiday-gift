@@ -7,6 +7,7 @@ use App\Base\Services\ImageService;
 use App\Language;
 use App\Http\Controllers\Controller;
 use FormBuilder;
+use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 
 abstract class AdminController extends Controller
@@ -185,43 +186,41 @@ abstract class AdminController extends Controller
         return redirect($this->urlRoutePath($path));
     }
 
-	/**
+    /**
      * Inserts or updates as needed, linkinig new record to 
-	 * parent entity
+     * parent entity
      *
      * @param array $data
      * @param int $parent_key
      * @return
      */
-	public function upsertAll($data, $parent_entity, $parent_key)
-	{
-		foreach($data as $class => $rows)
-		{
-			$class = "\\App\\".$class;
-			$table = (new $class())->getTable();   
-			if (!empty($rows))
-			{
-				foreach($rows as $child)
-				{
-					try {
-						if(empty($child['id']))
-						{
-							$child[$parent_entity] = $parent_key;
-							$class::create($child);
-						}
-						else
-						{
-							DB::table($table)->where('id', '=', $child['id'])->update($child);
-						}
-					} catch (Exception $e) {
-						// TODO: Improve exception handling
-					}		
-				}					
-			}
-			
-		}
-
-	}
+    public function upsertAll($data, $parent_entity, $parent_key)
+    {
+        foreach($data as $class => $rows)
+        {
+            $class = "\\App\\".$class;
+            $table = (new $class())->getTable();   
+            if (!empty($rows))
+            {
+                foreach($rows as $child)
+                {
+                    try {
+                        if(empty($child['id']))
+                        {
+                            $child[$parent_entity] = $parent_key;
+                            $class::create($child);
+                        }
+                        else
+                        {
+                            DB::table($table)->where('id', '=', $child['id'])->update($child);
+                        }
+                    } catch (Exception $e) {
+                            // TODO: Improve exception handling
+                    }
+                }					
+            }
+        }
+    }
 	
     /**
      * Returns full url
@@ -304,5 +303,22 @@ abstract class AdminController extends Controller
     {
         $model =  title_case(str_plural($this->model));
         return 'App\Forms\Admin\\' . $model . 'Form';
+    }
+    
+    /**
+     * Formats the given data for a datatable and returns it back
+     * @param Request $request
+     * @param object $data Array of objects to return back
+     * @param int $total Total amount of results available
+     * @param int $filtered Filtered count (defaults to 0)
+     */
+    protected function dtResponse (Request $request, $data, $total = null, $filtered = 0) {
+        $response = (object)[];
+        $response->draw = $request->input ("draw");
+        $response->recordsTotal = $total ?: count ($data ?: array ());
+        $response->recordsFiltered = $filtered ?: $response->recordsTotal;
+        $response->data = $data;
+        
+        return response ()->json ($response);
     }
 }

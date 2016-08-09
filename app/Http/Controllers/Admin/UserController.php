@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\UserDataTable;
+use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
@@ -14,14 +14,11 @@ class UserController extends AdminController
 
     /**
      * Display a listing of the users.
-     *
-     * @param UserDataTable $dataTable
      * @return Response
      */
-    public function index(UserDataTable $dataTable)
+    public function index()
     {
-        $users = $dataTable->query()->orderBy("active", "ASC")->orderBy("name_last")->orderBy("id")->paginate(5);
-        return view('admin.users.index', ['users' => $users]);
+        return view('admin.users.index');
     }
 
     /**
@@ -49,7 +46,6 @@ class UserController extends AdminController
      */
     public function show(User $user)
     {
-        // TODO ATN: show activate button if unapproved
         return $this->viewPath("show", $user);
     }
 
@@ -109,5 +105,30 @@ class UserController extends AdminController
       $user['active'] = $newActive;
       $user->save();
       return $this->redirectRoutePath("index");
+    }
+    
+    public function search(Request $request) 
+    {
+        $search = trim ($request->input ("search")["value"] ?: "", " ,");
+        $start = $request->input ("start") ?: 0;
+        $length = $request->input ("length") ?: 25;
+        $columns = $request->input ("columns");
+        $order = $request->input ("order");
+        
+        $users =  User::query()
+            ->where ("name_last", "LIKE", "$search%")
+            ->orWhere ("email", "LIKE", "%$search%")
+            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+        
+        $count = $users->count ();
+
+        $users = $users
+            ->take ($length)
+            ->skip ($start)
+            ->with("affiliation")
+            ->get ()
+            ->toArray ();
+        
+        return $this->dtResponse ($request, $users, $count);
     }
 }
