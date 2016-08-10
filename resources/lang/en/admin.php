@@ -209,7 +209,7 @@ return [
         "create"                    => "Create user",
         "edit"                      => "Edit user",
         "index"                     => "Users",
-        "show"                      => "Show user"
+        "show"                      => "Show user",
     ]
 
 ];
