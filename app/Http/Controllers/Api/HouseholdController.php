@@ -30,9 +30,15 @@ class HouseholdController extends AdminController
         {
             $request['nominator_user_id'] = Auth::user()->id;
             $id = $this->createFlashParentRedirect(Household::class, $request);
-            $this->upsertAll(["Child" => $request['child'],
-                "HouseholdAddress"  => $request['address'],
-                "HouseholdPhone"  => $request['phone']], "household_id", $id);
+            $this->upsertAll(
+                [
+                    "Child" => $request->input("household.child"),
+                    "HouseholdAddress"  => $request->input("household.address"),
+                    "HouseholdPhone"  => $request->input("household.phone")
+                ],
+                "household_id",
+                $id
+            );
             return $this->redirectRoutePath("index");
         }
     }
@@ -43,9 +49,15 @@ class HouseholdController extends AdminController
     public function update($id, HouseholdRequest $request)
     {
         $household = Household::findOrFail($id);
-        $this->upsertAll(["Child" => $request['child'],
-            "HouseholdAddress"  => $request['address'],
-            "HouseholdPhone"  => $request['phone']], "household_id", $household['id']);
+        $this->upsertAll(
+            [
+                "Child" => $request->input("household.child"),
+                "HouseholdAddress"  => $request->input("household.address"),
+                "HouseholdPhone"  => $request->input("household.phone")
+            ],
+            "household_id",
+            $id
+        );
         return $this->saveFlashRedirect($household, $request);
     }
 
