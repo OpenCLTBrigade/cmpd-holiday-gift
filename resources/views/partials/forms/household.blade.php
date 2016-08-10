@@ -564,7 +564,9 @@
             address_street2: "",
             address_city: "",
             address_state: "",
-            address_zip: ""
+            address_zip: "",
+            division: "",
+            response_area: ""
           }],
 
           household_phone: [{
@@ -647,16 +649,17 @@ console.log(self);
             var update = {};
             update[type] = addressElements[i].long_name;
             self.household_address.$set(address_index, Object.assign({}, self.household_address[address_index], update));
+
           }
       }
 
-      populate_cmpd_info(results[0].geometry.location);
+      populate_cmpd_info(results[0].geometry.location, address_index);
      } else {
        $('#errorMsg').modal()
      }
   })
 
-  var populate_cmpd_info = function(location) {
+  var populate_cmpd_info = function(location, address_index) {
     console.log('foo', location);
     $.ajax({
       url: '/api/cmpd_info',
@@ -667,9 +670,12 @@ console.log(self);
 	  console.log('baz');
 	  // TODO: maybe don't ignore errors
 	} else {
-	  $(e.target).parentsUntil('.row').find('input[name$="[cmpd_division]"]').val(info.division);
-	  $(e.target).parentsUntil('.row').find('input[name$="[cmpd_response_area]"]').val(info.response_area);
-	}
+
+	  self.household_address[address_index].division = info.division;
+    // self.household_address.$set(address_index, Object.assign({}, self.household_address[address_index], update));
+
+  	self.household_address[address_index].response_area = info.response_area;
+  }
       },
       error: function() {
 	console.log('quux');
@@ -685,7 +691,9 @@ console.log(self);
               address_street2: "",
               address_city: "",
               address_state: "",
-              address_zip: ""
+              address_zip: "",
+              division: "",
+              response_area: ""
             });
           },
           removeAddress: function() {
