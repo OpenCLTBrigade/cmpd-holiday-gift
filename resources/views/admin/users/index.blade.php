@@ -18,14 +18,18 @@
             <th class="sortable" data-name="name_first">First Name</th>
             <th class="sortable" data-name="email">Email</th>
             <th class="sortable" data-name="phone">Phone</th>
-            <th class="sortable" data-name="affiliation.type">Affiliation</th>
-            <th class="sortable" data-name="affiliation.name">Location</th>
+            <th class="sortable" data-name="type" data-render="renderType">Affiliation</th>
+            <th class="sortable" data-name="name">Location</th>
             <th data-render="renderActions"></th>
         </thead>
     </table>
     
     <script type="text/javascript">
         let table = $("#Users");
+        
+        function renderType (data, type, row) {
+            return (data || "").toUpperCase ();
+        }
         
         function renderAddress (data, type, row) {
             return row.address_street +", "+ row.address_city +", "+ row.address_state +" "+ row.address_zip;
