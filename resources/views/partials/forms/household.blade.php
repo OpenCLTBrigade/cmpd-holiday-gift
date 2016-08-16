@@ -606,10 +606,10 @@
         methods: {
 
 
+
       address_on_blur: function(e) {
 var geocoder= new google.maps.Geocoder(); // TODO: make global?
             var mapping = {"locality" : "address_city", "administrative_area_level_1" : "address_state", "postal_code" : "address_zip"}
-
   var request = {
     'address': e.target.value,
     'region' : 'US',
@@ -665,17 +665,19 @@ console.log(self);
       url: '/api/cmpd_info',
       data: {lat: location.lat(), lng: location.lng()},
       success: function(info) {
-	console.log('bar', info);
-	if (info.error) {
-	  console.log('baz');
-	  // TODO: maybe don't ignore errors
-	} else {
+        console.log('bar', info);
+        if (info.error)
+        {
+          console.log('baz');
+          // TODO: maybe don't ignore errors
+        }
+        else
+        {
+          self.household_address[address_index].division = info.division;
+          // self.household_address.$set(address_index, Object.assign({}, self.household_address[address_index], update));
 
-	  self.household_address[address_index].division = info.division;
-    // self.household_address.$set(address_index, Object.assign({}, self.household_address[address_index], update));
-
-  	self.household_address[address_index].response_area = info.response_area;
-  }
+          self.household_address[address_index].response_area = info.response_area;
+        }
       },
       error: function() {
 	console.log('quux');

@@ -20,11 +20,13 @@ class CreateHouseholdAddress extends Migration
             $table->foreign('household_id')->references('id')->on('household');
 
             $table->string("type");
-            $table->string("address_street");
-            $table->string("address_street2");
-            $table->string("address_city");
-            $table->string("address_state");
-            $table->string("address_zip");
+
+            // Text because of encryption
+            $table->text("address_street");
+            $table->text("address_street2");
+            $table->text("address_city");
+            $table->text("address_state");
+            $table->text("address_zip");
 
         });
     }
