@@ -46,19 +46,23 @@
             </ul>
             @endforeach
           <!-- Loop that will list all known value in the ChildController -->
-            @foreach ($object->child as $child)
-                $html = "<ul class="list-group list-group-unbordered">";
-                $html =   "<li class="list-group-item">
-                $html =     "<b>$child</b> <a class="pull-right">{{$child}}</a>";
-                $html =   "</li>"
-                $html = "</ul>";
-                
+          @foreach ($object->child as $child)
+            <ul>
+              <li>{{dd($var)}}</li>
+            </ul>
+            <!-- @foreach ($object->child as $child)
+                "<ul class="list-group list-group-unbordered">";
+                "<li class="list-group-item">
+                "<b>$child</b> <a class="pull-right">{{$child}}</a>";
+                "</li>"
+                "</ul>"; -->
+
             <!-- <ul class="list-group list-group-unbordered">
               <li class="list-group-item">
                 <b>First Name</b> <a class="pull-right">{{$child->name_first}}</a>
               </li>
             </ul> -->
-            @endforeach
+            <!-- @endforeach -->
 			</div>
 			<div class="box-profile col-md-4"></div>
 		</div>
