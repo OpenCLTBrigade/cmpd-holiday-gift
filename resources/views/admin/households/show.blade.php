@@ -22,6 +22,7 @@
             <b>Last 4 SSN</b> <a class="pull-right" href="last4ssnto:{{ $object->last4ssn }}">{{ $object->last4ssn }}</a>
           </li>
 				</ul>
+        <!-- Loop that will list all known values in the HouseholdController -->
         <ul class="list-group list-group-unbordered">
             @foreach ($object->address as $address)
               <li class="list-group-item">
