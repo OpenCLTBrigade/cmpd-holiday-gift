@@ -44,7 +44,7 @@ class HouseholdController extends AdminController
      */
     public function show($id)
     {
-        $household = Household::findOrFail($id);
+        $household = Household::findOrFail($id)->with("child", "address", "phone");
         return $this->viewPath("show", $household);
     }
 
@@ -55,10 +55,10 @@ class HouseholdController extends AdminController
     {
         $household = Household::findOrFail($id);
 			  //IMPORTANT: LOAD THE ATTRIBUTE WHEN ADDING TO FORM
-        $household->child;
-        $household->address;
-				$household->phone;
-        return $this->getForm($household);
+        //$household->child;
+        //$household->address;
+				//$household->phone;
+        return $this->viewPath("edit", $household);
     }
 
     /**

@@ -165,6 +165,11 @@ var DataTable = function (table, details) {
         var order = [];
         var columns = [];
         var columnDefs = [];
+        
+        // Add a blank column for the + to go into
+        table.find ("thead > tr").prepend ($("<th>").addClass ("expander").attr ("data-class-name", "expander"));
+		
+        // Loop through all headers and set them up
         table.find("th").each(function (i, element) {
             element = $(element);
 
@@ -172,8 +177,10 @@ var DataTable = function (table, details) {
             element.addClass(className);
 
             var name = element.data("name") || "";
+            var data = element.data("data") || name || "";
             var column = {
-                data: name,
+                data: data,
+                name: name,
                 className: name + " " + className,
                 sortable: element.hasClass("sortable")
             };
@@ -194,6 +201,10 @@ var DataTable = function (table, details) {
             if (typeof columnDef !== "object") {
                 columnDef = {
                     render: render || function (data, type, row) {
+                        if (element.hasClass ("expander")) {
+                            return "";
+                        }
+                        
                         return data || "--";
                     },
                     targets: i
@@ -206,7 +217,7 @@ var DataTable = function (table, details) {
             columnDefs.push(columnDef);
         });
 
-        result.order = (order.length) ? order : [0, 'asc'];
+        result.order = (order.length) ? order : [1, 'asc']; 
         result.columns = columns;
         result.columnDefs = columnDefs;
         return result;
