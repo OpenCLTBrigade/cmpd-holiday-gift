@@ -251,7 +251,7 @@
 
             <!-- PHONE SECTION -->
 
-            <div v-for="phone in household_phone">
+            <div v-for="phone in household.phone">
               <div class="box-body">
                 <div class="row">
 
@@ -587,7 +587,7 @@
             address_zip: ""
           }],
 
-          household_phone: [{
+          household.phone: [{
             phone_type: "",
             phone_number: ""
           }],
@@ -702,13 +702,13 @@
           },
 
           addPhone: function() {
-            this.household_phone.push({
+            this.household.phone.push({
               phone_type: "",
               phone_number: ""
             });
           },
           removePhone: function() {
-            this.household_phone.pop();
+            this.household.phone.pop();
           },
 
           addChild: function() {
