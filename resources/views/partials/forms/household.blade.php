@@ -409,7 +409,7 @@
 
             <label class="control-label">Bike size</label>
             <input class="form-control" type="text" v-model="record.bike_size">
-            <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf">Not sure? Click for size guide.</a>
+            <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">Not sure? Click for size guide.</a>
 
           </div>
         </div>
@@ -530,6 +530,7 @@
   <!--  /box box-success -->
   <!-- </form> -->
 
+@{{household | json}}
 
 </div>    <!-- /app -->
 <!-- /container -->
@@ -731,7 +732,8 @@ var app = new Vue(
       doNothing: function() {
       },
 
-      fetchSchools: function () {
+      fetchSchools: function ()
+      {
         console.log("fetchData invoked")
 
         var xhr = new XMLHttpRequest();
