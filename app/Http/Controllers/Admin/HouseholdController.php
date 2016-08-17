@@ -44,7 +44,7 @@ class HouseholdController extends AdminController
      */
     public function show($id)
     {
-        $household = Household::findOrFail($id);
+        $household = Household::findOrFail($id)->with("child", "address", "phone");
         return $this->viewPath("show", $household);
     }
 

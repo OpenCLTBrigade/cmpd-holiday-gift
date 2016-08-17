@@ -121,6 +121,8 @@ class UserController extends AdminController
         $order = $request->input ("order");
         
         $users =  User::query()
+            ->select ("users.*", "affiliation.type", "affiliation.name")
+            ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
             ->where ("name_last", "LIKE", "$search%")
             ->orWhere ("email", "LIKE", "%$search%")
             ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
@@ -130,7 +132,6 @@ class UserController extends AdminController
         $users = $users
             ->take ($length)
             ->skip ($start)
-            ->with("affiliation")
             ->get ()
             ->toArray ();
         

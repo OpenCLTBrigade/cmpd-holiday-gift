@@ -369,6 +369,16 @@ hr {
 .table.datatable:not(.fixedHeader-floating) { width: 100% !IMPORTANT; }
 .table.datatable th, .table.datatable td { vertical-align: middle; }
 
+.table .expander { display: none; width: 4px !important; padding-left: 0px; }
+.table.dtr-inline.collapsed .expander { display: table-cell !important; }
+
+.table.dtr-inline:not(.collapsed) {
+	th:nth-child(2), td:nth-child(2) {
+		border-left: 0px;
+		padding-left: @panel-body-padding + 2;
+	}
+}
+
 form.datatable-form {
     .form-group .form-control-feedback { display: none; right: 16px !IMPORTANT; }
     .form-group.has-feedback .form-control-feedback, .form-group .has-feedback .form-control-feedback { top: 36px; display: inline-block; }
