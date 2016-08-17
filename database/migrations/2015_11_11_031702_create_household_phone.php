@@ -12,7 +12,7 @@ class CreateHouseholdPhone extends Migration
      */
     public function up()
     {
-        Schema::create('household_phone', function (Blueprint $table) {
+        Schema::create('household.phone', function (Blueprint $table) {
             $table->increments('id');
 
             $table->timestamps();
@@ -32,6 +32,6 @@ class CreateHouseholdPhone extends Migration
      */
     public function down()
     {
-        Schema::drop('household_phone');
+        Schema::drop('household.phone');
     }
 }
