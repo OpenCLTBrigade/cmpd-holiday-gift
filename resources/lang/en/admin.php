@@ -210,6 +210,7 @@ return [
         "edit"                      => "Edit user",
         "index"                     => "Users",
         "show"                      => "Show user",
+        "pending" => "Users pending approval",
     ]
 
 ];

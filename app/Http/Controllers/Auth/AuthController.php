@@ -10,6 +10,7 @@ use App\User;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
 use Mail;
+use App\Role;
 
 use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
@@ -112,7 +113,10 @@ class AuthController extends Controller
             'phone' => $data['phone'],
             'rank' => $data['rank'],
             'password' => $data['password'],
-            'active' => 'N'
+            'active' => 'N',
+            'approved' => 'N',
+            'confirmed_email' => 'N',
+            'confirmation_code' => md5(mt_rand()),
         ]);
         $model->roles()->sync([Role::$NOMINATOR_ID]);
         return $model;
@@ -136,15 +140,45 @@ class AuthController extends Controller
          }
          $user = $this->create($request->all());
 
+         Mail::queue("email.confirm_email", [ "user" => $user ], function($message) use($user) {
+                 // TODO: what should the reply address be?
+                 $message->from("noreply@cmpd-gift-project.example.com");
+                 $message->to($user->email);
+                 // TODO: improve the subject line
+                 $message->subject("CMPD Gift Project - Confirm your registration");
+             });
+
+         Flash::success(trans('auth.register.success'));
+         // TODO: should we redirect to login?
+         return redirect('/auth/login');
+     }
+
+     /**
+     * Confirm user's email
+     *
+     * @param  Requests  request
+     */
+     public function confirmEmail(Request $request)
+     {
+         $user = User::findOrFail($request['id']);
+         if($user->confirmed_email != 'Y' &&
+            $user->confirmation_code != $request['confirmation_code']){
+             Flash::error(trans('auth.confirm_email.failure'));
+             return redirect('/auth/login');
+         }
+         $user->confirmation_code = null;
+         $user->confirmed_email = 'Y';
+         $user->save();
+
          Mail::queue("email.new_user_needs_activation", [ "user" => $user ], function($message){
                  // TODO: what should the reply address be?
                  $message->from("noreply@cmpd-gift-project.example.com");
                  $message->to(env("NEW_USER_NOTIFICATION_EMAIL"));
                  // TODO: improve the subject line
-                 $message->subject("CMPD Gift Project - New user needs validation");
+                 $message->subject("CMPD Gift Project - New user needs approval");
              });
 
-         Flash::success(trans('auth.register.success'));
+         Flash::success(trans('auth.confirm_email.success'));
          return redirect('/auth/login');
      }
 }

@@ -16,6 +16,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('register', ['as' => 'auth.register', 'uses' => 'AuthController@getRegister']);
             Route::post('register', ['as' => 'auth.register', 'uses' => 'AuthController@postRegister']);
             Route::get('logout', ['as' => 'auth.logout', 'uses' => 'AuthController@getLogout']);
+            Route::get('confirm_email', ['as' => 'auth.confirm_email', 'uses' => 'AuthController@confirmEmail']);
         });
         Route::group(['prefix' => 'password'], function () {
             Route::get('email', ['as' => 'password.email', 'uses' => 'PasswordController@getEmail']);

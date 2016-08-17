@@ -1,6 +1,7 @@
 <html>
 <head></head>
 <body style="">
+{{-- TODO: improve this email --}}
 <p>A new user has registered on {{ url('') }} and needs approval.</p>
 <p>
   <a href="{{ url('admin/user/' . $user->id) }}">

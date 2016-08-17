@@ -21,7 +21,7 @@ class ChildSchoolId extends Migration
             $table->removeColumn('school_zip');
             $table->removeColumn('school_phone');
 
-            $table->integer("school_id");
+            $table->integer("school_id")->nullable();
         });
     }
 
