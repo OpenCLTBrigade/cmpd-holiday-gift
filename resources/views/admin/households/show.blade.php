@@ -2,16 +2,14 @@
 
 @section('content')
 		<div class="row">
-			<div class="box-profile col-md-4"></div>
+      <h3 class="profile-username text-center">
+        {{ $object->name_first }}  {{ $object->name_last  }}
+      </h3>
 			<div class="box-profile col-md-4">
-				<h3 class="profile-username text-center">
-					{{ $object->name_first }}  {{ $object->name_last  }}
-				</h3>
-				<p class="text-muted text-center">{{ $object->rank }} </p>
-				<ul class="list-group list-group-unbordered">
-					<li class="list-group-item">
-					  <b>Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a>
-					</li>
+        <ul class="list-group list-group-unbordered">
+          <li class="list-group-item">
+            <b>Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a>
+          </li>
           <li class="list-group-item">
             <b>Gender</b> <a class="pull-right" href="genderto:{{ $object->gender }}">{{ $object->gender }}</a>
           </li>
@@ -24,7 +22,12 @@
           <li class="list-group-item">
             <b>Preferred Contact Method</b> <a class="pull-right" href="preferred_contact_methodto:{{ $object->preferred_contact_method }}">{{ $object->preferred_contact_method }}</a>
           </li>
-				</ul>
+        </ul>
+      </div>
+			<div class="box-profile col-md-4">
+
+				<!-- <p class="text-muted text-center">{{ $object->rank }} </p> -->
+
         <!-- Loop that will list all known values in the HouseholdController -->
           @foreach ($object->address as $address)
             <ul class="list-group list-group-unbordered">
@@ -45,6 +48,8 @@
               </li>
             </ul>
           @endforeach
+			</div>
+			<div class="box-profile col-md-4">
         <!-- Loop that will list all known value in the ChildController -->
         <!-- Temporary fix -->
         @foreach ($object->child as $child)
@@ -126,8 +131,7 @@
             </li>
           </ul>
         @endforeach
-			</div>
-			<div class="box-profile col-md-4"></div>
+      </div>
 		</div>
 
 @endsection
