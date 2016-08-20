@@ -46,6 +46,7 @@
             </ul>
           @endforeach
         <!-- Loop that will list all known value in the ChildController -->
+        <!-- Temporary fix -->
         @foreach ($object->child as $child)
           <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
