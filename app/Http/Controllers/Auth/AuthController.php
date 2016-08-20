@@ -122,63 +122,60 @@ class AuthController extends Controller
         return $model;
     }
 
-    /**
-     * Define actions after registration is complete.
-     *
-     * @param  Requests  request
-     * @return User
-     */
-     public function postRegister(Request $request)
-     {
-         $validator = $this->validator($request->all());
+  /**
+   * Define actions after registration is complete.
+   * @param Request $request
+   * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+   */
+  public function postRegister(Request $request)
+   {
+       $validator = $this->validator($request->all());
 
-         if ($validator->fails())
-         {
-             $this->throwValidationException(
-                 $request, $validator
-             );
-         }
-         $user = $this->create($request->all());
+       if ($validator->fails())
+       {
+           $this->throwValidationException(
+               $request, $validator
+           );
+       }
+       $user = $this->create($request->all());
 
-         Mail::queue("email.confirm_email", [ "user" => $user ], function($message) use($user) {
-                 // TODO: what should the reply address be?
-                 $message->from("noreply@cmpd-gift-project.example.com");
-                 $message->to($user->email);
-                 // TODO: improve the subject line
-                 $message->subject("CMPD Gift Project - Confirm your registration");
-             });
+       Mail::send("email.confirm_email", [ "user" => $user ], function($message) use($user) {
+               // TODO: what should the reply address be?
+               $message->from(env("MAIL_FROM_ADDRESS"));
+               $message->to($user->email);
+               $message->subject(env("MAIL_CONFIRM_EMAIL_SUBJECT"));
+           });
 
-         Flash::success(trans('auth.register.success'));
-         // TODO: should we redirect to login?
-         return redirect('/auth/login');
-     }
+       Flash::success(trans('auth.register.success'));
+       // TODO: should we redirect to login?
+       return redirect('/auth/login');
+   }
 
-     /**
-     * Confirm user's email
-     *
-     * @param  Requests  request
-     */
-     public function confirmEmail(Request $request)
-     {
-         $user = User::findOrFail($request['id']);
-         if($user->confirmed_email != 'Y' &&
-            $user->confirmation_code != $request['confirmation_code']){
-             Flash::error(trans('auth.confirm_email.failure'));
-             return redirect('/auth/login');
-         }
-         $user->confirmation_code = null;
-         $user->confirmed_email = 'Y';
-         $user->save();
+   /**
+   * Confirm user's email
+   * @param Request $request
+   * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+   */
+  public function confirmEmail(Request $request)
+   {
+       $user = User::findOrFail($request['id']);
+       if($user->confirmed_email != 'Y' &&
+          $user->confirmation_code != $request['confirmation_code']){
+           Flash::error(trans('auth.confirm_email.failure'));
+           return redirect('/auth/login');
+       }
+       $user->confirmation_code = null;
+       $user->confirmed_email = 'Y';
+       $user->save();
 
-         Mail::queue("email.new_user_needs_activation", [ "user" => $user ], function($message){
-                 // TODO: what should the reply address be?
-                 $message->from("noreply@cmpd-gift-project.example.com");
-                 $message->to(env("NEW_USER_NOTIFICATION_EMAIL"));
-                 // TODO: improve the subject line
-                 $message->subject("CMPD Gift Project - New user needs approval");
-             });
+       Mail::queue("email.new_user_needs_activation", [ "user" => $user ], function($message){
+               $message->from(env("MAIL_FROM_ADDRESS"));
+               $message->to(env("MAIL_ADMIN_ADDRESS"));
+               // TODO: improve the subject line
+               $message->subject(env("MAIL_NEW_USER_NEEDS_APPROVAL_SUBJECT"));
+           });
 
-         Flash::success(trans('auth.confirm_email.success'));
-         return redirect('/auth/login');
-     }
+       Flash::success(trans('auth.confirm_email.success'));
+       return redirect('/auth/login');
+   }
 }
