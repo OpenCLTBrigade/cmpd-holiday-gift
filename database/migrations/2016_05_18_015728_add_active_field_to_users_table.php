@@ -13,7 +13,7 @@ class AddActiveFieldToUsersTable extends Migration
     public function up()
     {
         Schema::table("users", function(Blueprint $table) {
-            $table->char("active", 1)->default("Y");
+            $table->char("active", 1)->default("N");
         });
     }
 

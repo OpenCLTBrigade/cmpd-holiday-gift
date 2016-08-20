@@ -21,6 +21,11 @@ class UserController extends AdminController
         return view('admin.users.index');
     }
 
+    public function pending()
+    {
+        return view('admin.users.pending');
+    }
+
     /**
      * Store a newly created user in storage
      *

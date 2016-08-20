@@ -97,6 +97,7 @@ class MakeMenu
                     ->icon($this->circle)
                     ->prependIcon();
 
+
                 $users->add("List Affiliations", ['route' => 'admin.affiliation.index'])
                     ->icon($this->circle)
                     ->prependIcon();
@@ -105,6 +106,9 @@ class MakeMenu
                     ->icon('gears')
                     ->prependIcon();
 
+                $users->add("Pending Registrations", ['route' => 'admin.user.pending'])
+                    ->icon($this->circle)
+                    ->prependIcon();
             }
         });
     }

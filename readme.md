@@ -89,12 +89,18 @@ You will eventually want to shut down vagrant (so you're not running a virtual m
 `vagrant halt`
 
 
-#### Troubleshooting
+## Additional Configuration
+
+### Testing emails with Mailtrap.io
+1. Register an account with https://mailtrap.io - You can link your github account
+2. In your local `.env` file append the credentials and settings Mailtrap lists in your demo inbox.
+
+## Troubleshooting
 
 ##### "Class not found"
 If you receive a "class not found" error when running migrations, try running the composer dump-autoload command and re-issuing the migrate command.
 
 ----
-### Package Reference 
+## Package Reference 
 #### Permissions - [Entrust](https://github.com/Zizaco/entrust#models)
 ---
