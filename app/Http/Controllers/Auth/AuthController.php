@@ -139,15 +139,13 @@ class AuthController extends Controller
        }
        $user = $this->create($request->all());
 
-       Mail::send("email.confirm_email", [ "user" => $user ], function($message) use($user) {
-               // TODO: what should the reply address be?
+       Mail::queue("email.confirm_email", [ "user" => $user ], function($message) use($user) {
                $message->from(env("MAIL_FROM_ADDRESS"));
                $message->to($user->email);
                $message->subject(env("MAIL_CONFIRM_EMAIL_SUBJECT"));
            });
 
        Flash::success(trans('auth.register.success'));
-       // TODO: should we redirect to login?
        return redirect('/auth/login');
    }
 
