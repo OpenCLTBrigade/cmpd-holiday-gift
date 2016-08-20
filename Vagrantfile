@@ -10,5 +10,15 @@ Vagrant.configure("2") do |config|
     
     # Optional NFS. Make sure to remove other synced_folder line too
     #config.vm.synced_folder ".", "/var/www", :nfs => { :mount_options => ["dmode=777","fmode=666"] }
+    config.vm.provision "shell", privileged: false,
+        inline: 
+        <<-eos
+cd /var/www && composer install && \
+npm install && bower install && gulp && \
+cp .env.example .env && \
+php artisan key:generate &&\
+php artisan migrate && \
+php artisan db:seed
+eos
 
 end
