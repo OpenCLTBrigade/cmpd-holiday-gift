@@ -527,6 +527,8 @@
     </div>
   </div>
 
+  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
+
   <!--  /box box-success -->
   <!-- </form> -->
 
@@ -727,6 +729,11 @@ var app = new Vue(
       },
       removeChild: function() {
         this.household.child.pop();
+      },
+
+      doSave: function()
+      {
+        alert("yay");
       },
 
       doNothing: function() {
