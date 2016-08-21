@@ -24,22 +24,30 @@ class HouseholdController extends AdminController
     {
         if(Auth::user()->max_nominations_reached)
         {
-            return view("admin.households.error.maxnominations");
+          return [
+            "ok" => false,
+            "message" => "Max number of nominations reached",
+            "household" => null
+          ];
         }
         else
         {
             $request['nominator_user_id'] = Auth::user()->id;
             $id = $this->createFlashParentRedirect(Household::class, $request);
             $this->upsertAll(
-                [
-                    "Child" => $request->input("household.child"),
-                    "HouseholdAddress"  => $request->input("household.address"),
-                    "HouseholdPhone"  => $request->input("household.phone")
-                ],
-                "household_id",
-                $id
+              [
+                "Child" => $request->input("child"),
+                "HouseholdAddress"  => $request->input("address"),
+                "HouseholdPhone"  => $request->input("phone")
+              ],
+              "household_id",
+              $id
             );
-            return $this->redirectRoutePath("index");
+            return [
+              "ok" => true,
+              "message" => "",
+              "household" => $this->show($id)
+            ];
         }
     }
 
@@ -51,14 +59,21 @@ class HouseholdController extends AdminController
         $household = Household::findOrFail($id);
         $this->upsertAll(
             [
-                "Child" => $request->input("household.child"),
-                "HouseholdAddress"  => $request->input("household.address"),
-                "HouseholdPhone"  => $request->input("household.phone")
+                "Child" => $request->input("child"),
+                "HouseholdAddress"  => $request->input("address"),
+                "HouseholdPhone"  => $request->input("phone")
             ],
             "household_id",
             $id
         );
-        return $this->saveFlashRedirect($household, $request);
+        $this->saveFlashParentRedirect($household, $request);
+
+        // Return fresh data
+        return [
+          "ok" => true,
+          "message" => "",
+          "household" => $this->show($id)
+        ];
     }
 
 }

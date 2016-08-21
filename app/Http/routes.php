@@ -30,7 +30,12 @@ Route::group(['middleware' => 'web'], function () {
 // API routes
 Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', 'admin']], function () {
     Route::resource("user", 'UserController');
-    Route::resource("household", 'HouseholdController');
+    Route::resource("household", 'HouseholdController',
+    [
+      'except' => [
+        'index'
+      ]
+    ]);
     Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
 });
@@ -59,7 +64,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
 
     // Household Routes
-    Route::resource('household', 'HouseholdController');
+    Route::resource('household', 'HouseholdController',
+    [
+      'only' => [
+        'index',
+        'show',
+        'edit',
+        'create'
+      ]
+    ]);
     Route::post('household/search', 'HouseholdController@search');
 
     Route::resource('affiliation', 'AffiliationController');

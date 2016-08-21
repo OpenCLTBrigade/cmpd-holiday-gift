@@ -2,6 +2,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en">
 </script>
 <div id="app" class="container-fluid">
+  <!-- <form v-on:submit.prevent=""> -->
   <div class="box box-primary">
     <div class="box-header with-border">
       <h1 class="box-title">Head of Household Information</h1>
@@ -28,6 +29,8 @@
       </div>
 
       <div class="row">
+
+        <!-- Do we want an "Other", "Prefer Not to Specify" or similar gender option? -->
 
         <div class="col-md-4 col-sm-12">
           <div class="form-group">
@@ -79,8 +82,10 @@
         <div class="col-md-4 col-sm-12">
           <div class="form-group">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
-            <input class="form-control" v-model="household.ethnicity" name="race" type="text" id="race">
+            <input class="form-control" v-model="household.race" name="race" type="text" id="race">
             </in>
+
+            <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
           </div>
         </div>
@@ -270,6 +275,8 @@
           <label class="control-label">Ethnicity</label>
           <input class="form-control" type="text" v-model="record.ethnicity">
 
+          <!-- Perhaps include a description of how / why ethnicity info is used? -->
+
         </div>
       </div>
 
@@ -306,7 +313,7 @@
         <div class="form-group">
 
           <label class="control-label">Dob</label>
-          <input class="form-control" name="child[0][dob]" type="date" id="child[0][dob]">
+          <input class="form-control" v-model="record.dob" type="date">
 
 
 
@@ -422,6 +429,8 @@
 
           <label class="control-label">Favorite color</label>
           <input class="form-control" type="text" v-model="record.favourite_colour">
+          <!-- Backend: note the english / american spelling difference -->
+
 
         </div>
       </div>
@@ -473,11 +482,11 @@
       <!-- @{{ $data | json }} -->
     </div>
     </div>
+  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
   </div>
 
-  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
 
-  <!-- /box box-success -->
+  <!--  /box box-success -->
   <!-- </form> -->
 
 
@@ -498,52 +507,7 @@ var app = new Vue(
 
     data: {
       schools: [],
-      household: {
-        name_first: "",
-        name_last: "",
-        gender: "",
-        dob: "",
-        last4ssn: "",
-        email: "",
-        preferred_contact_method: "",
-        ethnicity: "",
-        address: [{
-          type: "",
-          address_street: "",
-          address_street2: "",
-          address_city: "",
-          address_state: "",
-          address_zip: "",
-          division: "",
-          response_area: ""
-        }],
-        phone: [{
-          phone_type: "",
-          phone_number: ""
-        }],
-        child: [
-          {
-            name_first: "",
-            name_last: "",
-            ethnicity: "",
-            last4ssn: "",
-            free_or_reduced_lunch: "",
-            dob: "",
-            school_id: "",
-            bike_want: false,
-            bike_style: "",
-            bike_size: "",
-            clothes_want: false,
-            clothes_size_shirt: "",
-            clothes_size_pants: "",
-            shoe_size: "",
-            favourite_colour: "",
-            interests: "",
-            additional_ideas: "",
-            reason_for_nomination: ""
-          }
-        ]
-      }
+      household: {}
     },
 
     created: function() {
@@ -611,6 +575,7 @@ var app = new Vue(
             }
           }
         );
+        //
 
         var populate_cmpd_info = function(location, address_index) {
           console.log('foo', location);
@@ -626,9 +591,10 @@ var app = new Vue(
               }
               else
               {
-                self.household.address[address_index].division = info.division;
+                self.household.address[address_index].cmpd_division = info.cmpd_division;
+                // self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
 
-                self.household.address[address_index].response_area = info.response_area;
+                self.household.address[address_index].cmpd_response_area = info.cmpd_response_area;
               }
             },
             error: function() {
@@ -650,7 +616,7 @@ var app = new Vue(
             address_city: "",
             address_state: "",
             address_zip: "",
-            division: "",
+            cmpd_division: "",
             response_area: ""
           }
         )  ;
@@ -680,7 +646,45 @@ var app = new Vue(
 
       doSave: function()
       {
-        alert("yay");
+        var id = (typeof this.household.id != "undefined") ? this.household.id : null;
+        var urlSuffix = (id != null) ? "/" + id : "";
+        var url = "/api/household" + urlSuffix;
+        var self = this;
+        var method = (id != null) ? "PUT" : "POST"
+
+        console.log("id is " + id);
+        console.log("urlSuffix is " + urlSuffix);
+        console.log("url is " + url);
+        console.log("method is " + method);
+
+        $.ajax({
+          url: url,
+          method: method,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          data: JSON.stringify(self.household),
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          },
+          success: function(data) {
+            if (data.ok)
+            {
+              self.household = data.household[0];
+            }
+            else if (!data.ok && typeof data.message != "undefined")
+            {
+              alert(data.message);
+            }
+            else
+            {
+              alert("Could not create nomination");
+            }
+          },
+          failure: function(errMsg) {
+            console.log(data);
+          }
+        });
+
       },
 
       doNothing: function() {
@@ -693,8 +697,10 @@ var app = new Vue(
         var xhr = new XMLHttpRequest();
         var self = this;
 
+        //xhr.open('GET', self.apiURL + self.userName)
         xhr.open('GET', '/api/affiliation/cms');
 
+        //console.log(self.userName + " = self.userName")
         xhr.onload = function ()
         {
           self.schools = JSON.parse (xhr.responseText)
@@ -712,5 +718,6 @@ var app = new Vue(
       }
     }
   });
+//        var child = app.$refs.address;
 
 </script>

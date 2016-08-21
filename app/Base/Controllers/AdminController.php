@@ -144,6 +144,18 @@ abstract class AdminController extends Controller
         return $this->redirectRoutePath($path);
     }
 
+  /**
+   * @param $model
+   * @param $request
+   * @param $imageColumn
+   */
+  public function saveFlashParentRedirect($model, $request, $imageColumn = false)
+    {
+      $model->fill($this->getData($request, $imageColumn));
+      $model->save() ? Flash::success(trans('admin.update.success')) : Flash::error(trans('admin.update.fail'));
+      return $model->id;
+    }
+
     /**
      * Get data, if image column is passed, upload it
      *
@@ -208,7 +220,8 @@ abstract class AdminController extends Controller
                         if(empty($child['id']))
                         {
                             $child[$parent_entity] = $parent_key;
-                            $class::create($child);
+                            $new = $class::create($child);
+                            $new->save();
                         }
                         else
                         {

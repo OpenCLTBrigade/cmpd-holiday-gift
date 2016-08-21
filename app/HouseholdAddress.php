@@ -20,7 +20,7 @@ class HouseholdAddress extends Model
         'address_street2',
         'address_city',
         'address_state',
-        'address_zip',
+        'address_zip'
     ];
 
     protected $fillable = [
@@ -30,6 +30,8 @@ class HouseholdAddress extends Model
         "address_street2",
         "address_city",
         "address_state",
-        "address_zip"
+        "address_zip",
+        'cmpd_division',
+        'cmpd_patrol_area'
     ];
 }
