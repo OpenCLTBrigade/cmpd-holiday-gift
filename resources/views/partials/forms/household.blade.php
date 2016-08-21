@@ -507,52 +507,7 @@ var app = new Vue(
 
     data: {
       schools: [],
-      household: {
-        name_first: "",
-        name_last: "",
-        gender: "",
-        dob: "",
-        last4ssn: "",
-        email: "",
-        preferred_contact_method: "",
-        ethnicity: "",
-        address: [{
-          type: "",
-          address_street: "",
-          address_street2: "",
-          address_city: "",
-          address_state: "",
-          address_zip: "",
-          cmpd_division: "",
-          cmpd_response_area: ""
-        }],
-        phone: [{
-          phone_type: "",
-          phone_number: ""
-        }],
-        child: [
-          {
-            name_first: "",
-            name_last: "",
-            ethnicity: "",
-            last4ssn: "",
-            free_or_reduced_lunch: "",
-            dob: "",
-            school_id: "",
-            bike_want: false,
-            bike_style: "",
-            bike_size: "",
-            clothes_want: false,
-            clothes_size_shirt: "",
-            clothes_size_pants: "",
-            shoe_size: "",
-            favourite_colour: "",
-            interests: "",
-            additional_ideas: "",
-            reason_for_nomination: ""
-          }
-        ]
-      }
+      household: {}
     },
 
     created: function() {
