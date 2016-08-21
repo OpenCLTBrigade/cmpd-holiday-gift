@@ -691,18 +691,20 @@ var app = new Vue(
 
       doSave: function()
       {
-        var id = (typeof this.household.id != "undefined") ? this.household.id : -1;
-        var urlSuffix = (id > -1) ? id : "";
-        var url = "/api/household/" + urlSuffix;
+        var id = (typeof this.household.id != "undefined") ? this.household.id : null;
+        var urlSuffix = (id != null) ? "/" + id : "";
+        var url = "/api/household" + urlSuffix;
         var self = this;
+        var method = (id != null) ? "PUT" : "POST"
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);
         console.log("url is " + url);
+        console.log("method is " + method);
 
         $.ajax({
           url: url,
-          method: (id > -1) ? "PUT" : "POST",
+          method: method,
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           data: JSON.stringify(self.household),
@@ -717,6 +719,10 @@ var app = new Vue(
             else if (!data.ok && typeof data.message != "undefined")
             {
               alert(data.message);
+            }
+            else
+            {
+              alert("Could not create nomination");
             }
           },
           failure: function(errMsg) {

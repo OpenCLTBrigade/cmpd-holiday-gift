@@ -68,7 +68,7 @@ class HouseholdController extends AdminController
         }
         else
         {
-            return parent::create();
+            return view($this->viewPath("create"));
         }
     }
     

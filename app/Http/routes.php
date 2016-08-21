@@ -30,7 +30,12 @@ Route::group(['middleware' => 'web'], function () {
 // API routes
 Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', 'admin']], function () {
     Route::resource("user", 'UserController');
-    Route::resource("household", 'HouseholdController');
+    Route::resource("household", 'HouseholdController',
+    [
+      'except' => [
+        'index'
+      ]
+    ]);
     Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
 });

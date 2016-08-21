@@ -35,13 +35,13 @@ class HouseholdController extends AdminController
             $request['nominator_user_id'] = Auth::user()->id;
             $id = $this->createFlashParentRedirect(Household::class, $request);
             $this->upsertAll(
-                [
-                    "Child" => $request->input("household.child"),
-                    "HouseholdAddress"  => $request->input("household.address"),
-                    "HouseholdPhone"  => $request->input("household.phone")
-                ],
-                "household_id",
-                $id
+              [
+                "Child" => $request->input("child"),
+                "HouseholdAddress"  => $request->input("address"),
+                "HouseholdPhone"  => $request->input("phone")
+              ],
+              "household_id",
+              $id
             );
             return [
               "ok" => true,
