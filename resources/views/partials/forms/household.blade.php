@@ -82,7 +82,7 @@
         <div class="col-md-4 col-sm-12">
           <div class="form-group">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
-            <input class="form-control" v-model="household.ethnicity" name="race" type="text" id="race">
+            <input class="form-control" v-model="household.race" name="race" type="text" id="race">
             </in>
 
             <!-- Perhaps include a description of how / why ethnicity info is used? -->
@@ -313,7 +313,7 @@
         <div class="form-group">
 
           <label class="control-label">Dob</label>
-          <input class="form-control" name="child[0][dob]" type="date" id="child[0][dob]">
+          <input class="form-control" v-model="record.dob" type="date">
 
 
 
@@ -482,9 +482,9 @@
       <!-- @{{ $data | json }} -->
     </div>
     </div>
+  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
   </div>
 
-  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
 
   <!--  /box box-success -->
   <!-- </form> -->
@@ -523,8 +523,8 @@ var app = new Vue(
           address_city: "",
           address_state: "",
           address_zip: "",
-          division: "",
-          response_area: ""
+          cmpd_division: "",
+          cmpd_response_area: ""
         }],
         phone: [{
           phone_type: "",
@@ -636,10 +636,10 @@ var app = new Vue(
               }
               else
               {
-                self.household.address[address_index].division = info.division;
+                self.household.address[address_index].cmpd_division = info.cmpd_division;
                 // self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
 
-                self.household.address[address_index].response_area = info.response_area;
+                self.household.address[address_index].cmpd_response_area = info.cmpd_response_area;
               }
             },
             error: function() {
@@ -661,7 +661,7 @@ var app = new Vue(
             address_city: "",
             address_state: "",
             address_zip: "",
-            division: "",
+            cmpd_division: "",
             response_area: ""
           }
         )  ;
@@ -691,7 +691,39 @@ var app = new Vue(
 
       doSave: function()
       {
-        alert("yay");
+        var id = (typeof this.household.id != "undefined") ? this.household.id : -1;
+        var urlSuffix = (id > -1) ? id : "";
+        var url = "/api/household/" + urlSuffix;
+        var self = this;
+
+        console.log("id is " + id);
+        console.log("urlSuffix is " + urlSuffix);
+        console.log("url is " + url);
+
+        $.ajax({
+          url: url,
+          method: (id > -1) ? "PUT" : "POST",
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          data: JSON.stringify(self.household),
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          },
+          success: function(data) {
+            if (data.ok)
+            {
+              self.household = data.household[0];
+            }
+            else if (!data.ok && typeof data.message != "undefined")
+            {
+              alert(data.message);
+            }
+          },
+          failure: function(errMsg) {
+            console.log(data);
+          }
+        });
+
       },
 
       doNothing: function() {

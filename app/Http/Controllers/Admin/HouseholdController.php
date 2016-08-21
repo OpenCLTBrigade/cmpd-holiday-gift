@@ -20,26 +20,6 @@ class HouseholdController extends AdminController
     }
 
     /**
-     * Store a newly created user in storage
-     */
-    public function store(HouseholdRequest $request)
-    {
-        if(Auth::user()->max_nominations_reached)
-        {
-            return view("admin.households.error.maxnominations");
-        }
-        else
-        {
-            $request['nominator_user_id'] = Auth::user()->id;
-            $id = $this->createFlashParentRedirect(Household::class, $request);
-            $this->upsertAll(["Child" => $request['child'],
-                            "HouseholdAddress"  => $request['address'],
-                            "HouseholdPhone"  => $request['phone']], "household_id", $id);
-            return $this->redirectRoutePath("index");
-        }
-    }
-
-    /**
      * Display the specified user.
      */
     public function show($id)
