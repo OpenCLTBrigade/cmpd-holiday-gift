@@ -603,7 +603,8 @@ var app = new Vue(
     },
 
     methods: {
-      address_on_blur: function(e) {
+      address_on_blur: function(e)
+      {
         var geocoder= new google.maps.Geocoder(); // TODO: make global?
         var mapping = {"locality" : "address_city", "administrative_area_level_1" : "address_state", "postal_code" : "address_zip"};
         var request = {
@@ -756,6 +757,14 @@ var app = new Vue(
         };
 
         xhr.send();
+      },
+
+      fetchRecord: function (id)
+      {
+        var  self = this;
+        $.get("/api/household/" + id, {}, function (e) {
+          self.household = e[0];
+        });
       }
     }
   });
