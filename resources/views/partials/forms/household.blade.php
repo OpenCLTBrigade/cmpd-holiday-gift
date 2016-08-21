@@ -243,7 +243,7 @@
               <select class="form-control" v-model="phone.phone_type">
                 <option value="Home">Home</option>
                 <option value="Work">Work</option>
-                <option value="Mobile">Mobile</option>
+                <option value="Other">Mobile</option>
               </select>
             </div>
           </div>
