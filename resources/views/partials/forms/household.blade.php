@@ -1,51 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en"></script>
-
-<style>
-  /*body {
-    background: #aaa;
-  }
-
-  .box-primary {
-    background: #fff;
-    padding: 10px 15px 10px 15px;
-    //    border-radius: 25px;
-  }
-
-  .box-danger {
-    background: #fff;
-    padding: 10px 15px 10px 15px;
-    //  border-radius: 25px;
-  }
-
-  .box-success {
-    background: #fff;
-    padding: 10px 15px 10px 15px;
-    //border-radius: 25px;
-  }
-
-  .box-body {
-    background: #fff;
-    padding: 10px 15px 10px 15px;
-    //border-radius: 25px;
-  }
-
-  .box-body {
-    margin: 0 0 0px 0;
-  }
-
-  .box-danger {
-    padding-bottom: 40px;
-  }
-
-  .addbtn {
-    position: relative;
-    margin-left: 15px;
-  }*/
-
-</style>
-
-<div id="app" class="container">
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en">
+</script>
+<div id="app" class="container-fluid">
   <!-- <form v-on:submit.prevent=""> -->
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -523,7 +479,8 @@
       <div class="box-body">
         <button class="btn addbtn" v-on:click="addChild">Add Child</button>
         <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
-      </div>
+      <!-- @{{ $data | json }} -->
+    </div>
     </div>
   </div>
 
@@ -532,7 +489,7 @@
   <!--  /box box-success -->
   <!-- </form> -->
 
-@{{household | json}}
+
 
 </div>    <!-- /app -->
 <!-- /container -->
