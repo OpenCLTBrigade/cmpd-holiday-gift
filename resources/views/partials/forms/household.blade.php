@@ -2,7 +2,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en">
 </script>
 <div id="app" class="container-fluid">
-  <!-- <form v-on:submit.prevent=""> -->
   <div class="box box-primary">
     <div class="box-header with-border">
       <h1 class="box-title">Head of Household Information</h1>
@@ -29,8 +28,6 @@
       </div>
 
       <div class="row">
-
-        <!-- Do we want an "Other", "Prefer Not to Specify" or similar gender option? -->
 
         <div class="col-md-4 col-sm-12">
           <div class="form-group">
@@ -84,8 +81,6 @@
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
             <input class="form-control" v-model="household.ethnicity" name="race" type="text" id="race">
             </in>
-
-            <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
           </div>
         </div>
@@ -275,8 +270,6 @@
           <label class="control-label">Ethnicity</label>
           <input class="form-control" type="text" v-model="record.ethnicity">
 
-          <!-- Perhaps include a description of how / why ethnicity info is used? -->
-
         </div>
       </div>
 
@@ -429,8 +422,6 @@
 
           <label class="control-label">Favorite color</label>
           <input class="form-control" type="text" v-model="record.favourite_colour">
-          <!-- Backend: note the english / american spelling difference -->
-
 
         </div>
       </div>
@@ -486,7 +477,7 @@
 
   <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
 
-  <!--  /box box-success -->
+  <!-- /box box-success -->
   <!-- </form> -->
 
 
@@ -620,7 +611,6 @@ var app = new Vue(
             }
           }
         );
-        //
 
         var populate_cmpd_info = function(location, address_index) {
           console.log('foo', location);
@@ -637,7 +627,6 @@ var app = new Vue(
               else
               {
                 self.household.address[address_index].division = info.division;
-                // self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
 
                 self.household.address[address_index].response_area = info.response_area;
               }
@@ -704,10 +693,8 @@ var app = new Vue(
         var xhr = new XMLHttpRequest();
         var self = this;
 
-        //xhr.open('GET', self.apiURL + self.userName)
         xhr.open('GET', '/api/affiliation/cms');
 
-        //console.log(self.userName + " = self.userName")
         xhr.onload = function ()
         {
           self.schools = JSON.parse (xhr.responseText)
@@ -725,6 +712,5 @@ var app = new Vue(
       }
     }
   });
-//        var child = app.$refs.address;
 
 </script>
