@@ -137,4 +137,30 @@ class UserController extends AdminController
         
         return $this->dtResponse ($request, $users, $count);
     }
+
+    public function searchPending(Request $request)
+    {
+      $search = trim ($request->input ("search")["value"] ?: "", " ,");
+      $start = $request->input ("start") ?: 0;
+      $length = $request->input ("length") ?: 25;
+      $columns = $request->input ("columns");
+      $order = $request->input ("order");
+
+      $users =  User::query()
+        ->select ("users.*", "affiliation.type", "affiliation.name")
+        ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
+        ->where ("name_last", "LIKE", "$search%")
+        ->orWhere ("email", "LIKE", "%$search%")
+        ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+
+      $count = $users->count ();
+
+      $users = $users
+        ->take ($length)
+        ->skip ($start)
+        ->get ()
+        ->toArray ();
+
+      return $this->dtResponse ($request, $users, $count);
+    }
 }
