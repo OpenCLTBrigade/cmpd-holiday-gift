@@ -35,6 +35,7 @@ class CreateHouseholdTable extends Migration
             $table->text('last4ssn'); // Text because of encryption
 
             $table->string('preferred_contact_method');
+            $table->char("draft", 1)->default("Y");
 
             $table->timestamps();
         });
