@@ -59,6 +59,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     
     // User Routes
     Route::get('user/pending', ['as' => 'admin.user.pending', 'uses' => 'UserController@pending']);
+    Route::get('user/pending/{id}/approve', ['as' => 'admin.user.pending.approve', 'uses' => 'UserController@approve']);
+    Route::get('user/pending/{id}/decline', ['as' => 'admin.user.pending.approve', 'uses' => 'UserController@decline']);
+    Route::post('user/pending/search', ['as' => 'admin.user.pending.search', 'uses' => 'UserController@searchPending']);
     Route::resource('user', 'UserController');
     Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);

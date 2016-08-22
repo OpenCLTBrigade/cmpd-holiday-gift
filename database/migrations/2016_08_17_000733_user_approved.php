@@ -20,6 +20,7 @@ class UserApproved extends Migration
 
           // Admins must also approve new users
           $table->char("approved", 1)->default("N");
+          $table->char("declined", 1)->default("N");
 
         });
     }
@@ -31,10 +32,11 @@ class UserApproved extends Migration
      */
     public function down()
     {
-      if (Schema::hasColumn("users", "approved"))
+      if (Schema::hasColumn("users", "declined"))
       {
         Schema::table("users", function($table) {
             $table->dropColumn('approved');
+            $table->dropColumn('declined');
             $table->dropColumn('confirmed_email');
             $table->dropColumn('confirmation_code');
         });

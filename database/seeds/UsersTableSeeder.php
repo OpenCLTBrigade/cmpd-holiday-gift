@@ -30,6 +30,8 @@ class UsersTableSeeder extends Seeder
                     'password'      => 'admin',
                     'nomination_limit'=> 5,
                     'active' => 'Y',
+                    'confirmed_email' => 'Y',
+                    'approved' => 'Y'
                 ]
             );
 
