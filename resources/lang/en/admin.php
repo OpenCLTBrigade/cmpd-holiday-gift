@@ -174,7 +174,7 @@ return [
         "setting"                   => "Settings",
         "user" => [
             "add"                   => "Add a User",
-            "all"                   => "All Users",
+            "all"                   => "Active Users",
             "root"                  => "Users"
         ]
     ],
