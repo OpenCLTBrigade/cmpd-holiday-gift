@@ -507,7 +507,11 @@ var app = new Vue(
 
     data: {
       schools: [],
-      household: {}
+      household: {
+        phone: [],
+        address: [],
+        child: []
+      }
     },
 
     created: function() {
