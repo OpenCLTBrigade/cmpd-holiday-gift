@@ -164,4 +164,34 @@ class UserController extends AdminController
 
       return $this->dtResponse ($request, $users, $count);
     }
+
+    public function approve ($id)
+    {
+      if (!\Auth::user()->hasRole("admin"))
+      {
+        abort(403);
+      }
+      $User = User::findOrFail($id);
+      $User->active = "Y";
+      $User->approved = "Y";
+      $User->save();
+      Flash::success("{$User->name_first} {$User->name_last} has been approved");
+      return \Redirect::route("admin.user.pending");
+
+      //TODO: Send user email notification
+    }
+
+    public function decline ($id)
+    {
+      if (!\Auth::user()->hasRole("admin"))
+      {
+        abort(403);
+      }
+      $User = User::findOrFail($id);
+      $User->active= "Y";
+      $User->declined = "Y";
+      $User->save();
+      Flash::success("User has been declined");
+      return \Redirect::route("admin.user.pending");
+    }
 }
