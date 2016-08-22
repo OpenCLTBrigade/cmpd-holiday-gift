@@ -273,7 +273,7 @@
         <div class="form-group">
 
           <label class="control-label">Ethnicity</label>
-          <input class="form-control" type="text" v-model="record.ethnicity">
+          <input class="form-control" type="text" v-model="record.race">
 
           <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
@@ -339,14 +339,14 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <input type="checkbox" value="1" v-model="record.bike_want">&nbsp;Child wants bike?</input>
+          <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.bike_want">&nbsp;Child wants bike?</input>
 
 
         </div>
       </div>
     </div>
 
-    <div id="bike-options" v-show="record.bike_want">
+    <div id="bike-options" v-show="record.bike_want == 'Y'">
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
@@ -377,7 +377,7 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <input type="checkbox" v-model="record.clothes_want">
+          <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.clothes_want">
           Child wants clothes?
           </input>
 
@@ -385,7 +385,7 @@
       </div>
     </div>
 
-    <div name="clothes-options" v-show="record.clothes_want">
+    <div name="clothes-options" v-show="record.clothes_want == 'Y'">
 
       <div class="row">
         <div class="col-xs-12">
@@ -684,8 +684,9 @@ var app = new Vue(
               alert("Could not create nomination");
             }
           },
-          failure: function(errMsg) {
-            console.log(data);
+          error: function(errMsg) {
+            alert("Unexpected error. Please review your form for missing or invalid fields, try again later or contact an administrator");
+            console.log(errMsg);
           }
         });
 

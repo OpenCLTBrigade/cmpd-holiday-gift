@@ -22,12 +22,12 @@ class CreateHouseholdTable extends Migration
             $table->foreign('nominator_user_id')->references('id')->on('users');
 
             $table->string('name_first');
-            $table->string('name_middle');
+            $table->string('name_middle')->nullable();
             $table->string('name_last');
 
             $table->text('dob'); // Text because of encryption
 
-            $table->string('race');
+            $table->string('race')->nullable();
 
             $table->string('gender');
             $table->text('email'); // Text because of encryption
