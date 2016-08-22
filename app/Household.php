@@ -49,6 +49,20 @@ class Household extends Model
                 $builder->where('nominator_user_id', '=', \Auth::user()->id);
             });
         }
+        else
+        {
+          static::addGlobalScope('published', function(\Illuminate\Database\Eloquent\Builder $builder)
+          {
+            $myId = \Auth::user()->id;
+            $builder->getQuery()->whereRaw("
+              CASE
+                WHEN
+                  draft = 'Y' THEN nominator_user_id = {$myId}
+                  ELSE nominator_user_id > ''
+                  END
+            ");
+          });
+        }
     }
 
     public function child() {
