@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\UserDataTable;
+use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
@@ -14,14 +14,16 @@ class UserController extends AdminController
 
     /**
      * Display a listing of the users.
-     *
-     * @param UserDataTable $dataTable
      * @return Response
      */
-    public function index(UserDataTable $dataTable)
+    public function index()
     {
-        $users =  User::query()->orderBy("id", "name_first")->paginate(5);
-        return view('admin.users.index', ['users' => $users]);
+        return view('admin.users.index');
+    }
+
+    public function pending()
+    {
+        return view('admin.users.pending');
     }
 
     /**
@@ -108,5 +110,88 @@ class UserController extends AdminController
       $user['active'] = $newActive;
       $user->save();
       return $this->redirectRoutePath("index");
+    }
+    
+    public function search(Request $request) 
+    {
+        $search = trim ($request->input ("search")["value"] ?: "", " ,");
+        $start = $request->input ("start") ?: 0;
+        $length = $request->input ("length") ?: 25;
+        $columns = $request->input ("columns");
+        $order = $request->input ("order");
+        
+        $users =  User::query()
+            ->select ("users.*", "affiliation.type", "affiliation.name")
+            ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
+            ->where ("name_last", "LIKE", "$search%")
+            ->orWhere ("email", "LIKE", "%$search%")
+            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+        
+        $count = $users->count ();
+
+        $users = $users
+            ->take ($length)
+            ->skip ($start)
+            ->get ()
+            ->toArray ();
+        
+        return $this->dtResponse ($request, $users, $count);
+    }
+
+    public function searchPending(Request $request)
+    {
+      $search = trim ($request->input ("search")["value"] ?: "", " ,");
+      $start = $request->input ("start") ?: 0;
+      $length = $request->input ("length") ?: 25;
+      $columns = $request->input ("columns");
+      $order = $request->input ("order");
+
+      $users =  User::query()
+        ->select ("users.*", "affiliation.type", "affiliation.name")
+        ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
+        ->where ("name_last", "LIKE", "$search%")
+        ->where ("confirmed_email", "=", "Y")
+        ->where("approved", "=", "N")
+        ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+
+      $count = $users->count ();
+
+      $users = $users
+        ->take ($length)
+        ->skip ($start)
+        ->get ()
+        ->toArray ();
+
+      return $this->dtResponse ($request, $users, $count);
+    }
+
+    public function approve ($id)
+    {
+      if (!\Auth::user()->hasRole("admin"))
+      {
+        abort(403);
+      }
+      $User = User::findOrFail($id);
+      $User->active = "Y";
+      $User->approved = "Y";
+      $User->save();
+      Flash::success("{$User->name_first} {$User->name_last} has been approved");
+      return \Redirect::route("admin.user.pending");
+
+      //TODO: Send user email notification
+    }
+
+    public function decline ($id)
+    {
+      if (!\Auth::user()->hasRole("admin"))
+      {
+        abort(403);
+      }
+      $User = User::findOrFail($id);
+      $User->active= "Y";
+      $User->declined = "Y";
+      $User->save();
+      Flash::success("User has been declined");
+      return \Redirect::route("admin.user.pending");
     }
 }

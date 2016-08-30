@@ -14,7 +14,7 @@ class AddNominationLimit extends Migration
     {
         Schema::table("users", function(Blueprint $table)
         {
-           $table->bigInteger("nomination_limit");
+            $table->bigInteger("nomination_limit")->default(5);
         });
     }
 

@@ -27,7 +27,11 @@ return [
         "submit"                => "Register",
         "title"                 => "Register",
         "password_confirmation" => "Confirm Password",
-        "success"               => "Your registration form has been submitted. Please wait for approval from administrator.",
+        "success"               => "To continue the registration process, please click on the link that has been sent to your email address.",
+    ],
+    "confirm_email" => [
+         "success" => "Your email address has been verified. Your account will be activated once it is approved by an administrator.",
+         "failure" => "Unable to confirm your email address. Please retry or contact an administrator.",
     ],
     "logout"                    => "Logout",
     "password" => [

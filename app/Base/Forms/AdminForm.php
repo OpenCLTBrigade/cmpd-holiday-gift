@@ -14,7 +14,7 @@ abstract class AdminForm extends Form
     protected function addButtons()
     {
         $this
-            ->add('save', 'submit', [
+            ->add('submit', 'submit', [
                 'label' => trans('admin.fields.save'),
                 'attr' => ['class' => 'btn btn-primary']
             ])

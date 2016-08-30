@@ -45,7 +45,7 @@ $factory->define(App\HouseholdPhone::class, function (Faker\Generator $faker) {
     $aptNo = $faker->numberBetween(100,999);
     return [
         "household_id" => $faker->numberBetween(1,49),
-        "phone_type"   => $faker->randomElement(["home","work","other"]),
+        "phone_type"   => $faker->randomElement(["Home","Work","Other"]),
         "phone_number" => $faker->phoneNumber
     ];
 });

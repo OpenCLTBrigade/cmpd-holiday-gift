@@ -1,8 +1,10 @@
 {
   "private": true,
   "devDependencies": {
+    "babel-cli": "^6.11.4",
     "gulp": "^3.8.8",
-    "gulp-apidoc": "^0.2.2"
+    "gulp-apidoc": "^0.2.2",
+    "babel-cli": "^6.11.4"
   },
   "dependencies": {
     "apidoc": "^0.14.0",

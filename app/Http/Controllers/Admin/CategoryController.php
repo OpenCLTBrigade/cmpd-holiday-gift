@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controllers\AdminController;
 use App\Category;
-use App\Http\Controllers\Api\DataTables\CategoryDataTable;
 use App\Http\Requests\Admin\CategoryRequest;
 
 class CategoryController extends AdminController
 {
     /**
      * Display a listing of the categories.
-     *
-     * @param CategoryDataTable $dataTable
      * @return Response
      */
-    public function index(CategoryDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
+        return view('admin.categories.index');
     }
 
     /**

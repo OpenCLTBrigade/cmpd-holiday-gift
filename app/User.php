@@ -45,6 +45,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         "active"
     ];
 
+    protected $hidden = ['password'];
+
+    protected static function boot()
+    {
+      parent::boot();
+      static::addGlobalScope('notDeclined', function(\Illuminate\Database\Eloquent\Builder $builder) {
+        $builder->where('declined', '=', "N");
+      });
+    }
+
     /**
      * Set password encrypted
      *

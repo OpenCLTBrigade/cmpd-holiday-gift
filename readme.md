@@ -2,114 +2,105 @@
 
 ![](http://wintergift-ci.codeforcharlotte.org/buildStatus/icon?job=cmpd-holiday-gift-backend)
 
-## We're using Laravel 5!
+## We're using Laravel 5.2
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-### Requirements
+## Requirements
+Install the following requires (for all OSes):
 
-##### PHP
-You're going to need **PHP >= 5.5** installed on your machine if you plan on using any of Laravel's command line tools. If you're strictly writing controllers, routes, etc. then read on! We'll get you set up with Vagrant so you won't need to worry about changing things!
-
-Otheriwse OSX users can upgrade their local PHP installation (which is usually 5.3....) here: [http://php-osx.liip.ch/](http://php-osx.liip.ch/)
-
-##### Composer
-- [https://getcomposer.org/download/](https://getcomposer.org/download/)
-
-##### VirtualBox
-- Install [VirtualBox](http://virtualbox.org/)
-
-##### Vagrant
-- Install [Vagrant](http://vagrantup.com)
-
-##### SSH Keys
-
-**Unix systems**
-`cd ~/.ssh && ls`
-
- If you don't see `id_rsa` and `id_rsa.pub` run
-
-`ssh-keygen`
+* [Putty (Windows required, Linux/MacOS optional)] (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
+* [VirtualBox](http://virtualbox.org/)
+* [Vagrant](http://vagrantup.com)
 
 ## Get set up!
 
 ### Clone the repo
-Of course you want to do this first. Clone the repository.
+Of course you want to do this first. Clone the repository wherever you want!
 
-### Install Dependencies!
-In a terminal, `cd` (or `dir` on Windows) into your project directory. Make sure composer is installed on your computer, then run
+### Make sure you have SSH keys on Mac/Linux
+#### Check that you have id_rsa files
+```
+cd ~/.ssh
+ls -la | grep "id_rsa"
+```
+#### If not...
+```
+cd ~/.ssh
+ssh-keygen
+```
+Follow the prompts
 
-`composer install`
 
-#### Edit your hosts file
+### Getting Vagrant/Scotchbox Up-and-running
+In terminal/cmd, `cd` into your project directory, then run `vagrant up`. This should initialize
+the Scotchbox Vagrant setup. Once the setup is complete you'll be able to use Putty or your Terminal to SSH
+in to the box:
 
-This will allow you to access the API locally through http://homestead.app
+#### Windows
+1. Open Putty
+2. Use "localhost" for the host and "2222" for the port
+3. Save configuration, then hit "Open"
 
-**Method A**
-`vagrant plugin install vagrant-hostmanager`
+#### Linux/macOS
+1. Open Terminal
+2. `cd /path/to/project/directory`
+3. `vagrant ssh`
 
-**Method B**
-Edit...
+OR
 
-**OSX** - /etc/hosts
+1. Open Terminal
+2. Run `ssh -p 2222 localhost`
 
-Add the following line
+The username and password are both **vagrant**
 
-`192.168.10.10 homestead.app`
+### Installing Dependencies!
+Once you are SSH'd into the server, run the following commands to configure the project for use:
 
-### Configure Homestead (Vagrant Box)
-In your terminal, make sure you're in the project root and run...
+1. `cd /var/www/`
+2. `composer install`
+3. `npm install`
+4. `bower install`
+5. `gulp`
 
-OSX:
+These will configure all of the dependencies. You'll next need to setup the environment variables. These allow you
+to change from the default MySQL db/user/pass:
 
-`php vendor/bin/homestead make`
+1. `cp .env.example .env`
+2. Modify the values in the new .env as necessary, by default you should not need to modify anything
 
-Windows 
+Next, run all of the database configuration commands:
 
-`vendor\bin\homestead make`
+5. `php artisan key:generate`
+6. `php artisan migrate`
+7. `php artisan db:seed` 
 
-This generates a homestead.yaml file and lets you launch vagrant from the command line; our next task.
+Once these commands have all been run, you should be able to access the application through your browser at **http://192.168.33.10**. If
+all is working well, you should be greeted with the login page.
 
-#### Launch Vagrant from the command line
-Open a terminal / "command prompt" window (depending on your OS), cd (or dir...) into the project directory and run `vagrant up`.
+### Developing
+As you may have noticed, all of the files under `/var/www` match the files that you pulled from the repository. You can do all of
+your development using your local IDE against the files you pull from the repository. Thanks to Vagrant, these files are automatically tied
+in to your Scotchbox setup.
 
-#### Access!
-You should now be able to access the application from [http://homestead.app](http://homestead.app)
 
-#### Vagrant Halt
-You will eventually want to shut down vagrant (so you're not running a virtual machine until your Mac needs its monthly reboot). Do that with
+#### Vagrant Halt - Stopping development for the day
+You will eventually want to shut down vagrant (so you're not running a virtual machine until your Mac needs its monthly reboot). Do that with:
 
 `vagrant halt`
 
-## Get started!
 
-### SSH into the Vagrant box
-You should be able to do
+## Additional Configuration
 
-`ssh vagrant@homestead.app`
+### Testing emails with Mailtrap.io
+1. Register an account with https://mailtrap.io - You can link your github account
+2. In your local `.env` file append the credentials and settings Mailtrap lists in your demo inbox.
 
-to work within the Vagrant box. 
-
-### database migrations
-Please use Laravel's artisan migrations to set up the database. That's how we started doing this and if you make changes on your own things are going to get bad real fast.
-
-Run your migrations with
-
-`php artisan migrate`
-
-[Learn about Migrations here](http://laravel.com/docs/5.1/migrations#generating-migrations)
-
-### database seeding
-
-This runs the seeders to populate your database with sample records to test with.
-
-`php artisan db:seed`
-
-#### Troubleshooting
+## Troubleshooting
 
 ##### "Class not found"
 If you receive a "class not found" error when running migrations, try running the composer dump-autoload command and re-issuing the migrate command.
 
 ----
-### Package Reference 
+## Package Reference 
 #### Permissions - [Entrust](https://github.com/Zizaco/entrust#models)
 ---

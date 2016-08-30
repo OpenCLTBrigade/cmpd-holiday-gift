@@ -28,7 +28,8 @@ class HouseholdTableSeeder extends Seeder
                     "gender"    =>  $faker->randomElement(["M","F"]),
                     "email" =>  $faker->email,
                     "last4ssn"  =>  $faker->numerify("####"),
-                    "preferred_contact_method" => $faker->randomElement(["phone","email",])
+                    "preferred_contact_method" => $faker->randomElement(["phone","email",]),
+                    "draft" => "N"
                 ]
             );
             $this->command->info("Seeded household {$firstName} {$middleName} {$lastName}");

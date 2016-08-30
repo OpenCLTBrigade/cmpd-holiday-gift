@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Delatbabel\Elocrypt\Elocrypt;
 
 class Household extends Model
 {
+    use Elocrypt;
+
     protected $table = "household";
 
     protected $fillable = [
@@ -19,6 +22,12 @@ class Household extends Model
         "email",
         "last4ssn",
         "preferred_contact_method"
+    ];
+
+    protected $encrypts = [
+        'dob',
+        'last4ssn',
+        'email'
     ];
 
     protected $appends = [
@@ -39,6 +48,20 @@ class Household extends Model
             static::addGlobalScope('age', function(\Illuminate\Database\Eloquent\Builder $builder) {
                 $builder->where('nominator_user_id', '=', \Auth::user()->id);
             });
+        }
+        else
+        {
+          static::addGlobalScope('published', function(\Illuminate\Database\Eloquent\Builder $builder)
+          {
+            $myId = \Auth::user()->id;
+            $builder->getQuery()->whereRaw("
+              CASE
+                WHEN
+                  draft = 'Y' THEN nominator_user_id = {$myId}
+                  ELSE nominator_user_id > ''
+                  END
+            ");
+          });
         }
     }
 

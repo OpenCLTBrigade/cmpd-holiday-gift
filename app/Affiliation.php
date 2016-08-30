@@ -23,6 +23,11 @@ class Affiliation extends Model
         "updated_at"
     ];
 
+    public function scopeCms($query)
+    {
+      return $query->where('type', '=', 'cms');
+    }
+
     public function users()
     {
         return $this->belongsToMany("\App\User");

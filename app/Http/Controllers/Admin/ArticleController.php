@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Article;
 use App\Base\Controllers\AdminController;
-use App\Http\Controllers\Api\DataTables\ArticleDataTable;
 use App\Http\Requests\Admin\ArticleRequest;
 
 class ArticleController extends AdminController
 {
     /**
      * Display a listing of the articles.
-     *
-     * @param ArticleDataTable $dataTable
      * @return Response
      */
-    public function index(ArticleDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render($this->viewPath());
+        return view('admin.articles.index');
     }
 
     /**

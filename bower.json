@@ -16,7 +16,13 @@
     "morris.js": "~0.5.1",
     "jquery-floating-social-share": "~1.1.0",
     "tinymce": "~4.2.5",
-    "tinymce-localautosave": "~0.4.2"
+    "tinymce-localautosave": "~0.4.2",
+    "vue": "~1.0.26",
+    "datatables.net-fixedheader": "~3.1.2",
+    "datatables.net-fixedheader-bs": "~3.1.2",
+    "datatables.net-responsive": "~2.1.0",
+    "datatables.net-responsive-bs": "~2.1.0",
+    "js-cookie": "~2.1.2"
   },
   "resolutions": {
     "jquery": "~2.2.2"

@@ -174,7 +174,7 @@ return [
         "setting"                   => "Settings",
         "user" => [
             "add"                   => "Add a User",
-            "all"                   => "All Users",
+            "all"                   => "Active Users",
             "root"                  => "Users"
         ]
     ],
@@ -200,7 +200,7 @@ return [
         "index"                     => "Settings"
     ],
     "submit"                        => "Submit",
-    "title"                         => "Control Panel",
+    "title"                         => "Winter Gift Project",
     "update" => [
         "fail"                      => "Update operation on resource has failed.",
         "success"                   => "Resource has been updated succesfully."
@@ -209,7 +209,8 @@ return [
         "create"                    => "Create user",
         "edit"                      => "Edit user",
         "index"                     => "Users",
-        "show"                      => "Show user"
+        "show"                      => "Show user",
+        "pending" => "Users pending approval",
     ]
 
 ];
