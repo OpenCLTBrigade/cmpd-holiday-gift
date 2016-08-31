@@ -9,11 +9,11 @@
         <!-- Left side -->
         <div class="box-profile col-md-6">
           <ul class="list-group list-group-unbordered">
-            <li class="list-group-item "><b>Mail</b> <a class="pull-right" href="mailto:{{ $object->email }}">{{ $object->email  }}</a></li>
-            <li class="list-group-item "><b>Gender</b> <a class="pull-right" href="genderto:{{ $object->gender }}">{{ $object->gender }}</a></li>
-            <li class="list-group-item "><b>Date of Birth</b> <a class="pull-right" href="dobto:{{ $object->dob }}">{{ $object->dob }}</a></li>
-            <li class="list-group-item "><b>Last 4 SSN</b> <a class="pull-right" href="last4ssnto:{{ $object->last4ssn }}">{{ $object->last4ssn }}</a></li>
-            <li class="list-group-item "><b>Preferred Contact Method</b> <a class="pull-right" href="preferred_contact_methodto:{{ $object->preferred_contact_method }}">{{ $object->preferred_contact_method }}</a></li>
+            <li class="list-group-item"><b>Mail</b> <a class="pull-right">{{ $object->email  }}</a></li>
+            <li class="list-group-item"><b>Gender</b> <a class="pull-right">{{ $object->gender }}</a></li>
+            <li class="list-group-item"><b>Date of Birth</b> <a class="pull-right">{{ $object->dob }}</a></li>
+            <li class="list-group-item"><b>Last 4 SSN</b> <a class="pull-right">{{ $object->last4ssn }}</a></li>
+            <li class="list-group-item"><b>Preferred Contact Method</b> <a class="pull-right">{{ $object->preferred_contact_method }}</a></li>
           </ul>
         </div>
         <!-- Right side -->
@@ -41,7 +41,6 @@
     <div class="row">
       <div class="box-profile col-xs-12">
             <!-- Loop that will list all known value in the ChildController -->
-            <!-- Temporary fix -->
             <h3 class="profile-username text-center">Child/Children</h3>
             @foreach ($object->child as $child)
             <div class="box-profile col-md-6">
