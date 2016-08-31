@@ -16,9 +16,10 @@ use App\Base\Auth\AuthenticatesActiveAndRegistersUsers;
 
 function appropriate_email_domains() {
     return [
-        "CMPD" => "cmpd.org",
-        "CMS" =>  "cms.k12.nc.us",
-        "CFD" => "ci.charlotte.nc.us"
+      "CMPD" => "cmpd.org",
+      "CMS" =>  "cms.k12.nc.us",
+      "CFD" => "ci.charlotte.nc.us",
+      "CFC" => "codeforcharlotte.org"
     ];
 }
 
