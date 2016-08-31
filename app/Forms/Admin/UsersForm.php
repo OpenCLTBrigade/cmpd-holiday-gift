@@ -38,12 +38,6 @@ class UsersForm extends AdminForm
                 'label' => "Nomination Limit (Yearly)"
             ])
 
-            ->add('active', 'choice', [
-                'choices' => ['N' => "No - Deactivated", 'Y' => "Yes - Active"],
-                'multiple' => false,
-                'label' => "Account Enabled"
-            ])
-
             ->add('phone', 'text', [
                 'label' => "Phone Number"
             ])
@@ -51,6 +45,19 @@ class UsersForm extends AdminForm
             ->add('email', 'email', [
                 'label' => trans('admin.fields.user.email')
             ])
+
+            ->add('confirmed_email', 'choice', [
+              'choices' => ['N' => "No", 'Y' => "Yes - Confirmed"],
+              'multiple' => false,
+              'label' => "Confirmed Email Address"
+            ])
+
+            ->add('active', 'choice', [
+              'choices' => ['N' => "No - Deactivated", 'Y' => "Yes - Active"],
+              'multiple' => false,
+              'label' => "Account Enabled"
+            ])
+
             ->add('password', 'password', [
                 'label' => trans('admin.fields.user.password'),
                 'value' => ''
