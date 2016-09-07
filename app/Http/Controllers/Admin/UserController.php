@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
+use Mail;
 use Laracasts\Flash\Flash;
 
 class UserController extends AdminController
@@ -176,9 +177,14 @@ class UserController extends AdminController
       $User->approved = "Y";
       $User->save();
       Flash::success("{$User->name_first} {$User->name_last} has been approved");
-      return \Redirect::route("admin.user.pending");
 
-      //TODO: Send user email notification
+      Mail::queue("email.notify_of_activation", [ "user" => $User ], function($message) use($User) {
+          $message->from(env("MAIL_FROM_ADDRESS"));
+          $message->to($User->email);
+          $message->subject(env("MAIL_WELCOME_EMAIL_SUBJECT"));
+      });
+
+      return \Redirect::route("admin.user.pending");
     }
 
     public function decline ($id)
