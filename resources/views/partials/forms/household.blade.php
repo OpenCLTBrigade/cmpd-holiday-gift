@@ -312,10 +312,8 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <label class="control-label">Dob</label>
+          <label class="control-label">Date of Birth</label>
           <input class="form-control" v-model="record.dob" type="date">
-
-
 
         </div>
       </div>
@@ -325,7 +323,7 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <label class="control-label">School Label</label>
+          <label class="control-label">School Name</label>
           <select class="form-control" v-model="record.school_id">
             <option value='@{{ school.id }}' v-for='school in schools'>
               @{{ school.name }}
@@ -352,9 +350,11 @@
           <div class="form-group">
 
             <label class="control-label">Bike style</label>
-            <input class="form-control" type="text" v-model="record.bike_style">
-
-
+            <select class="form-control" v-model="record.bike_style">
+              <option value="" selected="selected">==== Select ====</option>
+              <option value="Mountain">Mountain Bike</option>
+              <option value="BMX">BMX Bike</option>
+            </select>
           </div>
         </div>
       </div>
@@ -364,7 +364,16 @@
           <div class="form-group">
 
             <label class="control-label">Bike size</label>
-            <input class="form-control" type="text" v-model="record.bike_size">
+            <select class="form-control" v-model="record.bike_size">
+              <option value="" selected="selected">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
+              <option value='12” Bicycle'>12” Bicycle</option>
+              <option value='16” Bicycle'>16” Bicycle</option>
+              <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
+              <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
+              <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
+            </select>
+
             <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">Not sure? Click for size guide.</a>
 
           </div>
