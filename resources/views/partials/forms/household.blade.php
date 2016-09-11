@@ -556,7 +556,7 @@ var app = new Vue(
               /// at this point:
               // addressElements = {"locality" : "...city...", "administrative_area_level_1": "...state...", "postal_code": "...", ... }
 
-              var address_index = $(e.target).parentsUntil('.box').last().index() - 1;
+              var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
               console.log('index', address_index);
 
               console.log(self);
