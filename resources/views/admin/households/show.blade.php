@@ -49,6 +49,7 @@
                 <li class="list-group-item"><b>Middle Name</b><a class="pull-right">{{$child->name_middle}}</a></li>
                 <li class="list-group-item"><b>Last Name</b><a class="pull-right">{{$child->name_last}}</a></li>
                 <li class="list-group-item"><b>Date of Birth</b><a class="pull-right">{{$child->dob}}</a></li>
+								<li class="list-group-item"><b>Age</b><a class="pull-right">{{$child->age}}</a></li>
                 <li class="list-group-item"><b>Race</b><a class="pull-right">{{$child->race}}</a></li>
                 <li class="list-group-item"><b>Last 4 SSN</b><a class="pull-right">{{$child->last4ssn}}</a></li>
                 <li class="list-group-item"><b>Free or Reduced Lunch</b><a class="pull-right">{{$child->free_or_reduced_lunch}}</a></li>
