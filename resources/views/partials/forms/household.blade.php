@@ -325,7 +325,7 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <label class="control-label">School Label</label>
+          <label class="control-label">School Name</label>
           <select class="form-control" v-model="record.school_id">
             <option value='@{{ school.id }}' v-for='school in schools'>
               @{{ school.name }}
