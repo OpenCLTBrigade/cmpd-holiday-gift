@@ -367,6 +367,18 @@
 
             <label class="control-label">Bike size</label>
             <input class="form-control" type="text" v-model="record.bike_size">
+
+            <label class="control-label">Bike size</label>
+            <select class="form-control" v-model="record.bike_size">
+              <option value="" selected="selected">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
+              <option value='12” Bicycle'>12” Bicycle</option>
+              <option value='16” Bicycle'>16” Bicycle</option>
+              <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
+              <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
+              <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
+            </select>
+
             <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">Not sure? Click for size guide.</a>
 
           </div>
