@@ -352,9 +352,11 @@
           <div class="form-group">
 
             <label class="control-label">Bike style</label>
-            <input class="form-control" type="text" v-model="record.bike_style">
-
-
+            <select class="form-control" v-model="record.bike_style">
+              <option value="" selected="selected">==== Select ====</option>
+              <option value="Mountain">Mountain Bike</option>
+              <option value="BMX">BMX Bike</option>
+            </select>
           </div>
         </div>
       </div>
