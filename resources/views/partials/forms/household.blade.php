@@ -499,7 +499,7 @@
 <script src="http://cdn.jsdelivr.net/vue/1.0.25/vue.js"></script>
 
 <script>
-//                   MAIN VUE CODE
+//                   MAIN VUE CODE'
 
 var app = new Vue(
   {
@@ -509,7 +509,7 @@ var app = new Vue(
       schools: [],
       household: {
         phone: [],
-        address: [],
+        address: [{}],
         child: []
       }
     },
