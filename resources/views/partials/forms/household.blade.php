@@ -480,9 +480,11 @@
         <button class="btn addbtn" v-on:click="addChild">Add Child</button>
         <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
       <!-- @{{ $data | json }} -->
+      </div>
     </div>
-    </div>
-  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
+    <button class="btn addbtn" v-on:click="doSave">Save Draft</button>
+    <button class="btn addbtn">Submit Nomination</button>
+    <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
   </div>
 
 
@@ -506,6 +508,7 @@ var app = new Vue(
     el: '#app',
 
     data: {
+      saving: false,
       schools: [],
       household: {
         phone: [],
@@ -650,6 +653,7 @@ var app = new Vue(
 
       doSave: function()
       {
+        this.saving = true;
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
@@ -671,6 +675,7 @@ var app = new Vue(
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
           },
           success: function(data) {
+            self.saving = false;
             if (data.ok)
             {
               self.household = data.household[0];
@@ -685,6 +690,7 @@ var app = new Vue(
             }
           },
           error: function(errMsg) {
+            self.saving = false;
             alert("Unexpected error. Please review your form for missing or invalid fields, try again later or contact an administrator");
             console.log(errMsg);
           }

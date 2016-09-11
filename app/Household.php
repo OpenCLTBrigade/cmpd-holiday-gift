@@ -31,7 +31,7 @@ class Household extends Model
     ];
 
     protected $appends = [
-        'nominator_name'
+        'nominator_name',
     ];
 
 //    protected $hidden = [
