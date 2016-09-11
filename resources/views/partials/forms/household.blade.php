@@ -501,7 +501,7 @@
 <script src="http://cdn.jsdelivr.net/vue/1.0.25/vue.js"></script>
 
 <script>
-//                   MAIN VUE CODE
+//                   MAIN VUE CODE'
 
 var app = new Vue(
   {
@@ -513,7 +513,7 @@ var app = new Vue(
       schools: [],
       household: {
         phone: [],
-        address: [],
+        address: [{}],
         child: []
       }
     },
@@ -560,7 +560,7 @@ var app = new Vue(
               /// at this point:
               // addressElements = {"locality" : "...city...", "administrative_area_level_1": "...state...", "postal_code": "...", ... }
 
-              var address_index = $(e.target).parentsUntil('.box').last().index() - 1;
+              var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
               console.log('index', address_index);
 
               console.log(self);
