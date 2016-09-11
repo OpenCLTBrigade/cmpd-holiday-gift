@@ -482,8 +482,8 @@
       <!-- @{{ $data | json }} -->
       </div>
     </div>
-    <button class="btn addbtn" v-on:click="doSave">Save Draft</button>
-    <button class="btn addbtn">Submit Nomination</button>
+    <button class="btn addbtn" v-on:click="doSave" :disabled="loading || saving">Save Draft</button>
+    <button class="btn addbtn" :disabled="loading || saving">Submit Nomination</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
   </div>
 
@@ -508,6 +508,7 @@ var app = new Vue(
     el: '#app',
 
     data: {
+      loading: false,
       saving: false,
       schools: [],
       household: {
@@ -653,6 +654,9 @@ var app = new Vue(
 
       doSave: function()
       {
+        if (this.saving === true)
+          return; // Already in the middle of saving >:(
+
         this.saving = true;
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
         var urlSuffix = (id != null) ? "/" + id : "";
@@ -723,7 +727,9 @@ var app = new Vue(
       fetchRecord: function (id)
       {
         var  self = this;
+        self.loading = true;
         $.get("/api/household/" + id, {}, function (e) {
+          self.loading = false;
           self.household = e[0];
         });
       }
