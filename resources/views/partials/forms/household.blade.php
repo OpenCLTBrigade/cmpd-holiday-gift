@@ -312,7 +312,7 @@
       <div class="col-xs-12">
         <div class="form-group">
 
-          <label class="control-label">Dob</label>
+          <label class="control-label">Date of Birth</label>
           <input class="form-control" v-model="record.dob" type="date">
 
 
