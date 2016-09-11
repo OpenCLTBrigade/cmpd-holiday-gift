@@ -44,9 +44,19 @@ class Child extends Model
         "preferred_contact_method"
     ];
 
+    protected $appends = [
+        'age'
+    ];
+
     public function household()
     {
         return $this->belongsToOne("Household");
+    }
+
+    public function getAgeAttribute()
+    {
+      $age = \Carbon\Carbon::parse($this->dob);
+      return $age->diffInYears();
     }
 
 }
