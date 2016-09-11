@@ -405,3 +405,12 @@ form.datatable-form {
 
     div:not(.has-feedback) > .form-control-feedback { display: none; }
 }
+
+div.form-group.required label::after {
+  content: " *";
+  color: red;
+}
+
+.missing-field, .form-control.missing-field {
+    background-color: #fff0e7;
+}

@@ -14,15 +14,15 @@
       <div class="row">
 
         <div class="col-md-6 col-sm-12">
-          <div class="form-group">
-            <label for="name-first">First Name</label>
+          <div class="form-group required">
+            <label>First Name</label>
             <input type="text" class="form-control" id="name-first" v-model="household.name_first">
           </div>
         </div>
 
         <div class="col-md-6 col-sm-12">
-          <div class="form-group">
-            <label for="name-last">Last Name</label>
+          <div class="form-group required">
+            <label class="required">Last Name</label>
             <input type="text" class="form-control" id="name-last" v-model="household.name_last">
           </div>
         </div>
@@ -33,7 +33,7 @@
         <!-- Do we want an "Other", "Prefer Not to Specify" or similar gender option? -->
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="gender" class="control-label">Gender</label>
             <select class="form-control" id="gender" v-model="household.gender" name="gender">
               <option value="" selected="selected">==== Select ====</option>
@@ -44,14 +44,14 @@
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="dob" class="control-label">Date of Birth</label>
             <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob">
           </div>
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label class="control-label">Last four digits of SSN</label>
             <input class="form-control" type="number" v-model="household.last4ssn">
           </div>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
             <input class="form-control" v-model="household.race" name="race" type="text" id="race">
             </in>
@@ -112,7 +112,7 @@
 
       <div class="row" v-for="address in household.address">
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Type</label>
             <select class="form-control" v-model="address.type">
@@ -124,7 +124,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Street Address</label>
             <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
@@ -138,21 +138,21 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">City</label>
             <input class="form-control" type="text" v-model="address.address_city">
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">State</label>
             <input class="form-control" type="text" v-model="address.address_state">
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">ZIP Code</label>
             <input class="form-control" type="text" v-model="address.address_zip">
@@ -193,7 +193,7 @@
         <div class="form-group">
 
           <div class="col-xs-12 col-sm-4">
-            <div class="form-group">
+            <div class="form-group required">
 
               <label class="control-label">Type</label>
               <select class="form-control" v-model="phone.phone_type">
@@ -204,7 +204,7 @@
             </div>
           </div>
           <div class="col-xs-12 col-sm-8">
-            <div class="form-group">
+            <div class="form-group required">
 
               <label class="control-label">Phone</label>
               <input class="form-control" type="text" v-model="phone.phone_number">
@@ -244,7 +244,7 @@
       <div class="row"  >
 
       <div class="col-xs-12 col-sm-6">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">First Name</label>
           <input class="form-control" type="text" v-model="record.name_first">
@@ -254,7 +254,7 @@
 
       <div class="col-xs-12 col-sm-6">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Last Name</label>
           <input class="form-control" type="text" v-model="record.name_last">
@@ -270,7 +270,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Ethnicity</label>
           <input class="form-control" type="text" v-model="record.race">
@@ -282,7 +282,7 @@
 
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Last four digits of SSN</label>
           <input class="form-control" type="text" v-model="record.last4ssn">
@@ -293,7 +293,7 @@
       </div>
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Child receives free or reduced lunch?</label>
           <select class="form-control" v-model="record.free_or_reduced_lunch">
@@ -310,7 +310,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Date of Birth</label>
           <input class="form-control" v-model="record.dob" type="date">
@@ -321,7 +321,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">School Name</label>
           <select class="form-control" v-model="record.school_id">
@@ -344,10 +344,10 @@
       </div>
     </div>
 
-    <div id="bike-options" v-show="record.bike_want == 'Y'">
+    <div id="bike-options" v-if="record.bike_want == 'Y'">
       <div class="row">
         <div class="col-xs-12">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Bike style</label>
             <select class="form-control" v-model="record.bike_style">
@@ -361,7 +361,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Bike size</label>
             <select class="form-control" v-model="record.bike_size">
@@ -469,7 +469,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Reason for nomination</label>
           <textarea class="form-control" cols="50" rows="10" v-model="record.reason_for_nomination"></textarea>
@@ -667,6 +667,24 @@ var app = new Vue(
           return; // Already in the middle of saving >:(
 
         this.saving = true;
+
+        // Refuse to submit if required fields are empty, and highlight missing fields
+        // Mark a field as required by adding the `required' class to the containing `form-group'
+        var missing = false;
+        $('.form-group.required input, .form-group.required select, .form-group.required textarea').each(function(i, el){
+          if(!$(el).val()){
+            missing = true;
+            $(el).addClass('missing-field');
+          }else{
+            $(el).removeClass('missing-field');
+          }
+        });
+        if(missing){
+          this.saving = false;
+          alert("Could not save: some required fields are empty");
+          return;
+        }
+
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
