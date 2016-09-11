@@ -30,8 +30,7 @@
             @endforeach
             @foreach ($object->phone as $household_phone)
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item"><b>Type</b> <span class="pull-right">{{$household_phone->phone_type}}</span></li>
-                <li class="list-group-item"><b>Number</b> <span class="pull-right">{{$household_phone->phone_number}}</span></li>
+                <li class="list-group-item"><b>Contact ({{$household_phone->phone_type}})</b> <span class="pull-right">{{$household_phone->phone_number}}</span></li>
               </ul>
             @endforeach
           </div>
