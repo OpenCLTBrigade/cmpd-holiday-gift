@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Routes used for logging in, registration, etc.
+ */
 Route::group(['middleware' => 'web'], function () {
     // Redirect / to /admin
     Route::group(['namespace' => 'Application'], function () {
@@ -84,6 +87,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::post('household/search', 'HouseholdController@search'); // Used for the table (household.index)
 
     Route::resource('affiliation', 'AffiliationController');
-    Route::post('affiliation/search', 'AffiliationController@search');
+    Route::post('affiliation/search', 'AffiliationController@search'); // Used for the table (affiliation.index)
 
 });
