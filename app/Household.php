@@ -32,6 +32,7 @@ class Household extends Model
 
     protected $appends = [
         'nominator_name',
+        'form_files',
     ];
 
 //    protected $hidden = [
@@ -94,5 +95,9 @@ class Household extends Model
 
     public function getUpdatedAtAttribute($value) {
         return date("M j, Y", strtotime($value));
+    }
+
+    public function getFormFilesAttribute() {
+        return array("foo", "bar");
     }
 }

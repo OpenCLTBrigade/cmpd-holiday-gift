@@ -491,6 +491,36 @@
       <!-- @{{ $data | json }} -->
       </div>
     </div>
+
+  <div class="box box-danger">
+    <div class="box-header with-border">
+      <h1 class="box-title">Scanned Forms</h1>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <label class="control-label">Existing Files</label>
+          <div v-for="file_name in household.form_files">
+            <span class="filename">
+              @{{ file_name }}
+            </span>
+            {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <div class="form-group">
+            <label class="control-label">Upload File</label>
+            <input type="file" class="form-control" v-on:blur="upload_form_file">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /box-body -->
+  </div>
+  <!-- /box-primary -->
+
     <button class="btn addbtn" v-on:click="doSave" :disabled="loading || saving">Save Draft</button>
     <button class="btn addbtn" :disabled="loading || saving">Submit Nomination</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
@@ -532,6 +562,23 @@ var app = new Vue(
     },
 
     methods: {
+
+      upload_form_file: function(e) {
+        var data = new FormData();
+        data.append("file", e.target.files[0]);
+        $.ajax({
+          url: "/api/upload_household_form_file",
+          data: data,
+          cache: false,
+          contentType: false,
+          processData: false,
+          type: 'PUT',
+          success: function(res){
+            // TODO
+          }
+        });
+      },
+
       address_on_blur: function(e)
       {
         var geocoder= new google.maps.Geocoder(); // TODO: make global?
