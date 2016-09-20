@@ -104,10 +104,10 @@
 
   <div class="box box-danger">
     <div class="box-header with-border">
-      <h1 class="box-title">Addresses</h1>
+      <h1 class="box-title">Delivery Address</h1>
     </div>
 
-    <!-- ADDRESS SECTION -->
+    <!-- ADDRESS SECTION  -->
     <div class="box-body">
 
       <div class="row" v-for="address in household.address">
@@ -161,12 +161,14 @@
         <hr>
       </div>
 
+      <!-- Can accomodate multiple addresses but is currently limiting users to 1 address
       <div class="row">
         <div class="col-xs-12">
           <button class="btn addbtn" v-on:click="addAddress">Add Address</button>
           <button class="btn btn-danger" v-on:click="removeAddress">Remove Address</button>
         </div>
       </div>
+    -->
 
     </div>
 
