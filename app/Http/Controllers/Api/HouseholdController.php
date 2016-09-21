@@ -76,4 +76,11 @@ class HouseholdController extends AdminController
         ];
     }
 
+    public function upload_attachment(Request $request) {
+        $file = request->file('file');
+        if(!$file->isValid()){
+            return [ "error" => $file->getErrorMessage() ];
+        }
+        $file->store(TODO_user_id, "forms");
+    }
 }

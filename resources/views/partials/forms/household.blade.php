@@ -492,7 +492,7 @@
       </div>
     </div>
 
-  <div class="box box-danger">
+  <div class="box box-danger" v-if="household.id">
     <div class="box-header with-border">
       <h1 class="box-title">Scanned Forms</h1>
     </div>
@@ -505,6 +505,11 @@
               @{{ file_name }}
             </span>
             {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
+          </div>
+          <div v-for="file_name in uploading_forms">
+            <span class="filename">
+              @{{ file_name }} (uploading...)
+            </span>
           </div>
         </div>
       </div>
@@ -564,8 +569,17 @@ var app = new Vue(
     methods: {
 
       upload_form_file: function(e) {
+        var file_name = e.target.files[0].name;
+        if(this.uploading_forms.indexOf(file_name) != -1
+           || this.household.form_files.indexOf(file_name) != -1){
+          alert("Error: an attachment named " + file_name + "already exists");
+          return;
+        }
         var data = new FormData();
         data.append("file", e.target.files[0]);
+        this.uploading_forms.push(file_name);
+        $(e.target).val('');
+        var self = this;
         $.ajax({
           url: "/api/upload_household_form_file",
           data: data,
@@ -574,7 +588,8 @@ var app = new Vue(
           processData: false,
           type: 'PUT',
           success: function(res){
-            // TODO
+            self.uploading_forms.$remove(file_name);
+            self.household.form_files.push(file_name);
           }
         });
       },
