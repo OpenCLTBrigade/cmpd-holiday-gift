@@ -85,6 +85,10 @@ class Household extends Model
         return $this->hasMany("\App\HouseholdPhone");
     }
 
+    public function attachment() {
+        return $this->hasMany("\App\HouseholdAttachment");
+    }
+
     public function getNominatorNameAttribute() {
         return $this->nominator->name_first . " " . $this->nominator->name_last;
     }

@@ -500,9 +500,9 @@
       <div class="row">
         <div class="col-md-12 col-sm-12">
           <label class="control-label">Existing Files</label>
-          <div v-for="file_name in household.form_files">
+          <div v-for="attachment in household.attachment">
             <span class="filename">
-              @{{ file_name }}
+              @{{ attachment.path.split('_')[1] }}
             </span>
             {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
           </div>
@@ -559,7 +559,7 @@ var app = new Vue(
         phone: [],
         address: [{}],
         child: [],
-        form_files: [],
+        attachment: [],
       },
       uploading_forms: [],
     },
@@ -572,14 +572,13 @@ var app = new Vue(
 
       upload_form_file: function(e) {
         console.log(e);
-        var file_name = e.target.files[0].name;
-        if(this.uploading_forms.indexOf(file_name) != -1
-           || this.household.form_files.indexOf(file_name) != -1){
-          alert("Error: an attachment named " + file_name + "already exists");
+        var file = e.target.files[0];
+        if (!file) {
           return;
         }
+        var file_name = file.name;
         var data = new FormData();
-        data.append("file", e.target.files[0]);
+        data.append("file", file);
         this.uploading_forms.push(file_name);
         $(e.target).val('');
         var self = this;
@@ -602,7 +601,7 @@ var app = new Vue(
           success: function(res){
             if (res.ok) {
               self.uploading_forms.$remove(file_name);
-              self.household.form_files.push(file_name);
+              self.household.attachment.push({ path: res.path });
             } else {
               fail(res.error || "unknown error");
             }
