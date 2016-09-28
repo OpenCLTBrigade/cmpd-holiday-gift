@@ -38,7 +38,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
     ]);
     Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
-    Route::get('upload_household_form_file', ['uses' => 'HouseHoldController@upload_attachment']);
+    Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
 });
 
 // Admin routes

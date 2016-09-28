@@ -492,7 +492,7 @@
       </div>
     </div>
 
-  <div class="box box-danger" v-if="household.id">
+  <div class="box box-danger">
     <div class="box-header with-border">
       <h1 class="box-title">Scanned Forms</h1>
     </div>
@@ -558,8 +558,10 @@ var app = new Vue(
       household: {
         phone: [],
         address: [{}],
-        child: []
-      }
+        child: [],
+        form_files: [],
+      },
+      uploading_forms: [],
     },
 
     created: function() {
@@ -569,6 +571,7 @@ var app = new Vue(
     methods: {
 
       upload_form_file: function(e) {
+        console.log(e);
         var file_name = e.target.files[0].name;
         if(this.uploading_forms.indexOf(file_name) != -1
            || this.household.form_files.indexOf(file_name) != -1){
@@ -580,16 +583,32 @@ var app = new Vue(
         this.uploading_forms.push(file_name);
         $(e.target).val('');
         var self = this;
+        var fail = function(msg) {
+          msg = "Error uploading file '" + file_name + "': " + msg;
+          alert(msg);
+          console.log(msg);
+          self.uploading_forms.$remove(file_name);
+        }
         $.ajax({
           url: "/api/upload_household_form_file",
           data: data,
           cache: false,
           contentType: false,
           processData: false,
-          type: 'PUT',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          },
+          type: 'POST',
           success: function(res){
-            self.uploading_forms.$remove(file_name);
-            self.household.form_files.push(file_name);
+            if (res.ok) {
+              self.uploading_forms.$remove(file_name);
+              self.household.form_files.push(file_name);
+            } else {
+              fail(res.error || "unknown error");
+            }
+          },
+          error: function(xhr, type, errmsg) {
+            fail(type + ": " + errmsg);
           }
         });
       },

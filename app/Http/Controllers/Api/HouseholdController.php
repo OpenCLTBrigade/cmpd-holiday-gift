@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Base\Controllers\AdminController;
 
+use Storage;
+
 class HouseholdController extends AdminController
 {
     public function show($id)
@@ -77,10 +79,12 @@ class HouseholdController extends AdminController
     }
 
     public function upload_attachment(Request $request) {
-        $file = request->file('file');
+        $file = $request->file('file');
         if(!$file->isValid()){
             return [ "error" => $file->getErrorMessage() ];
         }
-        $file->store(TODO_user_id, "forms");
+        // TODO: check return value
+        Storage::disk("forms")->put("user-" . Auth::user()->id . "/" . $file->getClientOriginalName(), fopen($file->getPathName(), "r"));
+        return [ "ok" => true ];
     }
 }
