@@ -502,7 +502,9 @@
           <label class="control-label">Existing Files</label>
           <div v-for="attachment in household.attachment">
             <span class="filename">
-              @{{ attachment.path.split('_')[1] }}
+              <a href="/admin/household_attachment/@{{attachment.id}}">
+                @{{ attachment.path.split('_')[1] }}
+              </a>
             </span>
             {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
           </div>

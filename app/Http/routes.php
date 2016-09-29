@@ -67,6 +67,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
 
+    Route::resource('household_attachment', 'HouseholdAttachmentController', ['only' => ['show']]);
+
     // Household Routes
     Route::resource('household', 'HouseholdController',
     [
