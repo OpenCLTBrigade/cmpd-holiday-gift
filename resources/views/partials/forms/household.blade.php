@@ -297,7 +297,7 @@
 
           <label class="control-label">Child receives free or reduced lunch?</label>
           <select class="form-control" v-model="record.free_or_reduced_lunch">
-            <option value="" selected="selected">==== Select ====</option>
+            <option value="">==== Select ====</option>
             <option value="Y">Yes</option>
             <option value="N">No</option>
           </select>
@@ -351,7 +351,8 @@
 
             <label class="control-label">Bike style</label>
             <select class="form-control" v-model="record.bike_style">
-              <option value="" selected="selected">==== Select ====</option>
+              <option value="">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
               <option value="Mountain">Mountain Bike</option>
               <option value="BMX">BMX Bike</option>
             </select>
@@ -365,7 +366,7 @@
 
             <label class="control-label">Bike size</label>
             <select class="form-control" v-model="record.bike_size">
-              <option value="" selected="selected">==== Select ====</option>
+              <option value="">==== Select ====</option>
               <option value="Tricycle">Tricycle</option>
               <option value='12” Bicycle'>12” Bicycle</option>
               <option value='16” Bicycle'>16” Bicycle</option>

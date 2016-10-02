@@ -46,7 +46,7 @@ class Household extends Model
         # Check \Auth::user() to fix db seeder
         if (\Auth::user() && !\Auth::user()->hasRole("admin"))
         {
-            static::addGlobalScope('age', function(\Illuminate\Database\Eloquent\Builder $builder) {
+            static::addGlobalScope('own_records', function(\Illuminate\Database\Eloquent\Builder $builder) {
                 $builder->where('nominator_user_id', '=', \Auth::user()->id);
             });
         }
