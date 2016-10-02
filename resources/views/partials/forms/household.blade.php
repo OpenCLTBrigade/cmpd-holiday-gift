@@ -299,7 +299,7 @@
 
           <label class="control-label">Child receives free or reduced lunch?</label>
           <select class="form-control" v-model="record.free_or_reduced_lunch">
-            <option value="" selected="selected">==== Select ====</option>
+            <option value="">==== Select ====</option>
             <option value="Y">Yes</option>
             <option value="N">No</option>
           </select>
@@ -353,7 +353,8 @@
 
             <label class="control-label">Bike style</label>
             <select class="form-control" v-model="record.bike_style">
-              <option value="" selected="selected">==== Select ====</option>
+              <option value="">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
               <option value="Mountain">Mountain Bike</option>
               <option value="BMX">BMX Bike</option>
             </select>
@@ -367,7 +368,7 @@
 
             <label class="control-label">Bike size</label>
             <select class="form-control" v-model="record.bike_size">
-              <option value="" selected="selected">==== Select ====</option>
+              <option value="">==== Select ====</option>
               <option value="Tricycle">Tricycle</option>
               <option value='12” Bicycle'>12” Bicycle</option>
               <option value='16” Bicycle'>16” Bicycle</option>
@@ -493,6 +494,43 @@
       <!-- @{{ $data | json }} -->
       </div>
     </div>
+
+  <div class="box box-danger">
+    <div class="box-header with-border">
+      <h1 class="box-title">Scanned Forms</h1>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <label class="control-label">Existing Files</label>
+          <div v-for="attachment in household.attachment">
+            <span class="filename">
+              <a href="/admin/household_attachment/@{{attachment.id}}">
+                @{{ attachment.path.split('_')[1] }}
+              </a>
+            </span>
+            {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
+          </div>
+          <div v-for="file_name in uploading_forms">
+            <span class="filename">
+              @{{ file_name }} (uploading...)
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <div class="form-group">
+            <label class="control-label">Upload File</label>
+            <input type="file" class="form-control" v-on:blur="upload_form_file">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /box-body -->
+  </div>
+  <!-- /box-primary -->
+
     <button class="btn addbtn" v-on:click="doSave" :disabled="loading || saving">Save Draft</button>
     <button class="btn addbtn" :disabled="loading || saving">Submit Nomination</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
@@ -525,8 +563,10 @@ var app = new Vue(
       household: {
         phone: [],
         address: [{}],
-        child: []
-      }
+        child: [],
+        attachment: [],
+      },
+      uploading_forms: [],
     },
 
     created: function() {
@@ -534,6 +574,49 @@ var app = new Vue(
     },
 
     methods: {
+
+      upload_form_file: function(e) {
+        console.log(e);
+        var file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        var file_name = file.name;
+        var data = new FormData();
+        data.append("file", file);
+        this.uploading_forms.push(file_name);
+        $(e.target).val('');
+        var self = this;
+        var fail = function(msg) {
+          msg = "Error uploading file '" + file_name + "': " + msg;
+          alert(msg);
+          console.log(msg);
+          self.uploading_forms.$remove(file_name);
+        }
+        $.ajax({
+          url: "/api/upload_household_form_file",
+          data: data,
+          cache: false,
+          contentType: false,
+          processData: false,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          },
+          type: 'POST',
+          success: function(res){
+            if (res.ok) {
+              self.uploading_forms.$remove(file_name);
+              self.household.attachment.push({ path: res.path });
+            } else {
+              fail(res.error || "unknown error");
+            }
+          },
+          error: function(xhr, type, errmsg) {
+            fail(type + ": " + errmsg);
+          }
+        });
+      },
+
       address_on_blur: function(e)
       {
         var geocoder= new google.maps.Geocoder(); // TODO: make global?

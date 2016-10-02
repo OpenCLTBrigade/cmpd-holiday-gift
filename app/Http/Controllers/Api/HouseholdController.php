@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Base\Controllers\AdminController;
 
+use Storage;
+
 class HouseholdController extends AdminController
 {
     public function show($id)
     {
-        return \App\Household::with("child", "address", "phone")->where("id", "=", $id)->get();
+        return \App\Household::with("child", "address", "phone", "attachment")->where("id", "=", $id)->get();
     }
 
     /**
@@ -38,7 +40,8 @@ class HouseholdController extends AdminController
               [
                 "Child" => $request->input("child"),
                 "HouseholdAddress"  => $request->input("address"),
-                "HouseholdPhone"  => $request->input("phone")
+                "HouseholdPhone"  => $request->input("phone"),
+                "HouseholdAttachment" => $request->input("attachment"),
               ],
               "household_id",
               $id
@@ -61,7 +64,8 @@ class HouseholdController extends AdminController
             [
                 "Child" => $request->input("child"),
                 "HouseholdAddress"  => $request->input("address"),
-                "HouseholdPhone"  => $request->input("phone")
+                "HouseholdPhone"  => $request->input("phone"),
+                "HouseholdAttachment" => $request->input("attachment"),
             ],
             "household_id",
             $id
@@ -76,4 +80,16 @@ class HouseholdController extends AdminController
         ];
     }
 
+    public function upload_attachment(Request $request) {
+        $file = $request->file('file');
+        if (!$file->isValid()) {
+            return ["error" => $file->getErrorMessage()];
+        }
+        $path = "user-" . Auth::user()->id . "/" . md5_file($file->getPathName()) . "_" . $file->getClientOriginalName();
+        $res = Storage::disk("forms")->put($path, fopen($file->getPathName(), "r"));
+        if (!$res) {
+            return ["error" => "failed"];
+        }
+        return ["ok" => true, "path" => $path];
+    }
 }

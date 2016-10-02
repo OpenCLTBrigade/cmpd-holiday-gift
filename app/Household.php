@@ -32,6 +32,7 @@ class Household extends Model
 
     protected $appends = [
         'nominator_name',
+        'form_files',
     ];
 
 //    protected $hidden = [
@@ -45,7 +46,7 @@ class Household extends Model
         # Check \Auth::user() to fix db seeder
         if (\Auth::user() && !\Auth::user()->hasRole("admin"))
         {
-            static::addGlobalScope('age', function(\Illuminate\Database\Eloquent\Builder $builder) {
+            static::addGlobalScope('own_records', function(\Illuminate\Database\Eloquent\Builder $builder) {
                 $builder->where('nominator_user_id', '=', \Auth::user()->id);
             });
         }
@@ -84,6 +85,10 @@ class Household extends Model
         return $this->hasMany("\App\HouseholdPhone");
     }
 
+    public function attachment() {
+        return $this->hasMany("\App\HouseholdAttachment");
+    }
+
     public function getNominatorNameAttribute() {
         return $this->nominator->name_first . " " . $this->nominator->name_last;
     }
@@ -94,5 +99,9 @@ class Household extends Model
 
     public function getUpdatedAtAttribute($value) {
         return date("M j, Y", strtotime($value));
+    }
+
+    public function getFormFilesAttribute() {
+        return array("foo", "bar");
     }
 }

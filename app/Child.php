@@ -44,10 +44,6 @@ class Child extends Model
         "preferred_contact_method"
     ];
 
-    protected $appends = [
-        'age'
-    ];
-
     public function household()
     {
         return $this->belongsToOne("Household");

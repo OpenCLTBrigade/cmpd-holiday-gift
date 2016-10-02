@@ -38,6 +38,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
     ]);
     Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
+    Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
 });
 
 // Admin routes
@@ -65,6 +66,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('user', 'UserController');
     Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
+
+    Route::resource('household_attachment', 'HouseholdAttachmentController', ['only' => ['show']]);
 
     // Household Routes
     Route::resource('household', 'HouseholdController',
