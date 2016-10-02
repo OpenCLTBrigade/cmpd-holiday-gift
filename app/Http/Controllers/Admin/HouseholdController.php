@@ -54,10 +54,6 @@ class HouseholdController extends AdminController
     public function edit($id)
     {
         $household = Household::findOrFail($id);
-			  //IMPORTANT: LOAD THE ATTRIBUTE WHEN ADDING TO FORM
-        //$household->child;
-        //$household->address;
-				//$household->phone;
         return $this->viewPath("edit", $household);
     }
 
@@ -67,18 +63,10 @@ class HouseholdController extends AdminController
     public function update($id, HouseholdRequest $request)
     {
         $household = Household::findOrFail($id);
-		$this->upsertAll(["Child" => $request['child'],
+		    $this->upsertAll(["Child" => $request['child'],
 						"HouseholdAddress"  => $request['address'],
 						"HouseholdPhone"  => $request['phone']], "household_id", $household['id']);
         return $this->saveFlashRedirect($household, $request);
-    }
-
-    /**
-     * Remove the specified user from storage.
-     */
-    public function destroy(Household $household)
-    {
-        # TODO: Not sure we want to do this... :S
     }
 
     public function create() {
