@@ -665,7 +665,7 @@ var app = new Vue(
                 {
                   var update = {};
                   update[type] = addressElements[i].long_name;
-                  self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
+                  self.household.address.$set(0, Object.assign({}, self.household.address[0], update));
 
                 }
               }
