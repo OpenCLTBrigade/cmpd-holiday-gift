@@ -840,9 +840,11 @@ var app = new Vue(
       {
         var  self = this;
         self.loading = true;
+        $("#loading_overlay").show();
         $.get("/api/household/" + id, {}, function (e) {
           self.loading = false;
           self.household = e[0];
+          $("#loading_overlay").hide();
         });
       }
     }

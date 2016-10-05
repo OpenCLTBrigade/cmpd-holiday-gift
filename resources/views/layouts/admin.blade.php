@@ -17,6 +17,19 @@
     <script src="{{ url( 'js/admin-custom.js' ) }}" type="text/javascript"></script>
 </head>
 <body class="skin-blue">
+<div id="loading_overlay" style="width:100%; min-height:100%; background-color:#000; opacity: 0.4; position:fixed; z-index:40000; display:none;">
+    <div style="position: absolute;
+        left: 50%;
+        top: 50%;
+        color: #FFF;
+        text-align: center;"
+    >
+        <i class="fa fa-spinner fa-pulse fa-5x">
+        </i>
+        <br/>
+        Just a moment!
+    </div>
+</div>
 <div class="wrapper">
     @include('partials.admin.top')
     @include('partials.admin.sidebar')
