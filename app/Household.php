@@ -21,7 +21,8 @@ class Household extends Model
         "gender",
         "email",
         "last4ssn",
-        "preferred_contact_method"
+        "preferred_contact_method",
+        "draft"
     ];
 
     protected $encrypts = [
