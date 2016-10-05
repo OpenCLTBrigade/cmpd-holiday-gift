@@ -49,4 +49,10 @@ class Child extends Model
         return $this->belongsToOne("Household");
     }
 
+    public function getAgeAttribute()
+    {
+      $age = \Carbon\Carbon::parse($this->dob);
+      return $age->diffInYears();
+    }
+
 }

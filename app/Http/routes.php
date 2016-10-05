@@ -1,12 +1,16 @@
 <?php
 
+/*
+ * Routes used for logging in, registration, etc.
+ */
 Route::group(['middleware' => 'web'], function () {
-    // Application routes
+    // Redirect / to /admin
     Route::group(['namespace' => 'Application'], function () {
         Route::get('/', function(){
-			return redirect('admin');
-		});
+			       return redirect('admin');
+		         });
     });
+
     // Auth routes
     Route::group(['namespace' => 'Auth'], function () {
         Route::group(['prefix' => 'auth'], function () {
@@ -27,7 +31,10 @@ Route::group(['middleware' => 'web'], function () {
     });
 });
 
-// API routes
+/*
+ * API Routes
+ * Used for saving nomination forms and stuff
+ */
 Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', 'admin']], function () {
     Route::resource("user", 'UserController');
     Route::resource("household", 'HouseholdController',
@@ -38,6 +45,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
     ]);
     Route::get('affiliation/cms', 'AffiliationController@cms');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
+    Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
 });
 
 // Admin routes
@@ -56,7 +64,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('category', 'CategoryController');
     Route::resource('language', 'LanguageController');
     Route::resource('page', 'PageController');
-    
+
     // User Routes
     Route::get('user/pending', ['as' => 'admin.user.pending', 'uses' => 'UserController@pending']);
     Route::get('user/pending/{id}/approve', ['as' => 'admin.user.pending.approve', 'uses' => 'UserController@approve']);
@@ -65,6 +73,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('user', 'UserController');
     Route::post('user/search', 'UserController@search');
     Route::get('user/toggleActive/{id}', ['as' => 'admin.user.toggleActive', 'uses' => 'UserController@toggleActive']);
+
+    Route::resource('household_attachment', 'HouseholdAttachmentController', ['only' => ['show']]);
 
     // Household Routes
     Route::resource('household', 'HouseholdController',
@@ -76,9 +86,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
         'create'
       ]
     ]);
-    Route::post('household/search', 'HouseholdController@search');
+
+    Route::post('household/search', 'HouseholdController@search'); // Used for the table (household.index)
 
     Route::resource('affiliation', 'AffiliationController');
-    Route::post('affiliation/search', 'AffiliationController@search');
+    Route::post('affiliation/search', 'AffiliationController@search'); // Used for the table (affiliation.index)
 
 });

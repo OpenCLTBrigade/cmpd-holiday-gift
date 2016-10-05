@@ -31,8 +31,15 @@ class ChildTableSeeder extends Seeder
                     "reason_for_nomination" => $faker->text(200),
                     "school_id" => $faker->numberBetween(60,160),
                     "bike_want" => $faker->randomElement(['Y', 'N']),
-                    "bike_size" => $faker->randomElement(['12', '24']),
-                    "bike_style" => $faker->randomElement(["A", "B", "C"]),
+                    "bike_size" => $faker->randomElement([
+                      'Tricycle',
+                      '12” Bicycle',
+                      '16” Bicycle',
+                      '20” Coaster Brake Bicycle',
+                      '20” Geared Bicycle',
+                      '24” Geared Bicycle'
+                    ]),
+                    "bike_style" => $faker->randomElement(["Mountain", "BMX", "Tricycle"]),
                     "clothes_want" => $faker->randomElement(['Y', 'N']),
                     "clothes_size_shirt" => $faker->randomElement(['S', 'M', 'L']),
                     "clothes_size_pants" => $faker->randomElement(['S', 'M', 'L']),

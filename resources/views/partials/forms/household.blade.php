@@ -14,15 +14,15 @@
       <div class="row">
 
         <div class="col-md-6 col-sm-12">
-          <div class="form-group">
-            <label for="name-first">First Name</label>
+          <div class="form-group required">
+            <label>First Name</label>
             <input type="text" class="form-control" id="name-first" v-model="household.name_first">
           </div>
         </div>
 
         <div class="col-md-6 col-sm-12">
-          <div class="form-group">
-            <label for="name-last">Last Name</label>
+          <div class="form-group required">
+            <label class="required">Last Name</label>
             <input type="text" class="form-control" id="name-last" v-model="household.name_last">
           </div>
         </div>
@@ -33,7 +33,7 @@
         <!-- Do we want an "Other", "Prefer Not to Specify" or similar gender option? -->
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="gender" class="control-label">Gender</label>
             <select class="form-control" id="gender" v-model="household.gender" name="gender">
               <option value="" selected="selected">==== Select ====</option>
@@ -44,14 +44,14 @@
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="dob" class="control-label">Date of Birth</label>
             <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob">
           </div>
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label class="control-label">Last four digits of SSN</label>
             <input class="form-control" type="number" v-model="household.last4ssn">
           </div>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="col-md-4 col-sm-12">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
             <input class="form-control" v-model="household.race" name="race" type="text" id="race">
             </in>
@@ -104,15 +104,15 @@
 
   <div class="box box-danger">
     <div class="box-header with-border">
-      <h1 class="box-title">Addresses</h1>
+      <h1 class="box-title">Delivery Address</h1>
     </div>
 
-    <!-- ADDRESS SECTION -->
+    <!-- ADDRESS SECTION  -->
     <div class="box-body">
 
       <div class="row" v-for="address in household.address">
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Type</label>
             <select class="form-control" v-model="address.type">
@@ -124,7 +124,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Street Address</label>
             <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
@@ -138,21 +138,21 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">City</label>
             <input class="form-control" type="text" v-model="address.address_city">
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">State</label>
             <input class="form-control" type="text" v-model="address.address_state">
           </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">ZIP Code</label>
             <input class="form-control" type="text" v-model="address.address_zip">
@@ -161,12 +161,14 @@
         <hr>
       </div>
 
+      <!-- Can accomodate multiple addresses but is currently limiting users to 1 address
       <div class="row">
         <div class="col-xs-12">
           <button class="btn addbtn" v-on:click="addAddress">Add Address</button>
           <button class="btn btn-danger" v-on:click="removeAddress">Remove Address</button>
         </div>
       </div>
+    -->
 
     </div>
 
@@ -193,7 +195,7 @@
         <div class="form-group">
 
           <div class="col-xs-12 col-sm-4">
-            <div class="form-group">
+            <div class="form-group required">
 
               <label class="control-label">Type</label>
               <select class="form-control" v-model="phone.phone_type">
@@ -204,7 +206,7 @@
             </div>
           </div>
           <div class="col-xs-12 col-sm-8">
-            <div class="form-group">
+            <div class="form-group required">
 
               <label class="control-label">Phone</label>
               <input class="form-control" type="text" v-model="phone.phone_number">
@@ -244,7 +246,7 @@
       <div class="row"  >
 
       <div class="col-xs-12 col-sm-6">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">First Name</label>
           <input class="form-control" type="text" v-model="record.name_first">
@@ -254,7 +256,7 @@
 
       <div class="col-xs-12 col-sm-6">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Last Name</label>
           <input class="form-control" type="text" v-model="record.name_last">
@@ -270,7 +272,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Ethnicity</label>
           <input class="form-control" type="text" v-model="record.race">
@@ -282,7 +284,7 @@
 
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Last four digits of SSN</label>
           <input class="form-control" type="text" v-model="record.last4ssn">
@@ -293,11 +295,11 @@
       </div>
       <div class="col-xs-12 col-sm-4">
 
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Child receives free or reduced lunch?</label>
           <select class="form-control" v-model="record.free_or_reduced_lunch">
-            <option value="" selected="selected">==== Select ====</option>
+            <option value="">==== Select ====</option>
             <option value="Y">Yes</option>
             <option value="N">No</option>
           </select>
@@ -310,12 +312,10 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
-          <label class="control-label">Dob</label>
+          <label class="control-label">Date of Birth</label>
           <input class="form-control" v-model="record.dob" type="date">
-
-
 
         </div>
       </div>
@@ -323,9 +323,9 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
-          <label class="control-label">School Label</label>
+          <label class="control-label">School Name</label>
           <select class="form-control" v-model="record.school_id">
             <option value='@{{ school.id }}' v-for='school in schools'>
               @{{ school.name }}
@@ -346,25 +346,37 @@
       </div>
     </div>
 
-    <div id="bike-options" v-show="record.bike_want == 'Y'">
+    <div id="bike-options" v-if="record.bike_want == 'Y'">
       <div class="row">
         <div class="col-xs-12">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Bike style</label>
-            <input class="form-control" type="text" v-model="record.bike_style">
-
-
+            <select class="form-control" v-model="record.bike_style">
+              <option value="">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
+              <option value="Mountain">Mountain Bike</option>
+              <option value="BMX">BMX Bike</option>
+            </select>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <div class="form-group">
+          <div class="form-group required">
 
             <label class="control-label">Bike size</label>
-            <input class="form-control" type="text" v-model="record.bike_size">
+            <select class="form-control" v-model="record.bike_size">
+              <option value="">==== Select ====</option>
+              <option value="Tricycle">Tricycle</option>
+              <option value='12” Bicycle'>12” Bicycle</option>
+              <option value='16” Bicycle'>16” Bicycle</option>
+              <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
+              <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
+              <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
+            </select>
+
             <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">Not sure? Click for size guide.</a>
 
           </div>
@@ -460,7 +472,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="form-group">
+        <div class="form-group required">
 
           <label class="control-label">Reason for nomination</label>
           <textarea class="form-control" cols="50" rows="10" v-model="record.reason_for_nomination"></textarea>
@@ -480,9 +492,49 @@
         <button class="btn addbtn" v-on:click="addChild">Add Child</button>
         <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
       <!-- @{{ $data | json }} -->
+      </div>
     </div>
+
+  <div class="box box-danger">
+    <div class="box-header with-border">
+      <h1 class="box-title">Scanned Forms</h1>
     </div>
-  <button class="btn addbtn" v-on:click="doSave">Save Nominee</button>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <label class="control-label">Existing Files</label>
+          <div v-for="attachment in household.attachment">
+            <span class="filename">
+              <a href="/admin/household_attachment/@{{attachment.id}}">
+                @{{ attachment.path.split('_')[1] }}
+              </a>
+            </span>
+            {{-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> --}}
+          </div>
+          <div v-for="file_name in uploading_forms">
+            <span class="filename">
+              @{{ file_name }} (uploading...)
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <div class="form-group">
+            <label class="control-label">Upload File</label>
+            <input type="file" class="form-control" v-on:blur="upload_form_file">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /box-body -->
+  </div>
+  <!-- /box-primary -->
+
+    <button class="btn addbtn" v-show="household.draft == 'Y'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
+    <button class="btn addbtn" v-show="household.draft == 'Y'" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
+    <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
+    <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
   </div>
 
 
@@ -499,19 +551,23 @@
 <script src="http://cdn.jsdelivr.net/vue/1.0.25/vue.js"></script>
 
 <script>
-//                   MAIN VUE CODE
+//                   MAIN VUE CODE'
 
 var app = new Vue(
   {
     el: '#app',
 
     data: {
+      loading: false,
+      saving: false,
       schools: [],
       household: {
         phone: [],
-        address: [],
-        child: []
-      }
+        address: [{}],
+        child: [],
+        attachment: [],
+      },
+      uploading_forms: [],
     },
 
     created: function() {
@@ -519,6 +575,49 @@ var app = new Vue(
     },
 
     methods: {
+
+      upload_form_file: function(e) {
+        console.log(e);
+        var file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        var file_name = file.name;
+        var data = new FormData();
+        data.append("file", file);
+        this.uploading_forms.push(file_name);
+        $(e.target).val('');
+        var self = this;
+        var fail = function(msg) {
+          msg = "Error uploading file '" + file_name + "': " + msg;
+          alert(msg);
+          console.log(msg);
+          self.uploading_forms.$remove(file_name);
+        }
+        $.ajax({
+          url: "/api/upload_household_form_file",
+          data: data,
+          cache: false,
+          contentType: false,
+          processData: false,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          },
+          type: 'POST',
+          success: function(res){
+            if (res.ok) {
+              self.uploading_forms.$remove(file_name);
+              self.household.attachment.push({ path: res.path });
+            } else {
+              fail(res.error || "unknown error");
+            }
+          },
+          error: function(xhr, type, errmsg) {
+            fail(type + ": " + errmsg);
+          }
+        });
+      },
+
       address_on_blur: function(e)
       {
         var geocoder= new google.maps.Geocoder(); // TODO: make global?
@@ -556,7 +655,7 @@ var app = new Vue(
               /// at this point:
               // addressElements = {"locality" : "...city...", "administrative_area_level_1": "...state...", "postal_code": "...", ... }
 
-              var address_index = $(e.target).parentsUntil('.box').last().index() - 1;
+              var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
               console.log('index', address_index);
 
               console.log(self);
@@ -567,7 +666,7 @@ var app = new Vue(
                 {
                   var update = {};
                   update[type] = addressElements[i].long_name;
-                  self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
+                  self.household.address.$set(0, Object.assign({}, self.household.address[0], update));
 
                 }
               }
@@ -648,18 +747,42 @@ var app = new Vue(
         this.household.child.pop();
       },
 
-      doSave: function()
+      doSave: function(draft)
       {
+        if (this.saving === true)
+          return; // Already in the middle of saving >:(
+
+        this.saving = true;
+
+        // Refuse to submit if required fields are empty, and highlight missing fields
+        // Mark a field as required by adding the `required' class to the containing `form-group'
+        var missing = false;
+        $('.form-group.required input, .form-group.required select, .form-group.required textarea').each(function(i, el){
+          if(!$(el).val()){
+            missing = true;
+            $(el).addClass('missing-field');
+          }else{
+            $(el).removeClass('missing-field');
+          }
+        });
+        if(missing){
+          this.saving = false;
+          alert("Could not save: some required fields are empty");
+          return;
+        }
+
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
         var self = this;
+        this.household.draft = (draft === true) ? "Y" : "N";
         var method = (id != null) ? "PUT" : "POST"
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);
         console.log("url is " + url);
         console.log("method is " + method);
+        console.log("Draft saved to " + this.household.draft);
 
         $.ajax({
           url: url,
@@ -671,6 +794,7 @@ var app = new Vue(
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
           },
           success: function(data) {
+            self.saving = false;
             if (data.ok)
             {
               self.household = data.household[0];
@@ -685,6 +809,7 @@ var app = new Vue(
             }
           },
           error: function(errMsg) {
+            self.saving = false;
             alert("Unexpected error. Please review your form for missing or invalid fields, try again later or contact an administrator");
             console.log(errMsg);
           }
@@ -717,8 +842,12 @@ var app = new Vue(
       fetchRecord: function (id)
       {
         var  self = this;
+        self.loading = true;
+        $("#loading_overlay").show();
         $.get("/api/household/" + id, {}, function (e) {
+          self.loading = false;
           self.household = e[0];
+          $("#loading_overlay").hide();
         });
       }
     }

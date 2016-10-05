@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                     "email"         => $faker->email,
                     'password'      => 'admin',
                     'nomination_limit'=> 5,
-                    'active' => 'Y',
+                    'active' => 'N',
                     'confirmed_email' => 'Y',
                     'approved' => 'Y'
                 ]

@@ -9,11 +9,11 @@
         <!-- Left side -->
         <div class="box-profile col-md-6">
           <ul class="list-group list-group-unbordered">
-            <li class="list-group-item"><b>Mail</b> <a class="pull-right">{{ $object->email  }}</a></li>
-            <li class="list-group-item"><b>Gender</b> <a class="pull-right">{{ $object->gender }}</a></li>
-            <li class="list-group-item"><b>Date of Birth</b> <a class="pull-right">{{ $object->dob }}</a></li>
-            <li class="list-group-item"><b>Last 4 SSN</b> <a class="pull-right">{{ $object->last4ssn }}</a></li>
-            <li class="list-group-item"><b>Preferred Contact Method</b> <a class="pull-right">{{ $object->preferred_contact_method }}</a></li>
+            <li class="list-group-item"><b>Mail</b> <span class="pull-right">{{ $object->email  }}</span></li>
+            <li class="list-group-item"><b>Gender</b> <span class="pull-right">{{ $object->gender }}</span></li>
+            <li class="list-group-item"><b>Date of Birth</b> <span class="pull-right">{{ $object->dob }}</span></li>
+            <li class="list-group-item"><b>Last 4 SSN</b> <span class="pull-right">{{ $object->last4ssn }}</span></li>
+            <li class="list-group-item"><b>Preferred Contact Method</b> <span class="pull-right">{{ $object->preferred_contact_method }}</span></li>
           </ul>
         </div>
         <!-- Right side -->
@@ -21,17 +21,16 @@
           <div class="box-profile col-md-12">
             @foreach ($object->address as $address)
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item"><b>Address Street</b><a class="pull-right">{{$address->address_street}}</a></li>
-                <li class="list-group-item"><b>Address Street 2</b><a class="pull-right">{{$address->address_street2}}</a></li>
-                <li class="list-group-item"><b>City</b><a class="pull-right">{{$address->address_city}}</a></li>
-                <li class="list-group-item"><b>State</b><a class="pull-right">{{$address->address_state}}</a></li>
-                <li class="list-group-item"><b>Zip</b><a class="pull-right">{{$address->address_zip}}</a></li>
+                <li class="list-group-item"><b>Address Street</b><span class="pull-right">{{$address->address_street}}</span></li>
+                <li class="list-group-item"><b>Address Street 2</b><span class="pull-right">{{$address->address_street2}}</span></li>
+                <li class="list-group-item"><b>City</b><span class="pull-right">{{$address->address_city}}</span></li>
+                <li class="list-group-item"><b>State</b><span class="pull-right">{{$address->address_state}}</span></li>
+                <li class="list-group-item"><b>Zip</b><span class="pull-right">{{$address->address_zip}}</span></li>
               </ul>
             @endforeach
             @foreach ($object->phone as $household_phone)
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item"><b>Type</b> <a class="pull-right">{{$household_phone->phone_type}}</a></li>
-                <li class="list-group-item"><b>Number</b> <a class="pull-right">{{$household_phone->phone_number}}</a></li>
+                <li class="list-group-item"><b>Contact ({{$household_phone->phone_type}})</b> <span class="pull-right">{{$household_phone->phone_number}}</span></li>
               </ul>
             @endforeach
           </div>
@@ -45,31 +44,69 @@
             @foreach ($object->child as $child)
             <div class="box-profile col-md-6">
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item"><b>First Name</b><a class="pull-right">{{$child->name_first}}</a></li>
-                <li class="list-group-item"><b>Middle Name</b><a class="pull-right">{{$child->name_middle}}</a></li>
-                <li class="list-group-item"><b>Last Name</b><a class="pull-right">{{$child->name_last}}</a></li>
-                <li class="list-group-item"><b>Date of Birth</b><a class="pull-right">{{$child->dob}}</a></li>
-                <li class="list-group-item"><b>Race</b><a class="pull-right">{{$child->race}}</a></li>
-                <li class="list-group-item"><b>Last 4 SSN</b><a class="pull-right">{{$child->last4ssn}}</a></li>
-                <li class="list-group-item"><b>Free or Reduced Lunch</b><a class="pull-right">{{$child->free_or_reduced_lunch}}</a></li>
-                <li class="list-group-item"><b>Reason for Nomination</b><a class="pull-right">{{$child->reason_for_nomination}}</a></li>
-                <li class="list-group-item"><b>School Name</b><a class="pull-right">{{$child->school_name}}</a></li>
-                <li class="list-group-item"><b>School Address</b><a class="pull-right">{{$child->school_address}}</a></li>
-                <li class="list-group-item"><b>School Address 2</b><a class="pull-right">{{$child->school_address2}}</a></li>
-                <li class="list-group-item"><b>School City</b><a class="pull-right">{{$child->school_city}}</a></li>
-                <li class="list-group-item"><b>School State</b><a class="pull-right">{{$child->school_state}}</a></li>
-                <li class="list-group-item"><b>School Zip</b><a class="pull-right">{{$child->school_zip}}</a></li>
-                <li class="list-group-item"><b>School Phone</b><a class="pull-right">{{$child->school_phone}}</a></li>
-                <li class="list-group-item"><b>Bike Want</b><a class="pull-right">{{$child->bike_want}}</a></li>
-                <li class="list-group-item"><b>Bike Size</b><a class="pull-right">{{$child->bike_size}}</a></li>
-                <li class="list-group-item"><b>Bike Style</b><a class="pull-right">{{$child->bike_style}}</a></li>
-                <li class="list-group-item"><b>Clothes Want</b><a class="pull-right">{{$child->clothes_want}}</a></li>
-                <li class="list-group-item"><b>Shirt Size</b><a class="pull-right">{{$child->clothes_size_shirt}}</a></li>
-                <li class="list-group-item"><b>Pants Size</b><a class="pull-right">{{$child->clothes_pants_size}}</a></li>
-                <li class="list-group-item"><b>Shoe Size</b><a class="pull-right">{{$child->shoe_size}}</a></li>
-                <li class="list-group-item"><b>Favorite Color</b><a class="pull-right">{{$child->favorite_color}}</a></li>
-                <li class="list-group-item"><b>Interests</b><a class="pull-right">{{$child->interests}}</a></li>
-                <li class="list-group-item"><b>Additional Ideas</b><a class="pull-right">{{$child->additional_ideas}}</a></li>
+                <li class="list-group-item"><b>First Name</b><span class="pull-right">{{$child->name_first}}</span></li>
+                <li class="list-group-item"><b>Middle Name</b><span class="pull-right">{{$child->name_middle}}</span></li>
+                <li class="list-group-item"><b>Last Name</b><span class="pull-right">{{$child->name_last}}</span></li>
+                <li class="list-group-item"><b>Date of Birth</b><span class="pull-right">{{$child->dob}}</span></li>
+								<li class="list-group-item"><b>Age</b><span class="pull-right">{{$child->age}}</span></li>
+                <li class="list-group-item"><b>Ethnicity</b><span class="pull-right">{{$child->race}}</span></li>
+                <li class="list-group-item"><b>Last 4 SSN</b><span class="pull-right">{{$child->last4ssn}}</span></li>
+                <li class="list-group-item"><b>Free or Reduced Lunch</b><span class="pull-right">{{$child->free_or_reduced_lunch}}</span></li>
+                <li class="list-group-item">
+                  <b>Reason for Nomination</b>
+                  <p>
+                    {{$child->reason_for_nomination}}
+                  </p>
+                </li>
+                <li class="list-group-item"><b>School Name</b><span class="pull-right">{{$child->school_name}}</span></li>
+                <li class="list-group-item"><b>School Address</b><span class="pull-right">{{$child->school_address}}</span></li>
+                <li class="list-group-item"><b>School Address 2</b><span class="pull-right">{{$child->school_address2}}</span></li>
+                <li class="list-group-item"><b>School City</b><span class="pull-right">{{$child->school_city}}</span></li>
+                <li class="list-group-item"><b>School State</b><span class="pull-right">{{$child->school_state}}</span></li>
+                <li class="list-group-item"><b>School Zip</b><span class="pull-right">{{$child->school_zip}}</span></li>
+                <li class="list-group-item"><b>School Phone</b><span class="pull-right">{{$child->school_phone}}</span></li>
+                <li class="list-group-item">
+                  <b>Bike? </b>
+                  <span class="pull-right">
+                    @if ($child->bike_want == "Y")
+                      Yes
+                    @else
+                      No
+                    @endif
+                  </span>
+                </li>
+                @if ($child->bike_want == "Y")
+                <li class="list-group-item"><b>Bike Size</b><span class="pull-right">{{$child->bike_size}}</span></li>
+                <li class="list-group-item"><b>Bike Style</b><span class="pull-right">{{$child->bike_style}}</span></li>
+                @endif
+                <li class="list-group-item">
+                  <b>Clothes?</b>
+                  <span class="pull-right">
+                    @if ($child->clothes_want == "Y")
+                      Yes
+                    @else
+                      No
+                    @endif
+                  </span>
+                </li>
+                @if ($child->clothes_want)
+                <li class="list-group-item"><b>Shirt Size</b><span class="pull-right">{{$child->clothes_size_shirt}}</span></li>
+                <li class="list-group-item"><b>Pants Size</b><span class="pull-right">{{$child->clothes_pants_size}}</span></li>
+                <li class="list-group-item"><b>Shoe Size</b><span class="pull-right">{{$child->shoe_size}}</span></li>
+                <li class="list-group-item"><b>Favorite Color</b><span class="pull-right">{{$child->favorite_color}}</span></li>
+                @endif
+                <li class="list-group-item">
+                  <b>Interests</b>
+                  <p>
+                    {{$child->interests}}
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <b>Additional Ideas</b>
+                  <p>
+                    {{$child->additional_ideas}}
+                  </p>
+                </li>
               </ul>
             </div>
             @endforeach
