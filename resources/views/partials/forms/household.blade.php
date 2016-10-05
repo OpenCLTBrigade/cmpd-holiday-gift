@@ -531,8 +531,8 @@
   </div>
   <!-- /box-primary -->
 
-    <button class="btn addbtn" v-on:click="doSave" :disabled="loading || saving">Save Draft</button>
-    <button class="btn addbtn" :disabled="loading || saving">Submit Nomination</button>
+    <button class="btn addbtn" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
+    <button class="btn addbtn" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
   </div>
 
@@ -746,7 +746,7 @@ var app = new Vue(
         this.household.child.pop();
       },
 
-      doSave: function()
+      doSave: function(draft)
       {
         if (this.saving === true)
           return; // Already in the middle of saving >:(
@@ -774,12 +774,14 @@ var app = new Vue(
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
         var self = this;
+        this.household.draft = (draft === true) ? "Y" : "N";
         var method = (id != null) ? "PUT" : "POST"
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);
         console.log("url is " + url);
         console.log("method is " + method);
+        console.log("Draft saved to " + this.household.draft);
 
         $.ajax({
           url: url,
