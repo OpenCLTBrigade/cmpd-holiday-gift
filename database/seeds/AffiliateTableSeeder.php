@@ -15,6 +15,63 @@ class AffiliateTableSeeder extends Seeder
             "city": "Charlotte",
             "zip": "28205"
           },
+          
+          {
+            "name":"HQ",
+            "street":"601 E Trade St",
+            "phone":"",
+            "state": "NC",
+            "city": "Charlotte",
+            "zip": "28202"
+          },
+          {
+            "name":"Matthews",
+            "street":"1201 Crews Rd",
+            "phone":"",
+            "state": "NC",
+            "city": "Matthews",
+            "zip": "28105"
+          },
+          {
+            "name":"Huntersville",
+            "street":"9630 Julian Clark Ave",
+            "phone":"",
+            "state": "NC",
+            "city": "Huntersville",
+            "zip": "28078"
+          },
+          {
+            "name":"Mint Hill",
+            "street":"7151 Matthews-Mint Hill Rd",
+            "phone":"",
+            "state": "NC",
+            "city": "Mint Hill",
+            "zip": "28227"
+          },
+          {
+            "name":"Cornelius",
+            "street":"21440 Catawba Ave",
+            "phone":"",
+            "state": "NC",
+            "city": "Cornelius",
+            "zip": "28031"
+          },
+          {
+            "name":"Davidson",
+            "street":"S Main St",
+            "phone":"",
+            "state": "NC",
+            "city": "Davidson",
+            "zip": "28036"
+          },
+          {
+            "name": "Pineville",
+            "street": "427 Main St",
+            "phone": "",
+            "state": "NC",
+            "city": "Pineville",
+            "zip": "28134"
+          },
           {
             "name":"North Tryon",
             "captain":"Rob Dance",
