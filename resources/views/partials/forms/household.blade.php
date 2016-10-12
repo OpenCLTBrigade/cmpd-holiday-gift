@@ -82,8 +82,15 @@
         <div class="col-md-4 col-sm-12">
           <div class="form-group required">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
-            <input class="form-control" v-model="household.race" name="race" type="text" id="race">
-            </in>
+            <select class="form-control" id="race" v-model="household.race" name="race">
+              <option value="">==== Select ====</option>
+              <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+              <option value="Asian">Asian</option>
+              <option value="African American">African American</option>
+              <option value="Hispanic">Hispanic</option>
+              <option value="Pacific Islander">Pacific Islander</option>
+              <option value="White">White</option>
+            </select>
 
             <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
