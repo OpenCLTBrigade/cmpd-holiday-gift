@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@inject('affController', 'App\Http\Controllers\AffiliationController')
+@inject('affController', 'App\Http\Controllers\Api\AffiliationController')
 
 @section('title')
     {{ trans('auth.register.title') }} | {{ trans('admin.title') }}
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group has-feedback">
                 {!! Form::label('affiliation', trans('auth.register.affiliation')) !!}
-                {!! Form::select('affiliation_id', $affController->getAll(), null,  ['class' => 'form-control' ]) !!}
+                {!! Form::select('affiliation_id', $affController->cms(), null,  ['class' => 'form-control' ]) !!}
                 <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
