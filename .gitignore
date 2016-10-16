@@ -14,3 +14,4 @@ resources/assets/vendor
 vendor
 bower_components
 storage/forms/
+.DS_Store
