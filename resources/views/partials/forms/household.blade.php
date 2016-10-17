@@ -773,7 +773,7 @@ var app = new Vue(
         });
         if(!draft && missing){ // Don't require all fields if it's only a draft...
           this.saving = false;
-          alert("Could not save: some required fields are empty");
+          alert("Please enter all of the required fields before submitting your nomination.");
           return;
         }
 
