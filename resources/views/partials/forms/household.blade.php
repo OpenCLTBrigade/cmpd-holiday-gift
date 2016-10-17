@@ -701,10 +701,9 @@ var app = new Vue(
               }
               else
               {
-                self.household.address[address_index].cmpd_division = info.cmpd_division;
-                // self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
-
-                self.household.address[address_index].cmpd_response_area = info.cmpd_response_area;
+                self.household.address[0].cmpd_division = info.division;
+                self.household.address[0].cmpd_response_area = info.response_area;
+                console.log(info.division + " | " + info.response_area);
               }
             },
             error: function() {
@@ -772,7 +771,7 @@ var app = new Vue(
             $(el).removeClass('missing-field');
           }
         });
-        if(missing){
+        if(!draft && missing){ // Don't require all fields if it's only a draft...
           this.saving = false;
           alert("Could not save: some required fields are empty");
           return;
