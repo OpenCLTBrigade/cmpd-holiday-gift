@@ -36,6 +36,11 @@ class HouseholdController extends AdminController
         {
             $request['nominator_user_id'] = Auth::user()->id;
             $id = $this->createFlashParentRedirect(Household::class, $request);
+            if($request."draft" == "N" && $request."nomination_email_sent" == "N")
+            {
+                $this->sendNotification($request);
+                //change notification_email_sent to Y
+            }
             $this->upsertAll(
               [
                 "Child" => $request->input("child"),
@@ -60,6 +65,11 @@ class HouseholdController extends AdminController
     public function update($id, HouseholdRequest $request)
     {
         $household = Household::findOrFail($id);
+        if($household.draft == "N" && $household.nomination_email_sent == "N")
+        {
+            $this->sendNotification($request);
+            //change notification_email_sent to Y
+        }
         $this->upsertAll(
             [
                 "Child" => $request->input("child"),
@@ -91,5 +101,13 @@ class HouseholdController extends AdminController
             return ["error" => "failed"];
         }
         return ["ok" => true, "path" => $path];
+    }
+
+    public function sendNotification(Household $household) {
+        Mail::queue("email.nomination_submitted", [ "household" => $household ], function($message) use($household) {
+            $message->from(env("MAIL_FROM_ADDRESS"));
+            $message->to(env("NOMINATION_NOTICE_ADDRESS"));
+            $message->subject(env("NOMINATION_SUBJECT"));
+        });
     }
 }
