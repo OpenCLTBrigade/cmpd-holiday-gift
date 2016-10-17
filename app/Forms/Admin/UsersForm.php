@@ -31,7 +31,9 @@ class UsersForm extends AdminForm
 
             ->add('role', 'choice', [
                 'choices' => $roles,
-                'multiple' => false
+                'multiple' => false,
+                'label' => 'Access Level',
+                'selected' => $this->model->roles[0]->id
             ])
 
             ->add('nomination_limit', 'text', [
