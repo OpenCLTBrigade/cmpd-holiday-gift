@@ -1304,6 +1304,17 @@ class AffiliateTableSeeder extends Seeder
           }
             ]');
 
+
+        $this->command->info("Seeding Code for Charlotte");
+        \App\Affiliation::create([
+          "type" => "cfc",
+          "name"=> "Code for Charlotte",
+          "address_street" => "1000 NC Music Factory Blvd",
+          "address_city" => "Charlotte",
+          "address_state" => "NC",
+          "address_zip" => "28206"
+        ]);
+
         foreach ($cmpdStations as $station) {
             $this->command->info("Seeding CMPD Station {$station->name}");
             \App\Affiliation::create([
@@ -1317,7 +1328,6 @@ class AffiliateTableSeeder extends Seeder
             ]);
         }
 
-
         foreach ($cfdStations as $station) {
             $this->command->info("Seeing CFD Station {$station->name}");
             \App\Affiliation::create([
@@ -1330,7 +1340,6 @@ class AffiliateTableSeeder extends Seeder
                 "phone" => $station->phone
             ]);
         }
-
 
         foreach($cmsSchools as $school) {
             $this->command->info("Seeding CMS School {$school->name}");

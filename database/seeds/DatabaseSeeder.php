@@ -11,17 +11,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(SettingTableSeeder::class);
-        $this->call(LanguageTableSeeder::class);
+      // Always need these
+      $this->call(SettingTableSeeder::class);
+      $this->call(LanguageTableSeeder::class);
+      $this->call(RoleTableSeeder::class);
+      $this->call(PermissionTableSeeder::class);
+      $this->call(AffiliateTableSeeder::class);
 
-        // Project-specific seeders
-        $this->call(RoleTableSeeder::class);
-        $this->call(PermissionTableSeeder::class);
-        $this->call(AffiliateTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
-        $this->call(HouseholdTableSeeder::class);
-        $this->call(HouseholdAddressSeeder::class);
-        $this->call(HouseholdPhoneSeeder::class);
-        $this->call(ChildTableSeeder::class);
+      switch (strtolower(App::environment()))
+      {
+        case "production":
+          $this->call(ProductionUsersTableSeeder::class);
+          break;
+
+        case "local":
+          // Project-specific seeders
+          $this->call(UsersTableSeeder::class);
+          $this->call(HouseholdTableSeeder::class);
+          $this->call(HouseholdAddressSeeder::class);
+          $this->call(HouseholdPhoneSeeder::class);
+          $this->call(ChildTableSeeder::class);
+          break;
+      }
     }
 }
