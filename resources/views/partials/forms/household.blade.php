@@ -778,10 +778,14 @@ var app = new Vue(
         }
 
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
+
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
         var self = this;
         this.household.draft = (draft === true) ? "Y" : "N";
+        if(id === null){
+          self.nomination_email_sent = "N";
+        }
         var method = (id != null) ? "PUT" : "POST"
 
         console.log("id is " + id);
