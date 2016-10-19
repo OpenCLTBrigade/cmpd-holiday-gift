@@ -9,8 +9,8 @@ use App\Http\Controllers\Controller;
 
 class AffiliationController extends Controller
 {
-  public function cms()
+  public function schools()
   {
-    return \App\Affiliation::query()->cms()->get();
+    return \App\Affiliation::query()->schools()->get();
   }
 }
