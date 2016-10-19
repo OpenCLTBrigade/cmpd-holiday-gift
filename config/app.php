@@ -153,7 +153,9 @@ return [
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
-        Spatie\LaravelAnalytics\LaravelAnalyticsServiceProvider::class
+        Spatie\LaravelAnalytics\LaravelAnalyticsServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class
+
     ],
 
     /*
@@ -213,6 +215,7 @@ return [
         'LaravelAnalytics'  => Spatie\LaravelAnalytics\LaravelAnalyticsFacade::class,
         'Purifier'          => Mews\Purifier\Facades\Purifier::class,
         'Datatables'        => Yajra\Datatables\Datatables::class,
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
     ],
 
 ];

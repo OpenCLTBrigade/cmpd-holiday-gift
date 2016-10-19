@@ -56,6 +56,9 @@
                 {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
                 <i class="fa fa-lock form-control-feedback"></i>
             </div>
+            <div class="form-group has-feedback">
+                {!! Recaptcha::render() !!}
+            </div>
         </div>
 
         <div class="footer">
