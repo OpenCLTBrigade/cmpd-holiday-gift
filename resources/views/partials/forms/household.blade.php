@@ -90,6 +90,7 @@
               <option value="Hispanic">Hispanic</option>
               <option value="Pacific Islander">Pacific Islander</option>
               <option value="White">White</option>
+              <option value="Other">Other</option>
             </select>
 
             <!-- Perhaps include a description of how / why ethnicity info is used? -->
@@ -282,7 +283,16 @@
         <div class="form-group required">
 
           <label class="control-label">Ethnicity</label>
-          <input class="form-control" type="text" v-model="record.race">
+          <select class="form-control" id="race" v-model="record.race" name="race">
+            <option value="">==== Select ====</option>
+            <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+            <option value="Asian">Asian</option>
+            <option value="African American">African American</option>
+            <option value="Hispanic">Hispanic</option>
+            <option value="Pacific Islander">Pacific Islander</option>
+            <option value="White">White</option>
+            <option value="Other">Other</option>
+          </select>
 
           <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
