@@ -502,7 +502,11 @@
       </div>
     </div>
 
-  <div class="box box-danger">
+  <div v-show="!household.id" style="margin:20px 0;">
+    Please save the nomination as a draft before uploading a file.
+  </div>
+
+  <div class="box box-danger" v-show="household.id">
     <div class="box-header with-border">
       <h1 class="box-title">Scanned Forms</h1>
     </div>
@@ -591,6 +595,7 @@ var app = new Vue(
         var file_name = file.name;
         var data = new FormData();
         data.append("file", file);
+        data['household_id'] = this.household.id;
         this.uploading_forms.push(file_name);
         $(e.target).val('');
         var self = this;
