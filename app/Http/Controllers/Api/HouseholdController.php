@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use Auth;
+use Mail;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 
@@ -65,9 +66,9 @@ class HouseholdController extends AdminController
     public function update($id, HouseholdRequest $request)
     {
         $household = Household::findOrFail($id);
-        if($household.draft == "N" && $household.nomination_email_sent == "N")
+        if($request['draft'] == "N" && $request['nomination_email_sent'] == "N")
         {
-            $this->sendNotification($request);
+            $this->sendNotification($household);
             //change notification_email_sent to Y
         }
         $this->upsertAll(
