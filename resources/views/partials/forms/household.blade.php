@@ -584,7 +584,6 @@ var app = new Vue(
     methods: {
 
       upload_form_file: function(e) {
-        console.log(e);
         var file = e.target.files[0];
         if (!file) {
           return;
@@ -614,7 +613,7 @@ var app = new Vue(
           success: function(res){
             if (res.ok) {
               self.uploading_forms.$remove(file_name);
-              self.household.attachment.push({ path: res.path });
+              self.household.attachment.push({ path: res.path, id: res.id });
             } else {
               fail(res.error || "unknown error");
             }

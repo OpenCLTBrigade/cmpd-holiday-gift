@@ -15,7 +15,7 @@ class CreateHouseholdAttachmentsTable extends Migration
         Schema::create('household_attachments', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('household_id')->unsigned();
+            $table->integer('household_id')->unsigned()->nullable();
             $table->foreign('household_id')->references('id')->on('household');
 
             $table->string('path');

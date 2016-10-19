@@ -12,6 +12,8 @@ use App\Base\Controllers\AdminController;
 
 use Storage;
 
+use App\HouseholdAttachment;
+
 class HouseholdController extends AdminController
 {
     public function show($id)
@@ -90,6 +92,10 @@ class HouseholdController extends AdminController
         if (!$res) {
             return ["error" => "failed"];
         }
-        return ["ok" => true, "path" => $path];
+        $attachment = new HouseholdAttachment;
+        $attachment->owner = Auth::user()->id;
+        $attachment->path = $path;
+        $attachment->save();
+        return ["ok" => true, "path" => $path, "id" => $attachment->id];
     }
 }
