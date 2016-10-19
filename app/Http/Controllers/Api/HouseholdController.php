@@ -93,7 +93,7 @@ class HouseholdController extends AdminController
             return ["error" => "failed"];
         }
         $attachment = new HouseholdAttachment;
-        $attachment->owner = Auth::user()->id;
+        $attachment->user_id = Auth::user()->id;
         $attachment->path = $path;
         $attachment->save();
         return ["ok" => true, "path" => $path, "id" => $attachment->id];
