@@ -24,15 +24,7 @@ class HouseholdTableSeeder extends Seeder
                     "name_middle"   =>  $middleName,
                     "name_last" =>  $lastName,
                     "dob"   =>  $faker->date,
-                    "race"  =>  $faker->randomElement([
-                      "American Indian",
-                      "Alaskan Native",
-                      "Asian",
-                      "African American",
-                      "Hispanic",
-                      "Pacific Islander",
-                      "White"
-                    ]),
+                    "race"  =>  $faker->randomElement(\App\Household::$raceOptions),
                     "gender"    =>  $faker->randomElement(["M","F"]),
                     "email" =>  $faker->email,
                     "last4ssn"  =>  $faker->numerify("####"),

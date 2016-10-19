@@ -36,6 +36,17 @@ class Household extends Model
         'form_files',
     ];
 
+    public static $raceOptions = [
+      "American Indian",
+      "Alaskan Native",
+      "Asian",
+      "African American",
+      "Hispanic",
+      "Pacific Islander",
+      "White",
+      "Other"
+    ];
+
 //    protected $hidden = [
 //        'hidden'
 //    ];
