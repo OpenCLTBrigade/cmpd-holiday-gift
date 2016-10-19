@@ -594,8 +594,8 @@ var app = new Vue(
         }
         var file_name = file.name;
         var data = new FormData();
-        data.append("file", file);
-        data['household_id'] = this.household.id;
+        data.set("file", file);
+        data.set('household_id', this.household.id);
         this.uploading_forms.push(file_name);
         $(e.target).val('');
         var self = this;

@@ -60,7 +60,7 @@ class Household extends Model
               CASE
                 WHEN
                   draft = 'Y' THEN nominator_user_id = {$myId}
-                  ELSE nominator_user_id > ''
+                  ELSE 1=1
                   END
             ");
           });
