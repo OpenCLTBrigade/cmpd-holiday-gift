@@ -844,7 +844,7 @@ var app = new Vue(
         var self = this;
 
         //xhr.open('GET', self.apiURL + self.userName)
-        xhr.open('GET', '/api/affiliation/cms');
+        xhr.open('GET', '/api/affiliation/schools');
 
         //console.log(self.userName + " = self.userName")
         xhr.onload = function ()

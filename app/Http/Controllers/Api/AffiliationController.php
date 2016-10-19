@@ -11,6 +11,6 @@ class AffiliationController extends Controller
 {
   public function schools()
   {
-    return \App\Affiliation::query()->schools()->get();
+    return \App\Affiliation::query()->cms()->get();
   }
 }
