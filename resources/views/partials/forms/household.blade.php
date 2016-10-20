@@ -783,10 +783,8 @@ var app = new Vue(
         var url = "/api/household" + urlSuffix;
         var self = this;
         this.household.draft = (draft === true) ? "Y" : "N";
-        if(id === null){
-          self.nomination_email_sent = "N";
-        }
-        var method = (id != null) ? "PUT" : "POST"
+        this.household.nomination_email_sent = (draft === true) ? "N" : "Y";
+        var method = (id != null) ? "PUT" : "POST";
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);

@@ -40,7 +40,6 @@ class HouseholdController extends AdminController
             if($request['draft'] == "N")
             {
                 $this->sendNotification($id);
-                $request['nomination_email_sent'] = "Y";
             }
             $this->upsertAll(
               [
