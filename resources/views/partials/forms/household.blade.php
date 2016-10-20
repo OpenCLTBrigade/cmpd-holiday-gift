@@ -783,7 +783,10 @@ var app = new Vue(
         var url = "/api/household" + urlSuffix;
         var self = this;
         this.household.draft = (draft === true) ? "Y" : "N";
-        this.household.nomination_email_sent = (draft === true) ? "N" : "Y";
+        if(id === null)
+        {
+          this.household.nomination_email_sent = (draft !== true) ? "Y" : "N";
+        }
         var method = (id != null) ? "PUT" : "POST";
 
         console.log("id is " + id);
@@ -791,6 +794,7 @@ var app = new Vue(
         console.log("url is " + url);
         console.log("method is " + method);
         console.log("Draft saved to " + this.household.draft);
+        console.log(this.household.nomination_email_sent);
 
         $.ajax({
           url: url,
