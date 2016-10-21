@@ -512,7 +512,11 @@
       </div>
     </div>
 
-  <div class="box box-danger">
+  <div v-show="!household.id" style="margin:20px 0;">
+    Please save the nomination as a draft before uploading a file.
+  </div>
+
+  <div class="box box-danger" v-show="household.id">
     <div class="box-header with-border">
       <h1 class="box-title">Scanned Forms</h1>
     </div>
@@ -594,14 +598,14 @@ var app = new Vue(
     methods: {
 
       upload_form_file: function(e) {
-        console.log(e);
         var file = e.target.files[0];
         if (!file) {
           return;
         }
         var file_name = file.name;
         var data = new FormData();
-        data.append("file", file);
+        data.set("file", file);
+        data.set('household_id', this.household.id);
         this.uploading_forms.push(file_name);
         $(e.target).val('');
         var self = this;
@@ -624,7 +628,7 @@ var app = new Vue(
           success: function(res){
             if (res.ok) {
               self.uploading_forms.$remove(file_name);
-              self.household.attachment.push({ path: res.path });
+              self.household.attachment.push({ path: res.path, id: res.id });
             } else {
               fail(res.error || "unknown error");
             }

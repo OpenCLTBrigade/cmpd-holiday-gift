@@ -20,7 +20,8 @@
 		"fzaninotto/faker": "~1.4",
         "tymon/jwt-auth": "0.5.*",
         "delatbabel/elocryptfive": "1.5",
-	  	"greggilbert/recaptcha": "dev-master"
+	  	"greggilbert/recaptcha": "dev-master",
+		"league/flysystem-aws-s3-v3": "~1.0"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.9.*",

@@ -23,7 +23,7 @@ class CreateHouseholdAddress extends Migration
 
             // Text because of encryption
             $table->text("address_street");
-            $table->text("address_street2");
+            $table->text("address_street2")->nullable();
             $table->text("address_city");
             $table->text("address_state");
             $table->text("address_zip");
