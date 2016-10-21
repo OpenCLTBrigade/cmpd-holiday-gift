@@ -30,7 +30,7 @@ class CreateHouseholdTable extends Migration
             $table->string('race')->nullable();
 
             $table->string('gender');
-            $table->text('email'); // Text because of encryption
+            $table->text('email')->nullable(); // Text because of encryption
 
             $table->text('last4ssn'); // Text because of encryption
 

@@ -12,16 +12,17 @@ use App\Http\Controllers\Controller;
 use App\HouseholdAttachment;
 
 use Storage;
+use Auth;
 
 class HouseholdAttachmentController extends AdminController
 {
     public function show($id) {
-        if(false /* TODO: user isn't attachment creator && user isn't admin */){
-            abort(403);
-        }
         $file = HouseholdAttachment::find($id);
         if(!$file) {
             abort(404);
+        }
+        if(!Auth::user()->hasRole('admin') && $file->owner_user_id != Auth::user()){
+            abort(403);
         }
         return response(Storage::disk('forms')->get($file->path))
             ->header('Content-type', 'none');

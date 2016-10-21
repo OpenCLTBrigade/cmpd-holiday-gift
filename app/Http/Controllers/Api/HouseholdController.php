@@ -13,6 +13,8 @@ use App\Base\Controllers\AdminController;
 
 use Storage;
 
+use App\HouseholdAttachment;
+
 class HouseholdController extends AdminController
 {
     public function show($id)
@@ -96,12 +98,20 @@ class HouseholdController extends AdminController
         if (!$file->isValid()) {
             return ["error" => $file->getErrorMessage()];
         }
+        if (!Auth::user()->hasRole('admin') && Household::findOrFail($request->household_id)->nominator_user_id != Auth::user()->id) {
+            return ["error" => "permission denied"];
+        }
         $path = "user-" . Auth::user()->id . "/" . md5_file($file->getPathName()) . "_" . $file->getClientOriginalName();
         $res = Storage::disk("forms")->put($path, fopen($file->getPathName(), "r"));
         if (!$res) {
             return ["error" => "failed"];
         }
-        return ["ok" => true, "path" => $path];
+        $attachment = new HouseholdAttachment;
+        $attachment->owner_user_id = Auth::user()->id;
+        $attachment->path = $path;
+        $attachment->household_id = $request->household_id;
+        $attachment->save();
+        return ["ok" => true, "path" => $path, "id" => $attachment->id];
     }
 
     public function sendNotification($id) {
