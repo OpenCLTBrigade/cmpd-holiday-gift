@@ -788,17 +788,23 @@ var app = new Vue(
         }
 
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
+
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
         var self = this;
         this.household.draft = (draft === true) ? "Y" : "N";
-        var method = (id != null) ? "PUT" : "POST"
+        if(id === null)
+        {
+          this.household.nomination_email_sent = (draft !== true) ? "Y" : "N";
+        }
+        var method = (id != null) ? "PUT" : "POST";
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);
         console.log("url is " + url);
         console.log("method is " + method);
         console.log("Draft saved to " + this.household.draft);
+        console.log(this.household.nomination_email_sent);
 
         $.ajax({
           url: url,

@@ -22,7 +22,8 @@ class Household extends Model
         "email",
         "last4ssn",
         "preferred_contact_method",
-        "draft"
+        "draft",
+        "nomination_email_sent"
     ];
 
     protected $encrypts = [
