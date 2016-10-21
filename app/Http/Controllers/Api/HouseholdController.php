@@ -65,7 +65,8 @@ class HouseholdController extends AdminController
     public function update($id, HouseholdRequest $request)
     {
         $household = Household::findOrFail($id);
-        if($request['draft'] == "N" && $request['nomination_email_sent'] == "N")
+        //make call from database
+        if($request['draft'] == "N" && $household['nomination_email_sent'] == "N")
         {
             $this->sendNotification($id);
             $request['nomination_email_sent'] = "Y";
