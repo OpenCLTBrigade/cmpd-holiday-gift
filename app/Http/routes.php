@@ -43,7 +43,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
         'index'
       ]
     ]);
-    Route::get('affiliation/cms', 'AffiliationController@cms');
+    Route::get('affiliation/schools', 'AffiliationController@schools');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
     Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
 });

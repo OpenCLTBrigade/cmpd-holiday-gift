@@ -82,8 +82,16 @@
         <div class="col-md-4 col-sm-12">
           <div class="form-group required">
             <label for="reason_for_nomination" class="control-label">Ethnicity</label>
-            <input class="form-control" v-model="household.race" name="race" type="text" id="race">
-            </in>
+            <select class="form-control" id="race" v-model="household.race" name="race">
+              <option value="">==== Select ====</option>
+              <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+              <option value="Asian">Asian</option>
+              <option value="African American">African American</option>
+              <option value="Hispanic">Hispanic</option>
+              <option value="Pacific Islander">Pacific Islander</option>
+              <option value="White">White</option>
+              <option value="Other">Other</option>
+            </select>
 
             <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
@@ -236,7 +244,7 @@
 
   <div v-for="record in household.child" class="box box-success">
     <div class="box-header with-border">
-      <h1 class="box-title">Child @{{$index+1}} <span v-if="record.name_first.length > 0 || record.name_last.length > 0">-</span> @{{record.name_first}} @{{record.name_last}}</h1>
+      <h1 class="box-title">Child @{{$index+1}} <span v-if="(record.name_first || record.name_last) && (record.name_first.length > 0 || record.name_last.length > 0)">-</span> @{{record.name_first}} @{{record.name_last}}</h1>
     </div>
 
 
@@ -275,7 +283,16 @@
         <div class="form-group required">
 
           <label class="control-label">Ethnicity</label>
-          <input class="form-control" type="text" v-model="record.race">
+          <select class="form-control" id="race" v-model="record.race" name="race">
+            <option value="">==== Select ====</option>
+            <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+            <option value="Asian">Asian</option>
+            <option value="African American">African American</option>
+            <option value="Hispanic">Hispanic</option>
+            <option value="Pacific Islander">Pacific Islander</option>
+            <option value="White">White</option>
+            <option value="Other">Other</option>
+          </select>
 
           <!-- Perhaps include a description of how / why ethnicity info is used? -->
 
@@ -530,9 +547,9 @@
     <!-- /box-body -->
   </div>
   <!-- /box-primary -->
-
-    <button class="btn addbtn" v-show="household.draft == 'Y'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
-    <button class="btn addbtn" v-show="household.draft == 'Y'" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
+  
+    <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
+    <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
     <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
   </div>
@@ -694,10 +711,9 @@ var app = new Vue(
               }
               else
               {
-                self.household.address[address_index].cmpd_division = info.cmpd_division;
-                // self.household.address.$set(address_index, Object.assign({}, self.household.address[address_index], update));
-
-                self.household.address[address_index].cmpd_response_area = info.cmpd_response_area;
+                self.household.address[0].cmpd_division = info.division;
+                self.household.address[0].cmpd_response_area = info.response_area;
+                console.log(info.division + " | " + info.response_area);
               }
             },
             error: function() {
@@ -765,24 +781,30 @@ var app = new Vue(
             $(el).removeClass('missing-field');
           }
         });
-        if(missing){
+        if(!draft && missing){ // Don't require all fields if it's only a draft...
           this.saving = false;
-          alert("Could not save: some required fields are empty");
+          alert("Please enter all of the required fields before submitting your nomination.");
           return;
         }
 
         var id = (typeof this.household.id != "undefined") ? this.household.id : null;
+
         var urlSuffix = (id != null) ? "/" + id : "";
         var url = "/api/household" + urlSuffix;
         var self = this;
         this.household.draft = (draft === true) ? "Y" : "N";
-        var method = (id != null) ? "PUT" : "POST"
+        if(id === null)
+        {
+          this.household.nomination_email_sent = (draft !== true) ? "Y" : "N";
+        }
+        var method = (id != null) ? "PUT" : "POST";
 
         console.log("id is " + id);
         console.log("urlSuffix is " + urlSuffix);
         console.log("url is " + url);
         console.log("method is " + method);
         console.log("Draft saved to " + this.household.draft);
+        console.log(this.household.nomination_email_sent);
 
         $.ajax({
           url: url,
@@ -828,7 +850,7 @@ var app = new Vue(
         var self = this;
 
         //xhr.open('GET', self.apiURL + self.userName)
-        xhr.open('GET', '/api/affiliation/cms');
+        xhr.open('GET', '/api/affiliation/schools');
 
         //console.log(self.userName + " = self.userName")
         xhr.onload = function ()

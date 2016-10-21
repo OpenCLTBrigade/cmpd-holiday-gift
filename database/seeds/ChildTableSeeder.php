@@ -25,7 +25,7 @@ class ChildTableSeeder extends Seeder
                     "name_middle" => $faker->firstName,
                     "name_last" => $lastName,
                     "dob" => $faker->date,
-                    "race" => "race",
+                    "race"  =>  $faker->randomElement(\App\Household::$raceOptions),
                     "last4ssn" => $faker->numerify("####"),
                     "free_or_reduced_lunch" => $faker->randomElement(["Y", "N"]),
                     "reason_for_nomination" => $faker->text(200),

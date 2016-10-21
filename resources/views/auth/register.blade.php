@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@inject('affController', 'App\Http\Controllers\AffiliationController')
+@inject('affModel', 'App\Affiliation')
 
 @section('title')
     {{ trans('auth.register.title') }} | {{ trans('admin.title') }}
@@ -28,11 +28,11 @@
             </div>
             <div class="form-group has-feedback">
                 {!! Form::label('affiliation', trans('auth.register.affiliation')) !!}
-                {!! Form::select('affiliation_id', $affController->getAll(), null,  ['class' => 'form-control' ]) !!}
+                {!! Form::select('affiliation_id', $affModel::parseAffiliationsIntoSelectArray(), null,  ['class' => 'form-control' ]) !!}
                 <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
-                {!! Form::label('rank', trans('auth.register.rank')) !!}
+                {!! Form::label('Rank / Position', trans('auth.register.rank')) !!}
                 {!! Form::text('rank', null, ['class' => 'form-control']) !!}
                 <i class="fa form-control-feedback"></i>
             </div>
@@ -55,6 +55,9 @@
                 {!! Form::label('password_confirmation', trans('auth.register.password_confirmation')) !!}
                 {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
                 <i class="fa fa-lock form-control-feedback"></i>
+            </div>
+            <div class="form-group has-feedback">
+                {!! Recaptcha::render() !!}
             </div>
         </div>
 

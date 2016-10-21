@@ -22,7 +22,8 @@ class Household extends Model
         "email",
         "last4ssn",
         "preferred_contact_method",
-        "draft"
+        "draft",
+        "nomination_email_sent"
     ];
 
     protected $encrypts = [
@@ -34,6 +35,17 @@ class Household extends Model
     protected $appends = [
         'nominator_name',
         'form_files',
+    ];
+
+    public static $raceOptions = [
+      "American Indian",
+      "Alaskan Native",
+      "Asian",
+      "African American",
+      "Hispanic",
+      "Pacific Islander",
+      "White",
+      "Other"
     ];
 
 //    protected $hidden = [

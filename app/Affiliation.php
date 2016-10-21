@@ -40,4 +40,13 @@ class Affiliation extends Model
     public function setTypeAttribute($value) {
         $this->attributes['type'] = strtolower($value);
     }
+
+    public static function parseAffiliationsIntoSelectArray() {
+      $a = array();
+      $affiliations = static::all(["id", "type", "name"]);
+      foreach ($affiliations as $affiliation) {
+        $a[$affiliation["id"]] = strtoupper($affiliation['type'] . " - " . ucwords($affiliation['name']));
+      }
+      return $a;
+    }
 }
