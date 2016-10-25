@@ -22,7 +22,8 @@ class Household extends Model
         "email",
         "last4ssn",
         "preferred_contact_method",
-        "draft"
+        "draft",
+        "nomination_email_sent"
     ];
 
     protected $encrypts = [
@@ -71,7 +72,7 @@ class Household extends Model
               CASE
                 WHEN
                   draft = 'Y' THEN nominator_user_id = {$myId}
-                  ELSE nominator_user_id > ''
+                  ELSE 1=1
                   END
             ");
           });

@@ -89,6 +89,7 @@ class AuthController extends Controller
             'affiliation_id'  => 'required',
             'email'           => 'required|email|appropriate_email|max:255|unique:users',
             'password'        => 'required|min:6|confirmed',
+            'g-recaptcha-response' => 'required|recaptcha',
         ],
         [
             'name_first.required'       => 'The first name is required',

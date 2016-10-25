@@ -101,6 +101,51 @@ You will eventually want to shut down vagrant (so you're not running a virtual m
 If you receive a "class not found" error when running migrations, try running the composer dump-autoload command and re-issuing the migrate command.
 
 ----
-## Package Reference 
+## Package Reference
 #### Permissions - [Entrust](https://github.com/Zizaco/entrust#models)
 ---
+
+## Setting up S3
+
+By default, for development purposes, attachments to the nominatino
+form are stored locally, in the `storage/forms/` folder.
+
+If the "S3_*" variables are filled in the ".env" file, Amazon S3 will be used instead.
+
+* Create an S3 bucket (The following example assume it is called "cmpd-gift-project")
+* Fill in the "S3_REGION" and "S3_BUCKET_FORMS" variables in the ".env" file. for example:
+  - S3_REGION=us-east
+  - S3_BUCKET_FORMS=cmpd-gift-project
+* Create an IAM user that wil have acccess to the bucket
+* Fill in the "S3_KEY" and "S3_SECRET" variables in the ".env" file with the user's credentials
+* From the IAM console, create a policy that authorizes the user to use the bucket. For example:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1476893415000",
+            "Effect": "Allow",
+            "Action": [
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::cmpd-gift-project/*"
+            ]
+        },
+        {
+            "Sid": "Stmt1476893524000",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::cmpd-gift-project"
+            ]
+        }
+    ]
+}
+```
