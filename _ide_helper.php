@@ -14072,7 +14072,7 @@ namespace {
     }
 
 
-    class Recaptcha extends \Greggilbert\Recaptcha\Facades\Recaptcha{
+    class Recaptcha extends \GreggilGreggilbert\Recaptcha\RecaptchaServiceProviderbert\Recaptcha\Facades\Recaptcha{
         
         /**
          * Render the recaptcha
