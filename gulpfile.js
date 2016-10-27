@@ -19,7 +19,7 @@ var elixir = require('laravel-elixir'),
     adminJs = [
         'jquery/dist/jquery.min.js',
         'vue/dist/vue.min.js',
-	'js-cookie/src/js.cookie.js',
+        'js-cookie/src/js.cookie.js',
         'nestable-fork/dist/jquery.nestable.min.js',
         'bootstrap/dist/js/bootstrap.min.js',
         'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
@@ -32,7 +32,8 @@ var elixir = require('laravel-elixir'),
         'datatables.net-responsive/js/dataTables.responsive.js',
         'datatables.net-responsive-bs/js/responsive.bootstrap.js',
         'morris.js/morris.js',
-        'admin-lte/dist/js/app.min.js'
+        'admin-lte/dist/js/app.min.js',
+        'vue-strap/dist/vue-strap.min.js'
     ],
     applicationLess  = [
         bowerDir + 'font-awesome/less'
