@@ -67,7 +67,7 @@ class UsersTableSeeder extends Seeder
                 'name_first'        => "Nominator",
                 'name_last'         => "Account",
                 "affiliation_id"    => 2,
-                "email"             => "cmpd-nominator@mailinator.com",
+                "email"             => "nominator@codeforcharlotte.org",
                 'password'          => 'nomnom',
                 'nomination_limit'  => 5,
                 'active' => 'Y',
