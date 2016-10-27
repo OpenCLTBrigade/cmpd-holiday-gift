@@ -244,7 +244,7 @@
 
   <div v-for="record in household.child" class="box box-success">
     <div class="box-header with-border">
-      <h1 class="box-title">Child @{{$index+1}} <span v-if="(record.name_first || record.name_last) && (record.name_first.length > 0 || record.name_last.length > 0)">-</span> @{{record.name_first}} @{{record.name_last}}</h1>
+      <h1 class="box-title">Child @{{$index+1}} <span v-if="record.name_first.length > 0 || record.name_last.length > 0">-</span> @{{record.name_first}} @{{record.name_last}}</h1>
     </div>
 
 

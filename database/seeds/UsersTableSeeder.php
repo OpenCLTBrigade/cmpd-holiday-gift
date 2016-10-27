@@ -53,13 +53,29 @@ class UsersTableSeeder extends Seeder
                 "affiliation_id"    => 1,
                 "email"             => "developer@codeforcharlotte.org",
                 'password'          => 'admin',
-                'nomination_limit'  => 5,
+                'nomination_limit'  => 1000000,
                 'active' => 'Y',
             ]
         );
 
         $role = \App\Role::find(1);
         $newUser->attachRole($role);
+
+        // Add test nominator account
+        $newUser2 = App\User::create(
+            [
+                'name_first'        => "Nominator",
+                'name_last'         => "Account",
+                "affiliation_id"    => 2,
+                "email"             => "nominator@codeforcharlotte.org",
+                'password'          => 'nomnom',
+                'nomination_limit'  => 5,
+                'active' => 'Y',
+            ]
+        );
+
+        $role2 = \App\Role::find(2);
+        $newUser2->attachRole($role2);
 
 
     }

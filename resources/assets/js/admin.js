@@ -90,7 +90,7 @@ var DataTable = function (table, details) {
         var result = {
             orderClasses: false,
             fixedHeader: true,
-            responsive: true,
+            responsive: false,
             dom: "tip",
             stateSave: true,
             stateSaveCallback: function (settings, data) {
