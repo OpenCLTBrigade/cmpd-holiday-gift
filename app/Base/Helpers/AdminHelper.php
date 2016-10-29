@@ -12,17 +12,19 @@ if (!function_exists('get_ops')) {
     function get_ops($resource, $id, $class = "btn", array $showable_ops)
     {
         // No ops? No list!
-        if (!count($showable_ops)) return "";
-
+        if (!count($showable_ops)) {
+            return "";
+        }
+        $show_class = "inline-show";
+        $edit_class = "inline-edit";
+        $delete_class = "inline-delete";
+        
         if ($class=="btn") {
             $show_class = "btn btn-xs bg-navy";
             $edit_class = "btn btn-xs bg-olive";
             $delete_class = "btn btn-xs btn-danger destroy";
-        } else {
-            $show_class = "inline-show";
-            $edit_class = "inline-edit";
-            $delete_class = "inline-delete";
         }
+
         $show_path = route('admin.'.$resource.'.show', ['id' => $id]);
         $edit_path = route('admin.'.$resource.'.edit', ['id' => $id]);
         $delete_path = route('admin.'.$resource.'.destroy', ['id' => $id]);
@@ -158,15 +160,14 @@ if (!function_exists('renderNode')) {
         $title  .= '<div '.$handle.'>' . $node->title . '</div>';
         if ($node->isLeaf()) {
             return '<li '.$class.' '.$id.'>' . $title . '</li>';
-        } else {
-            $html = '<li '.$class.' '.$id.'>' . $title;
-            $html .= '<ol '.$list.'>';
-            foreach ($node->children as $child) {
-                $html .= renderNode($child, $resource);
-            }
-            $html .= '</ol>';
-            $html .= '</li>';
         }
+        $html = '<li '.$class.' '.$id.'>' . $title;
+        $html .= '<ol '.$list.'>';
+        foreach ($node->children as $child) {
+            $html .= renderNode($child, $resource);
+        }
+        $html .= '</ol>';
+        $html .= '</li>';
         return $html;
     }
 }
