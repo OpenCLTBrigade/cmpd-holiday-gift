@@ -3,7 +3,7 @@
 @section('content')
     <form class="form-horizontal form-condensed  datatable-form" autocomplete="false">
         <div class="row">
-            <div clsas="form-group">
+            <div class="form-group">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <input type="search" class="form-control input-sm search" placeholder="Filter results" for="Users" autofocus />
                     <div class="form-control-feedback"><span class="fa fa-spinner fa-spin"></span></div>
