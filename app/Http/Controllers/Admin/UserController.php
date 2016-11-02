@@ -13,7 +13,12 @@ use Laracasts\Flash\Flash;
 class UserController extends AdminController
 {
 
-    /**
+  public function __construct()
+  {
+    $this->middleware('admins_only');
+  }
+
+  /**
      * Display a listing of the users.
      * @return Response
      */
