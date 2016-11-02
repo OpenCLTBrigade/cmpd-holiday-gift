@@ -16,6 +16,7 @@ class UserController extends AdminController
   public function __construct()
   {
     $this->middleware('admins_only');
+    parent::__construct();
   }
 
   /**
