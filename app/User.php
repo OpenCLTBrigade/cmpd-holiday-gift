@@ -55,6 +55,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
       });
     }
 
+  /**
+   * @param \Illuminate\Database\Eloquent\Builder $query
+   * @return \Illuminate\Database\Eloquent\Builder
+   */
+    public function scopePending ($query)
+    {
+      return $query->where('approved', '=', 'N')->where('confirmed_email', '=', 'Y');
+    }
+
     /**
      * Set password encrypted
      *

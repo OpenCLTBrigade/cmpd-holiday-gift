@@ -157,8 +157,7 @@ class UserController extends AdminController
         ->select ("users.*", "affiliation.type", "affiliation.name")
         ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
         ->where ("name_last", "LIKE", "$search%")
-        ->where ("confirmed_email", "=", "Y")
-        ->where("approved", "=", "N")
+        ->pending()
         ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
 
       $count = $users->count ();

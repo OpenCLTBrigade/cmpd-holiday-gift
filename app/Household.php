@@ -79,6 +79,11 @@ class Household extends Model
         }
     }
 
+    public function scopeDraft ($query)
+    {
+      return $query->where('draft', '=', 'Y');
+    }
+
     public function child() {
 		return $this->hasMany("\App\Child");
     }
