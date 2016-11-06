@@ -56,6 +56,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
   /**
+   * For an account to be in considered pending the
+   * user must have confirmed their email address.
+   *
    * @param \Illuminate\Database\Eloquent\Builder $query
    * @return \Illuminate\Database\Eloquent\Builder
    */
@@ -93,8 +96,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Role');
     }
 
+  /**
+   * @param \Illuminate\Database\Eloquent\Builder $query
+   * @return \Illuminate\Database\Eloquent\Builder
+   */
+    public function scopeThisYear ($query)
+    {
+      // TODO: Query current year...
+      return $query;
+    }
+
     /**
      * Whether or not the user has reached their limit of nominations for the year
+     *
+     * TODO: Rejected nominations should not count toward the limit
+     * TODO: Need to use current year for limit
+     *
      * @return bool
      */
     public function getMaxNominationsReachedAttribute()
