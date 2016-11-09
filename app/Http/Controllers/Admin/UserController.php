@@ -14,7 +14,13 @@ use Laracasts\Flash\Flash;
 class UserController extends AdminController
 {
 
-    /**
+  public function __construct()
+  {
+    $this->middleware('admins_only');
+    parent::__construct();
+  }
+
+  /**
      * Display a listing of the users.
      * @return Response
      */
@@ -169,8 +175,7 @@ class UserController extends AdminController
         ->select ("users.*", "affiliation.type", "affiliation.name")
         ->join ("affiliation", "affiliation.id", "=", "users.affiliation_id")
         ->where ("name_last", "LIKE", "$search%")
-        ->where ("confirmed_email", "=", "Y")
-        ->where("approved", "=", "N")
+        ->pending()
         ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
 
       $count = $users->count ();
