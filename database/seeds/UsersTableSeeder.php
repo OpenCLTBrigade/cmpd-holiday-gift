@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
                     'name_last'     => $lastName,
                     "affiliation_id"=> $faker->numberBetween(1,57),
                     "email"         => $faker->email,
-                    'password'      => 'admin',
+                    'password'      => Hash::make('admin'),
                     'nomination_limit'=> 5,
                     'active' => 'N',
                     'confirmed_email' => 'Y',
@@ -52,7 +52,7 @@ class UsersTableSeeder extends Seeder
                 'name_last'         => "lastName",
                 "affiliation_id"    => 1,
                 "email"             => "developer@codeforcharlotte.org",
-                'password'          => 'admin',
+                'password'          => Hash::make('admin'),
                 'nomination_limit'  => 1000000,
                 'active' => 'Y',
             ]
@@ -68,7 +68,7 @@ class UsersTableSeeder extends Seeder
                 'name_last'         => "Account",
                 "affiliation_id"    => 2,
                 "email"             => "nominator@codeforcharlotte.org",
-                'password'          => 'nomnom',
+                'password'          => Hash::make('nomnom'),
                 'nomination_limit'  => 5,
                 'active' => 'Y',
             ]

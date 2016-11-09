@@ -22,7 +22,7 @@ class ProductionUsersTableSeeder extends Seeder
         'name_last'         => "EditMe",
         "affiliation_id"    => 1,
         "email"             => "developer@codeforcharlotte.org",
-        'password'          => 'admin',
+        'password'          => Hash::make('admin'),
         'nomination_limit'  => 5,
         'active' => 'Y',
       ]
