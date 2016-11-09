@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 use Mail;
 use Laracasts\Flash\Flash;
 
@@ -33,10 +34,13 @@ class UserController extends AdminController
      * @param UserRequest $request
      * @return Response
      */
-    public function store(UserRequest $request)
+    public function store (UserRequest $request)
     {
         $class = User::class;
-        $model = $class::create($request->all());
+        $fields = $request->all();
+        $fields['password'] = Hash::make($fields['password']);
+        $model = new User($fields);
+        $model->save();
         $model->id ? Flash::success(trans('admin.create.success')) : Flash::error(trans('admin.create.fail'));
         $model->roles()->sync([$request->get("role")]);
 
@@ -77,10 +81,24 @@ class UserController extends AdminController
     {
 
         $saveRole = function() use ($user, $request) {
-            $user->roles()->sync([$request->get("role")]);
+          $user->roles()->sync([$request->get("role")]);
         };
 
-        return $this->saveFlashRedirect($user, $request, null, "index", $saveRole);
+        $fields = $request->all();
+        $fields['password'] = Hash::make($fields['password']);
+        $user->fill($fields);
+        if ($user->save())
+        {
+          call_user_func($saveRole);
+          Flash::success(trans('admin.update.success'));
+        }
+        else
+        {
+          Flash::error(trans('admin.update.fail'));
+        }
+
+      return $this->redirectRoutePath("index");
+
     }
 
     /**

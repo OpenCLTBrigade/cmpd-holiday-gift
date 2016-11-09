@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 use App\User;
 use Laracasts\Flash\Flash;
@@ -114,7 +115,7 @@ class AuthController extends Controller
             'affiliation_id' => $data['affiliation_id'],
             'phone' => $data['phone'],
             'rank' => $data['rank'],
-            'password' => $data['password'],
+            'password' => Hash::make($data['password']),
             'active' => 'N',
             'approved' => 'N',
             'confirmed_email' => 'N',
