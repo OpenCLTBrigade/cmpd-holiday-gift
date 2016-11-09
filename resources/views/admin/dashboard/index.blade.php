@@ -1,6 +1,7 @@
 @extends('layouts.admin', ['no_boxes' => true])
 
 @section('content')
+    @if (Auth::user()->hasRole('admin'))
     <section class="content">
         <div class="col-xs-12 col-md-6">
             <div class="box">
@@ -62,4 +63,5 @@
         </div>
 
     </section>
+    @endif {{--Admins only--}}
 @endsection
