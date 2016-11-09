@@ -58,8 +58,8 @@ class DashboardController extends AdminController
 
     public function getIndex()
     {
-      $accounts_pending_approval = count(User::query()->pending());
-      $draftCount = count(Household::query()->draft());
+      $accounts_pending_approval = User::query()->pending()->count();
+      $draftCount = Household::query()->draft()->count();
       return view('admin.dashboard.index', [
         'accounts_pending_approval' => $accounts_pending_approval,
         'drafts' => $draftCount
