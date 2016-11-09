@@ -117,8 +117,8 @@ class HouseholdController extends AdminController
     public function sendNotification($id) {
         Mail::queue("email.nomination_submitted", [ "id" => $id], function($message) use($id) {
             $message->from(env("MAIL_FROM_ADDRESS"));
-            $message->to(env("NOMINATION_NOTICE_ADDRESS"));
-            $message->subject(env("NOMINATION_SUBJECT"));
+            $message->to(env("MAIL_ADMIN_ADDRESS"));
+            $message->subject("New nomination submitted");
         });
     }
 }
