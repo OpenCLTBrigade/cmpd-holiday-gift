@@ -68,16 +68,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Set password encrypted
-     *
-     * @param $password
-     */
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] =  Hash::make($password);
-    }
-
-    /**
      * Set the ip address attribute.
      *
      * @param $ip
