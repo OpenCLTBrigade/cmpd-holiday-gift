@@ -556,6 +556,7 @@
     <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
     <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+    <span v-show="showSavedMessage">Saved!</span>
   </div>
 
 
@@ -581,6 +582,7 @@ var app = new Vue(
     data: {
       loading: false,
       saving: false,
+      showSavedMessage: false,
       schools: [],
       household: {
         phone: [],
@@ -771,7 +773,7 @@ var app = new Vue(
       {
         if (this.saving === true)
           return; // Already in the middle of saving >:(
-
+        this.showSavedMessage= false;
         this.saving = true;
 
         // Refuse to submit if required fields are empty, and highlight missing fields
@@ -824,6 +826,7 @@ var app = new Vue(
             if (data.ok)
             {
               self.household = data.household[0];
+              self.showSavedMessage= true;
             }
             else if (!data.ok && typeof data.message != "undefined")
             {
