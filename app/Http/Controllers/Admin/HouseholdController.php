@@ -123,7 +123,7 @@ class HouseholdController extends AdminController
           }
           else
           {
-            $household->review_options = '<a href="#" class="btn btn-sm btn-default">Review</a>';
+            $household->review_options = '<a onClick="vm.show_review_modal('.$household->id.');" class="btn btn-sm btn-default">Review</a>';
           }
           $res[] = $household;
         }

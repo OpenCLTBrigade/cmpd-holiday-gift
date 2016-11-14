@@ -140,6 +140,7 @@
 
 
         var vm = new Vue({
+            el: "body",
             components: {
                 alert: VueStrap.alert,
                 modal: VueStrap.modal
