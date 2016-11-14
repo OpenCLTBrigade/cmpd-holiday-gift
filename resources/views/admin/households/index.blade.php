@@ -38,15 +38,23 @@
                 <div>
                     <div class="form-group">
                         <label for="inputFirstName">Approve?</label>
-                        {{--TODO: Select yes / no--}}
+                        <select class="form-control" v-model="approved">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-show="approved == 0">
                         <label for="inputLastName">Reason</label>
-                        {{--TODO: Reason for rejection select box--}}
+                        <select class="form-control" v-model="reason">
+                            <option value="duplicate">Duplicate</option>
+                            <option value="invalid">Invalid</option>
+                            <option value="third-party">Referred to third party</option>
+                            <option value="other">Other (explained in email)</option>
+                        </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-show="approved == 0">
                         <label for="inputLastName">Message to send in email</label>
-                        {{--TODO: Textarea for rejection message to send in email--}}
+                        <textarea class="form-control" v-model="message"></textarea>
                     </div>
                 </div>
             </div>
@@ -95,48 +103,54 @@
                     error: {
                         show: false,
                         message: ""
-                    }
+                    },
+                    approved: 1,
+                    reason: null,
+                    message: ""
                 }
             },
-                methods: {
-                    close: function ()
-                    {
-                        this.visible = false;
-                        this.loading = false;
-                    },
-                    submitReview: function ()
-                    {
-                        var self = this;
-                        self.loading = true;
-
-                        $.ajax ({
-                            url: "",
-                            type: "PUT",
-                            data: $.param({
-                                ajax: +new Date ()
-                            }),
-                            success: function (results) {
-                                self.loading = false;
-                                if (!results.ok)
-                                {
-                                    return;
-                                }
-                                self.close();
-                            },
-                            error: function () {
-                                self.loading = false;
-                            }
-                        });
-                    }
+            methods: {
+                close: function ()
+                {
+                    this.visible = false;
+                    this.loading = false;
                 },
-                events: {
-                    show_review_modal: function (id)
-                    {
-                        this.visible = true;
-                        this.household_id = id;
-                    }
+                submitReview: function ()
+                {
+                    var self = this;
+                    self.loading = true;
+
+                    $.ajax ({
+                        url: "",
+                        type: "PUT",
+                        data: $.param({
+                            ajax: +new Date ()
+                        }),
+                        success: function (results) {
+                            self.loading = false;
+                            if (!results.ok)
+                            {
+                                return;
+                            }
+                            self.close();
+                        },
+                        error: function () {
+                            self.loading = false;
+                        }
+                    });
                 }
-            });
+            },
+            events: {
+                show_review_modal: function (id)
+                {
+                    this.reason = null;
+                    this.message = "";
+                    this.approved = 1;
+                    this.visible = true;
+                    this.household_id = id;
+                }
+            }
+        });
 
 
         var vm = new Vue({
