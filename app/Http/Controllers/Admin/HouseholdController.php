@@ -91,15 +91,28 @@ class HouseholdController extends AdminController
         $households =  Household::query()
             ->where ("name_last", "LIKE", "$search%")
             ->orWhere ("email", "LIKE", "%$search%")
-            ->orderBy ($columns[$order[0]["column"]]["name"], $order[0]["dir"]);
+            ->orderBy ("name_last", $order[0]["dir"]);
 
-        $count = $households->count ();
+
+      $count = $households->count ();
 
         $households = $households
             ->take ($length)
             ->skip ($start)
-            ->get ()
-            ->toArray ();
+            ->get ();
+
+        $res = [];
+        foreach ($households as $household) {
+          $household->head_of_household_name = "{$household->name_first} {$household->name_last}";
+          $household->child_count = count($household->child);
+          $household->nominated_by = "<a href='/admin/user/{$household->nominator->id}'>{$household->nominator->name_first} {$household->nominator->name_last}</a>";
+          $household->uploaded_form= (count($household->attachment)) ? "Yes" : "--";
+          $res[] = $household;
+        }
+
+        $households = $res;
+
+
 
         return $this->dtResponse ($request, $households, $count);
     }
