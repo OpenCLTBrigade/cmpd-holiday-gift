@@ -107,6 +107,24 @@ class HouseholdController extends AdminController
           $household->child_count = count($household->child);
           $household->nominated_by = "<a href='/admin/user/{$household->nominator->id}'>{$household->nominator->name_first} {$household->nominator->name_last}</a>";
           $household->uploaded_form= (count($household->attachment)) ? "Yes" : "--";
+
+          // Household reviewed?
+          if ($household->reviewed)
+          {
+            if ($household->approved)
+            {
+              $household->review_options = 'Approved';
+            }
+            else
+            {
+              // Eventually we will show rejected nominees on a different list
+              $household->review_options = 'Rejected';
+            }
+          }
+          else
+          {
+            $household->review_options = '<a href="#" class="btn btn-sm btn-default">Review</a>';
+          }
           $res[] = $household;
         }
 

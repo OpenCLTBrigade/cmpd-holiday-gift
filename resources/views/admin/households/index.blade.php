@@ -21,9 +21,42 @@
             <th data-name="nominated_by">Nominated by</th>
             @endif
             <th data-name="uploaded_form">Uploaded Form</th>
-            <th data-render="renderActions"></th>
+            <th data-render="renderActions">Tools</th>
+            @if (Auth::user()->hasRole("admin"))
+                <th data-name="review_options">Review</th>
+            @endif
         </thead>
     </table>
+    <review-modal></review-modal>
+
+    <script type="text/x-template" id="review-modal">
+        <modal :show.sync="visible" effect="fade" width="75%" height="75%">
+            <div slot="modal-header" class="modal-header">
+                <h4 class="modal-title">Submit Household Review</h4>
+            </div>
+            <div slot="modal-body" class="modal-body">
+                <div>
+                    <div class="form-group">
+                        <label for="inputFirstName">Approve?</label>
+                        {{--TODO: Select yes / no--}}
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName">Reason</label>
+                        {{--TODO: Reason for rejection select box--}}
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName">Message to send in email</label>
+                        {{--TODO: Textarea for rejection message to send in email--}}
+                    </div>
+                </div>
+            </div>
+            <div slot="modal-footer" class="modal-footer">
+                <i v-if="loading" class="fa fa-2x fa-spinner fa-pulse"></i>
+                <button class="btn btn-lg btn-default" :disabled="loading" @click="close">Cancel</button>
+                <button class="btn btn-lg btn-success" :disabled="loading" @click="submitReview">Submit Review</button>
+            </div>
+        </modal>
+    </script>
 
     <script type="text/javascript">
         let table = $("#Households");
@@ -46,6 +79,79 @@
                 case "edit":
                     window.location.href += "/" + row.id +"/edit";
                     break;
+            }
+        });
+
+        Vue.component('review-modal', {
+            template: "#review-modal",
+            components: {
+                modal: VueStrap.modal
+            },
+            data: function () {
+                return {
+                    household_id: null,
+                    visible: false,
+                    loading: false,
+                    error: {
+                        show: false,
+                        message: ""
+                    }
+                }
+            },
+                methods: {
+                    close: function ()
+                    {
+                        this.visible = false;
+                        this.loading = false;
+                    },
+                    submitReview: function ()
+                    {
+                        var self = this;
+                        self.loading = true;
+
+                        $.ajax ({
+                            url: "",
+                            type: "PUT",
+                            data: $.param({
+                                ajax: +new Date ()
+                            }),
+                            success: function (results) {
+                                self.loading = false;
+                                if (!results.ok)
+                                {
+                                    return;
+                                }
+                                self.close();
+                            },
+                            error: function () {
+                                self.loading = false;
+                            }
+                        });
+                    }
+                },
+                events: {
+                    show_review_modal: function (id)
+                    {
+                        this.visible = true;
+                        this.household_id = id;
+                    }
+                }
+            });
+
+
+        var vm = new Vue({
+            components: {
+                alert: VueStrap.alert,
+                modal: VueStrap.modal
+            },
+            data: {
+
+            },
+            methods: {
+                show_review_modal: function (id)
+                {
+                    this.$broadcast('show_review_modal', id);
+                }
             }
         });
     </script>
