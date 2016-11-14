@@ -15,11 +15,12 @@
 
     <table id="Households" class="table table-hover table-striped datatable" data-server="true">
         <thead>
-            <th class="sortable" data-name="name_first">First Name</th>
-            <th class="sortable" data-name="name_last">Last Name</th>
-            <th class="sortable" data-name="email">Email</th>
-            <th class="sortable" data-name="gender">Gender</th>
-            <th class="sortable" data-name="dob">Date of Birth</th>
+            <th data-name="head_of_household_name">Head of Household</th>
+            <th data-name="child_count">Children</th>
+            @if (Auth::user()->hasRole("admin"))
+            <th data-name="nominated_by">Nominated by</th>
+            @endif
+            <th data-name="uploaded_form">Uploaded Form</th>
             <th data-render="renderActions"></th>
         </thead>
     </table>
