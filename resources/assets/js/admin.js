@@ -497,7 +497,7 @@ var DataTable = function (table, details) {
         }
 
         // Create our DataTale and setup the events
-        this.dt = table.DataTable(Object.assign(this.parseStructure(table), details));
+        this.dt = table.DataTable($.extend(this.parseStructure(table), details));
         this.setupEvents();
 
         // Restore classes
