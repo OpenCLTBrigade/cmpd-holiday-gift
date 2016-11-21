@@ -21,7 +21,8 @@
         "tymon/jwt-auth": "0.5.*",
         "delatbabel/elocryptfive": "1.5",
 	  	"greggilbert/recaptcha": "dev-master",
-		"league/flysystem-aws-s3-v3": "~1.0"
+		"league/flysystem-aws-s3-v3": "~1.0",
+		"phpoffice/phpexcel": "1.8.1"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.9.*",
