@@ -14,11 +14,12 @@
     </form>
 
     <table id="Households" class="table table-hover table-striped datatable" data-server="true">
+    {{-- When changing the columns, make sure the column indices for sort order in HouseholdController::search still match --}}
         <thead>
-            <th data-name="head_of_household_name">Head of Household</th>
+            <th data-name="head_of_household_name" class="sortable">Head of Household</th>
             <th data-name="child_count">Children</th>
             @if (Auth::user()->hasRole("admin"))
-            <th data-name="nominated_by">Nominated by</th>
+            <th data-name="nominated_by" class="sortable">Nominated by</th>
             @endif
             <th data-name="uploaded_form">Uploaded Form</th>
             <th data-render="renderActions"></th>
