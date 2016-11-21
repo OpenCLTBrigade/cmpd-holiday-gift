@@ -20,7 +20,8 @@ function appropriate_email_domains() {
       "CMPD" => "cmpd.org",
       "CMS" =>  "cms.k12.nc.us",
       "CFD" => "ci.charlotte.nc.us",
-      "CFC" => "codeforcharlotte.org"
+      "CFC" => "codeforcharlotte.org",
+      "MECKCO" => "mecklenburgcountync.gov"
     ];
 }
 
