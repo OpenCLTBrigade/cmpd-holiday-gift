@@ -168,7 +168,7 @@ class HouseholdController extends AdminController
 
       $approved = $request->input('approved', 0);
       $reason = $request->input('reason' , null);
-      $message = $request->input('message', null);
+      $customMessage = $request->input('message', null);
 
       // If approved?
       switch ($approved)
@@ -207,22 +207,19 @@ class HouseholdController extends AdminController
 
           if ($household->save())
           {
-            /*
-            $User = $household->nominator;
-            // Cool... it saved... now, do we have to email the nominator to let them know what's up?
-            if ($message)
+            if ($customMessage)
             {
               Mail::queue("email.notify_household_rejected", [
-                "user" => $User,
-                "household" => $household
+                "household" => $household,
+                "reason" => $reason,
+                "customMessage" => $customMessage
               ],
-              function($message) use($User) {
+              function($message) use($household) {
                 $message->from(env("MAIL_FROM_ADDRESS"));
-                $message->to($User->email);
-                $message->subject("An update regarding your nomination");
+                $message->to($household->nominator->email);
+                $message->subject("An update regarding your nomination of {$household->name_last}");
               });
             }
-            */
             return ['ok' => true];
           }
           else

@@ -57,8 +57,6 @@
                             <br/>The nominator will not be notified that their nomination was declined if you do not
                             enter a message.
                         </span>
-                        <br/>
-                        <b>Email notifications of rejections are not finished yet. Please ignore this field.</b>
                         <textarea class="form-control" v-model="message"></textarea>
                     </div>
                 </div>
