@@ -84,6 +84,20 @@ class Household extends Model
       return $query->where('draft', '=', 'Y');
     }
 
+    public function scopeNotRejected ($query)
+    {
+      return $query
+        ->where(function($query)
+        {
+          $query->where('reviewed', '=', '0');
+        })
+        ->orWhere(function($query)
+        {
+          $query->where('reviewed', '=', '1')
+            ->where('approved', '=', '1');
+        });
+    }
+
     public function child() {
 		return $this->hasMany("\App\Child");
     }

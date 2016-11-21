@@ -106,7 +106,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getMaxNominationsReachedAttribute()
     {
-        $nominated_by_user = \DB::table('household')->where("nominator_user_id", "=", $this->id)->count();
+        $nominated_by_user = Household::query()
+          ->where("nominator_user_id", "=", $this->id)
+          ->notRejected ()
+          ->count();
         return ($nominated_by_user >= $this->nomination_limit);
     }
 
