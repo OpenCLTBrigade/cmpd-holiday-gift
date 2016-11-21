@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
+use Mail;
 
 class HouseholdController extends AdminController
 {
@@ -169,6 +170,19 @@ class HouseholdController extends AdminController
         case 1:
           $household->reviewed = 1;
           $household->approved = 1;
+
+          if ($household->save())
+          {
+            Mail::queue("email.notify_household_accepted", [
+              "household" => $household
+            ],
+              function($message) use($household) {
+                $message->from(env("MAIL_FROM_ADDRESS"));
+                $message->to($household->nominator->email);
+                $message->subject("Your nomination for {$household->name_last} has been approved!");
+            });
+            return ['ok' => true];
+          }
           return ['ok' => $household->save()];
           break;
 
@@ -186,11 +200,22 @@ class HouseholdController extends AdminController
 
           if ($household->save())
           {
+            /*
+            $User = $household->nominator;
             // Cool... it saved... now, do we have to email the nominator to let them know what's up?
             if ($message)
             {
-              // TODO: Dispatch an email
+              Mail::queue("email.notify_household_rejected", [
+                "user" => $User,
+                "household" => $household
+              ],
+              function($message) use($User) {
+                $message->from(env("MAIL_FROM_ADDRESS"));
+                $message->to($User->email);
+                $message->subject("An update regarding your nomination");
+              });
             }
+            */
             return ['ok' => true];
           }
           else
