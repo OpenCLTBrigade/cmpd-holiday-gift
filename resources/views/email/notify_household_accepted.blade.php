@@ -22,7 +22,7 @@
         For database technical support please contact Code for Charlotte at <strong>support@codeforcharlotte.org</strong>
     </li>
     <li>
-        If you forget your password you will be able to reset it at the Winter Gift home page - <a href="https://gift.cmpdexplorers.org">https://gift.cmpdexplorers.org</a>
+        If you forget your password youw will be able to reset it at the Winter Gift home page - <a href="https://gift.cmpdexplorers.org">https://gift.cmpdexplorers.org</a>
     </li>
 </ul>
 

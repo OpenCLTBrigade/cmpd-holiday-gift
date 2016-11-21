@@ -137,7 +137,14 @@ class HouseholdController extends AdminController
           }
           else
           {
-            $household->review_options = '<a onClick="vm.show_review_modal('.$household->id.');" class="btn btn-sm btn-default">Review</a>';
+            if (Auth::user()->hasRole('admin'))
+            {
+              $household->review_options = '<a onClick="vm.show_review_modal('.$household->id.');" class="btn btn-sm btn-default">Review</a>';
+            }
+            else
+            {
+              $household->review_options = 'Not reviewed';
+            }
           }
           $res[] = $household;
         }
