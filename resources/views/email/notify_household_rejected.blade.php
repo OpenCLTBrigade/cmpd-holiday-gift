@@ -14,7 +14,6 @@
 <p>
     If you have any questions or feel that we should
     reconsider, please email us at <b>christmasproject@cmpd.org</b>.
-    I think that is the right email address for them.
 </p>
 </body>
 </html>
