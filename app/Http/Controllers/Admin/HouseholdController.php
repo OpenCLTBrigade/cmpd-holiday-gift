@@ -148,8 +148,33 @@ class HouseholdController extends AdminController
         return $this->dtResponse ($request, $households, $count);
     }
 
-    public function review (Household $household)
+    public function review (Household $household, Request $request)
     {
+      $approved = $request->input('approved', 0);
+      $reason = $request->input('reason' , null);
+      $message = $request->input('message', null);
+
+      // If approved?
+      switch ($approved)
+      {
+        // Approved the nomination
+        case 1:
+          // TODO: Mark the nomination as approved
+          break;
+
+        // Declined the nomination
+        case 0:
+          if (!$reason)
+          {
+            return ['ok' => false, 'message' => 'Must provide a reason for declining.'];
+          }
+
+          if ($message)
+          {
+            // TODO: Dispatch an email
+          }
+          break;
+      }
       return ['ok' => true];
     }
 }
