@@ -130,13 +130,20 @@
                     self.loading = true;
 
                     $.ajax ({
-                        url: "",
-                        type: "PUT",
+                        url: "/admin/household/" + this.household_id + "/review",
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        },
                         data: $.param({
-                            ajax: +new Date ()
+                            ajax: +new Date (),
+                            approved: this.approved,
+                            reason: this.reason,
+                            message: this.message
                         }),
                         success: function (results) {
                             self.loading = false;
+                            console.log(results);
                             if (!results.ok)
                             {
                                 return;
