@@ -148,8 +148,16 @@ class HouseholdController extends AdminController
         return $this->dtResponse ($request, $households, $count);
     }
 
-    public function review (Household $household, Request $request)
+    public function review ($id, Request $request)
     {
+
+      $household = Household::find($id);
+
+      if (!$household)
+      {
+        return ['ok' => false, 'message' => 'Could not find household.'];
+      }
+
       $approved = $request->input('approved', 0);
       $reason = $request->input('reason' , null);
       $message = $request->input('message', null);
@@ -183,6 +191,7 @@ class HouseholdController extends AdminController
             {
               // TODO: Dispatch an email
             }
+            return ['ok' => true];
           }
           else
           {

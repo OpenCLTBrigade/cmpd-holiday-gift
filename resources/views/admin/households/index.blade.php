@@ -152,12 +152,25 @@
                             {
                                 return;
                             }
+                            self.refreshDataTable();
                             self.close();
                         },
                         error: function () {
                             self.loading = false;
                         }
                     });
+                },
+                refreshDataTable: function ()
+                {
+                    // TODO: This is an awful hackaround.
+                    var ogVal= $("input[type='search']").val();
+                    $("input[type='search']").val('randomString');
+                    $("input[type='search']").trigger('keyup');
+                    setTimeout(function()
+                    {
+                        $("input[type='search']").val(ogVal);
+                        $("input[type='search']").trigger('keyup');
+                    }, 750);
                 }
             },
             events: {
