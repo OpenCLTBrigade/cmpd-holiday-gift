@@ -15,6 +15,18 @@
             <li class="list-group-item"><b>Last 4 SSN</b> <span class="pull-right">{{ $object->last4ssn }}</span></li>
             <li class="list-group-item"><b>Preferred Contact Method</b> <span class="pull-right">{{ $object->preferred_contact_method }}</span></li>
           </ul>
+          @for ($i = 0; $i < count($object->attachment); $i++)
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>Attachment {{ $i + 1 }}</b>
+              <span class="pull-right">
+                <a href="/admin/household_attachment/{{ $object->attachment[$i]->id }}" target="_blank">
+                  {{ explode("_", $object->attachment[$i]->path)[1] }}
+                </a>
+              </span>
+            </li>
+          </ul>
+          @endfor
         </div>
         <!-- Right side -->
         <div class="box-profile col-md-6">

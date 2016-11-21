@@ -89,12 +89,25 @@ class HouseholdController extends AdminController
         $order = $request->input ("order");
 
         $households =  Household::query()
-            ->where ("name_last", "LIKE", "$search%")
-            ->orWhere ("email", "LIKE", "%$search%")
-            ->orderBy ("name_last", $order[0]["dir"]);
+            ->where ("household.name_last", "LIKE", "$search%")
+            ->orWhere ("household.email", "LIKE", "%$search%");
 
+        switch($order[0]['column']){
+        case "1": // Head of Household
+            $households = $households
+                ->orderBy ("name_last", $order[0]["dir"])
+                ->orderBy ("name_first", $order[0]["dir"]);
+            break;
+        case "3": // Nominated by
+            $households = $households
+                ->join('users', 'users.id', '=', 'household.nominator_user_id')
+                ->orderBy('users.name_last', $order[0]["dir"])
+                ->orderBy('users.name_first', $order[0]["dir"])
+                ->select('household.*');
+            break;
+        }
 
-      $count = $households->count ();
+        $count = $households->count ();
 
         $households = $households
             ->take ($length)
