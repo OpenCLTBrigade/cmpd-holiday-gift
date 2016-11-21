@@ -60,6 +60,18 @@
                     </table>
                 </div>
             </div>
+            <div class="box">
+                <div class="box-header with-border">
+                    <h1 class="box-title">
+                        Reports
+                    </h1>
+                </div>
+                <div class="box-body">
+                  <ul>
+                    <li> <a href="{{ url('/api/export_data_excel') }}">Export data into Excel</a>
+                  </ul>
+                </div>
+            </div>
         </div>
 
     </section>

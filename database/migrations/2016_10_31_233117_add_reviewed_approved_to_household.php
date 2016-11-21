@@ -15,7 +15,7 @@ class AddReviewedApprovedToHousehold extends Migration
         Schema::table('household', function ($table) {
             $table->integer("reviewed")->default(0);
             $table->integer("approved")->default(0);
-            $table->string("reason", 255);
+            $table->string("reason", 255)->default("");
         });
     }
 
