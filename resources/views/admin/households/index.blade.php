@@ -55,6 +55,10 @@
                     </div>
                     <div class="form-group" v-show="approved == 0">
                         <label for="inputLastName">Message to send in email</label>
+                        <span v-if="!message">
+                            <br/>The nominator will not be notified that their nomination was declined if you do not
+                            enter a message.
+                        </span>
                         <textarea class="form-control" v-model="message"></textarea>
                     </div>
                 </div>

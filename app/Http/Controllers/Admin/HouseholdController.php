@@ -159,7 +159,9 @@ class HouseholdController extends AdminController
       {
         // Approved the nomination
         case 1:
-          // TODO: Mark the nomination as approved
+          $household->reviewed = 1;
+          $household->approved = 1;
+          return ['ok' => $household->save()];
           break;
 
         // Declined the nomination
@@ -169,12 +171,26 @@ class HouseholdController extends AdminController
             return ['ok' => false, 'message' => 'Must provide a reason for declining.'];
           }
 
-          if ($message)
+          // Update stuffs...
+          $household->reviewed = 1;
+          $household->approved = 0;
+          $household->reason = $reason;
+
+          if ($household->save())
           {
-            // TODO: Dispatch an email
+            // Cool... it saved... now, do we have to email the nominator to let them know what's up?
+            if ($message)
+            {
+              // TODO: Dispatch an email
+            }
           }
+          else
+          {
+            return ['ok' => false, 'message' => 'Could not update nomination. Please try again later.'];
+          }
+
+
           break;
       }
-      return ['ok' => true];
     }
 }
