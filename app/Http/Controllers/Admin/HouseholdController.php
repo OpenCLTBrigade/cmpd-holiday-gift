@@ -147,4 +147,9 @@ class HouseholdController extends AdminController
 
         return $this->dtResponse ($request, $households, $count);
     }
+
+    public function review (Household $household)
+    {
+      return ['ok' => true];
+    }
 }

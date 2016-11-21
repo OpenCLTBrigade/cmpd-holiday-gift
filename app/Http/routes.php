@@ -88,6 +88,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     ]);
 
     Route::post('household/search', 'HouseholdController@search'); // Used for the table (household.index)
+    Route::post('household/{id}/review', 'HouseholdController@review'); // Used for feedback
 
     Route::resource('affiliation', 'AffiliationController');
     Route::post('affiliation/search', 'AffiliationController@search'); // Used for the table (affiliation.index)

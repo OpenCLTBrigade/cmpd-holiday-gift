@@ -38,14 +38,14 @@
             <div slot="modal-body" class="modal-body">
                 <div>
                     <div class="form-group">
-                        <label for="inputFirstName">Approve?</label>
+                        <label>Approve?</label>
                         <select class="form-control" v-model="approved">
                             <option value="1">Yes</option>
                             <option value="0">No</option>
                         </select>
                     </div>
                     <div class="form-group" v-show="approved == 0">
-                        <label for="inputLastName">Reason</label>
+                        <label>Reason</label>
                         <select class="form-control" v-model="reason">
                             <option value="duplicate">Duplicate</option>
                             <option value="invalid">Invalid</option>
@@ -60,9 +60,10 @@
                 </div>
             </div>
             <div slot="modal-footer" class="modal-footer">
+                <span v-if="!isReviewFormValid()">Please complete the form before submitting</span>
                 <i v-if="loading" class="fa fa-2x fa-spinner fa-pulse"></i>
                 <button class="btn btn-lg btn-default" :disabled="loading" @click="close">Cancel</button>
-                <button class="btn btn-lg btn-success" :disabled="loading" @click="submitReview">Submit Review</button>
+                <button class="btn btn-lg btn-success" :disabled="loading || !isReviewFormValid()" @click="submitReview">Submit Review</button>
             </div>
         </modal>
     </script>
@@ -111,6 +112,13 @@
                 }
             },
             methods: {
+                isReviewFormValid: function ()
+                {
+                    var approvedOk = (this.approved == 1);
+                    var declinedOk = (this.approved != 1 && this.reason != null);
+
+                    return (approvedOk || declinedOk);
+                },
                 close: function ()
                 {
                     this.visible = false;
