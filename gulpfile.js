@@ -30,6 +30,7 @@ var elixir = require('laravel-elixir'),
         'datatables.net-fixedheader/js/dataTables.fixedHeader.js',
         'datatables.net-responsive/js/dataTables.responsive.js',
         'datatables.net-responsive-bs/js/responsive.bootstrap.js',
+        'vue-strap/dist/vue-strap.min.js',
         'admin-lte/dist/js/app.min.js'
     ],
     applicationLess  = [

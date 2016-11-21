@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
+use Mail;
 
 class HouseholdController extends AdminController
 {
@@ -120,6 +121,31 @@ class HouseholdController extends AdminController
           $household->child_count = count($household->child);
           $household->nominated_by = "<a href='/admin/user/{$household->nominator->id}'>{$household->nominator->name_first} {$household->nominator->name_last}</a>";
           $household->uploaded_form= (count($household->attachment)) ? "Yes" : "--";
+
+          // Household reviewed?
+          if ($household->reviewed)
+          {
+            if ($household->approved)
+            {
+              $household->review_options = 'Approved';
+            }
+            else
+            {
+              // Eventually we will show rejected nominees on a different list
+              $household->review_options = 'Rejected';
+            }
+          }
+          else
+          {
+            if (Auth::user()->hasRole('admin'))
+            {
+              $household->review_options = '<a onClick="vm.show_review_modal('.$household->id.');" class="btn btn-sm btn-default">Review</a>';
+            }
+            else
+            {
+              $household->review_options = 'Not reviewed';
+            }
+          }
           $res[] = $household;
         }
 
@@ -128,5 +154,81 @@ class HouseholdController extends AdminController
 
 
         return $this->dtResponse ($request, $households, $count);
+    }
+
+    public function review ($id, Request $request)
+    {
+
+      $household = Household::find($id);
+
+      if (!$household)
+      {
+        return ['ok' => false, 'message' => 'Could not find household.'];
+      }
+
+      $approved = $request->input('approved', 0);
+      $reason = $request->input('reason' , null);
+      $customMessage = $request->input('message', null);
+
+      // If approved?
+      switch ($approved)
+      {
+        // Approved the nomination
+        case 1:
+          $household->reviewed = 1;
+          $household->approved = 1;
+
+          if ($household->save())
+          {
+            Mail::queue("email.notify_household_accepted", [
+              "household" => $household
+            ],
+              function($message) use($household) {
+                $message->from(env("MAIL_FROM_ADDRESS"));
+                $message->to($household->nominator->email);
+                $message->subject("Your nomination for {$household->name_last} has been approved!");
+            });
+            return ['ok' => true];
+          }
+          return ['ok' => $household->save()];
+          break;
+
+        // Declined the nomination
+        case 0:
+          if (!$reason)
+          {
+            return ['ok' => false, 'message' => 'Must provide a reason for declining.'];
+          }
+
+          // Update stuffs...
+          $household->reviewed = 1;
+          $household->approved = 0;
+          $household->reason = $reason;
+
+          if ($household->save())
+          {
+            if ($customMessage)
+            {
+              Mail::queue("email.notify_household_rejected", [
+                "household" => $household,
+                "reason" => $reason,
+                "customMessage" => $customMessage
+              ],
+              function($message) use($household) {
+                $message->from(env("MAIL_FROM_ADDRESS"));
+                $message->to($household->nominator->email);
+                $message->subject("An update regarding your nomination of {$household->name_last}");
+              });
+            }
+            return ['ok' => true];
+          }
+          else
+          {
+            return ['ok' => false, 'message' => 'Could not update nomination. Please try again later.'];
+          }
+
+
+          break;
+      }
     }
 }
