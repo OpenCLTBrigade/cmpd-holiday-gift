@@ -42,7 +42,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         "affiliation_id",
         "email",
         "password",
-        "active"
+        "active",
+        "nomination_limit",
+        "confirmed_email"
     ];
 
     protected $hidden = ['password'];
