@@ -15,7 +15,7 @@ use PHPExcel_Writer_Excel2007;
 class Export extends Controller {
   public function export_data_excel(Request $request) {
       header('Content-type: application/vnd.ms-excel');
-      header('Content-Disposition: attachment; filename="GiftProjectDump_' . date("YmdHis") . '.xslx"');
+      header('Content-Disposition: attachment; filename="GiftProjectDump_' . date("YmdHis") . '.xlsx"');
       header('Cache-Control: max-age=0');
 
       $excel = new PHPExcel();
