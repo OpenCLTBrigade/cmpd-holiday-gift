@@ -91,7 +91,11 @@ class UserController extends AdminController
         };
 
         $fields = $request->all();
-        $fields['password'] = Hash::make($fields['password']);
+        if($fields['password']) {
+            $fields['password'] = Hash::make($fields['password']);
+        } else {
+            unset($fields['password']);
+        }
         $user->fill($fields);
         if ($user->save())
         {
