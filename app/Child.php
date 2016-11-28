@@ -41,7 +41,8 @@ class Child extends Model
         "favourite_colour",
         "interests",
         "additional_ideas",
-        "preferred_contact_method"
+        "preferred_contact_method",
+        "gender"
     ];
 
     public function household()

@@ -278,7 +278,18 @@
     <!--</div> /box-body -->
 
     <div class="row">
-      <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-sm-2">
+          <div class="form-group required">
+            <label for="gender" class="control-label">Gender</label>
+            <select class="form-control" v-model="record.gender" name="gender">
+              <option value="">==== Select ====</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+        </div>
+
+      <div class="col-xs-12 col-sm-3">
 
         <div class="form-group required">
 
@@ -299,7 +310,7 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-sm-4">
+      <div class="col-xs-12 col-sm-3">
 
         <div class="form-group required">
 
