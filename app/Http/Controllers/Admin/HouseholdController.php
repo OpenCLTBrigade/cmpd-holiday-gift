@@ -49,6 +49,16 @@ class HouseholdController extends AdminController
         return $this->viewPath("show", $household);
     }
 
+    public function delete($id)
+    {
+        if(!\Auth::user()->hasRole("admin")) {
+            return [ "ok" => false, "error" => "Unauthorized" ];
+        }else{
+            Household::findOrFail($id)->delete();
+            return [ "ok" => true ];
+        }
+    }
+
     /**
      * Show the form for editing the specified user.
      */

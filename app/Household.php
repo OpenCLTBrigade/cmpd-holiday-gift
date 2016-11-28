@@ -4,10 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Delatbabel\Elocrypt\Elocrypt;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Household extends Model
 {
     use Elocrypt;
+
+    use SoftDeletes;
 
     protected $table = "household";
 
