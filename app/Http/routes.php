@@ -88,6 +88,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
       ]
     ]);
 
+    Route::get('household/{id}/packing_slip', 'HouseholdController@packing_slip');
+
     Route::post('household/search', 'HouseholdController@search'); // Used for the table (household.index)
     Route::post('household/{id}/review', 'HouseholdController@review'); // Used for feedback
     Route::post('household/{id}/delete', 'HouseholdController@delete');
