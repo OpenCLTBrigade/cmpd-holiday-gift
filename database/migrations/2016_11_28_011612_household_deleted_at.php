@@ -25,7 +25,7 @@ class HouseholdDeletedAt extends Migration
     public function down()
     {
         Schema::table('household', function ($table) {
-                $table->dropColum('deleted_at');
+                $table->dropColumn('deleted_at');
         });
     }
 }
