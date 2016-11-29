@@ -77,6 +77,10 @@
             let output = '<ul class="list-inline no-margin-bottom">';
             output += '<li><button class="btn btn-xs bg-navy action" data-action="show"><i class="fa fa-search"></i> Show</button></li>';
             output += '<li><button class="btn btn-xs bg-olive action" data-action="edit"><i class="fa fa-pencil-square-o"></i> Edit</button></li>';
+            @if (Auth::user()->hasRole("admin"))
+
+              output += '<li><button class="btn btn-xs btn-danger action" data-action="delete"><i class="fa fa-trash"></i> Delete</button></li>';
+            @endif
             output += '</ul>';
 
             return output;
@@ -91,6 +95,33 @@
                 case "edit":
                     window.location.href += "/" + row.id +"/edit";
                     break;
+                @if (Auth::user()->hasRole("admin"))
+                case "delete":
+                    console.log(element);
+                    if(!confirm("Delete nomination of " + row.name_last + " household?")){
+                        return;
+                    }
+                    var self = this;
+                    $.ajax ({
+                        url: "/admin/household/" + row.id + "/delete",
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        },
+                        success: function (results) {
+                            if (!results.ok)
+                            {
+                                alert("Error deleting nomination: " + (results.error || "unknown error"));
+                                return;
+                            }
+                            element.closest('tr').remove();
+                        },
+                        error: function () {
+                            alert("Error deleting nomination: failed");
+                        }
+                    });
+                    break;
+                @endif
             }
         });
 

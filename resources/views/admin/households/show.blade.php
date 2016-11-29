@@ -59,6 +59,7 @@
                 <li class="list-group-item"><b>First Name</b><span class="pull-right">{{$child->name_first}}</span></li>
                 <li class="list-group-item"><b>Middle Name</b><span class="pull-right">{{$child->name_middle}}</span></li>
                 <li class="list-group-item"><b>Last Name</b><span class="pull-right">{{$child->name_last}}</span></li>
+                <li class="list-group-item"><b>Gender</b> <span class="pull-right">{{ $child->gender }}</span></li>
                 <li class="list-group-item"><b>Date of Birth</b><span class="pull-right">{{$child->dob}}</span></li>
 								<li class="list-group-item"><b>Age</b><span class="pull-right">{{$child->age}}</span></li>
                 <li class="list-group-item"><b>Ethnicity</b><span class="pull-right">{{$child->race}}</span></li>
