@@ -2,6 +2,10 @@
 
 ![](http://wintergift-ci.codeforcharlotte.org/buildStatus/icon?job=cmpd-holiday-gift-backend)
 
+## Partners
+Thank you to [BrowserStack](https://www.browserstack.com) for the use of [Live](https://www.browserstack.com/features), their cloud-based cross-browser testing tool
+<br><a href="https://www.browserstack.com"><img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="200" height="105" alt="BrowserStack Logo"></a>
+
 ## We're using Laravel 5.2
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
@@ -72,7 +76,7 @@ Next, run all of the database configuration commands:
 
 5. `php artisan key:generate`
 6. `php artisan migrate`
-7. `php artisan db:seed` 
+7. `php artisan db:seed`
 
 Once these commands have all been run, you should be able to access the application through your browser at **http://192.168.33.10**. If
 all is working well, you should be greeted with the login page.

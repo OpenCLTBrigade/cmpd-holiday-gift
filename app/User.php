@@ -114,5 +114,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
           ->count();
         return ($nominated_by_user >= $this->nomination_limit);
     }
-
 }

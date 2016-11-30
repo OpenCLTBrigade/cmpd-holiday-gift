@@ -9,6 +9,7 @@
         <!-- Left side -->
         <div class="box-profile col-md-6">
           <ul class="list-group list-group-unbordered">
+            <li class="list-group-item"><b>Family #</b> <span class="pull-right">{{ $object->id }}</span></li>
             <li class="list-group-item"><b>Mail</b> <span class="pull-right">{{ $object->email  }}</span></li>
             <li class="list-group-item"><b>Gender</b> <span class="pull-right">{{ $object->gender }}</span></li>
             <li class="list-group-item"><b>Date of Birth</b> <span class="pull-right">{{ $object->dob }}</span></li>
@@ -56,6 +57,7 @@
             @foreach ($object->child as $child)
             <div class="box-profile col-md-6">
               <ul class="list-group list-group-unbordered">
+                <li class="list-group-item"><b>Child #</b><span class="pull-right">{{$child->id}}</span></li>
                 <li class="list-group-item"><b>First Name</b><span class="pull-right">{{$child->name_first}}</span></li>
                 <li class="list-group-item"><b>Middle Name</b><span class="pull-right">{{$child->name_middle}}</span></li>
                 <li class="list-group-item"><b>Last Name</b><span class="pull-right">{{$child->name_last}}</span></li>
