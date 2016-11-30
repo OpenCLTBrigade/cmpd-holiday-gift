@@ -242,7 +242,13 @@ class HouseholdController extends AdminController
       }
     }
 
-    public function packing_slip($id) {
-        return view("admin.households.packing_slip", ["households" => [Household::findOrFail($id)]]);
+    public function packing_slip(Request $request, $id) {
+        return view("admin.households.packing_slip", [
+               "households" => [Household::findOrFail($id)],
+               "assistance" => [
+                            "phone" => $request->input('phone'),
+                            "radio" => $request->input('radio')
+               ]
+               ]);
     }
 }
