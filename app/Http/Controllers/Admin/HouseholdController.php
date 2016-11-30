@@ -242,13 +242,36 @@ class HouseholdController extends AdminController
       }
     }
 
+    public function packing_slip_config(Request $request) {
+        return view("admin.packing_slip_config", [
+                                                  "household_id" => $request->input('household_id'),
+                                                  "packing_slip_radio" =>$request->cookie('packing_slip_radio'),
+                                                  "packing_slip_phone" => $request->cookie('packing_slip_phone')
+                                                  ]);
+    }
+
+    public function packing_slip_set_config(Request $request) {
+        $radio = $request->input('packing_slip_radio');
+        $phone = $request->input('packing_slip_phone');
+        $id = $request->input('household_id');
+        $url = $id ? '/admin/household/' . $id . '/packing_slip' : '/admin';
+        return redirect($url)
+            ->cookie("packing_slip_phone", $phone, 60*60*24*120)
+            ->cookie("packing_slip_radio", $radio, 60*60*24*120);
+    }
+
     public function packing_slip(Request $request, $id) {
+        $radio = $request->cookie('packing_slip_radio');
+        $phone = $request->cookie('packing_slip_phone');
+        if(!$phone || !$radio){
+            return redirect('/admin/packing_slip_config?household_id=' . $id);
+        }
         return view("admin.households.packing_slip", [
                "households" => [Household::findOrFail($id)],
                "assistance" => [
-                            "phone" => $request->input('phone'),
-                            "radio" => $request->input('radio')
+                            "phone" => $phone,
+                            "radio" => $radio
                ]
-               ]);
+        ]);
     }
 }

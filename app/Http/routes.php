@@ -88,6 +88,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
       ]
     ]);
 
+    Route::get('packing_slip_config', 'HouseholdController@packing_slip_config')->name('admin.packing_slip_config');
+    Route::post('packing_slip_set_config', 'HouseholdController@packing_slip_set_config');
     Route::get('household/{id}/packing_slip', 'HouseholdController@packing_slip');
 
     Route::post('household/search', 'HouseholdController@search'); // Used for the table (household.index)
