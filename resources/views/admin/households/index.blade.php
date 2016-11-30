@@ -79,7 +79,9 @@
             output += '<li><button class="btn btn-xs bg-olive action" data-action="edit"><i class="fa fa-pencil-square-o"></i> Edit</button></li>';
             @if (Auth::user()->hasRole("admin"))
               output += '<li><button class="btn btn-xs btn-danger action" data-action="delete"><i class="fa fa-trash"></i> Delete</button></li>';
-              output += '<li><a class="btn btn-xs bg-cyan action" href="/admin/household/' + row.id + '/packing_slip"><i class="fa fa-print"></i> Packing Slip</a></li>';
+              if(row.approved == "1"){
+                output += '<li><a class="btn btn-xs bg-cyan action" href="/admin/household/' + row.id + '/packing_slip"><i class="fa fa-print"></i> Packing Slip</a></li>';
+              }
             @endif
             output += '</ul>';
 

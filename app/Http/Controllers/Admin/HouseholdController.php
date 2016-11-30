@@ -290,7 +290,7 @@ class HouseholdController extends AdminController
             return redirect('/admin/packing_slip_config');
         }
 
-        $households = Household::query();
+        $households = Household::query()->where('approved', '=', 1);
 
         // TODO: limit which packing slips to print
         // $after = $request->input('after');
@@ -300,7 +300,7 @@ class HouseholdController extends AdminController
         //         Flash::error('Invalid date or time: ' . $after);
         //         return redirect('/admin');
         //     }
-        //     $households = $households->where('updated_at', '>=', date('y-m-d H:i:s', $when));
+        //     $households = $households->andWhere('updated_at', '>=', date('y-m-d H:i:s', $when));
         // }
 
         return view("admin.households.packing_slip", [
