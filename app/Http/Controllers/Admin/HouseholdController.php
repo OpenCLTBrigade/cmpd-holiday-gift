@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
 use Mail;
+use Laracasts\Flash\Flash;
 
 class HouseholdController extends AdminController
 {
@@ -261,6 +262,9 @@ class HouseholdController extends AdminController
     }
 
     public function packing_slip(Request $request, $id) {
+        if(!\Auth::user()->hasRole("admin")) {
+            abort(403);
+        }
         $radio = $request->cookie('packing_slip_radio');
         $phone = $request->cookie('packing_slip_phone');
         if(!$phone || !$radio){
@@ -273,5 +277,39 @@ class HouseholdController extends AdminController
                             "radio" => $radio
                ]
         ]);
+    }
+
+    public function packing_slips(Request $request) {
+        if(!\Auth::user()->hasRole("admin")) {
+            abort(403);
+        }
+
+        $radio = $request->cookie('packing_slip_radio');
+        $phone = $request->cookie('packing_slip_phone');
+        if(!$phone || !$radio){
+            return redirect('/admin/packing_slip_config');
+        }
+
+        $households = Household::query();
+
+        // TODO: limit which packing slips to print
+        // $after = $request->input('after');
+        // if($after != NULL){
+        //     $when = strtotime($after);
+        //     if(!$when){
+        //         Flash::error('Invalid date or time: ' . $after);
+        //         return redirect('/admin');
+        //     }
+        //     $households = $households->where('updated_at', '>=', date('y-m-d H:i:s', $when));
+        // }
+
+        return view("admin.households.packing_slip", [
+               "households" => $households->get(),
+               "assistance" => [
+                            "phone" => $phone,
+                            "radio" => $radio
+               ]
+        ]);
+
     }
 }

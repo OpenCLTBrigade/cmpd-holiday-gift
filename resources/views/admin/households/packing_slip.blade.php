@@ -14,8 +14,8 @@ font-size: inherit;
 body {
 font-family: Sans-Serif;
 font-size: 10pt;
-padding: 0.6in;
-width: 7.3in;
+padding: 0;
+margin: 0
 }
 table {
 border-collapse: collapse;
@@ -34,7 +34,7 @@ padding: 5px;
     @php
     $address = $household->address->count() ? $household->address[0] : new \App\HouseholdAddress();
     @endphp
-    <div style="page-break-after:always; page-break-inside: avoid">
+    <div style="page-break-after:always; page-break-inside: avoid; padding: 0.6in; width: 7.3in">
       <div style="width:50%; float:left">
         <b style="font-size:1.6em">Family Summary Sheet</b><br/>
         <br/>
@@ -79,7 +79,7 @@ padding: 5px;
             <br/>Phone: {{ $assistance['phone'] }}
             <br/>Radio: {{ $assistance['radio'] }}
             <br/>
-            <br/><b>RETURN THIS DOCUMENT TO THE WAREHOUSE</b>
+            <br/><b style="font-stretch: condensed">RETURN THIS DOCUMENT TO THE WAREHOUSE</b>
           </td>
           <td style="border: 3px solid black">
             <b>I certify that I have made the delivery to this location:</b>
@@ -114,7 +114,7 @@ padding: 5px;
           <td>{{ $child->gender }}</td>
           <td>{{ $child->age }}</td>
           <td>
-            {{ $child->bike_want == "Y" ? $child->bike_size . " " . $child->bike_style : "no" }}
+            {{ $child->bike_want == "Y" ? $child->bike_size . "\n" . $child->bike_style : "no" }}
           </td>
           <td>
             <div style="max-height: 7.5em; overflow: hidden; font-size: 0.9em">
