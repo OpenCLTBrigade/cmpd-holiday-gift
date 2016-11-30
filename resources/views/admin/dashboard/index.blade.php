@@ -72,6 +72,23 @@
                   </ul>
                 </div>
             </div>
+            <div class="box">
+                <div class="box-header with-border">
+                    <h1 class="box-title">
+                      Packing Slips
+                    </h1>
+                </div>
+                <div class="box-body">
+                  <ul>
+                    <li> <a href="{{ url('/admin/packing_slips') }}">All Approved Households</a>
+                    {{--<li> <a href="{{ url('/admin/packing_slips?after=') }}">New and Updated Households since</a> <input type="text" name="packing_slips_after" id="packing_slips_after"/> --}}
+                    <li> <a href="{{ url('/admin/packing_slip_config') }}">Set custom fields</a>
+                  </ul>
+                </div>
+                {{--<script>
+                  $('#packing_slips_after').blur(function(ev){ $(ev.target).prevAll('a').attr('href', function(i, href){ return href.replace(/=.*$/, "=" + $(ev.target).val()) }); });
+                </script>--}}
+            </div>
         </div>
 
     </section>

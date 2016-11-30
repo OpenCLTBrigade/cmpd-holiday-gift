@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\HouseholdRequest;
 use App\Household;
 use Auth;
 use Mail;
+use Laracasts\Flash\Flash;
 
 class HouseholdController extends AdminController
 {
@@ -240,5 +241,75 @@ class HouseholdController extends AdminController
 
           break;
       }
+    }
+
+    public function packing_slip_config(Request $request) {
+        return view("admin.packing_slip_config", [
+                                                  "household_id" => $request->input('household_id'),
+                                                  "packing_slip_radio" =>$request->cookie('packing_slip_radio'),
+                                                  "packing_slip_phone" => $request->cookie('packing_slip_phone')
+                                                  ]);
+    }
+
+    public function packing_slip_set_config(Request $request) {
+        $radio = $request->input('packing_slip_radio');
+        $phone = $request->input('packing_slip_phone');
+        $id = $request->input('household_id');
+        $url = $id ? '/admin/household/' . $id . '/packing_slip' : '/admin';
+        return redirect($url)
+            ->cookie("packing_slip_phone", $phone, 60*60*24*120)
+            ->cookie("packing_slip_radio", $radio, 60*60*24*120);
+    }
+
+    public function packing_slip(Request $request, $id) {
+        if(!\Auth::user()->hasRole("admin")) {
+            abort(403);
+        }
+        $radio = $request->cookie('packing_slip_radio');
+        $phone = $request->cookie('packing_slip_phone');
+        if(!$phone || !$radio){
+            return redirect('/admin/packing_slip_config?household_id=' . $id);
+        }
+        return view("admin.households.packing_slip", [
+               "households" => [Household::findOrFail($id)],
+               "assistance" => [
+                            "phone" => $phone,
+                            "radio" => $radio
+               ]
+        ]);
+    }
+
+    public function packing_slips(Request $request) {
+        if(!\Auth::user()->hasRole("admin")) {
+            abort(403);
+        }
+
+        $radio = $request->cookie('packing_slip_radio');
+        $phone = $request->cookie('packing_slip_phone');
+        if(!$phone || !$radio){
+            return redirect('/admin/packing_slip_config');
+        }
+
+        $households = Household::query()->where('approved', '=', 1);
+
+        // TODO: limit which packing slips to print
+        // $after = $request->input('after');
+        // if($after != NULL){
+        //     $when = strtotime($after);
+        //     if(!$when){
+        //         Flash::error('Invalid date or time: ' . $after);
+        //         return redirect('/admin');
+        //     }
+        //     $households = $households->andWhere('updated_at', '>=', date('y-m-d H:i:s', $when));
+        // }
+
+        return view("admin.households.packing_slip", [
+               "households" => $households->get(),
+               "assistance" => [
+                            "phone" => $phone,
+                            "radio" => $radio
+               ]
+        ]);
+
     }
 }
