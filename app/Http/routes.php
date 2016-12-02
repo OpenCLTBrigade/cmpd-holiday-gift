@@ -43,6 +43,9 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
         'index'
       ]
     ]);
+    Route::get('household_address', ['uses' => 'HouseholdAddressController@index']);
+    Route::put('household_address/{id}', ['uses' => 'HouseholdAddressController@update']);
+
     Route::get('affiliation/schools', 'AffiliationController@schools');
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
     Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
@@ -100,4 +103,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::resource('affiliation', 'AffiliationController');
     Route::post('affiliation/search', 'AffiliationController@search'); // Used for the table (affiliation.index)
 
+    Route::get('tools ', ['as' => 'admin.tools.index', 'uses' => 'ToolsController@index']);
+    Route::get('tools/cmpd_address_info', ['as' => 'admin.tools.cmpd_address_info', 'uses' => 'ToolsController@cmpdAddressInfo']);
 });
