@@ -32,13 +32,11 @@ class Kernel extends HttpKernel
             'with_language'
         ],
         'api' => [
-            'web',
-            'throttle:60,1'
+            'web'
         ],
         'admin' => [
             'web',
             'auth',
-            //'throttle',
             \App\Http\Middleware\Custom\MakeMenu::class
         ],
         // Custom Ones

@@ -82,12 +82,17 @@
                     );
                 },
                 processAddresses: function () {
+                    var delay = 500;
+                    var self = this;
                     for (i in this.household_address)
                     {
-                        var a = this.household_address[i];
-                        // this.progress_message = "Working on address ID: " + a.id;
-                        this.log(this.progress_message = "Working on address ID: " + a.id);
-                        this.geocode(a);
+                        setTimeout(function() {
+                            var a = self.household_address[i];
+                            // this.progress_message = "Working on address ID: " + a.id;
+                            self.log(self.progress_message = "Working on address ID: " + a.id);
+                            self.geocode(a);
+                        }, delay);
+                        delay = parseInt(delay) + 1075; // Google rate limiting lolol
                     }
                 },
                 geocode: function (address) {
