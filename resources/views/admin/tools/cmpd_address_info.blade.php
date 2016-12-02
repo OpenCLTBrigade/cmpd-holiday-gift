@@ -75,24 +75,23 @@
                         {
                             self.household_address = res;
                             self.count_found = res.length;
-                            self.progress_message = "Loaded " + self.length + " addresses.";
+                            self.progress_message = "Loaded " + res.length + " addresses.";
                             self.log("Loaded " + self.length + " addresses.");
                             self.processAddresses()
                         }
                     );
                 },
                 processAddresses: function () {
-                    var delay = 500;
                     var self = this;
-                    for (i in this.household_address)
+                    for (var i in this.household_address)
                     {
-                        setTimeout(function() {
-                            var a = self.household_address[i];
-                            // this.progress_message = "Working on address ID: " + a.id;
-                            self.log(self.progress_message = "Working on address ID: " + a.id);
-                            self.geocode(a);
-                        }, delay);
-                        delay = parseInt(delay) + 1075; // Google rate limiting lolol
+                        (function(i){
+                            setTimeout(function(){
+                                var a = $.extend({}, self.household_address[i]);
+                                self.log("Working on address ID: " + a.id);
+                                self.geocode(a);
+                            }, 875 * i);
+                        }(i));
                     }
                 },
                 geocode: function (address) {
