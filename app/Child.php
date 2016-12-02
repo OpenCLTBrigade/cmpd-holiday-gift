@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Delatbabel\Elocrypt\Elocrypt;
+use League\Flysystem\Exception;
 
 class Child extends Model
 {
@@ -52,7 +53,19 @@ class Child extends Model
 
     public function getAgeAttribute()
     {
-      $age = \Carbon\Carbon::parse($this->dob);
+      /*
+       * Fix in 1.2.5
+       * Some DOB's got inserted with the wrong format.
+       * MySQL isn't enforcing a format because we use encryption so DOB is a
+       * text field. Thus, some formats cause an issue. Lame, right?
+       */
+      try {
+        $age = \Carbon\Carbon::parse($this->dob);
+      } catch (\Exception $e)
+      {
+        $dob = str_replace("-","/",$this->dob);
+        $age = \Carbon\Carbon::parse($dob);
+      }
       return $age->diffInYears();
     }
 
