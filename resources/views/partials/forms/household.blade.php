@@ -166,6 +166,21 @@
             <input class="form-control" type="text" v-model="address.address_zip">
           </div>
         </div>
+
+        @if (Auth::user()->hasRole('admin'))
+        <div class="col-xs-12 col-sm-4">
+          <div class="form-group">
+            <label class="control-label">CMPD Division</label>
+            <input class="form-control" type="text" v-model="address.cmpd_division">
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+          <div class="form-group">
+            <label class="control-label">CMPD Response Area</label>
+            <input class="form-control" type="text" v-model="address.cmpd_response_area">
+          </div>
+        </div>
+        @endif
         <hr>
       </div>
 
