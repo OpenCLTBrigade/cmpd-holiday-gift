@@ -32,6 +32,11 @@ class HouseholdAddress extends Model
         "address_state",
         "address_zip",
         'cmpd_division',
-        'cmpd_patrol_area'
+        'cmpd_response_area'
     ];
+
+  public function scopeMissingCmpdInfo ($query)
+  {
+    return $query->whereNull('cmpd_division')->orWhereNull('cmpd_response_area');
+  }
 }
