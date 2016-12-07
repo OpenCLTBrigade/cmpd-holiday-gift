@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Child;
+use App\Household;
+use App\HouseholdAddress;
 
 use PHPExcel;
 use PHPExcel_Worksheet;
 use PHPExcel_Writer_Excel2007;
+
+use League\Csv\Writer;
 
 class Export extends Controller {
   public function export_data_excel(Request $request) {
@@ -56,4 +61,54 @@ class Export extends Controller {
       flush();
       exit(0);
   }
+
+    static function newCSV($headers) {
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne($headers);
+        return $csv;
+    }
+
+    public function bike_report() {
+        $csv = Export::newCSV(["family id", "child name", "age", "bike style", "bike size"]);
+        $children = Child::where('bike_want', 'Y')
+            ->join('household', 'household.id', '=', 'child.household_id')
+            ->where('approved', 1)
+            ->get();
+        foreach($children as $child) {
+            $csv->insertOne([$child->household_id, $child->name_last . ", " . $child->name_first, $child->age, $child->bike_style, $child->bike_size]);
+        }
+        $csv->output('GiftProjectBikeReport_' . date("YmdHis") . '.csv');
+
+        flush();
+        exit(0);
+    }
+
+    public function division_report() {
+        $csv = Export::newCSV(["family number", "head of household", "street", "street2", "city", "state", "zip", "phone numbers", "email", "division", "response area"]);
+        $households = Household::where('approved', 1)->get();
+
+        foreach($households as $h) {
+            $a = $h->address->count() ? $h->address[0] : new HouseholdAddress();
+            $phones = implode(", ", array_map(function($p){
+                        return $p['phone_number'] . " (" . $p['phone_type'] . ")";
+                    }, $h->phone->toArray()));
+            $csv->insertOne([
+                             $h->id,
+                             $h->name_last . ", " . $h->name_first,
+                             $a->address_street,
+                             $a->address_street2,
+                             $a->address_city,
+                             $a->address_state,
+                             $a->address_zip,
+                             $phones,
+                             $h->email,
+                             $a->cmpd_division,
+                             $a->cmpd_response_area]);
+        }
+
+        $csv->output('GiftProjectDivisionReport_' . date("YmdHis") . '.csv');
+
+        flush();
+        exit(0);
+    }
 }

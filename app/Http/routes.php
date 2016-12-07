@@ -50,6 +50,8 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
     Route::get('cmpd_info', ['uses' => 'CmpdDivision@info']);
     Route::post('upload_household_form_file', ['uses' => 'HouseholdController@upload_attachment']);
     Route::get('export_data_excel', ['uses' => 'Export@export_data_excel']);
+    Route::get('bike_report', ['uses' => 'Export@bike_report']);
+    Route::get('division_report', ['uses' => 'Export@division_report']);
 });
 
 // Admin routes
