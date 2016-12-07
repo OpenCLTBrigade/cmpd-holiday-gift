@@ -71,6 +71,7 @@
                     <li> <a href="{{ url('/api/export_data_excel') }}">Export data into Excel</a>
                     <li> <a href="{{ url('/api/bike_report') }}">Bike report</a>
                     <li> <a href="{{ url('/api/division_report') }}">Division report</a>
+                    <li> <a href="{{ url('/api/link_report') }}">The Link report</a>
                   </ul>
                 </div>
             </div>

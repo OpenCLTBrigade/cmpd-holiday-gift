@@ -52,6 +52,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api', 'middleware' => ['api', '
     Route::get('export_data_excel', ['uses' => 'Export@export_data_excel']);
     Route::get('bike_report', ['uses' => 'Export@bike_report']);
     Route::get('division_report', ['uses' => 'Export@division_report']);
+    Route::get('link_report', ['uses' => 'Export@link_report']);
 });
 
 // Admin routes

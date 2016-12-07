@@ -43,11 +43,7 @@ class Export extends Controller {
               }
               $sheet->fromArray($array, NULL, 'A' . $i++);
           }
-          $cells = $sheet->getRowIterator()->current()->getCellIterator();
-          $cells->setIterateOnlyExistingCells(true);
-          foreach ($cells as $cell) {
-              $sheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
-          }
+          Export::AutoSizeSheet($sheet);
           $excel->addSheet($sheet);
       }
 
@@ -61,6 +57,52 @@ class Export extends Controller {
       flush();
       exit(0);
   }
+
+    static function AutoSizeSheet(&$sheet) {
+        $cells = $sheet->getRowIterator()->current()->getCellIterator();
+        $cells->setIterateOnlyExistingCells(true);
+        foreach ($cells as $cell) {
+            $sheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
+        }
+    }
+
+    public function link_report() {
+      $excel = new PHPExcel();
+
+      $sheet = new PHPExcel_Worksheet($excel, "Heads of Household");
+      $sheet->fromArray(["Family Number", "Last Name", "First Name"], NULL, 'A1');
+      $households = Household::all(); // TODO ATN ::where('approved', 1);
+      $i=2;
+      foreach($households as $h) {
+          $sheet->fromArray([$h->id, $h->name_last, $h->name_first], NULL, 'A' . $i++);
+      }
+      Export::AutoSizeSheet($sheet);
+      $excel->addSheet($sheet);
+
+      $sheet = new PHPExcel_Worksheet($excel, "Children");
+      $sheet->fromArray(["Family Number", "Head of Household", "Child Number", "Child First Name", "Age", "Wish List", "Bike"], NULL, 'A1');
+      $children = Child::all(); // TODO ATN where('household.approved', 1);
+      $i=2;
+      foreach($children as $c) {
+          dd($c->household());
+          $sheet->fromArray([$c->household->id, $c->household->name_last . ", " . $c->household->name_first, $c->id, $c->name_first, $c->age /*TODO*/], NULL, 'A' . $i++);
+      }
+      Export::AutoSizeSheet($sheet);
+      $excel->addSheet($sheet);
+
+      $excel->removeSheetByIndex(0);
+
+      header('Content-type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment; filename="GiftProjectTheLinkReport_' . date("YmdHis") . '.xlsx"');
+      header('Cache-Control: max-age=0');
+
+      $writer = new PHPExcel_Writer_Excel2007($excel);
+      $writer->setOffice2003Compatibility(true);
+      $writer->save('php://output');
+
+      flush();
+      exit(0);
+    }
 
     static function newCSV($headers) {
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
