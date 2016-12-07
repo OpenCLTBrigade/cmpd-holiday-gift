@@ -28,7 +28,18 @@
             </div>
             <div class="form-group has-feedback">
                 {!! Form::label('affiliation', trans('auth.register.affiliation')) !!}
-                {!! Form::select('affiliation_id', $affModel::parseAffiliationsIntoSelectArray(), null,  ['class' => 'form-control' ]) !!}
+                {!!
+                    Form::select(
+                    'affiliation_id',
+                    $affModel::parseAffiliationsIntoSelectArray(),
+                    null,
+                    [
+                        'class' => 'form-control',
+                        'placeholder' => '=== Select affiliation ==='
+
+                    ]
+                    )
+                !!}
                 <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
