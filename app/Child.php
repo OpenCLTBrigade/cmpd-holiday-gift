@@ -48,7 +48,7 @@ class Child extends Model
 
     public function household()
     {
-        return $this->hasOne("\App\Household");
+        return $this->belongsTo("\App\Household");
     }
 
     public function getAgeAttribute()

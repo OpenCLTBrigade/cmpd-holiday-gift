@@ -81,11 +81,19 @@ class Export extends Controller {
 
       $sheet = new PHPExcel_Worksheet($excel, "Children");
       $sheet->fromArray(["Family Number", "Head of Household", "Child Number", "Child First Name", "Age", "Wish List", "Bike"], NULL, 'A1');
-      $children = Child::all(); // TODO ATN where('household.approved', 1);
+      $children = Child::join('household', 'household.id', '=', 'child.household_id')
+          ->where('household.deleted_at')
+          ->select('child.*')
+          ->get();
       $i=2;
       foreach($children as $c) {
-          dd($c->household());
-          $sheet->fromArray([$c->household->id, $c->household->name_last . ", " . $c->household->name_first, $c->id, $c->name_first, $c->age /*TODO*/], NULL, 'A' . $i++);
+          $sheet->fromArray([
+            $c->household_id,
+            $c->household->name_last . ", " . $c->household->name_first,
+            $c->id,
+            $c->name_first,
+            $c->age /*TODO*/
+          ], NULL, 'A' . $i++);
       }
       Export::AutoSizeSheet($sheet);
       $excel->addSheet($sheet);
