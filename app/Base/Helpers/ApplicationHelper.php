@@ -37,15 +37,14 @@ if (!function_exists('renderMenuNode')) {
         $single  = '<a href="'. $link .'">' . $node->title . '</a>';
         if ($node->isLeaf()) {
             return '<li>' . $single . '</li>';
-        } else {
-            $html = '<li '.$class.'>' . $drop_down;
-            $html .= '<ul '.$list.'>';
-            foreach ($node->children as $child) {
-                $html .= renderMenuNode($child);
-            }
-            $html .= '</ul>';
-            $html .= '</li>';
         }
+        $html = '<li '.$class.'>' . $drop_down;
+        $html .= '<ul '.$list.'>';
+        foreach ($node->children as $child) {
+            $html .= renderMenuNode($child);
+        }
+        $html .= '</ul>';
+        $html .= '</li>';
         return $html;
     }
 }

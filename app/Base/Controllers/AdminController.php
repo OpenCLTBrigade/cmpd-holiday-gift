@@ -61,15 +61,16 @@ abstract class AdminController extends Controller
      */
     public function getForm($object = null)
     {
+        $urlPath = 'store';
+        $method = 'POST';
+        $viewPath = 'create';   
         if ($object) {
-            $url =  $this->urlRoutePath("update", $object);
+            $urlPath = 'update';
             $method = 'PATCH';
-            $path = $this->viewPath("edit");
-        } else {
-            $url =  $this->urlRoutePath("store", $object);
-            $method = 'POST';
-            $path = $this->viewPath("create");
+            $viewPath = 'edit';
         }
+        $url = $this->urlRoutePath($urlPath, $object);
+        $path = $this->viewPath($viewPath);
         $form = $this->createForm($url, $method, $object);
         return view($path, compact('form', 'object'));
     }
@@ -246,9 +247,8 @@ abstract class AdminController extends Controller
     {
         if ($model) {
             return route($this->routePath($path), ['id' => $model->id]);
-        } else {
-            return route($this->routePath($path));
         }
+        return route($this->routePath($path));
     }
 
     /**
@@ -274,9 +274,8 @@ abstract class AdminController extends Controller
         $path = 'admin.' . str_plural(snake_case($this->model))  . '.' . $path;
         if ($object !== false) {
             return view($path, compact('object'));
-        } else {
-            return $path;
         }
+        return $path;
     }
 
     public function viewPathWithData($path = "index", array $data = array())
