@@ -102,6 +102,9 @@ class Export extends Controller {
           ->get();
       $i=2;
       foreach($children as $c) {
+          if (!$c->household)
+            continue;
+
           $sheet->fromArray([
             $c->household_id,
             $c->household->name_last . ", " . $c->household->name_first,
