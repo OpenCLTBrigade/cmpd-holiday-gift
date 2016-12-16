@@ -64,6 +64,7 @@ class Child extends Model
       } catch (\Exception $e)
       {
         $dob = str_replace("-","/",$this->dob);
+        $dob = str_replace("0200","200",$this->dob);
         $age = \Carbon\Carbon::parse($dob);
       }
       return $age->diffInYears();
