@@ -80,7 +80,22 @@ class Export extends Controller {
       $excel->addSheet($sheet);
 
       $sheet = new PHPExcel_Worksheet($excel, "Children");
-      $sheet->fromArray(["Family Number", "Head of Household", "Child Number", "Child First Name", "Age", "Wish List", "Bike"], NULL, 'A1');
+      $sheet->fromArray([
+        "Family Number",
+        "Head of Household",
+        "Child Number",
+        "Child First Name",
+        "Age",
+        "Wish List",
+        "Bike?",
+        "Bike Style",
+        "Bike Size",
+        "Clothes?",
+        "Shirt Size",
+        "Pants Size",
+        "Shoe Size",
+
+      ], NULL, 'A1');
       $children = Child::join('household', 'household.id', '=', 'child.household_id')
           ->where('household.deleted_at')
           ->select('child.*')
@@ -92,7 +107,15 @@ class Export extends Controller {
             $c->household->name_last . ", " . $c->household->name_first,
             $c->id,
             $c->name_first,
-            $c->age /*TODO*/
+            $c->age,
+            $c->additional_ideas,
+            ($c->bike_want == "Y") ? "Yes" : "",
+            ($c->bike_want == "Y") ? $c->bike_style : "",
+            ($c->bike_want == "Y") ? $c->bike_size : "",
+            ($c->clothes_want == "Y") ? "Yes" : "",
+            $c->clothes_size_shirt,
+            $c->clothes_size_pants,
+            $c->shoe_size,
           ], NULL, 'A' . $i++);
       }
       Export::AutoSizeSheet($sheet);
