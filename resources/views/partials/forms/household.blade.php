@@ -579,7 +579,7 @@
   <!-- /box-primary -->
   
     <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
-    <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
+    <button class="btn addbtn" v-show="household.draft != 'N' && household.id" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
     <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
     <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
     <span v-show="showSavedMessage">Saved!</span>

@@ -26,13 +26,12 @@
                                     </button>
                                 </td>
                             </tr>
-                            {{-- TODO Waiting for #30
                             <tr>
                                 <td>
                                     Nominations Pending Review
                                 </td>
                                 <td>
-                                    --
+                                    {{ $nominations_pending_review }}
                                 </td>
                                 <td>
                                     <button class="btn btn-sm btn-default" onclick="window.location='/admin/household'">
@@ -45,9 +44,27 @@
                                     Nominations approved / reviewed
                                 </td>
                                 <td colspan="2">
-                                    -- / --
+                                    {{ $nominations_approved }} / {{ $nominations_reviewed }}
                                 </td>
-                            </tr>--}}
+                            </tr>
+                            <tr>
+                                <td>
+                                    Children (approved / reviewed / pending)
+                                </td>
+                                <td colspan="2">
+                                    {{ $children_approved }} / {{ $children_reviewed }} / {{ $children_pending }}
+                                </td>
+                            </tr>
+                            @foreach ($orgs as $org)
+                            <tr>
+                                <td>
+                                    Nominations from {{ strtoupper($org->type) }}
+                                </td>
+                                <td colspan="2">
+                                  {{ $org->approved }} / {{ $org->reviewed }} / {{ $org->pending }}
+                                </td>
+                            </tr>
+                            @endforeach
                             <tr>
                                 <td>
                                     Incomplete drafts
@@ -69,6 +86,9 @@
                 <div class="box-body">
                   <ul>
                     <li> <a href="{{ url('/api/export_data_excel') }}">Export data into Excel</a>
+                    <li> <a href="{{ url('/api/bike_report') }}">Bike report</a>
+                    <li> <a href="{{ url('/api/division_report') }}">Division report</a>
+                    <li> <a href="{{ url('/api/link_report') }}">The Link report</a>
                   </ul>
                 </div>
             </div>
