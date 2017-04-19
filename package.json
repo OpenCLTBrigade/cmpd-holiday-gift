@@ -1,0 +1,24 @@
+{
+  "name": "express-form",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "MD5": "~1.2.1",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "express-session": "^1.7.6",
+    "hjs": "0.0.4",
+    "jasmine-node": "^2.0.0",
+    "morgan": "~1.8.1",
+    "mysql": "^2.5.5",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "sequelize": "^3.30.4",
+    "serve-favicon": "~2.4.2"
+  }
+}
