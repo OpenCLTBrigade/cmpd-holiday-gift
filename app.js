@@ -2,7 +2,6 @@
 var express = require('express');
 var path = require('path');
 var config = require('./config')();
-var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');

@@ -3,20 +3,17 @@
 var fs = require('fs');
 var path = require('path');
 var Sequelize = require('sequelize');
-//var basename = path.basename(module.filename);
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config')();
 var db = {};
 
-var sequelize = new Sequelize(config.mysql.database, config.mysql.user, config.mysql.password, {
-  host: config.mysql.host,
-  dialect: 'mysql',
+var sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, Object.assign({
   pool: {
     max: 5,
     min: 0,
-    idle:10000
+    idle: 10000
   }
-});
+}, config.db));
 
 fs
     .readdirSync(__dirname)
