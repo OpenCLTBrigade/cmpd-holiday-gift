@@ -5,7 +5,7 @@
 		<meta charset="utf-8"></meta>
 	</head>
 	<body>
-    <p>Hello World!</p>
+    <p>Hello {{name}}!</p>
 		<a href="/logout">Log Out</a>
   </body>
 </html>
