@@ -6,5 +6,6 @@
 	</head>
 	<body>
     <p>Hello World!</p>
+		<a href="/logout">Log Out</a>
   </body>
 </html>
