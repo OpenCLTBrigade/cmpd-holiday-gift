@@ -16,7 +16,7 @@ app.set('views', path.join(__dirname,'views'));
 app.set('view engine', 'hjs');
 
 // Use middleware
-app.use(express.static(path.join(__dirname,'bower_components')));
+app.use(express.static(path.join(__dirname,'bower_components'), { index: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
