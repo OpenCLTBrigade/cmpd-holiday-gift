@@ -520,6 +520,11 @@
         }
       }
     },
+    "sequelize-encrypted": {
+      "version": "1.0.0",
+      "from": "sequelize-encrypted@latest",
+      "resolved": "https://registry.npmjs.org/sequelize-encrypted/-/sequelize-encrypted-1.0.0.tgz"
+    },
     "serve-favicon": {
       "version": "2.4.2",
       "from": "serve-favicon@>=2.4.2 <2.5.0",
