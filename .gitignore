@@ -1,2 +1,4 @@
 node_modules
 .DS_Store
+db.development.sqlite
+launch.json
