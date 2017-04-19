@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "`npm bin`/jasmine-node tests"
+    "test": "`npm bin`/jasmine-node tests",
+    "lint": "`npm bin`/eslint --fix *.js controllers models || true"
   },
   "devDependencies": {
-    "jasmine-node": "^2.0.0"
+    "jasmine-node": "^2.0.0",
+    "eslint": "*"
   },
   "dependencies": {
     "MD5": "~1.2.1",

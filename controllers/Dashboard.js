@@ -1,3 +1,3 @@
-module.exports = function(req, res, next) {
+module.exports = function(req, res) {
     res.render('dashboard', { name: req.user.firstname });
 };

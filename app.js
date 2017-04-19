@@ -1,3 +1,5 @@
+/*eslint no-console: "off"*/
+
 // Module dependencies
 var express = require('express');
 var path = require('path');
@@ -37,12 +39,12 @@ require('./config/passport.js')(passport, models.user);
 
 //Sync Database
 models.sequelize.sync().then(function() {
-    console.log('Nice! Database looks fine')
+    console.log('Nice! Database looks fine');
 }).catch(function(err) {
-    console.log(err, "Something went wrong with the Database Update!")
+    console.log(err, 'Something went wrong with the Database Update!');
 });
 
 // Start server
 app.listen(config.port, function() {
-  console.log('Express server listening on port ' + config.port);
+    console.log('Express server listening on port ' + config.port);
 });
