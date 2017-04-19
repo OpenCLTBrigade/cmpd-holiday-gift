@@ -22,6 +22,11 @@
       "from": "basic-auth@>=1.1.0 <1.2.0",
       "resolved": "https://registry.npmjs.org/basic-auth/-/basic-auth-1.1.0.tgz"
     },
+    "bcrypt-nodejs": {
+      "version": "0.0.3",
+      "from": "bcrypt-nodejs@latest",
+      "resolved": "https://registry.npmjs.org/bcrypt-nodejs/-/bcrypt-nodejs-0.0.3.tgz"
+    },
     "bignumber.js": {
       "version": "3.1.2",
       "from": "bignumber.js@3.1.2",
