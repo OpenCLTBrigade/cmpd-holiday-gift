@@ -7,22 +7,48 @@ var config = require('./config')();
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var expressVue = require('express-vue');
 
 //Models
 var models = require('./models');
 
 var app = express();
 
-// Configure app
-app.set('views', path.join(__dirname,'views'));
-app.set('view engine', 'hjs');
+// Configure views
+app.set('views', path.join(__dirname, 'views'));
+app.set('vue', {
+    componentsDir: path.join(__dirname, 'views/components'),
+    defaultLayout: 'layout'
+});
+app.engine('vue', expressVue);
+app.set('view engine', 'vue');
 
 // Use middleware
-['jquery', 'bootstrap'].forEach(lib => {
+['jquery', 'bootstrap', 'express-vue'].forEach(lib => {
     app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), { index: false }));
 });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add res.renderData, which returns HTML or JSON depending on context
+app.use(function(req, res, next){
+    if (req.accepts(['html', 'json']) == 'json') {
+        req.wantsJSON = true; 
+    }
+    if (req.url.slice(-5) == '.json') {
+        req.wantsJSON = true;
+        req.url = req.url.slice(0, -5);
+    }
+    res.renderData = function(view, title, data){
+        if (req.wantsJSON) {
+            res.json(data);
+        } else {
+            res.render(view, { data: data, vue: { head: { title: title } } });
+        }
+    }
+    return next();
+});
 
 // For Passport
 app.use(session({

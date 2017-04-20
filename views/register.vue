@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>{{title}}</title>
-  <meta charset="utf-8"></meta>
-  <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css"
-</head>
-<body>
+<template>
   <div class="container">
-    <p>{{content}}</p>
+    <p>{{message}}</p>
     <form id="signup" name="register" method="post" action="/register">
        <label for="email">Email Address</label>
        <input class="text" name="email" type="email" />
@@ -20,7 +13,12 @@
        <input class="btn" type="submit" value="Register" />
    </form>
   </div>
-  <script src="jquery/dist/jquery.js"></script>
-  <script src="bootstrap/dist/js/bootstrap.js"></script>
-</body>
-</html>
+</template>
+
+<script>
+  export default {
+    data: () => {},
+  }
+</script>
+
+<style></style>

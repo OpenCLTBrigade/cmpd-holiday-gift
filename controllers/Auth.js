@@ -10,7 +10,7 @@ module.exports = {
 
     login: {
         get: function(req, res) {
-            res.render('login', {title: 'Login', content: 'This is the Login page'});
+            res.renderData('login', 'Login', { message: 'This is the Login page' });
         },
         post: passport.authenticate('local-signin', {
             successRedirect: '/',
@@ -20,7 +20,7 @@ module.exports = {
 
     register: {
         get: function(req, res) {
-            res.render('register',{title:'Register', content:'This is the registration page'});
+            res.renderData('register', 'Register', { message: 'This is the registration page' });
         },
         post: passport.authenticate('local-signup', {
             successRedirect: '/',
