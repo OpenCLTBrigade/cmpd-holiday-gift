@@ -8,24 +8,30 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-console": [
-            "warn"
-        ]
+        "indent": ["error", 4],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-console": ["warn"],
+        "complexity": ["warn", 20],
+        "no-alert": ["warn"],
+        "no-unused-expressions": ["warn"],
+        "max-len": ["warn", 120],
+        "max-lines": ["warn", 500],
+        "max-statements-per-line": ["warn"],
+        "no-tabs": ["error"],
+        "no-trailing-spaces": ["error"],
+        "no-whitespace-before-property": ["error"],
+        "object-curly-newline": ["error"],
+        "object-curly-spacing": ["error"],
+        "semi-spacing": ["error"],
+        "space-before-blocks": ["error"],
+        "keyword-spacing": ["error"],
+        "arrow-spacing": ["error"],
+        "space-before-function-paren": ["error", {"named": "never"}],
+        "space-in-parens": ["error"],
+        "space-infix-ops": ["error"],
+        "unicode-bom": ["error"],
+        "no-duplicate-imports": ["error"]
     }
 }

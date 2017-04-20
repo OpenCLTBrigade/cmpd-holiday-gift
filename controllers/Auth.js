@@ -14,21 +14,21 @@ module.exports = {
     },
 
     login: {
-        get: function(req, res) {
-            res.renderData('login', 'Login', { message: 'This is the Login page' });
+        get: function (req, res) {
+            res.renderData('login', 'Login', {message: 'This is the Login page'});
         },
         post: passport.authenticate('local-signin', redirects)
     },
 
     register: {
-        get: function(req, res) {
-            res.renderData('register', 'Register', { message: 'This is the registration page' });
+        get: function (req, res) {
+            res.renderData('register', 'Register', {message: 'This is the registration page'});
         },
         post: passport.authenticate('local-signup', redirects)
     },
 
-    logout: function(req, res) {
-        req.session.destroy(function() {
+    logout: function (req, res) {
+        req.session.destroy(function () {
             res.redirect('/login');
         });
     }
