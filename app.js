@@ -6,8 +6,10 @@ var path = require('path');
 var config = require('./config')();
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var session = require('express-session');
+var expressSession = require('express-session');
 var expressVue = require('express-vue');
+var cookieParser = require('cookie-parser');
+var SessionStore = require('express-session-sequelize')(expressSession.Store);
 
 //Models
 var models = require('./models');
@@ -50,14 +52,17 @@ app.use(function(req, res, next){
     return next();
 });
 
-// For Passport
-app.use(session({
+// Sessions and Authentication
+var sequelizeSessionStore = new SessionStore({ db: models.sequelize });
+app.use(cookieParser());
+app.use(expressSession({
     secret: 'codeforCLT',
+    store: sequelizeSessionStore,
     resave: true,
     saveUninitialized: true
 })); // session secret
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session());
 
 // Define routes
 app.use(require('./routes'));
