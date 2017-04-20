@@ -1,4 +1,5 @@
 <template>
+  <auth-layout>
   <div class="container">
     <p>{{message}}</p>
     <form id="login" name="login" method="post" action="login">
@@ -9,11 +10,13 @@
       <input class="btn" type="submit" value="Sign In" />
     </form>
   </div>
+  </auth-layout>
 </template>
 
 <script>
-  export default {
-    data: () => {},
+  module.exports = {
+    data: function () { return { message: "hi" }; },
+    components: { 'auth-layout': require('./components/authLayout.vue') }
   }
 </script>
 
