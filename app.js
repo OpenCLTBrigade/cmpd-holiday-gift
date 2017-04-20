@@ -46,7 +46,7 @@ app.use(function(req, res, next){
         } else {
             res.render(view, { data: data, vue: { head: { title: title } } });
         }
-    }
+    };
     return next();
 });
 

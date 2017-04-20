@@ -1,5 +1,10 @@
 var passport = require('passport');
 
+var redirects = {
+    successRedirect: '/',
+    failureRedirect: '/login'
+};
+
 module.exports = {
     // Authentication Verification
     isLoggedIn: function (req, res, next) {
@@ -12,20 +17,14 @@ module.exports = {
         get: function(req, res) {
             res.renderData('login', 'Login', { message: 'This is the Login page' });
         },
-        post: passport.authenticate('local-signin', {
-            successRedirect: '/',
-            failureRedirect: '/login'
-        })
+        post: passport.authenticate('local-signin', redirects)
     },
 
     register: {
         get: function(req, res) {
             res.renderData('register', 'Register', { message: 'This is the registration page' });
         },
-        post: passport.authenticate('local-signup', {
-            successRedirect: '/',
-            failureRedirect: '/register'
-        })
+        post: passport.authenticate('local-signup', redirects)
     },
 
     logout: function(req, res) {
