@@ -26,7 +26,9 @@ Authentication is provided by [Passport]. Passwords are encrypted using [bcrypt]
 Data is stored in an [Sqlite] database using the [Sequelize] ORM. Some of
 the fields are encrypted using [sequelize-encrpyted].
 
-The frontend is assembled in [Vue]. The theme is [AdminLTE], based on [Bootstrap 3].
+The frontend is written in [Vue] and [Less]. It is assembled using
+[Webpack] and [vue-loader]. The theme is [AdminLTE], based on
+[Bootstrap 3].
 
 Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 
@@ -41,6 +43,9 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [Sequelize]: http://docs.sequelizejs.com/en/v3/
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [Vue]: https://vuejs.org/v2/api/
+[Less]: http://lesscss.org/features/
+[Webpack]: https://webpack.js.org/
+[vue-loader]: https://vue-loader.vuejs.org/en/
 [AdminLTE]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
 [Bootstrap 3]: http://getbootstrap.com/getting-started/
 [Jasmine]: https://jasmine.github.io/1.3/introduction
