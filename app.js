@@ -20,44 +20,39 @@ var models = require('./models');
 var app = express();
 
 // A custom view rendering engine that uses Vue and Webpack
-var skeleton = fs.readFileSync(path.join(__dirname, "views/skeleton.html")).toString(); // TODO: reload when changed, if dev mode
+// TODO: reload skeleton when changed, if dev mode
+var skeleton = fs.readFileSync(path.join(__dirname, 'views/skeleton.html')).toString();
 var viewDir = path.join(__dirname, 'views');
 function viewPathToVar(path) {
     return path.replace(/^\/|\.vue$/g, '').replace(/[\/-]/g, '_');
-};
+}
 app.set('views', viewDir);
-app.engine('vue', function(filePath, options, callback){
-    fs.readFile(filePath, function(err, content){
-        if (err) {
-            return callback(err);
-        }
-        if (filePath.slice(0, viewDir.length) != viewDir) {
-            return callback("Could not load view from outside view dir: " + filePath);
-        }
-        var path = filePath.slice(viewDir.length);
-        var view = viewPathToVar(path);
-        var js = path.replace(/\.vue$/, '.js');
-        var out = skeleton.replace(/\{\{\{([^}]*)\}\}\}/g, function(match, name){
-            if (name == 'head') {
-                if (options.title) {
-                    return `<title>${options.title}</title>`;
-                }
-                return '';
-            } else if (name == "body") {
-                return `
-                    <div id="view"></div>
-                    <script src="views/${view}.js"></script>
-                    <script>
-                    view_${view}.data = function(){ return ${JSON.stringify(options.data)}; };
-                    new Vue({
-                        el: '#view',
-                        render: function (h) { return h(view_${view}); }
-                    });
-                    </script>`;
+app.engine('vue', function (filePath, options, callback) {
+    if (filePath.slice(0, viewDir.length) != viewDir) {
+        return callback('Could not load view from outside view dir: ' + filePath);
+    }
+    var path = filePath.slice(viewDir.length);
+    var view = viewPathToVar(path);
+    var out = skeleton.replace(/\{\{\{([^}]*)\}\}\}/g, function (match, name) {
+        if (name == 'head') {
+            if (options.title) {
+                return `<title>${options.title}</title>`;
             }
-        });
-        callback(null, out);
+            return '';
+        } else if (name == 'body') {
+            return `
+                <div id="view"></div>
+                <script src="views/${view}.js"></script>
+                <script>
+                  view_${view}.data = function(){ return ${JSON.stringify(options.data)}; };
+                  new Vue({
+                    el: '#view',
+                    render: function (h) { return h(view_${view}); }
+                  });
+                </script>`;
+        }
     });
+    callback(null, out);
 });
 app.set('view engine', 'vue');
 
@@ -66,8 +61,8 @@ app.set('view engine', 'vue');
     app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), {index: false}));
 });
 
-app.use(express.static(path.join(__dirname, "assets"), {index: false}));
-app.use(express.static(path.join(__dirname, ".webpack-out"), {index: false}));
+app.use(express.static(path.join(__dirname, 'assets'), {index: false}));
+app.use(express.static(path.join(__dirname, '.webpack-out'), {index: false}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -90,7 +85,7 @@ app.use(function (req, res, next) {
         } else {
             res.render(view, {
                 data: data,
-                title: title 
+                title: title
             });
         }
     };
@@ -125,15 +120,18 @@ models.sequelize.sync().then(function () {
 // Generate assets
 // TODO: in dev mode, use watch
 var allViews = {};
-glob.sync("views/**/*.vue").forEach(function(path){
-    allViews[viewPathToVar(path.replace('views/', ''))] = "./" + path;
+glob.sync('views/**/*.vue').forEach(function (path) {
+    allViews[viewPathToVar(path.replace('views/', ''))] = './' + path;
 });
-compiler = webpack(Object.assign({}, webpackConfig, {entry: allViews}));
+var compiler = webpack(Object.assign({}, webpackConfig, {entry: allViews}));
 compiler.run((err, stats) => {
     if (err) {
-        console.log(err, "webpack failed");
+        console.log(err, 'webpack failed');
     } else {
-        console.log('webpack succeeded');
+        console.log('webpack succeeded\n', stats.toString({
+            colors: true,
+            chunks: false
+        }));
     }
 });
 
