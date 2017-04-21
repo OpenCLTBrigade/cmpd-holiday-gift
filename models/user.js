@@ -10,28 +10,84 @@ module.exports = function (sequelize, Sequelize) {
             primaryKey: true,
             type: Sequelize.INTEGER
         },
-        firstname: {
+        name_first: {
             type: Sequelize.STRING,
-            notEmpty: true
+            allowNull: false
         },
-        lastname: {
+        name_last: {
             type: Sequelize.STRING,
-            notEmpty: true
+            allowNull: false
         },
-        username: {type: Sequelize.TEXT},
-        about: {type: Sequelize.TEXT},
+        rank: {
+            type: Sequelize.STRING,
+            defaultValue: null
+        },
+        phone: {
+            type: Sequelize.STRING,
+            defaultValue: null
+        },
+        affiliation_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            //TODO: Fix foreign key issue
+            //references: {
+            //  model: affiliation,
+            //  key: 'id'
+            //}
+        },
         email: {
             type: Sequelize.STRING,
+            allowNull: false,
             validate: {isEmail: true}
         },
         password: {
             type: Sequelize.STRING,
             allowNull: false
         },
-        last_login: {type: Sequelize.DATE},
-        status: {
-            type: Sequelize.ENUM('active', 'inactive'),
-            defaultValue: 'active'
+        remember_token: {
+            type: Sequelize.STRING,
+            defaultValue: null
+        },
+        logged_in_at: {
+            type: Sequelize.DATE,
+            defaultValue: null
+        },
+        logged_out_at: {
+            type: Sequelize.DATE,
+            defaultValue: null
+        },
+        ip_address: {
+            type: Sequelize.STRING,
+            defaultValue: null
+        },
+        active: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        nomination_limit: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 5
+        },
+        confirmation_email: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        confirmation_code: {
+            type: Sequelize.STRING,
+            defaultValue: null
+        },
+        approved: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        declined: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        username: {
+          type: Sequelize.TEXT
         },
         encrypted: enc_fields.vault('encrypted'),
         eggo: enc_fields.field('eggo', {
