@@ -12,7 +12,7 @@ var webpack = require('webpack');
 var glob = require('glob');
 
 var configurePassport = require('./config/passport.js');
-var config = require('./config')();
+var config = require('./config');
 var webpackConfig = require('./config/webpack');
 var models = require('./models');
 

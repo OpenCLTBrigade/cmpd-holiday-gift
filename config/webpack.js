@@ -1,8 +1,9 @@
 var path = require('path');
+var mode = require('.').mode;
 
 module.exports = {
     output: {
-        path: path.join(__dirname, '../.webpack-out/views'), // TODO: change path
+        path: path.join(__dirname, '../.webpack-out/views'),
         publicPath: '/views',
         filename: '[name].js',
         library: 'view_[name]'
