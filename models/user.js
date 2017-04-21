@@ -12,11 +12,11 @@ module.exports = function (sequelize, Sequelize) {
         },
         name_first: {
             type: Sequelize.STRING,
-            allowNull: false
+            //allowNull: false
         },
         name_last: {
             type: Sequelize.STRING,
-            allowNull: false
+            //allowNull: false
         },
         rank: {
             type: Sequelize.STRING,
@@ -28,7 +28,7 @@ module.exports = function (sequelize, Sequelize) {
         },
         affiliation_id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            //allowNull: false,
             //TODO: Fix foreign key issue
             //references: {
             //  model: affiliation,
@@ -37,12 +37,12 @@ module.exports = function (sequelize, Sequelize) {
         },
         email: {
             type: Sequelize.STRING,
-            allowNull: false,
-            validate: {isEmail: true}
+            //allowNull: false,
+            //validate: {isEmail: true}
         },
         password: {
             type: Sequelize.STRING,
-            allowNull: false
+            //allowNull: false
         },
         remember_token: {
             type: Sequelize.STRING,
@@ -66,12 +66,12 @@ module.exports = function (sequelize, Sequelize) {
         },
         nomination_limit: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            //allowNull: false,
             defaultValue: 5
         },
         confirmation_email: {
             type: Sequelize.BOOLEAN,
-            allowNull: false,
+            //allowNull: false,
             defaultValue: false
         },
         confirmation_code: {
