@@ -68,7 +68,7 @@ app.engine('vue', function (filePath, options, callback) {
 app.set('view engine', 'vue');
 
 // Expose client-side dependencies and static assets
-['jquery', 'bootstrap', 'express-vue', 'admin-lte', 'font-awesome'].forEach(lib => {
+['jquery', 'bootstrap', 'vue', 'admin-lte', 'font-awesome'].forEach(lib => {
     app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), {index: false}));
 });
 

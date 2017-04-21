@@ -4798,6 +4798,11 @@
       "from": "vm-browserify@0.0.4",
       "resolved": "https://registry.npmjs.org/vm-browserify/-/vm-browserify-0.0.4.tgz"
     },
+    "vue": {
+      "version": "2.2.6",
+      "from": "vue@latest",
+      "resolved": "https://registry.npmjs.org/vue/-/vue-2.2.6.tgz"
+    },
     "vue-hot-reload-api": {
       "version": "2.1.0",
       "from": "vue-hot-reload-api@>=2.0.11 <3.0.0",
