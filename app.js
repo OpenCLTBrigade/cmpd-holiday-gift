@@ -20,20 +20,30 @@ var models = require('./models');
 var app = express();
 
 // A custom view rendering engine that uses Vue and Webpack
-// TODO: reload skeleton when changed, if dev mode
-var skeleton = fs.readFileSync(path.join(__dirname, 'views/skeleton.html')).toString();
+
+var skeleton = () =>
+    fs.readFileSync(path.join(__dirname, 'views/skeleton.html')).toString();
+
+if (config.mode == 'production') {
+    var skeletonContents = skeleton();
+    skeleton = () => skeletonContents;
+}
+
 var viewDir = path.join(__dirname, 'views');
+
 function viewPathToVar(path) {
     return path.replace(/^\/|\.vue$/g, '').replace(/[\/-]/g, '_');
 }
+
 app.set('views', viewDir);
+
 app.engine('vue', function (filePath, options, callback) {
     if (filePath.slice(0, viewDir.length) != viewDir) {
         return callback('Could not load view from outside view dir: ' + filePath);
     }
     var path = filePath.slice(viewDir.length);
     var view = viewPathToVar(path);
-    var out = skeleton.replace(/\{\{\{([^}]*)\}\}\}/g, function (match, name) {
+    var out = skeleton().replace(/\{\{\{([^}]*)\}\}\}/g, function (match, name) {
         if (name == 'head') {
             if (options.title) {
                 return `<title>${options.title}</title>`;
@@ -54,6 +64,7 @@ app.engine('vue', function (filePath, options, callback) {
     });
     callback(null, out);
 });
+
 app.set('view engine', 'vue');
 
 // Expose client-side dependencies and static assets
@@ -118,17 +129,18 @@ models.sequelize.sync().then(function () {
 });
 
 // Generate assets
-// TODO: in dev mode, use watch
+// TODO: use vuejs hot reload
 var allViews = {};
 glob.sync('views/**/*.vue').forEach(function (path) {
     allViews[viewPathToVar(path.replace('views/', ''))] = './' + path;
 });
 var compiler = webpack(Object.assign({}, webpackConfig, {entry: allViews}));
-compiler.run((err, stats) => {
+var build = (cb) => (config.mode == 'development' ? compiler.watch({}, cb) : compiler.run(cb));
+build((err, stats) => {
     if (err) {
-        console.log(err, 'webpack failed');
+        console.log('Webpack failed:', err);
     } else {
-        console.log('webpack succeeded\n', stats.toString({
+        console.log('Webpack succeeded:\n', stats.toString({
             colors: true,
             chunks: false
         }));
