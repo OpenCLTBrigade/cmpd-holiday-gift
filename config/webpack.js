@@ -1,6 +1,8 @@
 var path = require('path');
 var mode = require('.').mode;
 
+// TODO: when mode == production, minify/gzip/etc..
+
 module.exports = {
     output: {
         path: path.join(__dirname, '../.webpack-out/views'),

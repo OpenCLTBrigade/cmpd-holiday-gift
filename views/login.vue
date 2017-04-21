@@ -2,7 +2,8 @@
   <auth-layout>
     <div class="login-box" id="login-box">
       <!-- TODO: components/flashMessage.vue -->
-      <div class="alert">{{message}}"</div>
+      <!-- <div class="alert">{{message}}"</div> -->
+      <flash-message>{{message}}</flash-message>
       <div class="header">
         <i class="fa fa-sign-in"></i> Sign-in
       </div>
@@ -41,7 +42,8 @@
   module.exports = {
     data: function () { return { message: "hi" }; } ,
     components: {
-      'auth-layout': require('./layouts/auth.vue')
+        'auth-layout': require('./layouts/auth.vue'),
+        'flash-message': require('./components/flashMessage.vue')
     }
   }
 </script>
