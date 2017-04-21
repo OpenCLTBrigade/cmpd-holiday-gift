@@ -41,7 +41,7 @@
   module.exports = {
     data: function () { return { message: "hi" }; } ,
     components: {
-      'auth-layout': require('./components/authLayout.vue')
+      'auth-layout': require('./layouts/auth.vue')
     }
   }
 </script>
