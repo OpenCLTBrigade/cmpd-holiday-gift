@@ -24,6 +24,8 @@ module.exports = {
         get: function (req, res) {
             res.renderData('register', 'Register', {message: 'This is the registration page'});
         },
+        // TODO: the validation error isn't being handled properly:
+        // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"
         post: passport.authenticate('local-signup', redirects)
     },
 
