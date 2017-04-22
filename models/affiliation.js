@@ -1,6 +1,6 @@
-module.exports = function (sequelize, Sequelize) {
-
-    var Affiliation = sequelize.define('affiliation', {
+module.exports = Sequelize => ({
+    name: 'affiliation',
+    fields: {
         id: {
             autoIncrement: true,
             primaryKey: true,
@@ -38,6 +38,5 @@ module.exports = function (sequelize, Sequelize) {
             type: Sequelize.STRING,
             defaultValue: null
         },
-    });
-    return Affiliation;
-};
+    }
+});

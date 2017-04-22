@@ -1,19 +1,10 @@
-module.exports = function (sequelize, Sequelize) {
-
-    var Child = sequelize.define('child', {
+module.exports = Sequelize => ({
+    name: 'child',
+    fields: {
         id: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER
-        },
-        household_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            //TODO: Fix foreign key issue
-            //references: {
-              //model: Household,
-              //key: 'id'
-            //}
         },
         name_first: {
             type: Sequelize.STRING,
@@ -125,6 +116,8 @@ module.exports = function (sequelize, Sequelize) {
             type: Sequelize.STRING,
             defaultValue: null
         },
-    });
-    return Child;
-};
+    },
+    associate: function (child, db) {
+        child.belongsTo(db.household);
+    }
+});

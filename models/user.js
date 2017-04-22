@@ -1,10 +1,6 @@
-module.exports = function (sequelize, Sequelize) {
-    var EncryptedField = require('sequelize-encrypted');
-    // secret key should be 32 bytes hex encoded (64 characters)
-    var key = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D155469'; // TODO: move key to secrets file
-    var enc_fields = EncryptedField(Sequelize, key);
-
-    var User = sequelize.define('user', {
+module.exports = Sequelize => ({
+    name: 'user',
+    fields: {
         id: {
             autoIncrement: true,
             primaryKey: true,
@@ -25,15 +21,6 @@ module.exports = function (sequelize, Sequelize) {
         phone: {
             type: Sequelize.STRING,
             defaultValue: null
-        },
-        affiliation_id: {
-            type: Sequelize.INTEGER,
-            //allowNull: false,
-            //TODO: Fix foreign key issue
-            //references: {
-            //  model: affiliation,
-            //  key: 'id'
-            //}
         },
         email: {
             type: Sequelize.STRING,
@@ -89,11 +76,13 @@ module.exports = function (sequelize, Sequelize) {
         username: {
           type: Sequelize.TEXT
         },
-        encrypted: enc_fields.vault('encrypted'),
-        eggo: enc_fields.field('eggo', {
+        encryption_test: {
             type: Sequelize.TEXT,
-            defaultValue: null
-        }),
-    });
-    return User;
-};
+            defaultValue: null,
+            encrypted: true
+        }
+    },
+    associate: function (user, db) {
+        user.belongsTo(db.affiliation);
+    }
+});
