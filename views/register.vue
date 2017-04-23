@@ -19,9 +19,9 @@
 
 <script>
   export default {
-    props: {flash: {default: ''}},
-    components: {'auth-layout': require('./layouts/auth.vue')}
-  }
+      props: {flash: {default: ''}},
+      components: {'auth-layout': require('./layouts/auth.vue')}
+  };
 </script>
 
 <style>

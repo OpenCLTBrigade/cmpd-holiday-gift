@@ -20,17 +20,17 @@
 
 <script>
     module.exports = {
-      data: () => ({
-          menu: [
+        data: () => ({
+            menu: [
               {name: 'dashboard', url: '/', title: 'dashboard1'},
-              {name: 'dashboard2', title: 'dashboard2',
-               children: [{name: 'dashboard3', url: '/', title: 'dashboard3'},
-                          {name: 'dashboard4', url: '/', title: 'dashboard4'}]},
+                {
+                    name: 'dashboard2', title: 'dashboard2',
+                    children: [{name: 'dashboard3', url: '/', title: 'dashboard3'},
+                          {name: 'dashboard4', url: '/', title: 'dashboard4'}]
+                },
               {name: 'dashboard5', url: '/', title: 'dashboard5'}
-          ]
-      }),
-      props: {
-          current_section: {type: String, required: true}
-      }
-  }
+            ]
+        }),
+        props: {current_section: {type: String, required: true}}
+    };
 </script>

@@ -5,12 +5,13 @@
   "scripts": {
     "start": "node app.js",
     "test": "`npm bin`/jasmine-node tests",
-    "lint": "`npm bin`/eslint --fix *.js controllers models || true"
+    "lint": "`npm bin`/eslint --fix --ext js,vue *.js controllers models views || true"
   },
   "devDependencies": {
     "jasmine-node": "^2.0.0",
     "eslint": "*",
-    "debug": "~2.6.3"
+    "debug": "~2.6.3",
+    "eslint-plugin-html": "^2.0.1"
   },
   "dependencies": {
     "MD5": "~1.2.1",

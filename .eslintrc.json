@@ -3,6 +3,11 @@
         "es6": true,
         "node": true
     },
+    "plugins": ["html"],
+    "settings": {
+        "html/html-extensions": [".html", ".vue"],
+        "html/report-bad-indent": "error"
+    },
     "extends": "eslint:recommended",
     "parserOptions": {
         "sourceType": "module"

@@ -7,10 +7,8 @@
 <script>
   export default {
       props: ['user'],
-      components: {
-          'main-layout': require('./layouts/main.vue')
-      }
-  }
+      components: {'main-layout': require('./layouts/main.vue')}
+  };
 </script>
 
 <style></style>
