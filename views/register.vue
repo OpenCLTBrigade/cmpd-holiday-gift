@@ -1,7 +1,7 @@
 <template>
   <auth-layout>
     <div class="container">
-      <p>{{message}}</p>
+      <p>{{flash}}</p>
       <form id="signup" name="register" method="post" action="/register">
         <label for="email">Email Address</label>
         <input class="text" name="email" type="email" />
@@ -19,8 +19,10 @@
 
 <script>
   export default {
+    props: {flash: {default: ''}},
     components: {'auth-layout': require('./layouts/auth.vue')}
   }
 </script>
 
-<style></style>
+<style>
+</style>

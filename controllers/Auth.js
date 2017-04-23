@@ -15,14 +15,14 @@ module.exports = {
 
     login: {
         get: function (req, res) {
-            res.renderData('login', 'Login', {}); //{flash: 'This is the Login page'});
+            res.renderData('login', 'Login', {});
         },
         post: passport.authenticate('local-signin', redirects)
     },
 
     register: {
         get: function (req, res) {
-            res.renderData('register', 'Register', {message: 'This is the registration page'});
+            res.renderData('register', 'Register', {flash: 'This is the registration page'});
         },
         // TODO: the validation error isn't being handled properly:
         // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"

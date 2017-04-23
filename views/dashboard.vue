@@ -1,12 +1,12 @@
 <template>
   <main-layout :user="user" current_section="dashbaord" title="Dashboard">
-    <p>Hello, world!</p>
+    <p>Hello, {{user.name_first}}!</p>
   </main-layout>
 </template>
 
 <script>
   export default {
-      data: () => ({user: null}),
+      props: ['user'],
       components: {
           'main-layout': require('./layouts/main.vue')
       }

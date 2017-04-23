@@ -9,7 +9,7 @@
         <ul class="nav navbar-nav">
           <li class="user">
             <a href="#" >
-              <!-- TODO: why was this a link? -->
+              <!-- TODO: why was this a link? Why is it hidden? -->
               <span class="hidden-xs">{{user.name_first}}</span>
             </a>
           </li>

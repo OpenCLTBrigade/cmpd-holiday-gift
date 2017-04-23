@@ -54,14 +54,10 @@ app.engine('vue', function (filePath, options, callback) {
                 <div id="view"></div>
                 <script src="views/${view}.js"></script>
                 <script>
-                  var view_def_${view} = view_${view}.data;
-                  // TODO: try using propsData instead
-                  view_${view}.data = function(){
-                    return $.extend(view_def_${view} ? view_def_${view}() : {}, ${JSON.stringify(options.data)});
-                  };
-                  new Vue({
-                    el: '#view',
-                    render: function (h) { return h(view_${view}); }
+                  var View = Vue.extend(view_${view});
+                  new View({
+                      el: '#view',
+                      propsData: ${JSON.stringify(options.data)}
                   });
                 </script>`;
         }
@@ -72,6 +68,7 @@ app.engine('vue', function (filePath, options, callback) {
 app.set('view engine', 'vue');
 
 // Expose client-side dependencies and static assets
+// TODO: use webpack instead
 ['jquery', 'bootstrap', 'vue', 'admin-lte', 'font-awesome'].forEach(lib => {
     app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), {index: false}));
 });
