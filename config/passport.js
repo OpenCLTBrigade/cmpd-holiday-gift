@@ -1,7 +1,12 @@
-//load bcrypt
+// TODO: move logic to another file
+
 var bCrypt = require('bcrypt-nodejs');
 
-module.exports = function(passport, user) {
+var hashPassword = function(password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+};
+
+configurePassport = function(passport, user) {
     var User = user;
     var LocalStrategy = require('passport-local').Strategy;
 
@@ -12,10 +17,6 @@ module.exports = function(passport, user) {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
-            var generateHash = function(password) {
-                return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-            };
-
             User.findOne({
                 where: {
                     email: email
@@ -26,7 +27,7 @@ module.exports = function(passport, user) {
                         message: 'That email is already taken'
                     });
                 } else {
-                    var userPassword = generateHash(password);
+                    var userPassword = hashPassword(password);
                     var data =
                         {
                             email: email,
@@ -105,3 +106,7 @@ module.exports = function(passport, user) {
         });
     });
 };
+
+configurePassport.hashPassword = hashPassword;
+
+module.exports = configurePassport;

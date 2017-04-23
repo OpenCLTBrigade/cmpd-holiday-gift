@@ -22,6 +22,8 @@ if (process.env.NODE_ENV == 'production') {
     };
 }
 
+config.db.logging = false;
+
 config.raceOptions = [
     "American Indian",
     "Alaskan Native",
