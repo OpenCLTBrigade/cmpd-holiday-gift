@@ -1,13 +1,16 @@
 <template>
-  <div class="container">
+  <main-layout>
     <p>Hello {{name}}!</p>
     <a href="/logout">Log Out</a>
-  </div>
+  </main-layout>
 </template>
 
 <script>
   export default {
-    data: () => {},
+      data: () => ({name: null}),
+      components: {
+          'main-layout': require('./layouts/main.vue')
+      }
   }
 </script>
 
