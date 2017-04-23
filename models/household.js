@@ -76,7 +76,7 @@ module.exports = Sequelize => ({
             defaultValue: null
         }
     },
-    associate: function(household, db) {
+    associate: function (household, db) {
         household.belongsTo(db.user, {as: 'nominator'});
     }
 });

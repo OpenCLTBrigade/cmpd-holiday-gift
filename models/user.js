@@ -73,9 +73,7 @@ module.exports = Sequelize => ({
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
-        username: {
-          type: Sequelize.TEXT
-        },
+        username: {type: Sequelize.TEXT},
         encryption_test: {
             type: Sequelize.TEXT,
             defaultValue: null,
