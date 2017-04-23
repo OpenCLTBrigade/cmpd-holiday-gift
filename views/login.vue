@@ -1,8 +1,6 @@
 <template>
   <auth-layout>
     <div class="login-box" id="login-box">
-      <!-- TODO: components/flashMessage.vue -->
-      <!-- <div class="alert">{{message}}"</div> -->
       <flash-message>{{message}}</flash-message>
       <div class="header">
         <i class="fa fa-sign-in"></i> Sign-in
