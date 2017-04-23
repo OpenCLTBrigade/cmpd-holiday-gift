@@ -1,3 +1,5 @@
+// TODO: toJSON should not include password hash, vault and other fields
+
 module.exports = Sequelize => ({
     name: 'user',
     fields: {

@@ -1,3 +1,12 @@
 <template>
-  <div>HEAD</div>
+  <section class="content-header">
+    {{title}}
+    <!-- TODO: breadcrumbs -->
+  </section>
 </template>
+
+<script>
+  module.exports = {
+    props: {title: {required: true}}
+  }
+</script>

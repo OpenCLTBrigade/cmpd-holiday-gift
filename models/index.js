@@ -36,7 +36,7 @@ function define_table(name, model) {
     }
     Object.keys(model).forEach(function (field) {
         if (model[field].encrypted) {
-            delete model[field].encrypted;
+            // delete model[field].encrypted; // TODO: is this delete useful?
             model[field] = encrypt_field(model[field]);
         }
     });

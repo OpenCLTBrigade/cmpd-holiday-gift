@@ -55,6 +55,7 @@ app.engine('vue', function (filePath, options, callback) {
                 <script src="views/${view}.js"></script>
                 <script>
                   var view_def_${view} = view_${view}.data;
+                  // TODO: try using propsData instead
                   view_${view}.data = function(){
                     return $.extend(view_def_${view} ? view_def_${view}() : {}, ${JSON.stringify(options.data)});
                   };

@@ -2,14 +2,13 @@
 
 <template>
   <div class="wrapper">
-    <main-top></main-top>
-    <main-sidebar></main-sidebar>
+    <main-top :user="user"></main-top>
+    <main-sidebar :current_section="current_section"></main-sidebar>
     <div class="content-wrapper">
-      <main-header></main-header>
+      <main-header :title="title"></main-header>
       <section class="content">
         <div class="row">
-          <!-- TODO: is no_box used anywhere? -->
-          <div v-if="!no_box" class="col-xs-12">
+          <div v-if="!no_boxes" class="col-xs-12">
             <div class="box">
               <div class="box-body">
                 <flash-message>{{flash}}</flash-message>
@@ -29,10 +28,13 @@
 
 <script>
   module.exports = {
-      data: () => ({
-          no_box: false,
-          flash: ''
-      }),
+      props: {
+          user: {type: Object, required: true},
+          current_section: {type: String, required: true},
+          title: {required: true},
+          no_boxes: {default: false},
+          flash: {default: ''}
+      },
       components: {
           'main-top': require('./main/top.vue'),
           'main-sidebar': require('./main/sidebar.vue'),
