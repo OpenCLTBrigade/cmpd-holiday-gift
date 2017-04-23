@@ -10,6 +10,7 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
+        "ecmaVersion": 8,
         "sourceType": "module"
     },
     "rules": {
@@ -39,6 +40,7 @@
         "unicode-bom": ["error"],
         "no-duplicate-imports": ["error"],
         "comma-spacing": ["error"],
-        "comma-style": ["error"]
+        "comma-style": ["error"],
+        "key-spacing": ["error"]
     }
 }

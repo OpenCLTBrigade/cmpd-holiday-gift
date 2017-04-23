@@ -22,4 +22,30 @@ if (process.env.NODE_ENV == 'production') {
     };
 }
 
+config.raceOptions = [
+    "American Indian",
+    "Alaskan Native",
+    "Asian",
+    "African American",
+    "Hispanic",
+    "Pacific Islander",
+    "White",
+    "Other"
+];
+
+config.bikeSizes = [
+    'Tricycle',
+    '12” Bicycle',
+    '16” Bicycle',
+    '20” Coaster Brake Bicycle',
+    '20” Geared Bicycle',
+    '24” Geared Bicycle'
+];
+
+config.clothesSizes = ['S', 'M', 'L'];
+
+config.bikeStyles = ["Mountain", "BMX", "Tricycle"];
+
+config.genders = ['F', 'M'];
+
 module.exports = config;

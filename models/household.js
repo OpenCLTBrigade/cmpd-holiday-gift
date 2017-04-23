@@ -1,3 +1,5 @@
+var config = require('../config');
+
 module.exports = Sequelize => ({
     name: 'household',
     fields: {
@@ -23,7 +25,8 @@ module.exports = Sequelize => ({
             allowNull: false
         },
         race: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.raceOptions,
             defaultValue: null
         },
         gender: {

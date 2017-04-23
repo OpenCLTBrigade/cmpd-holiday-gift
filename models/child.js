@@ -1,3 +1,5 @@
+var config = require('../config');
+
 module.exports = Sequelize => ({
     name: 'child',
     fields: {
@@ -23,7 +25,8 @@ module.exports = Sequelize => ({
             allowNull: false
         },
         race: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.raceOptions,
             defaultValue: null
         },
         last4ssn: {
@@ -72,11 +75,13 @@ module.exports = Sequelize => ({
             defaultValue: false
         },
         bike_size: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.bikeSizes,
             defaultValue: null
         },
         bike_style: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.bikeStyles,
             defaultValue: null
         },
         clothes_want: {
@@ -85,11 +90,13 @@ module.exports = Sequelize => ({
             defaultValue: false
         },
         clothes_size_shirt: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.clothesSizes,
             defaultValue: null
         },
         clothes_size_pants: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.clothesSizes,
             defaultValue: null
         },
         shoe_size: {
@@ -113,7 +120,8 @@ module.exports = Sequelize => ({
             defaultValue: null
         },
         gender: {
-            type: Sequelize.STRING,
+            type: Sequelize.ENUM,
+            values: config.genders,
             defaultValue: null
         },
     },
