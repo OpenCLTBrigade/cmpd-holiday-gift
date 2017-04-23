@@ -10,6 +10,18 @@ Run `npm install` to install the dependencies.
 Then run `npm start` to start the server in development mode. Access
 the application on http://localhost:3000.
 
+## Development
+
+[NodeJS 7] is required.
+
+Install dependencies: `npm install`
+
+Seed database: `node seeds`
+
+Run tests: `npm test`
+
+Check and fix code style: `npm run lint`
+
 ## Contact
 
 * Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
@@ -50,3 +62,4 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [Bootstrap 3]: http://getbootstrap.com/getting-started/
 [Jasmine]: https://jasmine.github.io/1.3/introduction
 [eslint]: http://eslint.org/docs/user-guide/getting-started
+[NodeJS 7]: https://nodejs.org/en/download/current/

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "`npm bin`/jasmine-node tests",
-    "lint": "`npm bin`/eslint --fix --ext js,vue *.js controllers models views seeds || true"
+    "lint": "`npm bin`/eslint --fix --ext js,vue *.js controllers models views seeds tests || true"
   },
   "devDependencies": {
     "debug": "~2.6.3",
