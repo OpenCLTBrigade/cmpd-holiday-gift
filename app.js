@@ -54,7 +54,10 @@ app.engine('vue', function (filePath, options, callback) {
                 <div id="view"></div>
                 <script src="views/${view}.js"></script>
                 <script>
-                  view_${view}.data = function(){ return ${JSON.stringify(options.data)}; };
+                  var view_def_${view} = view_${view}.data;
+                  view_${view}.data = function(){
+                    return $.extend(view_def_${view} ? view_def_${view}() : {}, ${JSON.stringify(options.data)});
+                  };
                   new Vue({
                     el: '#view',
                     render: function (h) { return h(view_${view}); }

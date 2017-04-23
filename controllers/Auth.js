@@ -15,7 +15,7 @@ module.exports = {
 
     login: {
         get: function (req, res) {
-            res.renderData('login', 'Login', {message: 'This is the Login page'});
+            res.renderData('login', 'Login', {}); //{flash: 'This is the Login page'});
         },
         post: passport.authenticate('local-signin', redirects)
     },
