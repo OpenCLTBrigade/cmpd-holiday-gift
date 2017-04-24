@@ -1,5 +1,7 @@
 /*eslint no-console: "off"*/
 
+// TODO: use https and letsencrypt-express
+
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -11,6 +13,7 @@ var fs = require('fs');
 var webpack = require('webpack');
 var glob = require('glob');
 var morgan = require('morgan');
+var compression = require('compression');
 
 var configurePassport = require('./config/passport.js');
 var config = require('./config');
@@ -34,12 +37,6 @@ if (config.mode == 'production') {
 
 var viewDir = path.join(__dirname, 'views');
 
-// Each compiled view is assigned to a javascript variable by webpack
-// For example, `view/login.vue` is placed in `view_login`
-function viewPathToVar(path) {
-    return path.replace(/^\/|\.vue$/g, '').replace(/[\/-]/g, '_');
-}
-
 app.set('views', viewDir);
 
 // res.render(view_name, options): a custom rendering engine using Vue and Webpack
@@ -52,8 +49,7 @@ app.engine('vue', function (filePath, options, callback) {
     }
     // Don't open the `.vue` file, just use the filename to identify
     // where webpack has placed it
-    var path = filePath.slice(viewDir.length);
-    var view = viewPathToVar(path);
+    var viewName = filePath.slice(viewDir.length + 1).replace(/\.vue$/, '');
 
     // Fill in the blanks from `skeleton.html`
     var out = skeleton().replace(/\{\{\{([^}]*)\}\}\}/g, function (match, name) {
@@ -64,16 +60,7 @@ app.engine('vue', function (filePath, options, callback) {
             return '';
         } else if (name == 'body') {
             // Add a script that loads and renders the template
-            return `
-                <div id="view"></div>
-                <script src="/views/${view}.js"></script>
-                <script>
-                  var View = Vue.extend(view_${view});
-                  new View({
-                      el: '#view',
-                      propsData: ${JSON.stringify(options.data)}
-                  });
-                </script>`;
+            return `<script>loadView('${viewName}', ${JSON.stringify(options.data)});</script>`;
         }
     });
     callback(null, out);
@@ -89,9 +76,12 @@ if (config.verboseAccessLog) {
     app.use(morgan('dev'));
 }
 
+// Compress contents
+app.use(compression());
+
 // Expose client-side dependencies and static assets
 // TODO: use webpack instead
-['jquery', 'bootstrap', 'vue', 'admin-lte', 'font-awesome'].forEach(lib => {
+['bootstrap', 'vue', 'admin-lte', 'font-awesome'].forEach(lib => {
     app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), {index: false}));
 });
 
@@ -154,15 +144,9 @@ models.sequelize.sync().then(function () {
 // Generate the assets
 // TODO: use vuejs hot reload
 
-// List all available vues
-var allViews = {};
-glob.sync('views/**/*.vue').forEach(function (path) {
-    allViews[viewPathToVar(path.replace('views/', ''))] = './' + path;
-});
-
 // Compile each view
 // In development mode, watch for changes and automatically recompile
-var compiler = webpack(Object.assign({}, webpackConfig, {entry: allViews}));
+var compiler = webpack(webpackConfig);
 var build = (cb) => (config.mode == 'development' ? compiler.watch({}, cb) : compiler.run(cb));
 build((err, stats) => {
     if (err) {
