@@ -65,7 +65,7 @@ app.engine('vue', function (filePath, options, callback) {
             // Add a script that loads and renders the template
             return `
                 <div id="view"></div>
-                <script src="views/${view}.js"></script>
+                <script src="/views/${view}.js"></script>
                 <script>
                   var View = Vue.extend(view_${view});
                   new View({

@@ -1,9 +1,12 @@
+/* eslint no-console: "off" */
+
 var faker = require('faker');
 
 var config = require('../config');
 
 module.exports = async db => {
     for (var i = 1; i < 50; i++) {
+        console.log(`Seeding household ${i}`);
         await db.household.create({
             'nominatorId': 1,
             'name_first': faker.name.firstName(),

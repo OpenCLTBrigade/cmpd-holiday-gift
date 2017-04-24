@@ -22,13 +22,11 @@
     module.exports = {
         data: () => ({
             menu: [
-              {name: 'dashboard', url: '/', title: 'dashboard1'},
+              {name: 'dashboard', url: '/', title: 'Dashboard'},
                 {
-                    name: 'dashboard2', title: 'dashboard2',
-                    children: [{name: 'dashboard3', url: '/', title: 'dashboard3'},
-                          {name: 'dashboard4', url: '/', title: 'dashboard4'}]
-                },
-              {name: 'dashboard5', url: '/', title: 'dashboard5'}
+                    name: 'households', title: 'Households',
+                    children: [{url: '/households', title: 'List'}]
+                }
             ]
         }),
         props: {current_section: {type: String, required: true}}
