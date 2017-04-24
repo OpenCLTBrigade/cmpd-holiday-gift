@@ -2,11 +2,11 @@
 
 var bCrypt = require('bcrypt-nodejs');
 
-var hashPassword = function(password) {
+var hashPassword = function (password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 };
 
-configurePassport = function(passport, user) {
+var configurePassport = function (passport, user) {
     var User = user;
     var LocalStrategy = require('passport-local').Strategy;
 
@@ -16,16 +16,10 @@ configurePassport = function(passport, user) {
             passwordField: 'password',
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
-        function(req, email, password, done) {
-            User.findOne({
-                where: {
-                    email: email
-                }
-            }).then(function(user) {
+        function (req, email, password, done) {
+            User.findOne({where: {email: email}}).then(function (user) {
                 if (user) {
-                    return done(null, false, {
-                        message: 'That email is already taken'
-                    });
+                    return done(null, false, {message: 'That email is already taken'});
                 } else {
                     var userPassword = hashPassword(password);
                     var data =
@@ -36,7 +30,7 @@ configurePassport = function(passport, user) {
                             name_last: req.body.lastname
                         };
 
-                    User.create(data).then(function(newUser, created) {
+                    User.create(data).then(function (newUser) {
                         if (!newUser) {
                             return done(null, false);
                         }
@@ -58,46 +52,35 @@ configurePassport = function(passport, user) {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
 
-      function(req, email, password, done) {
+      function (req, email, password, done) {
           var User = user;
-          var isValidPassword = function(userpass, password) {
+          var isValidPassword = function (userpass, password) {
               return bCrypt.compareSync(password, userpass);
           };
-          User.findOne({
-              where: {
-                  email: email
-              }
-          }).then(function(user) {
+          User.findOne({where: {email: email}}).then(function (user) {
               if (!user) {
-                  return done(null, false, {
-                      message: 'Email does not exist'
-                  });
+                  return done(null, false, {message: 'Email does not exist'});
               }
               if (!isValidPassword(user.password, password)) {
-                  return done(null, false, {
-                      message: 'Incorrect password.'
-                  });
+                  return done(null, false, {message: 'Incorrect password.'});
               }
 
               var userinfo = user.get();
               return done(null, userinfo);
-          }).catch(function(err) {
-              console.log('Error:', err);
-              return done(null, false, {
-                  message: 'Something went wrong with your Signin'
-              });
+          }).catch(function () {
+              return done(null, false, {message: 'Something went wrong with your Signin'});
           });
       }
     ));
 
     //serialize
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
 
     // deserialize user
-    passport.deserializeUser(function(id, done) {
-        User.findById(id).then(function(user) {
+    passport.deserializeUser(function (id, done) {
+        User.findById(id).then(function (user) {
             if (user) {
                 done(null, user.get());
             } else {

@@ -12,10 +12,10 @@ if (process.env.NODE_ENV == 'production') {
         user: 'expressuser',
         password: 'express123',
         database: 'expresstest'
-    }
+    };
 } else {
     config.mode = 'development';
-    config.port = process.env.PORT || 3000,
+    config.port = process.env.PORT || 3000;
     config.db = {
         dialect: 'sqlite',
         storage: path.join(__dirname, '../.db.development.sqlite')
@@ -27,14 +27,14 @@ config.verboseAccessLog = true;
 config.db.logging = false;
 
 config.raceOptions = [
-    "American Indian",
-    "Alaskan Native",
-    "Asian",
-    "African American",
-    "Hispanic",
-    "Pacific Islander",
-    "White",
-    "Other"
+    'American Indian',
+    'Alaskan Native',
+    'Asian',
+    'African American',
+    'Hispanic',
+    'Pacific Islander',
+    'White',
+    'Other'
 ];
 
 config.bikeSizes = [
@@ -48,7 +48,7 @@ config.bikeSizes = [
 
 config.clothesSizes = ['S', 'M', 'L'];
 
-config.bikeStyles = ["Mountain", "BMX", "Tricycle"];
+config.bikeStyles = ['Mountain', 'BMX', 'Tricycle'];
 
 config.genders = ['F', 'M'];
 

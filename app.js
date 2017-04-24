@@ -13,8 +13,8 @@ var fs = require('fs');
 var webpack = require('webpack');
 var morgan = require('morgan');
 var compression = require('compression');
-var webpackMiddleware = require("webpack-dev-middleware");
-var webpackHotMiddleware = require("webpack-hot-middleware");
+var webpackMiddleware = require('webpack-dev-middleware');
+var webpackHotMiddleware = require('webpack-hot-middleware');
 
 var configurePassport = require('./config/passport.js');
 var config = require('./config');
@@ -142,7 +142,7 @@ configurePassport(passport, models.user);
 app.use(require('./routes'));
 
 // Array of promises that must complete before starting the server
-initialize = [];
+var initialize = [];
 
 // Sync the database
 initialize.push(models.sequelize.sync().then(function () {
@@ -159,7 +159,7 @@ var compiler = webpack(webpackConfig);
 
 if (config.mode == 'production') {
     // In production mode, compile all assets once before starting the server
-    initialize.push(new Promise((success, fail) => compiler.run((err, stats) => {
+    initialize.push(new Promise((success, fail) => compiler.run((err) => {
         if (err) {
             console.log('Webpack failed:', err);
             fail();

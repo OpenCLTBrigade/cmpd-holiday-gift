@@ -1,15 +1,12 @@
 var path = require('path');
 
 var webpack = require('webpack');
-var CommonsPlugin = new require("webpack/lib/optimize/CommonsChunkPlugin");
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var mode = require('.').mode;
 
 var options = {
-    entry: {
-        load: ['./views/load.js'],
-    },
+    entry: {load: ['./views/load.js']},
     output: {
         path: path.join(__dirname, '../.webpack-out/'),
         publicPath: '/v',
@@ -22,12 +19,10 @@ var options = {
         rules: [{
             test: /\.vue$/,
             loader: 'vue-loader'
-        },{
+        }, {
             test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-                use: 'css-loader'
-            })
-        },{
+            use: ExtractTextPlugin.extract({use: 'css-loader'})
+        }, {
             test: /\.(svg|ttf|jpg|eot|woff|woff2)$/,
             loader: 'file-loader'
         }]
