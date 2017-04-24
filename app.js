@@ -14,6 +14,7 @@ var webpack = require('webpack');
 var morgan = require('morgan');
 var compression = require('compression');
 var webpackMiddleware = require("webpack-dev-middleware");
+var webpackHotMiddleware = require("webpack-hot-middleware");
 
 var configurePassport = require('./config/passport.js');
 var config = require('./config');
@@ -99,6 +100,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 //  - if 'Accepts: application/json', return data as JSON
 //  - otherwise render the view using `res.render`
 app.use(function (req, res, next) {
+    if (req.url.match(/\/v/)) {
+        return next();
+    }
     if (req.accepts(['html', 'json']) == 'json') {
         req.wantsJSON = true;
     }
@@ -150,11 +154,11 @@ initialize.push(models.sequelize.sync().then(function () {
 // Generate the assets
 // TODO: use vuejs hot reload
 
-// Compile each view
-// In development mode, watch for changes and automatically recompile
+// Prepare to compile the views and web assets
 var compiler = webpack(webpackConfig);
 
 if (config.mode == 'production') {
+    // In production mode, compile all assets once before starting the server
     initialize.push(new Promise((success, fail) => compiler.run((err, stats) => {
         if (err) {
             console.log('Webpack failed:', err);
@@ -164,10 +168,12 @@ if (config.mode == 'production') {
         }
     })));
 } else {
+    // In development mode, use hot reloading
     app.use(webpackMiddleware(compiler, {
-        publicPath: "/",
-        stats: 'minimal' // {colors: true, chunks: false}
+        publicPath: webpackConfig.output.publicPath,
+        stats: 'minimal'
     }));
+    app.use(webpackHotMiddleware(compiler));
 }
 
 // Start server after initialization completes

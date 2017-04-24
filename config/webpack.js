@@ -8,11 +8,11 @@ var mode = require('.').mode;
 
 var options = {
     entry: {
-        load: './views/load.js'
+        load: ['./views/load.js'],
     },
     output: {
         path: path.join(__dirname, '../.webpack-out/'),
-        publicPath: '/',
+        publicPath: '/v',
         filename: '[name].js'
     },
     plugins: [
@@ -37,6 +37,7 @@ var options = {
 if (mode == 'development') {
     options.devtool = 'eval';
     options.plugins.push(new webpack.HotModuleReplacementPlugin());
+    options.entry.load.push('webpack-hot-middleware/client');
 } else {
     options.devtool = 'source-map';
 }

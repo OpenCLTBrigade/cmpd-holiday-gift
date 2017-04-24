@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "`npm bin`/jasmine-node tests",
-    "lint": "`npm bin`/eslint --fix --ext js,vue app.js routes.js controllers models views seeds tests || true",
-    "nodemon": "`npm bin`/nodemon -w app.js -w routes.js -w controllers -w models"
+    "lint": "`npm bin`/eslint --fix --ext js,vue app.js routes.js controllers models views seeds tests config || true",
+    "nodemon": "`npm bin`/nodemon -w app.js -w routes.js -w controllers -w models -w config"
   },
   "main": "app.js",
   "devDependencies": {
@@ -16,7 +16,8 @@
     "faker": "^4.1.0",
     "jasmine-node": "^2.0.0",
     "nodemon": "^1.11.0",
-    "webpack-dev-middleware": "^1.10.2"
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
     "MD5": "~1.2.1",
