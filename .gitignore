@@ -4,3 +4,4 @@ node_modules
 launch.json
 *~
 .webpack-out
+access.log

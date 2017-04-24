@@ -424,6 +424,11 @@
       "from": "base64-js@>=1.0.2 <2.0.0",
       "resolved": "https://registry.npmjs.org/base64-js/-/base64-js-1.2.0.tgz"
     },
+    "basic-auth": {
+      "version": "1.1.0",
+      "from": "basic-auth@>=1.1.0 <1.2.0",
+      "resolved": "https://registry.npmjs.org/basic-auth/-/basic-auth-1.1.0.tgz"
+    },
     "bcrypt-nodejs": {
       "version": "0.0.3",
       "from": "https://registry.npmjs.org/bcrypt-nodejs/-/bcrypt-nodejs-0.0.3.tgz",
@@ -2951,6 +2956,18 @@
       "version": "0.5.13",
       "from": "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.13.tgz",
       "resolved": "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.13.tgz"
+    },
+    "morgan": {
+      "version": "1.8.1",
+      "from": "morgan@latest",
+      "resolved": "https://registry.npmjs.org/morgan/-/morgan-1.8.1.tgz",
+      "dependencies": {
+        "debug": {
+          "version": "2.6.1",
+          "from": "debug@2.6.1",
+          "resolved": "https://registry.npmjs.org/debug/-/debug-2.6.1.tgz"
+        }
+      }
     },
     "ms": {
       "version": "0.7.2",

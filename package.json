@@ -30,6 +30,7 @@
     "jquery": "^3.2.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
+    "morgan": "^1.8.1",
     "mysql": "^2.5.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

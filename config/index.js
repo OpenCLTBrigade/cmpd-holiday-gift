@@ -22,6 +22,8 @@ if (process.env.NODE_ENV == 'production') {
     };
 }
 
+config.verboseAccessLog = true;
+
 config.db.logging = false;
 
 config.raceOptions = [

@@ -10,6 +10,7 @@ var SessionStore = require('express-session-sequelize')(expressSession.Store);
 var fs = require('fs');
 var webpack = require('webpack');
 var glob = require('glob');
+var morgan = require('morgan');
 
 var configurePassport = require('./config/passport.js');
 var config = require('./config');
@@ -79,6 +80,14 @@ app.engine('vue', function (filePath, options, callback) {
 });
 
 app.set('view engine', 'vue');
+
+// Log to file
+app.use(morgan('combined', {stream: fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})}));
+
+// Log to stdout for development
+if (config.verboseAccessLog) {
+    app.use(morgan('dev'));
+}
 
 // Expose client-side dependencies and static assets
 // TODO: use webpack instead
