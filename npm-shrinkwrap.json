@@ -5429,6 +5429,12 @@
         }
       }
     },
+    "webpack-dev-middleware": {
+      "version": "1.10.2",
+      "from": "webpack-dev-middleware@latest",
+      "resolved": "https://registry.npmjs.org/webpack-dev-middleware/-/webpack-dev-middleware-1.10.2.tgz",
+      "dev": true
+    },
     "webpack-sources": {
       "version": "0.2.3",
       "from": "webpack-sources@>=0.2.3 <0.3.0",

@@ -13,6 +13,7 @@ fs
         return file.match(/.js$/) && (file !== 'index.js');
     })
     .forEach(async function (file) {
+        // TODO: `seq =` ?
         seq.then(() => console.log(`Seeding from ${file}`))
             .then(() => require(path.join(__dirname, file))(db));
     });

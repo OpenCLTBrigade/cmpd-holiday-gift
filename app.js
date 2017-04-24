@@ -13,6 +13,7 @@ var fs = require('fs');
 var webpack = require('webpack');
 var morgan = require('morgan');
 var compression = require('compression');
+var webpackMiddleware = require("webpack-dev-middleware");
 
 var configurePassport = require('./config/passport.js');
 var config = require('./config');
@@ -89,7 +90,6 @@ if (config.mode == 'development') {
 });
 
 app.use(express.static(path.join(__dirname, 'assets'), {index: false}));
-app.use(express.static(path.join(__dirname, '.webpack-out'), {index: false}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -137,12 +137,15 @@ configurePassport(passport, models.user);
 // Load the routess
 app.use(require('./routes'));
 
+// Array of promises that must complete before starting the server
+initialize = [];
+
 // Sync the database
-models.sequelize.sync().then(function () {
-    console.log('Nice! Database looks fine');
+initialize.push(models.sequelize.sync().then(function () {
+    console.log('Nice! Database sync succeeded.');
 }).catch(function (err) {
-    console.log(err, 'Something went wrong with the Database Update!');
-});
+    console.log('Database sync failed:', err);
+}));
 
 // Generate the assets
 // TODO: use vuejs hot reload
@@ -150,21 +153,26 @@ models.sequelize.sync().then(function () {
 // Compile each view
 // In development mode, watch for changes and automatically recompile
 var compiler = webpack(webpackConfig);
-var build = (cb) => (config.mode == 'development' ? compiler.watch({}, cb) : compiler.run(cb));
-build((err, stats) => {
-    if (err) {
-        console.log('Webpack failed:', err);
-    } else {
-        console.log('Webpack succeeded:\n', stats.toString({
-            colors: true,
-            chunks: false
-        }));
-    }
-});
 
-// TODO: wait for database sync and webpack done before starting server
+if (config.mode == 'production') {
+    initialize.push(new Promise((success, fail) => compiler.run((err, stats) => {
+        if (err) {
+            console.log('Webpack failed:', err);
+            fail();
+        } else {
+            success();
+        }
+    })));
+} else {
+    app.use(webpackMiddleware(compiler, {
+        publicPath: "/",
+        stats: 'minimal' // {colors: true, chunks: false}
+    }));
+}
 
-// Start server
-app.listen(config.port, function () {
-    console.log('Express server listening on port ' + config.port);
+// Start server after initialization completes
+Promise.all(initialize).then(function () {
+    app.listen(config.port, function () {
+        console.log('Express server listening on port ' + config.port);
+    });
 });

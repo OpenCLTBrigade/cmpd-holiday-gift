@@ -6,9 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var mode = require('.').mode;
 
-// TODO: when mode == production, minify, gzip, etc...
-
-module.exports = {
+var options = {
     entry: {
         load: './views/load.js'
     },
@@ -26,7 +24,6 @@ module.exports = {
             loader: 'vue-loader'
         },{
             test: /\.css$/,
-            // loader: ['style-loader', 'css-loader']
             use: ExtractTextPlugin.extract({
                 use: 'css-loader'
             })
@@ -36,3 +33,12 @@ module.exports = {
         }]
     },
 };
+
+if (mode == 'development') {
+    options.devtool = 'eval';
+    options.plugins.push(new webpack.HotModuleReplacementPlugin());
+} else {
+    options.devtool = 'source-map';
+}
+
+module.exports = options;

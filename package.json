@@ -15,7 +15,8 @@
     "eslint-plugin-html": "^2.0.1",
     "faker": "^4.1.0",
     "jasmine-node": "^2.0.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "webpack-dev-middleware": "^1.10.2"
   },
   "dependencies": {
     "MD5": "~1.2.1",
