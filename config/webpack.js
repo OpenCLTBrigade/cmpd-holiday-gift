@@ -13,15 +13,11 @@ var options = {
         filename: '[name].js'
     },
     plugins: [
-        new ExtractTextPlugin('style.css')
     ],
     module: {
         rules: [{
             test: /\.vue$/,
             loader: 'vue-loader'
-        }, {
-            test: /\.css$/,
-            use: ExtractTextPlugin.extract({use: 'css-loader'})
         }, {
             test: /\.(svg|ttf|jpg|eot|woff|woff2)$/,
             loader: 'file-loader'
@@ -33,8 +29,17 @@ if (mode == 'development') {
     options.devtool = 'eval';
     options.plugins.push(new webpack.HotModuleReplacementPlugin());
     options.entry.load.push('webpack-hot-middleware/client');
+    options.module.rules.push({
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+    });
 } else {
     options.devtool = 'source-map';
+    options.plugins.push(new ExtractTextPlugin('style.css'));
+    options.module.rules.push({
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({use: 'css-loader'})
+    });
 }
 
 module.exports = options;
