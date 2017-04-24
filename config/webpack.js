@@ -10,11 +10,7 @@ var mode = require('.').mode;
 
 module.exports = {
     entry: {
-        load: './views/load.js',
-        jquery: 'jquery',
-        vue: 'vue',
-        'admin-lte': 'admin-lte',
-        bootstrap: 'bootstrap'
+        load: './views/load.js'
     },
     output: {
         path: path.join(__dirname, '../.webpack-out/'),
@@ -22,10 +18,7 @@ module.exports = {
         filename: '[name].js'
     },
     plugins: [
-        new ExtractTextPlugin('style.css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            children: true
-        })
+        new ExtractTextPlugin('style.css')
     ],
     module: {
         rules: [{

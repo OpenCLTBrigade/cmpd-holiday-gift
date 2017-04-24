@@ -1,3 +1,6 @@
+/* eslint-env browser */
+/* global Vue */
+
 // Load common libraries for all views
 window.jQuery = window.$ = require('jquery');
 window.Vue = require('vue').default;

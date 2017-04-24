@@ -16,6 +16,8 @@ the application on http://localhost:3000.
 
 Install dependencies: `npm install`
 
+Run app, and restart when code changes: `npm run nodemon`
+
 Seed database: `node seeds`
 
 Run tests: `npm test`

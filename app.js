@@ -11,7 +11,6 @@ var cookieParser = require('cookie-parser');
 var SessionStore = require('express-session-sequelize')(expressSession.Store);
 var fs = require('fs');
 var webpack = require('webpack');
-var glob = require('glob');
 var morgan = require('morgan');
 var compression = require('compression');
 
@@ -77,7 +76,11 @@ if (config.verboseAccessLog) {
 }
 
 // Compress contents
-app.use(compression());
+if (config.mode == 'development') {
+    app.use(compression());
+} else {
+    // TODO: use compressing reverse-proxy in production
+}
 
 // Expose client-side dependencies and static assets
 // TODO: use webpack instead
