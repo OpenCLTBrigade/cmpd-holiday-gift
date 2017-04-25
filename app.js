@@ -84,12 +84,6 @@ if (config.mode == 'development') {
     // TODO: use compressing reverse-proxy in production
 }
 
-// Expose client-side dependencies and static assets
-// TODO: use webpack instead
-['bootstrap', 'vue', 'admin-lte', 'font-awesome'].forEach(lib => {
-    app.use('/' + lib, express.static(path.join(__dirname, 'node_modules/' + lib), {index: false}));
-});
-
 app.use(express.static(path.join(__dirname, 'assets'), {index: false}));
 
 app.use(bodyParser.json());
@@ -152,7 +146,6 @@ initialize.push(models.sequelize.sync().then(function () {
 }));
 
 // Generate the assets
-// TODO: use vuejs hot reload
 
 // Prepare to compile the views and web assets
 var compiler = webpack(webpackConfig);

@@ -24,6 +24,8 @@ Run tests: `npm test`
 
 Check and fix code style: `npm run lint`
 
+Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
+
 ## Contact
 
 * Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
