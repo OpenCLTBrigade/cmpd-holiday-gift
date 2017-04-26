@@ -7,30 +7,33 @@ describe('Register & Authenticate tests', function () {
 
   describe('Register test', function() {
     it('should redirect to /', function(done) {
-      request.post({
-        url: base_url + '/register',
-        formData: {
-          email:'developer@codeforcharlotte.org',
-          firstname: 'Developer',
-          lastname: 'Lastname',
-          password: 'admin'
-        },
-      },
-      function(error, response, body) {
-        expect(response.statusCode).toBe(200);
-        done();
+      request.post(
+        base_url + '/register',
+        {form:{
+          email:'test5@example.com',
+          firstname: 'Test',
+          lastname: 'User',
+          password: 'testuser123'
+        }},
+        function(error, response, body) {
+          expect(response.headers.location).toBe('/');
+          done();
       });
+    });
   });
-});
 
   describe('Login test', function () {
     it('should redirect to /', function (done) {
-      agent
-      .post('/login')
-      .field('email', 'developer@codeforcharlotte.org')
-      .field('password', 'admin')
-      .expect('Location','/')
-      .end(done)
+      request.post(
+        base_url + '/login',
+        {form:{
+          email: 'test5@example.com',
+          password: 'testuser123'
+        }},
+        function(error, response, body) {
+          expect(response.headers.location).toBe('/');
+          done();
+        });
+      });
     });
-  });
 });
