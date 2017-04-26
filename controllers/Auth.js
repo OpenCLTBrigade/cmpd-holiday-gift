@@ -22,7 +22,7 @@ module.exports = {
 
     register: {
         get: function (req, res) {
-            res.renderData('register', 'Register', {flash: 'This is the registration page'});
+            res.renderData('register', 'Register', {});
         },
         // TODO: the validation error isn't being handled properly:
         // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"
@@ -35,4 +35,3 @@ module.exports = {
         });
     }
 };
-
