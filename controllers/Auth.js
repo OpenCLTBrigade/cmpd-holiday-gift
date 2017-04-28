@@ -5,6 +5,8 @@ var redirects = {
     failureRedirect: '/login'
 };
 
+var db = require('../models');
+
 module.exports = {
     // Authentication Verification
     isLoggedIn: function (req, res, next) {
@@ -21,8 +23,9 @@ module.exports = {
     },
 
     register: {
-        get: function (req, res) {
-            res.renderData('register', 'Register', {});
+        get: async (req, res) => {
+          var affiliation = await db.affiliation.findAll();
+          res.renderData('register', 'Register', {affiliation});
         },
         // TODO: the validation error isn't being handled properly:
         // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"

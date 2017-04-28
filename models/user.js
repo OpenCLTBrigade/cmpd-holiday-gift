@@ -24,6 +24,10 @@ module.exports = Sequelize => ({
             type: Sequelize.STRING,
             defaultValue: null
         },
+        affiliation_id: {
+          type: Sequelize.INTEGER,
+          defaultValue: null
+        },
         email: {
             type: Sequelize.STRING,
             allowNull: false,

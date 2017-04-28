@@ -1,7 +1,7 @@
 <!-- The layout for the login and register pages -->
 
 <template>
-  <div class="auth-wrapper">>
+  <div class="auth-wrapper">
     <div class="auth-header login-box">
       <img src="/img/auth-logo.png" title="CMPD Explorers Christmas Project">
       <div class="made-by">By Code For Charlotte</div>

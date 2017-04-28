@@ -22,7 +22,10 @@
             <div class="form-group has-feedback">
               <label for="affiliation">Affiliation</label>
               <select class = "form-control" name="affiliation">
-              <!-- TODO: Add affiliation data -->
+                <option value="" disabled hidden>=== Select affiliation ===</option>
+                <option v-for="affiliate in affiliation" v-bind:value="affiliate.id">
+                  {{ affiliate.type.toUpperCase() }} - {{ affiliate.name }}
+                </option>
             </select>
               <i class="fa form-control-feedback"></i>
             </div>
@@ -72,8 +75,9 @@
 </template>
 
 <script>
-  export default {
-      props: {flash: {default: ''}},
+  module.exports = {
+      props: ['affiliation'],
+      //props: {'affiliation', flash: {default: ''}},
       components: {'auth-layout': require('./layouts/auth.vue')}
   };
 </script>

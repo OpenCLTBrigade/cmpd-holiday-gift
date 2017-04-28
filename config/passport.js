@@ -24,10 +24,13 @@ var configurePassport = function (passport, user) {
                     var userPassword = hashPassword(password);
                     var data =
                         {
-                            email: email,
-                            password: userPassword,
                             name_first: req.body.firstname,
-                            name_last: req.body.lastname
+                            name_last: req.body.lastname,
+                            rank: req.body.rank,
+                            phone: req.body.phone,
+                            affiliation_id: req.body.affiliation,
+                            email: email,
+                            password: userPassword
                         };
 
                     User.create(data).then(function (newUser) {
