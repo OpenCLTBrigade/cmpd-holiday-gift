@@ -581,7 +581,7 @@
       <!-- /box-body -->
     </div>
     <!-- /box-primary -->
-    
+
     <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
     <button class="btn addbtn" v-show="household.draft != 'N' && household.id" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
     <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
@@ -914,4 +914,3 @@ var app = new Vue(
 //        var child = app.$refs.address;
 
 </script>
-
