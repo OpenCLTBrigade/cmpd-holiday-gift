@@ -29,18 +29,16 @@
 
 <script>
   module.exports = {
-      data: () => {
-        return {
-          gridColumns:[
-            'Head of Household',
-            'Children',
-            'Nominated By',
-            'Uploaded From',
-            'Tools',
-            'Review'
+      data: () => ({
+          gridColumns: [
+              'Head of Household',
+              'Children',
+              'Nominated By',
+              'Uploaded From',
+              'Tools',
+              'Review'
           ]
-        }
-      },
+      }),
       props: ['user', 'households'],
       components: {'main-layout': require('../layouts/main.vue')}
   };

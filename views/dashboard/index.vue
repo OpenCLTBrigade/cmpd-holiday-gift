@@ -24,11 +24,11 @@
   export default {
       props: ['user'],
       components: {
-        'main-layout': require('../layouts/main.vue'),
-        'quick-overview': require('./quickOverview.vue'),
-        'packing-slips': require('./packingSlips.vue'),
-        'dashboard-box': require('../components/dashboardBox.vue'),
-        'reports': require('./reports.vue')
+          'main-layout': require('../layouts/main.vue'),
+          'quick-overview': require('./quickOverview.vue'),
+          'packing-slips': require('./packingSlips.vue'),
+          'dashboard-box': require('../components/dashboardBox.vue'),
+          'reports': require('./reports.vue')
       }
   };
 </script>

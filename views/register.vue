@@ -11,17 +11,17 @@
             <!-- TODO: include errors.validation -->
             <div class="form-group has-feedback">
               <label for="firstname">First Name</label>
-              <input class = "form-control" name="firstname"  type="text" />
+              <input class="form-control" name="firstname" type="text" />
               <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="lastname">Last Name</label>
-              <input class = "form-control" name="lastname"  type="text" />
+              <input class="form-control" name="lastname" type="text" />
               <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="affiliation">Affiliation</label>
-              <select class = "form-control" name="affiliation">
+              <select class="form-control" name="affiliation">
                 <option value="" disabled hidden>=== Select affiliation ===</option>
                 <option v-for="affiliate in affiliation" v-bind:value="affiliate.id">
                   {{ affiliate.type.toUpperCase() }} - {{ affiliate.name }}
@@ -31,27 +31,27 @@
             </div>
             <div class="form-group has-feedback">
               <label for="rank">Rank</label>
-              <input class = "form-control" name="rank"  type="text" />
+              <input class="form-control" name="rank" type="text" />
               <i class="fa form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="phone">Phone</label>
-              <input class = "form-control" name="phone"  type="tel" />
+              <input class="form-control" name="phone" type="tel" />
               <i class="fa fa-phone form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="email">Email Address</label>
-              <input class = "form-control" name="email"  type="email" />
+              <input class="form-control" name="email" type="email" />
               <i class="fa fa-envelope form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="password">Password</label>
-              <input class = "form-control" name="password"  type="password" autocomplete="off" />
+              <input class="form-control" name="password" type="password" autocomplete="off" />
               <i class="fa fa-lock form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
               <label for="password_confirmation">Confirm Password</label>
-              <input class = "form-control" name="password_confirmation"  type="password" autocomplete="off" />
+              <input class="form-control" name="password_confirmation" type="password" autocomplete="off" />
               <i class="fa fa-lock form-control-feedback"></i>
             </div>
             <div class="form-group has-feedback">
@@ -76,8 +76,7 @@
 
 <script>
   module.exports = {
-      props: ['affiliation'],
-      //props: {'affiliation', flash: {default: ''}},
+      props: {affiliation: {required: true}, flash: {default: ''}},
       components: {'auth-layout': require('./layouts/auth.vue')}
   };
 </script>

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "`npm bin`/jasmine-node tests",
-    "lint": "`npm bin`/eslint --fix --ext js,vue app.js routes.js controllers models views seeds tests config || true",
+    "lint": "`npm bin`/eslint -f unix --fix --ext js,vue app.js routes.js controllers models views seeds tests config || true",
     "nodemon": "`npm bin`/nodemon -w app.js -w routes.js -w controllers -w models -w config"
   },
   "main": "app.js",

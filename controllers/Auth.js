@@ -24,8 +24,8 @@ module.exports = {
 
     register: {
         get: async (req, res) => {
-          var affiliation = await db.affiliation.findAll();
-          res.renderData('register', 'Register', {affiliation});
+            var affiliation = await db.affiliation.findAll();
+            res.renderData('register', 'Register', {affiliation});
         },
         // TODO: the validation error isn't being handled properly:
         // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"

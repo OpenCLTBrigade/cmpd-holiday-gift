@@ -22,6 +22,10 @@
         "complexity": ["warn", 20],
         "no-alert": ["warn"],
         "no-unused-expressions": ["warn"],
+        "no-unused-vars": ["error", {
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+        }],
         "max-len": ["warn", 120],
         "max-lines": ["warn", 500],
         "max-statements-per-line": ["warn"],

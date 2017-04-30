@@ -599,11 +599,8 @@
   };
 
 
-// TODO:
-//    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en">
-//    </script>
-
-//                   MAIN VUE CODE'
+  // TODO: google maps
+  // <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en"></script>
 
 var app = new Vue(
   {

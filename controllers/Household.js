@@ -11,15 +11,15 @@ module.exports = {
             var household = await db.household.findById(req.params.id);
             res.renderData('household/edit', 'Edit Household', {household, user: req.user});
         },
-        post: (req, res) => {
+        post: (_req, _res) => {
 
         }
     },
     create: {
-        get: (req, res) => {
+        get: (_req, _res) => {
 
         },
-        post: (req, res) => {
+        post: (_req, _res) => {
 
         }
     }

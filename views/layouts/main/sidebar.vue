@@ -24,21 +24,21 @@
     module.exports = {
         data: () => ({
             menu: [
-              {
-                name: 'dashboard',
-                url: '/',
-                title: 'Dashboard',
-                icon: 'fa fa-dashboard'
-              },
+                {
+                    name: 'dashboard',
+                    url: '/',
+                    title: 'Dashboard',
+                    icon: 'fa fa-dashboard'
+                },
                 {
                     name: 'households',
                     title: 'Nominations',
                     icon: 'fa fa-home',
                     children: [
-                      {
-                        url: '/households',
-                        title: 'List Nominations',
-                      }
+                        {
+                            url: '/households',
+                            title: 'List Nominations',
+                        }
                     ]
                 }
             ]
