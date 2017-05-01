@@ -2,22 +2,24 @@
   <auth-layout>
     <div class="container">
       <div class="login-box" id="login-box">
-        <p>{{flash}}</p>
+        <!--<p>{{flash}}</p>-->
         <div class="header">
             <i class="fa fa-user-plus"></i> Register
         </div>
       <form id="signup" name="register" method="post" action="/register">
         <div class="body">
             <!-- TODO: include errors.validation -->
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('firstname') }">
               <label for="firstname">First Name</label>
-              <input class = "form-control" name="firstname"  type="text" />
+              <input v-validate="'required|regex:^[a-zA-Z-. ]+$|min:2'" class = "form-control" name="firstname"  type="text" />
               <i class="fa form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('firstname')">{{ errors.first('firstname') }}</p>
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('lastname') }">
               <label for="lastname">Last Name</label>
-              <input class = "form-control" name="lastname"  type="text" />
+              <input v-validate="'required|regex:^[a-zA-Z-. ]+$|min:2'" class = "form-control" name="lastname"  type="text" />
               <i class="fa form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('lastname')">{{ errors.first('lastname') }}</p>
             </div>
             <div class="form-group has-feedback">
               <label for="affiliation">Affiliation</label>
@@ -34,25 +36,29 @@
               <input class = "form-control" name="rank"  type="text" />
               <i class="fa form-control-feedback"></i>
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('phone') }">
               <label for="phone">Phone</label>
-              <input class = "form-control" name="phone"  type="tel" />
+              <input v-validate="'required'" class = "form-control" name="phone"  type="tel" />
               <i class="fa fa-phone form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('phone')">{{ errors.first('phone') }}</p>
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('email') }">
               <label for="email">Email Address</label>
-              <input class = "form-control" name="email"  type="email" />
+              <input v-validate="'required|email'" class = "form-control" name="email"  type="email" />
               <i class="fa fa-envelope form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('email')">{{ errors.first('email') }}</p>
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('password') }">
               <label for="password">Password</label>
-              <input class = "form-control" name="password"  type="password" autocomplete="off" />
+              <input v-validate="'required'" class = "form-control" name="password"  type="password" autocomplete="off" />
               <i class="fa fa-lock form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</p>
             </div>
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" :class="{'has-error': errors.has('password_confirmation') }">
               <label for="password_confirmation">Confirm Password</label>
-              <input class = "form-control" name="password_confirmation"  type="password" autocomplete="off" />
+              <input v-validate="'confirmed:password'" class = "form-control" name="password_confirmation"  type="password" autocomplete="off" />
               <i class="fa fa-lock form-control-feedback"></i>
+              <p class="text-danger" v-if="errors.has('password_confirmation')">{{ errors.first('password_confirmation') }}</p>
             </div>
             <div class="form-group has-feedback">
                 <!-- TODO: Add Recaptcha -->
@@ -75,11 +81,31 @@
 </template>
 
 <script>
-  module.exports = {
-      props: ['affiliation'],
-      //props: {'affiliation', flash: {default: ''}},
-      components: {'auth-layout': require('./layouts/auth.vue')}
-  };
+import Vue from 'vue';
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
+
+export default {
+  props: ['affiliation'],
+  //props: {'affiliation', flash: {default: ''}},
+  data: () => {
+    return {
+      firstname: '',
+      lastname: '',
+      phone: '',
+      email: ''
+    }
+  },
+  components: {'auth-layout': require('./layouts/auth.vue')},
+  /*methods: {
+    validateBeforeSubmit(e) {
+      this.$validator.validateAll();
+      if (!this.errors.any()) {
+        this.submitForm()
+      }
+    }
+  }*/
+};
 </script>
 
 <style>
