@@ -6,7 +6,7 @@
         <div class="header">
             <i class="fa fa-user-plus"></i> Register
         </div>
-      <form id="signup" name="register" method="post" action="/register">
+      <form @submit.prevent="validateBeforeSubmit" v-if="!formSubmitted" id="signup" name="register" method="post" action="/register">
         <div class="body">
             <!-- TODO: include errors.validation -->
             <div class="form-group has-feedback" :class="{'has-error': errors.has('firstname') }">
@@ -97,14 +97,18 @@ export default {
     }
   },
   components: {'auth-layout': require('./layouts/auth.vue')},
-  /*methods: {
+  methods: {
     validateBeforeSubmit(e) {
       this.$validator.validateAll();
       if (!this.errors.any()) {
         this.submitForm()
       }
+    },
+    submitForm(){
+      document.getElementById("signup").submit();
+      this.formSubmitted = true
     }
-  }*/
+  }
 };
 </script>
 
