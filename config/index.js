@@ -18,7 +18,7 @@ if (process.env.NODE_ENV == 'production') {
     config.port = process.env.PORT || 3000;
     config.db = {
         dialect: 'sqlite',
-        storage: path.join(__dirname, '../.db.development.sqlite')
+        storage: path.join(__dirname, '../run/db.development.sqlite')
     };
 }
 
@@ -51,5 +51,7 @@ config.clothesSizes = ['S', 'M', 'L'];
 config.bikeStyles = ['Mountain', 'BMX', 'Tricycle'];
 
 config.genders = ['F', 'M'];
+
+config.run = path.join(__dirname, '../run');
 
 module.exports = config;

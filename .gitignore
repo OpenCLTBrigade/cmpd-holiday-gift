@@ -1,7 +1,5 @@
 node_modules
 .DS_Store
-*.sqlite*
 launch.json
 *~
-.webpack-out
-access.log
+run/

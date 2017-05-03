@@ -1,14 +1,14 @@
 {
   "name": "cmpd-explorers-christmas-2017",
-  "version": "0.0.1",
+  "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "node apps/serve.js",
     "test": "jasmine",
-    "lint": "eslint -f unix --fix --ext js,vue app.js routes.js controllers models views seeds tests config || true",
-    "nodemon": "nodemon -w app.js -w routes.js -w controllers -w models -w config"
+    "lint": "eslint -f unix --fix --ext js,vue apps models seeds spec config",
+    "nodemon": "nodemon -w apps -w models -w config -w node_modules --ignore '**/views/**'"
   },
-  "main": "app.js",
+  "main": "apps/serve.js",
   "devDependencies": {
     "debug": "~2.6.3",
     "eslint": "*",

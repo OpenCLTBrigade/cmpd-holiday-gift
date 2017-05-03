@@ -45,10 +45,10 @@
 </script>
 
 <style lang="less">
-@import "../../node_modules/bootstrap/less/mixins.less";
-@import "../../node_modules/bootstrap/less/variables.less";
-@import "../../node_modules/admin-lte/build/less/mixins.less";
-@import "../../node_modules/admin-lte/build/less/variables.less";
+@import "../../../../node_modules/bootstrap/less/mixins.less";
+@import "../../../../node_modules/bootstrap/less/variables.less";
+@import "../../../../node_modules/admin-lte/build/less/mixins.less";
+@import "../../../../node_modules/admin-lte/build/less/variables.less";
 @import "../../vendor/navbar-variant.less";
 
 @logo_blue: #00355d;

@@ -5,7 +5,7 @@ var redirects = {
     failureRedirect: '/login'
 };
 
-var db = require('../models');
+var db = require('../../../models');
 
 module.exports = {
     // Authentication Verification

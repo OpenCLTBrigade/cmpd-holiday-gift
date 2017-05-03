@@ -1,19 +1,24 @@
 var path = require('path');
+var glob = require('glob');
 
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var mode = require('.').mode;
 
+var views = {};
+glob.sync(__dirname +  '/../apps/*/views').forEach(path => {
+    views[path.match(/apps\/(.*?)\/views/)[1]] = path;
+});
+
 var options = {
-    entry: {load: ['./views/load.js']},
+    entry: views,
     output: {
-        path: path.join(__dirname, '../.webpack-out/'),
+        path: path.join(__dirname, '../run/webpack'),
         publicPath: '/v',
         filename: '[name].js'
     },
-    plugins: [
-    ],
+    plugins: [],
     module: {
         rules: [{
             test: /\.vue$/,
@@ -28,7 +33,7 @@ var options = {
 if (mode == 'development') {
     options.devtool = 'eval';
     options.plugins.push(new webpack.HotModuleReplacementPlugin());
-    options.entry.load.push('webpack-hot-middleware/client');
+    options.entry['devel'] = 'webpack-hot-middleware/client';
     options.module.rules.push({
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
