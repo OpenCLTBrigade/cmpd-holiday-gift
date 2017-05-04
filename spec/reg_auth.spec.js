@@ -4,9 +4,7 @@
 
 var request = require('request');
 
-var db = require('../models');
-
-var base_url = 'http://localhost:3000';
+var {testServer} = require('./helpers/testServer');
 
 var sampleUser = {
     email: 'test.user@example.com',
@@ -15,12 +13,14 @@ var sampleUser = {
     password: 'testuser123'
 };
 
-describe('Register & Authenticate tests', function () {
+describe('Register & Authenticate tests', () => {
+
+    var url = testServer({mode: 'all'});
 
     describe('Register test', function () {
         it('should redirect to /', function (done) {
             request.post({
-                url: base_url + '/register',
+                url: url('/register'),
                 form: sampleUser
             }, function (error, response, _body) {
                 expect(error).toBeNull();
@@ -33,7 +33,7 @@ describe('Register & Authenticate tests', function () {
     describe('Login test', function () {
         it('should redirect to /', function (done) {
             request.post({
-                url: base_url + '/login',
+                url: url('/login'),
                 form: {
                     email: sampleUser.email,
                     password: sampleUser.password
@@ -44,12 +44,5 @@ describe('Register & Authenticate tests', function () {
                 done();
             });
         });
-    });
-
-    afterAll(function (done) {
-        db.sequelize.query(`DELETE FROM users WHERE email = '${sampleUser.email}'`)
-            .spread(function (_results, _metadata) {
-                done();
-            });
     });
 });

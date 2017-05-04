@@ -81,34 +81,36 @@
 </template>
 
 <script>
+/* eslint-env browser */
+
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
 export default {
-  props: ['affiliation'],
+    props: ['affiliation'],
   //props: {'affiliation', flash: {default: ''}},
-  data: () => {
-    return {
-      firstname: '',
-      lastname: '',
-      phone: '',
-      email: ''
-    }
-  },
-  components: {'auth-layout': require('./layouts/auth.vue')},
-  methods: {
-    validateBeforeSubmit(e) {
-      this.$validator.validateAll();
-      if (!this.errors.any()) {
-        this.submitForm()
-      }
+    data: () => {
+        return {
+            firstname: '',
+            lastname: '',
+            phone: '',
+            email: ''
+        };
     },
-    submitForm(){
-      document.getElementById("signup").submit();
-      this.formSubmitted = true
+    components: {'auth-layout': require('./layouts/auth.vue')},
+    methods: {
+        validateBeforeSubmit(_e) {
+            this.$validator.validateAll();
+            if (!this.errors.any()) {
+                this.submitForm();
+            }
+        },
+        submitForm() {
+            document.getElementById('signup').submit();
+            this.formSubmitted = true;
+        }
     }
-  }
 };
 </script>
 

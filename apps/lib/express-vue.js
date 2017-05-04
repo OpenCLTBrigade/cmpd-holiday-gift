@@ -5,7 +5,7 @@
 var {join} = require('path');
 var fs = require('fs');
 
-var {mode} = require('../../config');
+var {enableHotReload} = require('../../config');
 
 function engine(viewDir) {
 
@@ -16,11 +16,11 @@ function engine(viewDir) {
         fs.readFileSync(join(viewDir, 'skeleton.html')).toString();
 
     // In production mode, do not reload skeleton.html every request
-    if (mode == 'production') {
+    if (enableHotReload == false) {
         var skeletonContents = skeleton();
         skeleton = () => skeletonContents;
     }
-    
+
     // res.render(view_name, options): a custom rendering engine using Vue and Webpack
     // Don't use this directly: use res.renderData instead
     // * options.title: the page title
@@ -53,7 +53,7 @@ function engine(viewDir) {
 //  - if the url ends with '.json', return data as JSON
 //  - if 'Accepts: application/json', return data as JSON
 //  - otherwise render the view using `res.render`
-function jsonMiddleware (req, res, next) {
+function jsonMiddleware(req, res, next) {
     if (req.url.match(/\/v/)) {
         return next();
     }
@@ -77,4 +77,4 @@ function jsonMiddleware (req, res, next) {
     return next();
 }
 
-module.exports = { engine, jsonMiddleware };
+module.exports = {engine, jsonMiddleware};

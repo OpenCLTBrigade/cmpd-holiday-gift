@@ -1,4 +1,6 @@
+var process = require('process');
 var path = require('path');
+
 
 var config = {};
 
@@ -13,16 +15,38 @@ if (process.env.NODE_ENV == 'production') {
         password: 'express123',
         database: 'expresstest'
     };
-} else {
+    config.verboseAccessLog = false;
+    config.useCompression = false; // TODO: enable compression on reverse proxy
+    config.enableHotReload = false;
+    config.verboseSeed = false;
+    config.buildAssets = true;
+} else if (process.env.NODE_ENV == 'testing') {
+    config.mode = 'testing';
+    config.port = 0;
+    config.db = {
+        dialect: 'sqlite',
+        storage: path.join(__dirname, `../run/test/db.${process.pid}.sqlite`)
+    };
+    config.useCompression = false;
+    config.enableHotReload = false;
+    config.verboseSeed = false;
+    config.verboseAccessLog = false;
+    config.verbose = false;
+    config.buildAssets = false;
+} else { // development
     config.mode = 'development';
     config.port = process.env.PORT || 3000;
     config.db = {
         dialect: 'sqlite',
         storage: path.join(__dirname, '../run/db.development.sqlite')
     };
+    config.verboseAccessLog = true;
+    config.useCompression = true;
+    config.enableHotReload = true;
+    config.verboseSeed = true;
+    config.verbose = true;
+    config.buildAssets = true;
 }
-
-config.verboseAccessLog = true;
 
 config.db.logging = false;
 

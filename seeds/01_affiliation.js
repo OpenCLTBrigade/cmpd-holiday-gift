@@ -1298,8 +1298,10 @@ var cmsSchools = [
     }
 ];
 
-module.exports = async (db) => {
-    console.log('Seeding Code for Charlotte');
+module.exports = async (db, verbose) => {
+    if (verbose) {
+        console.log('Seeding Code for Charlotte');
+    }
 
     await db.affiliation.create({
         'type': 'cfc',
@@ -1311,7 +1313,9 @@ module.exports = async (db) => {
     });
 
     await Promise.all(cmpdStations.map(async station => {
-        console.log(`Seeding CMPD Station ${station.name}`);
+        if (verbose) {
+            console.log(`Seeding CMPD Station ${station.name}`);
+        }
         await db.affiliation.create({
             'type': 'cmpd',
             'name': station.name,
@@ -1324,7 +1328,9 @@ module.exports = async (db) => {
     }));
 
     await Promise.all(cfdStations.map(async station => {
-        console.log(`Seeing CFD Station ${station.name}`);
+        if (verbose) {
+            console.log(`Seeing CFD Station ${station.name}`);
+        }
         await db.affiliation.create({
             'type': 'cfd',
             'name': station.name,
@@ -1337,7 +1343,9 @@ module.exports = async (db) => {
     }));
 
     await Promise.all(cmsSchools.map(async school => {
-        console.log(`Seeding CMS School ${school.name}`);
+        if (verbose) {
+            console.log(`Seeding CMS School ${school.name}`);
+        }
         await db.affiliation.create({
             'type': 'cms',
             'name': school.name,

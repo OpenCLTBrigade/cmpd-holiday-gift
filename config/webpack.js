@@ -4,7 +4,7 @@ var glob = require('glob');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var mode = require('.').mode;
+var {enableHotReload} = require('.');
 
 var views = {};
 glob.sync(__dirname +  '/../apps/*/views').forEach(path => {
@@ -30,7 +30,7 @@ var options = {
     },
 };
 
-if (mode == 'development') {
+if (enableHotReload) {
     options.devtool = 'eval';
     options.plugins.push(new webpack.HotModuleReplacementPlugin());
     options.entry['devel'] = 'webpack-hot-middleware/client';

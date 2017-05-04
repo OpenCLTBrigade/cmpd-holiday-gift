@@ -31,10 +31,8 @@ if (config.verboseAccessLog) {
 }
 
 // Compress contents
-if (config.mode == 'development') {
+if (config.useCompression) {
     app.use(compression());
-} else {
-    // TODO: use compressing reverse-proxy in production
 }
 
 app.use(bodyParser.json());
@@ -57,9 +55,10 @@ app.use(nominations);
 var initialize = [];
 
 // Sync the database
-// TODO: allow starting the server without syncing, and vice-versa
 initialize.push(models.sequelize.sync().then(function () {
-    console.log('Nice! Database sync succeeded.');
+    if (config.verbose) {
+        console.log('Nice! Database sync succeeded.');
+    }
 }).catch(function (err) {
     console.log('Database sync failed:', err);
 }));
@@ -67,16 +66,18 @@ initialize.push(models.sequelize.sync().then(function () {
 // Prepare to compile the views and web assets
 var compiler = webpack(webpackConfig);
 
-if (config.mode == 'production') {
+if (!config.enableHotReload) {
     // In production mode, compile all assets once before starting the server
-    initialize.push(new Promise((success, fail) => compiler.run((err) => {
-        if (err) {
-            console.log('Webpack failed:', err);
-            fail();
-        } else {
-            success();
-        }
-    })));
+    if (config.buildAssets) {
+        initialize.push(new Promise((success, fail) => compiler.run((err) => {
+            if (err) {
+                console.log('Webpack failed:', err);
+                fail();
+            } else {
+                success();
+            }
+        })));
+    }
 } else {
     // In development mode, use hot reloading
     app.use(webpackMiddleware(compiler, {
@@ -86,9 +87,4 @@ if (config.mode == 'production') {
     app.use(webpackHotMiddleware(compiler));
 }
 
-// Start server after initialization completes
-Promise.all(initialize).then(function () {
-    app.listen(config.port, function () {
-        console.log('Express server listening on port ' + config.port);
-    });
-});
+module.exports = Promise.all(initialize).then(() => app);
