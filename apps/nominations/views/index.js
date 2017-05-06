@@ -12,6 +12,22 @@ require('bootstrap/dist/css/bootstrap.css');
 require('admin-lte/dist/css/AdminLTE.css');
 require('font-awesome/css/font-awesome.css');
 
+// Pre-load layouts
+var layouts = require.context('./layouts', true, /^.\/[^\/]+(\/index)?\.vue$/);
+layouts.keys().forEach(path => {
+    var name = path.replace(/^.\/([^.\/]*).*$/, '$1-layout');
+    console.log('Layout', name, path);
+    Vue.component(name, layouts(path));
+});
+
+// Pre-load components
+var components = require.context('./components', false, /\.vue$/);
+components.keys().forEach(path => {
+    var name = path.replace(/^.\/(.*)\.vue$/, '$1');
+    console.log('Component', name, path);
+    Vue.component(name, components(path));
+});
+
 window.loadView = function (name, data) {
     var div = document.createElement('div');
     document.body.appendChild(div);

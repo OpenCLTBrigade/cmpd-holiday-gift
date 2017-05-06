@@ -594,8 +594,7 @@
 <script>
 
   module.exports = {
-      props: ['user', 'household'],
-      components: {'main-layout': require('../layouts/main.vue')}
+      props: ['user', 'household']
   };
 
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main-layout :user="user" current_section="dashbaord" no_boxes="true">
+    <main-layout :user="user" current_section="dashbaord" no_boxes="true" title="dashboard">
       <dashboard-box>
         <span slot="header">
           Dashboard
@@ -24,10 +24,8 @@
   export default {
       props: ['user'],
       components: {
-          'main-layout': require('../layouts/main.vue'),
           'quick-overview': require('./quickOverview.vue'),
           'packing-slips': require('./packingSlips.vue'),
-          'dashboard-box': require('../components/dashboardBox.vue'),
           'reports': require('./reports.vue')
       }
   };

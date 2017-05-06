@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  module.exports = {components: {'dashboard-box': require('../components/dashboardBox.vue')}};
+  module.exports = {};
 </script>
 
 <style lang="less">

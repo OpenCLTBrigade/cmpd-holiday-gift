@@ -36,20 +36,19 @@
           flash: {default: ''}
       },
       components: {
-          'main-top': require('./main/top.vue'),
-          'main-sidebar': require('./main/sidebar.vue'),
-          'main-header': require('./main/header.vue'),
-          'flash-message': require('../components/flashMessage.vue')
+          'main-top': require('./top.vue'),
+          'main-sidebar': require('./sidebar.vue'),
+          'main-header': require('./header.vue'),
       }
   };
 </script>
 
 <style lang="less">
-@import "../../../../node_modules/bootstrap/less/mixins.less";
-@import "../../../../node_modules/bootstrap/less/variables.less";
-@import "../../../../node_modules/admin-lte/build/less/mixins.less";
-@import "../../../../node_modules/admin-lte/build/less/variables.less";
-@import "../../vendor/navbar-variant.less";
+@import "../../../../../node_modules/bootstrap/less/mixins.less";
+@import "../../../../../node_modules/bootstrap/less/variables.less";
+@import "../../../../../node_modules/admin-lte/build/less/mixins.less";
+@import "../../../../../node_modules/admin-lte/build/less/variables.less";
+@import "../../../vendor/navbar-variant.less";
 
 @logo_blue: #00355d;
 

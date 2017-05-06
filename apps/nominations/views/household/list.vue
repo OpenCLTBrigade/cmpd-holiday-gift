@@ -39,7 +39,6 @@
               'Review'
           ]
       }),
-      props: ['user', 'households'],
-      components: {'main-layout': require('../layouts/main.vue')}
+      props: ['user', 'households']
   };
 </script>

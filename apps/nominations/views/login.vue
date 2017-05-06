@@ -38,11 +38,7 @@
 
 <script>
   module.exports = {
-      props: {flash: {default: ''}},
-      components: {
-          'auth-layout': require('./layouts/auth.vue'),
-          'flash-message': require('./components/flashMessage.vue')
-      }
+      props: {flash: {default: ''}}
   };
 </script>
 
