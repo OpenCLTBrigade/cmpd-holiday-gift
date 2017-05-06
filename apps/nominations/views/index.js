@@ -16,7 +16,6 @@ require('font-awesome/css/font-awesome.css');
 var layouts = require.context('./layouts', true, /^.\/[^\/]+(\/index)?\.vue$/);
 layouts.keys().forEach(path => {
     var name = path.replace(/^.\/([^.\/]*).*$/, '$1-layout');
-    console.log('Layout', name, path);
     Vue.component(name, layouts(path));
 });
 
@@ -24,7 +23,6 @@ layouts.keys().forEach(path => {
 var components = require.context('./components', false, /\.vue$/);
 components.keys().forEach(path => {
     var name = path.replace(/^.\/(.*)\.vue$/, '$1');
-    console.log('Component', name, path);
     Vue.component(name, components(path));
 });
 

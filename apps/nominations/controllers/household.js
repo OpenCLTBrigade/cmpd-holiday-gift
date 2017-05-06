@@ -9,7 +9,11 @@ module.exports = {
     edit: {
         get: async (req, res) => {
             var household = await db.household.findById(req.params.id);
-            res.renderData('household/edit', 'Edit Household', {household, user: req.user});
+            var schools = await db.affiliation.findAll({
+                attributes: ['id', 'name'],
+                where: {type: 'cms'}
+            });
+            res.renderData('household/edit', 'Edit Household', {household, schools, user: req.user});
         },
         post: (_req, _res) => {
 

@@ -37,9 +37,7 @@
 </template>
 
 <script>
-  module.exports = {
-      props: {flash: {default: ''}}
-  };
+  module.exports = {props: {flash: {default: ''}}};
 </script>
 
 <style></style>

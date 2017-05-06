@@ -1,566 +1,338 @@
-<!-- TODO: copied almost as-is form the 2016 project. needs a lot of scrutiny and refactoring -->
+<subcomponent name="solobanana">
+  <template>
+    <div>SOLOBANANA</div>
+  </template>
+</subcomponent>
+
+<subcomponent name="box-delme">
+  <template>
+    <div :class="['box'] + (type ? [`box-${type}`] : [])">
+      <div class="box-header with-border" v-if="title">
+        <h1 class="box-title">{{title}}</h1>
+      </div>
+      <div class="box-body">
+        <slot />
+      </div>
+    </div>
+  </template>
+  <script>
+    module.exports = {props: ['title', 'type']};
+  </script>
+</subcomponent>
+
+<subcomponent name="row">
+  <template>
+    <div class="row">
+      <slot />
+    </div>
+  </template>
+</subcomponent>
+
+<subcomponent name="form-group">
+  <template>
+    <div :class="`col-md-${width} col-sm-12`">
+      <div :class="`form-group ${required == 'no' ? '' : 'required'}`">
+        <label class="control-label">
+          {{label}}
+          [input]<slot/>
+        </label>
+      </div>
+    </div>
+  </template>
+  <script>
+    module.exports = {
+        props: {
+            width: {default: 12},
+            label: {required: true},
+            required: {default: 'no'}
+        }
+    };
+  </script>
+</subcomponent>
 
 <template>
   <main-layout :user="user" title="Edit Household" current_section="households">
-  <div id="app" class="container-fluid">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h1 class="box-title">Head of Household Information</h1>
-      </div>
+    <div class="container-fluid">
+      <box-delme type="primary" title="Head of Household Information" v-pre>
+        <row> 
+          <form-group width="6" label="First Name" required>
+            <!-- ATN <input type="text" class="form-control" id="name-first" v-model="household.name_first"> -->
+          </form-group> 
+          <form-group width="6" label="Last Name" required>
+              <!-- ATN <input type="text" class="form-control" id="name-last" v-model="household.name_last"> -->
+          </form-group>
+        </row>
 
-      <!-- INITIAL PART OF FORM -->
+        <row>
+          <form-group width="4" label="Gender" required>
+              <!-- ATN <select class="form-control" id="gender" v-model="household.gender" name="gender">
+                   <option value="" selected="selected">==== Select ====</option>
+                   <option value="M">Male</option>
+                   <option value="F">Female</option>
+              </select>-->
+          </form-group>
+          <form-group width="4" label="Date of Birth" required>
+              <!-- ATN              <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob"> -->
+          </form-group>
+          <form-group width="4" label="Last four digits of SSN" required>
+              <!-- ATN              <input class="form-control" type="number" v-model="household.last4ssn">-->
+          </form-group>
+        </row>
 
-      <div class="box-body">
-        <div class="row">
+        <row>
+          <form-group width="4" label="Email">
+            <!-- ATN              <input class="form-control" type="email" v-model="household.email">-->
+          </form-group>
+          <form-group width="4" label="Preferred Contact Method">
+            <!-- ATN              <select class="form-control" v-model="household.preferred_contact_method"> 
+                 <option value="" selected="selected">==== Select ====</option>
+                 <option value="email">E-Mail</option>
+                 <option value="text">Text</option>
+                 <option value="mail">Phone</option>
+            </select>-->
+          </form-group>
+          <form-group width="4" label="Ethnicity" required>
+            <!-- ATN              <select class="form-control" id="race" v-model="household.race" name="race">
+                 <option value="">==== Select ====</option>
+                 <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+                 <option value="Asian">Asian</option>
+                 <option value="African American">African American</option>
+                 <option value="Hispanic">Hispanic</option>
+                 <option value="Pacific Islander">Pacific Islander</option>
+                 <option value="White">White</option>
+                 <option value="Other">Other</option>
+            </select> -->
+          </form-group>
+        </row>
+      </box-delme>
 
-          <div class="col-md-6 col-sm-12">
-            <div class="form-group required">
-              <label>First Name</label>
-              <input type="text" class="form-control" id="name-first" v-model="household.name_first">
-            </div>
-          </div>
-
-          <div class="col-md-6 col-sm-12">
-            <div class="form-group required">
-              <label class="required">Last Name</label>
-              <input type="text" class="form-control" id="name-last" v-model="household.name_last">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <!-- Do we want an "Other", "Prefer Not to Specify" or similar gender option? -->
-
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group required">
-              <label for="gender" class="control-label">Gender</label>
-              <select class="form-control" id="gender" v-model="household.gender" name="gender">
-                <option value="" selected="selected">==== Select ====</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group required">
-              <label for="dob" class="control-label">Date of Birth</label>
-              <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob">
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group required">
-              <label class="control-label">Last four digits of SSN</label>
-              <input class="form-control" type="number" v-model="household.last4ssn">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-              <label class="control-label">Email</label>
-              <input class="form-control" type="email" v-model="household.email">
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-              <label class="control-label">Preferred Contact Method</label>
-              <select class="form-control" v-model="household.preferred_contact_method">
-                <option value="" selected="selected">==== Select ====</option>
-                <option value="email">E-Mail</option>
-                <option value="text">Text</option>
-                <option value="mail">Phone</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-12">
-            <div class="form-group required">
-              <label for="reason_for_nomination" class="control-label">Ethnicity</label>
-              <select class="form-control" id="race" v-model="household.race" name="race">
-                <option value="">==== Select ====</option>
-                <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
-                <option value="Asian">Asian</option>
-                <option value="African American">African American</option>
-                <option value="Hispanic">Hispanic</option>
-                <option value="Pacific Islander">Pacific Islander</option>
-                <option value="White">White</option>
-                <option value="Other">Other</option>
-              </select>
-
-              <!-- Perhaps include a description of how / why ethnicity info is used? -->
-
-            </div>
-          </div>
-
-
-
-
-        </div>
-      </div>
-      <!-- /box-body -->
-    </div>
-    <!-- /box-primary -->
-
-
-    <!-- ADDRESS HEADER -->
-
-    <div class="box box-danger">
-      <div class="box-header with-border">
-        <h1 class="box-title">Delivery Address</h1>
-      </div>
-
-      <!-- ADDRESS SECTION  -->
-      <div class="box-body">
-
-        <div class="row" v-for="address in household.address">
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group required">
-
-              <label class="control-label">Type</label>
-              <select class="form-control" v-model="address.type">
-                <option value="Home">Home</option>
-                <option value="Work">Work</option>
-              </select>
-
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group required">
-
-              <label class="control-label">Street Address</label>
-              <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group">
-
-              <label class="control-label">Street Address 2</label>
-              <input class="form-control" type="text" v-model="address.address_street2">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group required">
-
-              <label class="control-label">City</label>
-              <input class="form-control" type="text" v-model="address.address_city">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group required">
-
-              <label class="control-label">State</label>
-              <input class="form-control" type="text" v-model="address.address_state">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group required">
-
-              <label class="control-label">ZIP Code</label>
-              <input class="form-control" type="text" v-model="address.address_zip">
-            </div>
-          </div>
-
-          <!-- @if (Auth::user()->hasRole('admin')) -->
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group">
-              <label class="control-label">CMPD Division</label>
-              <input class="form-control" type="text" v-model="address.cmpd_division">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <div class="form-group">
-              <label class="control-label">CMPD Response Area</label>
-              <input class="form-control" type="text" v-model="address.cmpd_response_area">
-            </div>
-          </div>
-          <!-- @endif -->
+      <box-delme type="danger" title="Delivery Address" v-pre>
+        <!-- ATN        <div class="row" v-for="address in household.address">-->
+        <row v-for="address in []" key="address.id">
+          <form-group label="Type">
+            <select class="form-control" v-model="address.type">
+              <option value="Home">Home</option>
+              <option value="Work">Work</option>
+            </select>
+          </form-group>
+          <form-group label="Street Address" required>
+            <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
+          </form-group>
+          <form-group label="Street Address 2">
+            <input class="form-control" type="text" v-model="address.address_street2">
+          </form-group>
+          <form-group label="City" required>
+            <input class="form-control" type="text" v-model="address.address_city">
+          </form-group>
+          <form-group label="State" required>
+            <input class="form-control" type="text" v-model="address.address_state">
+          </form-group>
+          <form-group label="ZIP Code" required>
+            <input class="form-control" type="text" v-model="address.address_zip">
+          </form-group>
+          
+          <!--TODO  @if (Auth::user()->hasRole('admin')) -->
+          <form-group label="CMPD Division">
+            <input class="form-control" type="text" v-model="address.cmpd_division">
+          </form-group>
+          <form-group label="CMPD Response Area">
+            <input class="form-control" type="text" v-model="address.cmpd_response_area">
+          </form-group>
+          <!--TODO  @endif -->
           <hr>
+        </row>
+      </box-delme>
+
+      <box-delme type="danger" title="Phone Numbers" v-pre>
+        <row v-for="phone in [] /*ATN household.phone*/" key="phone.id">
+          <form-group label="Type" required>
+            <select class="form-control" v-model="phone.phone_type">
+              <option value="Home">Home</option>
+              <option value="Work">Work</option>
+              <option value="Other">Mobile</option>
+            </select>
+          </form-group>
+          <form-group label="Phone" required>
+            <input class="form-control" type="text" v-model="phone.phone_number">
+          </form-group>
+        </row>
+
+        <div class="col-xs-12">
+          <button class="btn addbtn" v-on:click="addPhone">Add Phone</button>
+          <button class="btn btn-danger" v-on:click="removePhone">Remove Phone</button>
         </div>
+      </box-delme>
 
-        <!-- Can accomodate multiple addresses but is currently limiting users to 1 address
-             <div class="row">
-               <div class="col-xs-12">
-                 <button class="btn addbtn" v-on:click="addAddress">Add Address</button>
-                 <button class="btn btn-danger" v-on:click="removeAddress">Remove Address</button>
-               </div>
-             </div>
-             -->
+      <box-delme v-for="record in [] /*household.child ATN*/" v-pre
+           key="record.id"
+           :title="`Child ${$index+1} - ${record.name_first} ${record.name_last}`">
+        <row>
+          <form-group label="First Name" required> 
+            <!-- ATN <input class="form-control" type="text" v-model="record.name_first"> -->
+          </form-group>
+          <form-group label="Last Name" required>
+            <input class="form-control" type="text" v-model="record.name_last">
+          </form-group>
+        </row>
 
-      </div>
+        <row>
+          <form-group width="2" label="Gender" required>
+            <select class="form-control" v-model="record.gender" name="gender">
+              <option value="">==== Select ====</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </form-group>
+          <form-group width="3" label="Ethnicity" required>
+            <select class="form-control" id="race" v-model="record.race" name="race">
+              <option value="">==== Select ====</option>
+              <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+              <option value="Asian">Asian</option>
+              <option value="African American">African American</option>
+              <option value="Hispanic">Hispanic</option>
+              <option value="Pacific Islander">Pacific Islander</option>
+              <option value="White">White</option>
+              <option value="Other">Other</option>
+            </select>
+          </form-group>
+          <form-group width="3" label="Last four digits of SSN" required>
+            <input class="form-control" type="text" v-model="record.last4ssn">
+          </form-group>
+          <form-group width="4" label="Child receives free or reduced lunch?" required>
+            <select class="form-control" v-model="record.free_or_reduced_lunch">
+              <option value="">==== Select ====</option>
+              <option value="Y">Yes</option>
+              <option value="N">No</option>
+            </select>
+          </form-group>
+        </row>
 
+        <row>
+          <form-group label="Date of Birth" required>
+            <!--    ATN          <input class="form-control" v-model="record.dob" type="date">-->
+          </form-group>
+          <form-group label="School Name" required>
+            <!-- ATN              <select class="form-control" v-model="record.school_id">
+                 <option :value='school.id' v-for='school in schools'>
+                   {{ school.name }}
+                 </option>
+            </select>-->
+          </form-group>
+        </row>
 
-      <!-- /box-danger -->
-
-
-    </div>
-
-
-
-    <!-- PHONE HEADER -->
-
-    <div class="box box-danger">
-      <div class="box-header with-border">
-        <h1 class="box-title">Phone Numbers</h1>
-      </div>
-
-
-      <!-- PHONE SECTION -->
-
-      <div class="box-body">
-        <div class="row" v-for="phone in household.phone">
-          <div class="form-group">
-
-            <div class="col-xs-12 col-sm-4">
-              <div class="form-group required">
-
-                <label class="control-label">Type</label>
-                <select class="form-control" v-model="phone.phone_type">
-                  <option value="Home">Home</option>
-                  <option value="Work">Work</option>
-                  <option value="Other">Mobile</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-8">
-              <div class="form-group required">
-
-                <label class="control-label">Phone</label>
-                <input class="form-control" type="text" v-model="phone.phone_number">
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <div class="form-group">
-
-              </div>
-              <input class="form-control" type="hidden" />
-
-            </div>
-
-          </div>
-        </div>
-        <!--  /box  -->
-        <div class="row">
+        <row>
           <div class="col-xs-12">
-            <button class="btn addbtn" v-on:click="addPhone">Add Phone</button>
-            <button class="btn btn-danger" v-on:click="removePhone">Remove Phone</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CHILD HEADER -->
-
-    <div v-for="record in household.child" class="box box-success">
-      <div class="box-header with-border">
-        <h1 class="box-title">
-          Child {{$index+1}}
-          <span v-if='record.name_first.length > 0 || record.name_last.length > 0'>-</span>
-          {{record.name_first}} {{record.name_last}}
-        </h1>
-      </div>
-
-
-      <!-- CHILD SECTION -->
-
-      <div class="box-body">
-        <div class="row"  >
-
-          <div class="col-xs-12 col-sm-6">
-            <div class="form-group required">
-
-              <label class="control-label">First Name</label>
-              <input class="form-control" type="text" v-model="record.name_first">
-
+            <div class="form-group"> 
+              <!-- ATN               <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.bike_want">&nbsp;Child wants bike?</input>-->
             </div>
           </div>
+        </row>
 
-          <div class="col-xs-12 col-sm-6">
+        <template v-if="record.bike_want">
+          <row>
+            <form-group label="Bike style" required>
+              <!-- ATN                 <select class="form-control" v-model="record.bike_style">
+                   <option value="">==== Select ====</option>
+                   <option value="Tricycle">Tricycle</option>
+                   <option value="Mountain">Mountain Bike</option>
+                   <option value="BMX">BMX Bike</option>
+              </select>-->
+            </form-group>
+          </row>
 
-            <div class="form-group required">
+          <row>
+            <form-group label="Bike size" required>
+              <!-- ATN                <select class="form-control" v-model="record.bike_size">
+                   <option value="">==== Select ====</option>
+                   <option value="Tricycle">Tricycle</option>
+                   <option value='12” Bicycle'>12” Bicycle</option>
+                   <option value='16” Bicycle'>16” Bicycle</option>
+                   <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
+                   <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
+                   <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
+              </select> -->
 
-              <label class="control-label">Last Name</label>
-              <input class="form-control" type="text" v-model="record.name_last">
+              <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">
+                  Not sure? Click for size guide.
+              </a></p>
+            </form-group>
+          </row>
+        </template>
 
-
-
-            </div>
-          </div>
-        </div>
-        <!-- /row -->
-        <!--</div> /box-body -->
-
-        <div class="row">
-          <div class="col-xs-12 col-sm-2">
-            <div class="form-group required">
-              <label for="gender" class="control-label">Gender</label>
-              <select class="form-control" v-model="record.gender" name="gender">
-                <option value="">==== Select ====</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-3">
-
-            <div class="form-group required">
-
-              <label class="control-label">Ethnicity</label>
-              <select class="form-control" id="race" v-model="record.race" name="race">
-                <option value="">==== Select ====</option>
-                <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
-                <option value="Asian">Asian</option>
-                <option value="African American">African American</option>
-                <option value="Hispanic">Hispanic</option>
-                <option value="Pacific Islander">Pacific Islander</option>
-                <option value="White">White</option>
-                <option value="Other">Other</option>
-              </select>
-
-              <!-- Perhaps include a description of how / why ethnicity info is used? -->
-
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-3">
-
-            <div class="form-group required">
-
-              <label class="control-label">Last four digits of SSN</label>
-              <input class="form-control" type="text" v-model="record.last4ssn">
-
-
-
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-
-            <div class="form-group required">
-
-              <label class="control-label">Child receives free or reduced lunch?</label>
-              <select class="form-control" v-model="record.free_or_reduced_lunch">
-                <option value="">==== Select ====</option>
-                <option value="Y">Yes</option>
-                <option value="N">No</option>
-              </select>
-
-
-            </div>
-          </div>
-        </div>
-        <!-- row -->
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group required">
-
-              <label class="control-label">Date of Birth</label>
-              <input class="form-control" v-model="record.dob" type="date">
-
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group required">
-
-              <label class="control-label">School Name</label>
-              <select class="form-control" v-model="record.school_id">
-                <option :value='school.id' v-for='school in schools'>
-                  {{ school.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
+        <row>
           <div class="col-xs-12">
             <div class="form-group">
-
-              <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.bike_want">&nbsp;Child wants bike?</input>
-
-
+              <!-- ATN              <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.clothes_want">
+                  Child wants clothes?
+                  </input>-->
             </div>
           </div>
-        </div>
+        </row>
 
-        <div id="bike-options" v-if="record.bike_want == 'Y'">
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group required">
+        <template v-if="record.clothes_want">
+          <row>
+            <form-group label="Shirt size">
+              <!-- ATN                <input class="form-control" type="text" v-model="record.clothes_size_shirt"> -->
+            </form-group>
+          </row>
+          <row>
+            <form-group label="Pants size">
+              <!-- ATN                <input class="form-control" type="text" v-model="record.clothes_size_pants"> -->
+            </form-group>
+          </row>
+          <row>
+            <form-group label="Shoe size">
+              <!-- ATN                <input class="form-control" type="text" v-model="record.shoe_size">-->
+            </form-group>
+          </row>
+        </template>
 
-                <label class="control-label">Bike style</label>
-                <select class="form-control" v-model="record.bike_style">
-                  <option value="">==== Select ====</option>
-                  <option value="Tricycle">Tricycle</option>
-                  <option value="Mountain">Mountain Bike</option>
-                  <option value="BMX">BMX Bike</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        <row>
+          <form-group label="Favorite color">
+            <!-- ATN              <input class="form-control" type="text" v-model="record.favourite_colour">-->
+            <!-- TODO: fix the english / american spelling difference -->
+          </form-group>
+        </row>
 
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group required">
+        <row>
+          <form-group label="Child's interests">
+            <textarea class="form-control" cols="50" rows="10" v-model="record.interests"></textarea>
+          </form-group>
+        </row>
 
-                <label class="control-label">Bike size</label>
-                <select class="form-control" v-model="record.bike_size">
-                  <option value="">==== Select ====</option>
-                  <option value="Tricycle">Tricycle</option>
-                  <option value='12” Bicycle'>12” Bicycle</option>
-                  <option value='16” Bicycle'>16” Bicycle</option>
-                  <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
-                  <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
-                  <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
-                </select>
+        <row>
+          <form-group label="Additional ideas">
+            <textarea class="form-control" cols="50" rows="10" v-model="record.additional_ideas"></textarea>
+          </form-group>
+        </row>
 
-                <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">Not sure? Click for size guide.</a></p>
+        <row>
+          <form-group label="Reason for nomination" required>
+            <textarea class="form-control" cols="50" rows="10" v-model="record.reason_for_nomination"></textarea>
+          </form-group>
+        </row>
 
-              </div>
-            </div>
-          </div>
+      </box-delme>
+    
+      <box-delme>
+        <!-- ATN <button class="btn addbtn" v-on:click="addChild">Add Child</button>
+                 <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button> -->
+      </box-delme>
 
-        </div>
-        <!-- /bike options -->
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
+      <box-delme v-show="true /* ATN !household.id*/">
+        Please save the nomination as a draft before uploading a file.
+      </box-delme>
 
-              <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.clothes_want">
-              Child wants clothes?
-          </input>
-
-            </div>
-          </div>
-        </div>
-
-        <div name="clothes-options" v-show="record.clothes_want == 'Y'">
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label class="control-label">Shirt size</label>
-                <input class="form-control" type="text" v-model="record.clothes_size_shirt">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label class="control-label">Pants size</label>
-                <input class="form-control" type="text" v-model="record.clothes_size_pants">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-
-                <label class="control-label">Shoe size</label>
-                <input class="form-control" type="text" v-model="record.shoe_size">
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- /clothes options -->
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-
-              <label class="control-label">Favorite color</label>
-              <input class="form-control" type="text" v-model="record.favourite_colour">
-              <!-- Backend: note the english / american spelling difference -->
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-
-              <label class="control-label">Child's interests</label>
-              <textarea class="form-control" cols="50" rows="10" v-model="record.interests"></textarea>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-
-              <label class="control-label">Additional ideas</label>
-              <textarea class="form-control" cols="50" rows="10" v-model="record.additional_ideas"></textarea>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group required">
-
-              <label class="control-label">Reason for nomination</label>
-              <textarea class="form-control" cols="50" rows="10" v-model="record.reason_for_nomination"></textarea>
-
-            </div>
-          </div>
-        </div>
-        <!-- /row -->
-
-      </div>
-      <!-- /box-body -->
-
-    </div>
-
-    <div class="box">
-      <div class="box-body">
-        <button class="btn addbtn" v-on:click="addChild">Add Child</button>
-        <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
-        <!-- {{ $data | json }} -->
-      </div>
-    </div>
-
-    <div v-show="!household.id" style="margin:20px 0;">
-      Please save the nomination as a draft before uploading a file.
-    </div>
-
-    <div class="box box-danger" v-show="household.id">
-      <div class="box-header with-border">
-        <h1 class="box-title">Scanned Forms</h1>
-      </div>
-      <div class="box-body">
-        <div class="row">
+      <box-delme type="danger" title="Scanned Forms"v-if="false /*ATN household.id*/" v-pre>
+        <row>
           <div class="col-md-12 col-sm-12">
             <label class="control-label">Existing Files</label>
-            <div v-for="attachment in household.attachment">
+            <div v-for="attachment in [] /* ATN household.attachment*/">
               <span class="filename">
                 <a :href="`/admin/household_attachment/${attachment.id}`">
                   {{ attachment.path.split('_')[1] }}
                 </a>
               </span>
-              <!-- <button class="btn btn-danger" v-on:click="TODO:delete_file">Delete</button> -->
             </div>
             <div v-for="file_name in uploading_forms">
               <span class="filename">
@@ -568,60 +340,62 @@
               </span>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 col-sm-12">
-            <div class="form-group">
-              <label class="control-label">Upload File</label>
-              <input type="file" class="form-control" v-on:blur="upload_form_file">
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /box-body -->
-    </div>
-    <!-- /box-primary -->
+        </row>
+        <row>
+          <form-group label="Upload File">
+            <input type="file" class="form-control" v-on:blur="upload_form_file">
+          </form-group>
+        </row>
+      </box-delme>
 
-    <button class="btn addbtn" v-show="household.draft != 'N'" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
-    <button class="btn addbtn" v-show="household.draft != 'N' && household.id" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
-    <button class="btn addbtn" v-show="household.draft == 'N'" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
-    <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-    <span v-show="showSavedMessage">Saved!</span>
-  </div>
+      <box-delme v-pre>
+        <button class="btn addbtn" v-show="false /* ATN household.draft != 'N'*/" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
+        <button class="btn addbtn" v-show="false /* ATN household.draft != 'N' && household.id */" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
+        <button class="btn addbtn" v-show="false /* ATN household.draft == 'N'*/" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
+        <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+        <span v-show="showSavedMessage">Saved!</span>
+      </box-delme>
+    </div>
   </main-layout>
 </template>
 
 <script>
+module.exports = {
+    props: {
+        user: {required: true},
+        household: {
+            default: {
+                phone: [],
+                address: [{}],
+                child: [],
+                attachment: []
+            }
+        },
+        schools: {default: []}
+    },
+    created: function () {
+        console.log('HI');
+        window.v = this;
+    }
+};
+
+/*
+  // TODO: google maps
+  // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
 
   module.exports = {
-      props: ['user', 'household']
-  };
-
-
-  // TODO: google maps
-  // <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en"></script>
-
-var app = new Vue(
-  {
-    el: '#app',
-
-    data: {
+    props: {
+    },
+    data: () => {
+      user: {} // ATN
       loading: false,
       saving: false,
       showSavedMessage: false,
-      schools: [],
-      household: {
-        phone: [],
-        address: [{}],
-        child: [],
-        attachment: [],
-      },
-      uploading_forms: [],
+      uploading_forms: []
     },
 
-    created: function() {
-      this.fetchSchools();
-    },
+    beforeCreate: () => console.log('BEFORE'),
+    created: () => console.log('CREATED')
 
     methods: {
 
@@ -875,25 +649,6 @@ var app = new Vue(
       doNothing: function() {
       },
 
-      fetchSchools: function ()
-      {
-        console.log("fetchData invoked")
-
-        var xhr = new XMLHttpRequest();
-        var self = this;
-
-        //xhr.open('GET', self.apiURL + self.userName)
-        xhr.open('GET', '/api/affiliation/schools');
-
-        //console.log(self.userName + " = self.userName")
-        xhr.onload = function ()
-        {
-          self.schools = JSON.parse (xhr.responseText)
-        };
-
-        xhr.send();
-      },
-
       fetchRecord: function (id)
       {
         var  self = this;
@@ -906,7 +661,7 @@ var app = new Vue(
         });
       }
     }
-  });
-//        var child = app.$refs.address;
+
+  };*/
 
 </script>

@@ -1,10 +1,11 @@
 var path = require('path');
 var glob = require('glob');
-
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var {enableHotReload} = require('.');
+
+var subcomponent = require.resolve('../apps/lib/subcomponent');
 
 var views = {};
 glob.sync(__dirname +  '/../apps/*/views').forEach(path => {
@@ -22,7 +23,10 @@ var options = {
     module: {
         rules: [{
             test: /\.vue$/,
-            loader: 'vue-loader'
+            use: [{
+                loader: 'vue-loader',
+                options: {loaders: {subcomponent: subcomponent}}
+            }]
         }, {
             test: /\.(svg|ttf|jpg|eot|woff|woff2)$/,
             loader: 'file-loader'
