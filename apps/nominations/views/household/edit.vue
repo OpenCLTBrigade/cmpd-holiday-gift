@@ -1,10 +1,12 @@
+<!-- TODO: most of this file was copied verbatim from the 2016 project and needds to be adapted and cleaned up -->
+
 <subcomponent name="solobanana">
-  <template>
-    <div>SOLOBANANA</div>
-  </template>
+    <template>
+        <div>SOLOBANANA</div>
+    </template>
 </subcomponent>
 
-<subcomponent name="box-delme">
+<subcomponent name="box">
   <template>
     <div :class="['box'] + (type ? [`box-${type}`] : [])">
       <div class="box-header with-border" v-if="title">
@@ -29,70 +31,74 @@
 </subcomponent>
 
 <subcomponent name="form-group">
-  <template>
-    <div :class="`col-md-${width} col-sm-12`">
-      <div :class="`form-group ${required == 'no' ? '' : 'required'}`">
-        <label class="control-label">
-          {{label}}
-          [input]<slot/>
-        </label>
-      </div>
-    </div>
-  </template>
-  <script>
-    module.exports = {
-        props: {
-            width: {default: 12},
-            label: {required: true},
-            required: {default: 'no'}
-        }
-    };
-  </script>
+    <!-- TODO: label for="..." -->
+    <template>
+        <div :class="`col-md-${width} col-sm-12`">
+            <div :class="`form-group ${required == 'no' ? '' : 'required'}`">
+                <label class="control-label">
+                    {{label}}
+                </label>
+                <slot/> 
+            </div>
+        </div>
+    </template>
+    <script>
+     module.exports = {
+         props: {
+             width: {default: 12},
+             label: {required: true},
+             required: {default: 'no'}
+         }
+     };
+    </script>
+    <style scoped>
+     label { color: darkgray; }
+    </style>
 </subcomponent>
 
 <template>
   <main-layout :user="user" title="Edit Household" current_section="households">
     <div class="container-fluid">
-      <box-delme type="primary" title="Head of Household Information" v-pre>
-        <row> 
+      <box type="primary" title="Head of Household Information">
+        <row>
           <form-group width="6" label="First Name" required>
-            <!-- ATN <input type="text" class="form-control" id="name-first" v-model="household.name_first"> -->
+            <input type="text" class="form-control" id="name-first" v-model="household.name_first">
           </form-group> 
           <form-group width="6" label="Last Name" required>
-              <!-- ATN <input type="text" class="form-control" id="name-last" v-model="household.name_last"> -->
+              <input type="text" class="form-control" id="name-last" v-model="household.name_last">
           </form-group>
         </row>
 
         <row>
           <form-group width="4" label="Gender" required>
-              <!-- ATN <select class="form-control" id="gender" v-model="household.gender" name="gender">
+              <select class="form-control" id="gender" v-model="household.gender" name="gender">
                    <option value="" selected="selected">==== Select ====</option>
                    <option value="M">Male</option>
                    <option value="F">Female</option>
-              </select>-->
+              </select>
           </form-group>
           <form-group width="4" label="Date of Birth" required>
-              <!-- ATN              <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob"> -->
+              <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob">
           </form-group>
           <form-group width="4" label="Last four digits of SSN" required>
-              <!-- ATN              <input class="form-control" type="number" v-model="household.last4ssn">-->
+              <input class="form-control" type="number" v-model="household.last4ssn">
           </form-group>
         </row>
 
         <row>
           <form-group width="4" label="Email">
-            <!-- ATN              <input class="form-control" type="email" v-model="household.email">-->
+              <input class="form-control" type="email" v-model="household.email">
           </form-group>
           <form-group width="4" label="Preferred Contact Method">
-            <!-- ATN              <select class="form-control" v-model="household.preferred_contact_method"> 
+              <select class="form-control" v-model="household.preferred_contact_method"> 
                  <option value="" selected="selected">==== Select ====</option>
                  <option value="email">E-Mail</option>
                  <option value="text">Text</option>
                  <option value="mail">Phone</option>
-            </select>-->
+            </select>
           </form-group>
           <form-group width="4" label="Ethnicity" required>
-            <!-- ATN              <select class="form-control" id="race" v-model="household.race" name="race">
+              <select class="form-control" id="race" v-model="household.race" name="race">
                  <option value="">==== Select ====</option>
                  <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
                  <option value="Asian">Asian</option>
@@ -101,14 +107,13 @@
                  <option value="Pacific Islander">Pacific Islander</option>
                  <option value="White">White</option>
                  <option value="Other">Other</option>
-            </select> -->
+            </select>
           </form-group>
         </row>
-      </box-delme>
+      </box>
 
-      <box-delme type="danger" title="Delivery Address" v-pre>
-        <!-- ATN        <div class="row" v-for="address in household.address">-->
-        <row v-for="address in []" key="address.id">
+      <box type="danger" title="Delivery Address">
+        <row v-for="address in household.address" key="address.id">
           <form-group label="Type">
             <select class="form-control" v-model="address.type">
               <option value="Home">Home</option>
@@ -141,9 +146,9 @@
           <!--TODO  @endif -->
           <hr>
         </row>
-      </box-delme>
+      </box>
 
-      <box-delme type="danger" title="Phone Numbers" v-pre>
+      <box type="danger" title="Phone Numbers">
         <row v-for="phone in [] /*ATN household.phone*/" key="phone.id">
           <form-group label="Type" required>
             <select class="form-control" v-model="phone.phone_type">
@@ -161,14 +166,14 @@
           <button class="btn addbtn" v-on:click="addPhone">Add Phone</button>
           <button class="btn btn-danger" v-on:click="removePhone">Remove Phone</button>
         </div>
-      </box-delme>
+      </box>
 
-      <box-delme v-for="record in [] /*household.child ATN*/" v-pre
+      <box v-for="record in [] /*household.child ATN*/"
            key="record.id"
            :title="`Child ${$index+1} - ${record.name_first} ${record.name_last}`">
         <row>
           <form-group label="First Name" required> 
-            <!-- ATN <input class="form-control" type="text" v-model="record.name_first"> -->
+              <input class="form-control" type="text" v-model="record.name_first">
           </form-group>
           <form-group label="Last Name" required>
             <input class="form-control" type="text" v-model="record.name_last">
@@ -209,21 +214,21 @@
 
         <row>
           <form-group label="Date of Birth" required>
-            <!--    ATN          <input class="form-control" v-model="record.dob" type="date">-->
+              <!- <input class="form-control" v-model="record.dob" type="date">
           </form-group>
           <form-group label="School Name" required>
-            <!-- ATN              <select class="form-control" v-model="record.school_id">
+              <select class="form-control" v-model="record.school_id">
                  <option :value='school.id' v-for='school in schools'>
                    {{ school.name }}
                  </option>
-            </select>-->
+            </select>
           </form-group>
         </row>
 
         <row>
           <div class="col-xs-12">
             <div class="form-group"> 
-              <!-- ATN               <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.bike_want">&nbsp;Child wants bike?</input>-->
+                <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.bike_want">&nbsp;Child wants bike?</input>
             </div>
           </div>
         </row>
@@ -231,18 +236,18 @@
         <template v-if="record.bike_want">
           <row>
             <form-group label="Bike style" required>
-              <!-- ATN                 <select class="form-control" v-model="record.bike_style">
+                <select class="form-control" v-model="record.bike_style">
                    <option value="">==== Select ====</option>
                    <option value="Tricycle">Tricycle</option>
                    <option value="Mountain">Mountain Bike</option>
                    <option value="BMX">BMX Bike</option>
-              </select>-->
+              </select>
             </form-group>
           </row>
 
           <row>
             <form-group label="Bike size" required>
-              <!-- ATN                <select class="form-control" v-model="record.bike_size">
+                <select class="form-control" v-model="record.bike_size">
                    <option value="">==== Select ====</option>
                    <option value="Tricycle">Tricycle</option>
                    <option value='12” Bicycle'>12” Bicycle</option>
@@ -250,7 +255,7 @@
                    <option value='20” Coaster Brake Bicycle'>20” Coaster Brake Bicycle</option>
                    <option value='20” Geared Bicycle'>20” Geared Bicycle</option>
                    <option value='24” Geared Bicycle'>24” Geared Bicycle</option>
-              </select> -->
+              </select>
 
               <p><a href="https://www.performancebike.com/images/performance/web/PDFs/09_GrowthGuarantee_handout_Chart.pdf" target="_blank">
                   Not sure? Click for size guide.
@@ -262,9 +267,9 @@
         <row>
           <div class="col-xs-12">
             <div class="form-group">
-              <!-- ATN              <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.clothes_want">
+                <input type="checkbox" v-bind:true-value="'Y'" v-bind:false-value="'N'" v-model="record.clothes_want">
                   Child wants clothes?
-                  </input>-->
+                  </input>
             </div>
           </div>
         </row>
@@ -272,24 +277,24 @@
         <template v-if="record.clothes_want">
           <row>
             <form-group label="Shirt size">
-              <!-- ATN                <input class="form-control" type="text" v-model="record.clothes_size_shirt"> -->
+                <input class="form-control" type="text" v-model="record.clothes_size_shirt">
             </form-group>
           </row>
           <row>
             <form-group label="Pants size">
-              <!-- ATN                <input class="form-control" type="text" v-model="record.clothes_size_pants"> -->
+                <input class="form-control" type="text" v-model="record.clothes_size_pants">
             </form-group>
           </row>
           <row>
             <form-group label="Shoe size">
-              <!-- ATN                <input class="form-control" type="text" v-model="record.shoe_size">-->
+                <input class="form-control" type="text" v-model="record.shoe_size">
             </form-group>
           </row>
         </template>
 
         <row>
           <form-group label="Favorite color">
-            <!-- ATN              <input class="form-control" type="text" v-model="record.favourite_colour">-->
+              <input class="form-control" type="text" v-model="record.favourite_colour">
             <!-- TODO: fix the english / american spelling difference -->
           </form-group>
         </row>
@@ -312,18 +317,18 @@
           </form-group>
         </row>
 
-      </box-delme>
+      </box>
     
-      <box-delme>
-        <!-- ATN <button class="btn addbtn" v-on:click="addChild">Add Child</button>
-                 <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button> -->
-      </box-delme>
+      <box>
+          <button class="btn addbtn" v-on:click="addChild">Add Child</button>
+          <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
+      </box>
 
-      <box-delme v-show="true /* ATN !household.id*/">
+      <box v-show="true /* ATN !household.id*/">
         Please save the nomination as a draft before uploading a file.
-      </box-delme>
+      </box>
 
-      <box-delme type="danger" title="Scanned Forms"v-if="false /*ATN household.id*/" v-pre>
+      <box type="danger" title="Scanned Forms"v-if="household.id">
         <row>
           <div class="col-md-12 col-sm-12">
             <label class="control-label">Existing Files</label>
@@ -346,15 +351,15 @@
             <input type="file" class="form-control" v-on:blur="upload_form_file">
           </form-group>
         </row>
-      </box-delme>
+      </box>
 
-      <box-delme v-pre>
+      <box>
         <button class="btn addbtn" v-show="false /* ATN household.draft != 'N'*/" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
         <button class="btn addbtn" v-show="false /* ATN household.draft != 'N' && household.id */" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
         <button class="btn addbtn" v-show="false /* ATN household.draft == 'N'*/" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
         <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
         <span v-show="showSavedMessage">Saved!</span>
-      </box-delme>
+      </box>
     </div>
   </main-layout>
 </template>
@@ -373,30 +378,12 @@ module.exports = {
         },
         schools: {default: []}
     },
-    created: function () {
-        console.log('HI');
-        window.v = this;
-    }
-};
-
-/*
-  // TODO: google maps
-  // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
-
-  module.exports = {
-    props: {
-    },
-    data: () => {
-      user: {} // ATN
+    data: () => ({
       loading: false,
       saving: false,
       showSavedMessage: false,
       uploading_forms: []
-    },
-
-    beforeCreate: () => console.log('BEFORE'),
-    created: () => console.log('CREATED')
-
+    }),
     methods: {
 
       upload_form_file: function(e) {
@@ -440,7 +427,6 @@ module.exports = {
           }
         });
       },
-
       address_on_blur: function(e)
       {
         var geocoder= new google.maps.Geocoder(); // TODO: make global?
@@ -660,8 +646,12 @@ module.exports = {
           $("#loading_overlay").hide();
         });
       }
-    }
 
-  };*/
+    }
+};
+
+  // TODO: google maps
+  // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
+
 
 </script>
