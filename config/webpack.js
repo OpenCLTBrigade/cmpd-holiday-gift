@@ -8,7 +8,7 @@ var {enableHotReload} = require('.');
 var subcomponent = require.resolve('../apps/lib/subcomponent');
 
 var views = {};
-glob.sync(__dirname +  '/../apps/*/views').forEach(path => {
+glob.sync(__dirname + '/../apps/*/views').forEach(path => {
     views[path.match(/apps\/(.*?)\/views/)[1]] = path;
 });
 

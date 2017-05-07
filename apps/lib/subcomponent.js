@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = function subcomponent(content) {
     const query = loaderUtils.parseQuery(this.query);
-    const src  = new Buffer(content, 'utf8').toString('hex');
+    const src = new Buffer(content, 'utf8').toString('hex');
     const file = path.join(this.resourcePath, query.name + '.vue');
     return (
         `

@@ -1,11 +1,5 @@
 <!-- TODO: most of this file was copied verbatim from the 2016 project and needds to be adapted and cleaned up -->
 
-<subcomponent name="solobanana">
-    <template>
-        <div>SOLOBANANA</div>
-    </template>
-</subcomponent>
-
 <subcomponent name="box">
   <template>
     <div :class="['box'] + (type ? [`box-${type}`] : [])">
@@ -18,7 +12,7 @@
     </div>
   </template>
   <script>
-    module.exports = {props: ['title', 'type']};
+      module.exports = {props: ['title', 'type']};
   </script>
 </subcomponent>
 
@@ -43,13 +37,13 @@
         </div>
     </template>
     <script>
-     module.exports = {
-         props: {
-             width: {default: 12},
-             label: {required: true},
-             required: {default: 'no'}
-         }
-     };
+        module.exports = {
+            props: {
+                width: {default: 12},
+                label: {required: true},
+                required: {default: 'no'}
+            }
+        };
     </script>
     <style scoped>
      label { color: darkgray; }
@@ -149,7 +143,7 @@
       </box>
 
       <box type="danger" title="Phone Numbers">
-        <row v-for="phone in [] /*ATN household.phone*/" key="phone.id">
+        <row v-for="phone in household.phone" key="phone.id">
           <form-group label="Type" required>
             <select class="form-control" v-model="phone.phone_type">
               <option value="Home">Home</option>
@@ -168,7 +162,7 @@
         </div>
       </box>
 
-      <box v-for="record in [] /*household.child ATN*/"
+      <box v-for="record in household.child"
            key="record.id"
            :title="`Child ${$index+1} - ${record.name_first} ${record.name_last}`">
         <row>
@@ -324,7 +318,7 @@
           <button class="btn btn-danger" v-on:click="removeChild">Remove Child</button>
       </box>
 
-      <box v-show="true /* ATN !household.id*/">
+      <box v-show="!household.id">
         Please save the nomination as a draft before uploading a file.
       </box>
 
@@ -332,7 +326,7 @@
         <row>
           <div class="col-md-12 col-sm-12">
             <label class="control-label">Existing Files</label>
-            <div v-for="attachment in [] /* ATN household.attachment*/">
+            <div v-for="attachment in household.attachment">
               <span class="filename">
                 <a :href="`/admin/household_attachment/${attachment.id}`">
                   {{ attachment.path.split('_')[1] }}
@@ -354,9 +348,9 @@
       </box>
 
       <box>
-        <button class="btn addbtn" v-show="false /* ATN household.draft != 'N'*/" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
-        <button class="btn addbtn" v-show="false /* ATN household.draft != 'N' && household.id */" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
-        <button class="btn addbtn" v-show="false /* ATN household.draft == 'N'*/" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
+        <button class="btn addbtn" v-show="household.draft" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
+        <button class="btn addbtn" v-show="household.draft && household.id" v-on:click="doSave(false)" :disabled="loading || saving">Submit Nomination</button>
+        <button class="btn addbtn" v-show="household.draft" v-on:click="doSave(false)" :disabled="loading || saving">Update</button>
         <i v-show="saving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
         <span v-show="showSavedMessage">Saved!</span>
       </box>
@@ -365,293 +359,258 @@
 </template>
 
 <script>
-module.exports = {
-    props: {
-        user: {required: true},
-        household: {
-            default: {
-                phone: [],
-                address: [{}],
-                child: [],
-                attachment: []
-            }
-        },
-        schools: {default: []}
-    },
-    data: () => ({
-      loading: false,
-      saving: false,
-      showSavedMessage: false,
-      uploading_forms: []
-    }),
-    methods: {
-
-      upload_form_file: function(e) {
-        var file = e.target.files[0];
-        if (!file) {
-          return;
-        }
-        var file_name = file.name;
-        var data = new FormData();
-        data.set("file", file);
-        data.set('household_id', this.household.id);
-        this.uploading_forms.push(file_name);
-        $(e.target).val('');
-        var self = this;
-        var fail = function(msg) {
-          msg = "Error uploading file '" + file_name + "': " + msg;
-          alert(msg);
-          console.log(msg);
-          self.uploading_forms.$remove(file_name);
-        }
-        $.ajax({
-          url: "/api/upload_household_form_file",
-          data: data,
-          cache: false,
-          contentType: false,
-          processData: false,
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          },
-          type: 'POST',
-          success: function(res){
-            if (res.ok) {
-              self.uploading_forms.$remove(file_name);
-              self.household.attachment.push({ path: res.path, id: res.id });
-            } else {
-              fail(res.error || "unknown error");
-            }
-          },
-          error: function(xhr, type, errmsg) {
-            fail(type + ": " + errmsg);
-          }
-        });
-      },
-      address_on_blur: function(e)
-      {
-        var geocoder= new google.maps.Geocoder(); // TODO: make global?
-        var mapping = {"locality" : "address_city", "administrative_area_level_1" : "address_state", "postal_code" : "address_zip"};
-        var request = {
-          'address': e.target.value,
-          'region' : 'US',
-          'componentRestrictions': {
-            'administrativeArea': 'North Carolina'
-          }
-        };
-
-        var self = this;
-        geocoder.geocode
-        (
-          request,
-          function(results, status)
-          {
-            if (status === google.maps.GeocoderStatus.OK)
-            {
-              //For reference for call to response area API
-              console.log(results[0].geometry.location.lat());
-              console.log(results[0].geometry.location.lng());
-              var addressElements = results[0].address_components;
-
-              //due to the componentRestrictions parameter in the request,
-              //even if the address is invalid, the response always has appended
-              //the state and the country.
-              if (addressElements.length < 3)
-              {
-                console.log('geocode error', addressElements);
-                $('#errorMsg').modal();
-                return;
-              }
-              /// at this point:
-              // addressElements = {"locality" : "...city...", "administrative_area_level_1": "...state...", "postal_code": "...", ... }
-
-              var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
-              console.log('index', address_index);
-
-              console.log(self);
-              for (var i in addressElements)
-              {
-                var type = mapping[addressElements[i].types[0]];
-                if (type)
-                {
-                  var update = {};
-                  update[type] = addressElements[i].long_name;
-                  self.household.address.$set(0, Object.assign({}, self.household.address[0], update));
-
+    /* eslint-env browser */
+    /* global $ */ // TODO: get rid of jquery use
+    module.exports = {
+        props: {
+            user: {required: true},
+            household: {
+                default: {
+                    phone: [],
+                    address: [{}],
+                    child: [],
+                    attachment: []
                 }
+            },
+            schools: {default: []}
+        },
+        data: () => ({
+            loading: false,
+            saving: false,
+            showSavedMessage: false,
+            uploading_forms: []
+        }),
+        methods: {
+
+            upload_form_file: function (e) {
+                var file = e.target.files[0];
+                if (!file) {
+                    return;
+                }
+                var file_name = file.name;
+                var data = new FormData();
+                data.set('file', file);
+                data.set('household_id', this.household.id);
+                this.uploading_forms.push(file_name);
+                $(e.target).val('');
+                var self = this;
+                var fail = function (msg) {
+                    msg = 'Error uploading file \'' + file_name + '\': ' + msg;
+                    alert(msg); // TODO: don't use alert
+                    self.uploading_forms.$remove(file_name);
+                };
+                $.ajax({
+                    url: '/api/upload_household_form_file',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.ok) {
+                            self.uploading_forms.$remove(file_name);
+                            self.household.attachment.push({path: res.path, id: res.id});
+                        } else {
+                            fail(res.error || 'unknown error');
+                        }
+                    },
+                    error: function (xhr, type, errmsg) {
+                        fail(type + ': ' + errmsg);
+                    }
+                });
+            },
+            address_on_blur: function (e) {
+                // TOOD: load google maps
+                var geocoder = new google.maps.Geocoder();
+                var mapping = {
+                    locality: 'address_city',
+                    administrative_area_level_1: 'address_state',
+                    postal_code: 'address_zip'
+                };
+                var request = {
+                    'address': e.target.value,
+                    'region': 'US',
+                    'componentRestrictions': {'administrativeArea': 'North Carolina'}
+                };
+
+                var self = this;
+                geocoder.geocode(
+          request,
+          function (results, status) {
+              if (status === google.maps.GeocoderStatus.OK) {
+                  var addressElements = results[0].address_components;
+
+                  //due to the componentRestrictions parameter in the request,
+                  //even if the address is invalid, the response always has appended
+                  //the state and the country.
+                  if (addressElements.length < 3) {
+                      $('#errorMsg').modal(); // TODO: better error message
+                      return;
+                  }
+              /// at this point:
+                // addressElements = {
+                //   "locality" : "...city...",
+                //   "administrative_area_level_1": "...state...",
+                //   "postal_code": "...", ... }
+
+                  var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
+                  for (var i in addressElements) {
+                      var type = mapping[addressElements[i].types[0]];
+                      if (type) {
+                          var update = {};
+                          update[type] = addressElements[i].long_name;
+                          self.household.address.$set(0, Object.assign({}, self.household.address[0], update));
+
+                      }
+                  }
+                  populate_cmpd_info(results[0].geometry.location, address_index);
+              } else {
+                  $('#errorMsg').modal();
               }
-              populate_cmpd_info(results[0].geometry.location, address_index);
-            }
-            else
-            {
-              $('#errorMsg').modal()
-            }
           }
         );
         //
 
-        var populate_cmpd_info = function(location, address_index) {
-          console.log('foo', location);
-          $.ajax({
-            url: '/api/cmpd_info',
-            data: {lat: location.lat(), lng: location.lng()},
-            success: function(info) {
-              console.log('bar', info);
-              if (info.error)
-              {
-                console.log('baz');
+                var populate_cmpd_info = function (location) {
+                    $.ajax({
+                        url: '/api/cmpd_info',
+                        data: {lat: location.lat(), lng: location.lng()},
+                        success: function (info) {
+                            if (info.error) {
                 // TODO: maybe don't ignore errors
-              }
-              else
-              {
-                self.household.address[0].cmpd_division = info.division;
-                self.household.address[0].cmpd_response_area = info.response_area;
-                console.log(info.division + " | " + info.response_area);
-              }
+                            } else {
+                                self.household.address[0].cmpd_division = info.division;
+                                self.household.address[0].cmpd_response_area = info.response_area;
+                            }
+                        },
+                        error: function () {
+                        // TODO: maybe don't ignore errors
+                        }
+                    });
+                };
             },
-            error: function() {
-              console.log('quux');
-              // TODO: maybe don't ignore errors
+
+            addAddress: function () {
+                this.household.address.push (
+                    {
+                        type: '',
+                        address_street: '',
+                        address_street2: '',
+                        address_city: '',
+                        address_state: '',
+                        address_zip: '',
+                        cmpd_division: '',
+                        response_area: ''
+                    }
+        );
+            },
+            removeAddress: function () {
+                this.household.address.pop();
+            },
+
+            addPhone: function () {
+                this.household.phone.push({
+                    phone_type: '',
+                    phone_number: ''
+                });
+            },
+
+            removePhone: function () {
+                this.household.phone.pop();
+            },
+
+            addChild: function () {
+                this.household.child.push({});
+            },
+            removeChild: function () {
+                this.household.child.pop();
+            },
+
+            doSave: function (draft) {
+                if (this.saving === true) {
+                    return;
+                } // Already in the middle of saving >:(
+                this.showSavedMessage = false;
+                this.saving = true;
+
+                // Refuse to submit if required fields are empty, and highlight missing fields
+                // Mark a field as required by adding the `required' class to the containing `form-group'
+                var missing = false;
+                $('.form-group.required input, .form-group.required select, .form-group.required textarea').each(function (i, el) {
+                    if (!$(el).val()) {
+                        missing = true;
+                        $(el).addClass('missing-field');
+                    } else {
+                        $(el).removeClass('missing-field');
+                    }
+                });
+                if (!draft && missing) { // Don't require all fields if it's only a draft...
+                    this.saving = false;
+                    // TODO: don't alert
+                    alert('Please enter all of the required fields before submitting your nomination.');
+                    return;
+                }
+
+                var id = (typeof this.household.id !== 'undefined') ? this.household.id : null;
+
+                var urlSuffix = id === null ? '/' + id : '';
+                var url = '/api/household' + urlSuffix;
+                var self = this;
+                this.household.draft = (draft === true) ? 'Y' : 'N';
+                if (id === null) {
+                    this.household.nomination_email_sent = (draft !== true) ? 'Y' : 'N';
+                }
+                var method = (id !== null) ? 'PUT' : 'POST';
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(self.household),
+                    headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
+                    success: function (data) {
+                        self.saving = false;
+                        if (data.ok) {
+                            self.household = data.household[0];
+                            self.showSavedMessage = true;
+                        } else if (!data.ok && typeof data.message !== 'undefined') {
+                            alert(data.message); // TODO: don't use alert
+                        } else {
+                            // TODO: don't use alert
+                            alert('Could not create nomination');
+                        }
+                    },
+                    error: function (_errMsg) {
+                        self.saving = false;
+                        // TODO: don't use alert
+                        alert('Unexpected error. Please review your form for missing or invalid fields,'
+                              + 'try again later or contact an administrator');
+                    }
+                });
+
+            },
+
+            doNothing: function () {
+            },
+
+            fetchRecord: function (id) {
+                var self = this;
+                self.loading = true;
+                $('#loading_overlay').show();
+                $.get('/api/household/' + id, {}, function (e) {
+                    self.loading = false;
+                    self.household = e[0];
+                    $('#loading_overlay').hide();
+                });
             }
-          });
-        };
-      },
 
-      addAddress: function()
-      {
-        this.household.address.push
-        (
-          {
-            type: "",
-            address_street: "",
-            address_street2: "",
-            address_city: "",
-            address_state: "",
-            address_zip: "",
-            cmpd_division: "",
-            response_area: ""
-          }
-        )  ;
-      },
-      removeAddress: function()
-      {
-        this.household.address.pop();
-      },
-
-      addPhone: function() {
-        this.household.phone.push({
-          phone_type: "",
-          phone_number: ""
-        });
-      },
-
-      removePhone: function() {
-        this.household.phone.pop();
-      },
-
-      addChild: function() {
-        this.household.child.push({});
-      },
-      removeChild: function() {
-        this.household.child.pop();
-      },
-
-      doSave: function(draft)
-      {
-        if (this.saving === true)
-          return; // Already in the middle of saving >:(
-        this.showSavedMessage= false;
-        this.saving = true;
-
-        // Refuse to submit if required fields are empty, and highlight missing fields
-        // Mark a field as required by adding the `required' class to the containing `form-group'
-        var missing = false;
-        $('.form-group.required input, .form-group.required select, .form-group.required textarea').each(function(i, el){
-          if(!$(el).val()){
-            missing = true;
-            $(el).addClass('missing-field');
-          }else{
-            $(el).removeClass('missing-field');
-          }
-        });
-        if(!draft && missing){ // Don't require all fields if it's only a draft...
-          this.saving = false;
-          alert("Please enter all of the required fields before submitting your nomination.");
-          return;
         }
+    };
 
-        var id = (typeof this.household.id != "undefined") ? this.household.id : null;
-
-        var urlSuffix = (id != null) ? "/" + id : "";
-        var url = "/api/household" + urlSuffix;
-        var self = this;
-        this.household.draft = (draft === true) ? "Y" : "N";
-        if(id === null)
-        {
-          this.household.nomination_email_sent = (draft !== true) ? "Y" : "N";
-        }
-        var method = (id != null) ? "PUT" : "POST";
-
-        console.log("id is " + id);
-        console.log("urlSuffix is " + urlSuffix);
-        console.log("url is " + url);
-        console.log("method is " + method);
-        console.log("Draft saved to " + this.household.draft);
-        console.log(this.household.nomination_email_sent);
-
-        $.ajax({
-          url: url,
-          method: method,
-          contentType: "application/json; charset=utf-8",
-          dataType: "json",
-          data: JSON.stringify(self.household),
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          },
-          success: function(data) {
-            self.saving = false;
-            if (data.ok)
-            {
-              self.household = data.household[0];
-              self.showSavedMessage= true;
-            }
-            else if (!data.ok && typeof data.message != "undefined")
-            {
-              alert(data.message);
-            }
-            else
-            {
-              alert("Could not create nomination");
-            }
-          },
-          error: function(errMsg) {
-            self.saving = false;
-            alert("Unexpected error. Please review your form for missing or invalid fields, try again later or contact an administrator");
-            console.log(errMsg);
-          }
-        });
-
-      },
-
-      doNothing: function() {
-      },
-
-      fetchRecord: function (id)
-      {
-        var  self = this;
-        self.loading = true;
-        $("#loading_overlay").show();
-        $.get("/api/household/" + id, {}, function (e) {
-          self.loading = false;
-          self.household = e[0];
-          $("#loading_overlay").hide();
-        });
-      }
-
-    }
-};
-
-  // TODO: google maps
-  // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
+    // TODO: google maps
+    // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
 
 
 </script>

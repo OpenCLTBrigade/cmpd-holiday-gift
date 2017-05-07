@@ -27,20 +27,20 @@
 </template>
 
 <script>
-  module.exports = {
-      props: {
-          user: {type: Object, required: true},
-          current_section: {type: String, required: true},
-          title: {required: true},
-          no_boxes: {default: false},
-          flash: {default: ''}
-      },
-      components: {
-          'main-top': require('./top.vue'),
-          'main-sidebar': require('./sidebar.vue'),
-          'main-header': require('./header.vue'),
-      }
-  };
+    module.exports = {
+        props: {
+            user: {type: Object, required: true},
+            current_section: {type: String, required: true},
+            title: {required: true},
+            no_boxes: {default: false},
+            flash: {default: ''}
+        },
+        components: {
+            'main-top': require('./top.vue'),
+            'main-sidebar': require('./sidebar.vue'),
+            'main-header': require('./header.vue'),
+        }
+    };
 </script>
 
 <style lang="less">

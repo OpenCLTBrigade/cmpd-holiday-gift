@@ -27,5 +27,5 @@
 </template>
 
 <script>
-  module.exports = {props: {user: {type: Object, required: true}}};
+    module.exports = {props: {user: {type: Object, required: true}}};
 </script>

@@ -6,16 +6,22 @@
 </template>
 
 <script>
-  function emptyVNode(n) {
-      return !n.tag && !n.text;
-  }
-  module.exports = {
-      data: function () { return {
-          visible: !emptyVNode(this.$slots.default[0]),
-          type: 'warning',
-      };},
-      methods: {close: function () { this.visible = false; }}
-  };
+    function emptyVNode(n) {
+        return !n.tag && !n.text;
+    }
+    module.exports = {
+        data: function () {
+            return {
+                visible: !emptyVNode(this.$slots.default[0]),
+                type: 'warning',
+            };
+        },
+        methods: {
+            close: function () {
+                this.visible = false;
+            }
+        }
+    };
 </script>
 
 <style></style>

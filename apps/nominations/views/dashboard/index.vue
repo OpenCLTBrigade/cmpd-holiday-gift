@@ -21,14 +21,14 @@
 </template>
 
 <script>
-  export default {
-      props: ['user'],
-      components: {
-          'quick-overview': require('./quickOverview.vue'),
-          'packing-slips': require('./packingSlips.vue'),
-          'reports': require('./reports.vue')
-      }
-  };
+    export default {
+        props: ['user'],
+        components: {
+            'quick-overview': require('./quickOverview.vue'),
+            'packing-slips': require('./packingSlips.vue'),
+            'reports': require('./reports.vue')
+        }
+    };
 </script>
 
 <style>

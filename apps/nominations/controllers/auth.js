@@ -10,8 +10,9 @@ var db = require('../../../models');
 module.exports = {
     // Authentication Verification
     isLoggedIn: function (req, res, next) {
-        if (req.isAuthenticated())
+        if (req.isAuthenticated()) {
             return next();
+        }
         res.redirect('/login');
     },
 

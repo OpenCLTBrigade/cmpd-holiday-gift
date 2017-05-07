@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  module.exports = {};
+    module.exports = {};
 </script>
 
 <style lang="less">

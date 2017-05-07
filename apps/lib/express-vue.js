@@ -16,7 +16,7 @@ function engine(viewDir) {
         fs.readFileSync(join(viewDir, 'skeleton.html')).toString();
 
     // In production mode, do not reload skeleton.html every request
-    if (enableHotReload == false) {
+    if (!enableHotReload) {
         var skeletonContents = skeleton();
         skeleton = () => skeletonContents;
     }
@@ -26,7 +26,7 @@ function engine(viewDir) {
     // * options.title: the page title
     // * options.data: input data for the view, passed as JSON into the view's props
     return function (filePath, options, callback) {
-        if (filePath.slice(0, viewDir.length) != viewDir) {
+        if (filePath.slice(0, viewDir.length) !== viewDir) {
             return callback('Could not load view from outside view dir: ' + filePath);
         }
         // Don't open the `.vue` file, just use the filename to identify
@@ -35,12 +35,12 @@ function engine(viewDir) {
 
         // Fill in the blanks from `skeleton.html`
         var out = skeleton().replace(/\{\{\{([^}]*)\}\}\}/g, function (match, name) {
-            if (name == 'head') {
+            if (name === 'head') {
                 if (options.title) {
                     return `<title>${options.title}</title>`;
                 }
                 return '';
-            } else if (name == 'body') {
+            } else if (name === 'body') {
                 // Add a script that loads and renders the template
                 return `<script>loadView('${viewName}', ${JSON.stringify(options.data)});</script>`;
             }
@@ -57,10 +57,10 @@ function jsonMiddleware(req, res, next) {
     if (req.url.match(/\/v/)) {
         return next();
     }
-    if (req.accepts(['html', 'json']) == 'json') {
+    if (req.accepts(['html', 'json']) === 'json') {
         req.wantsJSON = true;
     }
-    if (req.url.slice(-5) == '.json') {
+    if (req.url.slice(-5) === '.json') {
         req.wantsJSON = true;
         req.url = req.url.slice(0, -5);
     }

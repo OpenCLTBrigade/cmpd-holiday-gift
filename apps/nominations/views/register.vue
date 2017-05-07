@@ -2,7 +2,7 @@
   <auth-layout>
     <div class="container">
       <div class="login-box" id="login-box">
-        <!--<p>{{flash}}</p>-->
+        <!-- TODO <p>{{flash}}</p>-->
         <div class="header">
             <i class="fa fa-user-plus"></i> Register
         </div>
@@ -81,37 +81,36 @@
 </template>
 
 <script>
-/* eslint-env browser */
+    /* eslint-env browser */
 
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
+    import Vue from 'vue';
+    import VeeValidate from 'vee-validate';
+    Vue.use(VeeValidate);
 
-export default {
-    props: ['affiliation'],
-  //props: {'affiliation', flash: {default: ''}},
-    data: () => {
-        return {
-            firstname: '',
-            lastname: '',
-            phone: '',
-            email: ''
-        };
-    },
-    components: {'auth-layout': require('./layouts/auth.vue')},
-    methods: {
-        validateBeforeSubmit(_e) {
-            this.$validator.validateAll();
-            if (!this.errors.any()) {
-                this.submitForm();
-            }
+    export default {
+        props: {affiliation: {required: true}},
+        data: () => {
+            return {
+                firstname: '',
+                lastname: '',
+                phone: '',
+                email: ''
+            };
         },
-        submitForm() {
-            document.getElementById('signup').submit();
-            this.formSubmitted = true;
+        components: {'auth-layout': require('./layouts/auth.vue')},
+        methods: {
+            validateBeforeSubmit(_e) {
+                this.$validator.validateAll();
+                if (!this.errors.any()) {
+                    this.submitForm();
+                }
+            },
+            submitForm() {
+                document.getElementById('signup').submit();
+                this.formSubmitted = true;
+            }
         }
-    }
-};
+    };
 </script>
 
 <style>

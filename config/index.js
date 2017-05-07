@@ -4,7 +4,7 @@ var path = require('path');
 
 var config = {};
 
-if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV === 'production') {
     config.mode = 'production';
     config.port = 3000;
     config.db = {
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV == 'production') {
     config.enableHotReload = false;
     config.verboseSeed = false;
     config.buildAssets = true;
-} else if (process.env.NODE_ENV == 'testing') {
+} else if (process.env.NODE_ENV === 'testing') {
     config.mode = 'testing';
     config.port = 0;
     config.db = {

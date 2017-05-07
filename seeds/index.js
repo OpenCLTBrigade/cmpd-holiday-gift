@@ -23,7 +23,7 @@ async function seed() {
     await seq;
 }
 
-if (require.main == module) {
+if (require.main === module) {
     seed();
 }
 

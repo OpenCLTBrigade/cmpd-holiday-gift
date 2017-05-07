@@ -6,5 +6,5 @@
 </template>
 
 <script>
-  module.exports = {props: {title: {required: true}}};
+    module.exports = {props: {title: {required: true}}};
 </script>

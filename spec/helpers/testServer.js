@@ -56,7 +56,7 @@ function testServer({seed, mode}) {
         }
         return `http://localhost:${info.port}${path}`;
     };
-    if (mode == 'each') {
+    if (mode === 'each') {
         beforeEach(asyncTest(before), 60000);
         afterEach(asyncTest(after), 60000);
         return mkurl;

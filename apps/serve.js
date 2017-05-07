@@ -7,7 +7,7 @@ var config = require('../config');
 var seed = require('../seeds/');
 
 (async () => {
-    if (process.env.SEED_ON_START == 'true') {
+    if (process.env.SEED_ON_START === 'true') {
         await seed();
     }
 

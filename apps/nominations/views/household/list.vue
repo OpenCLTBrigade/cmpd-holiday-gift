@@ -28,17 +28,17 @@
 </template>
 
 <script>
-  module.exports = {
-      data: () => ({
-          gridColumns: [
-              'Head of Household',
-              'Children',
-              'Nominated By',
-              'Uploaded From',
-              'Tools',
-              'Review'
-          ]
-      }),
-      props: ['user', 'households']
-  };
+    module.exports = {
+        data: () => ({
+            gridColumns: [
+                'Head of Household',
+                'Children',
+                'Nominated By',
+                'Uploaded From',
+                'Tools',
+                'Review'
+            ]
+        }),
+        props: ['user', 'households']
+    };
 </script>

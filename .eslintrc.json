@@ -6,6 +6,7 @@
     "plugins": ["html"],
     "settings": {
         "html/html-extensions": [".html", ".vue"],
+        "html/indent": "+4",
         "html/report-bad-indent": "error"
     },
     "extends": "eslint:recommended",
@@ -45,6 +46,10 @@
         "no-duplicate-imports": ["error"],
         "comma-spacing": ["error"],
         "comma-style": ["error"],
-        "key-spacing": ["error"]
+        "key-spacing": ["error"],
+        "brace-style": ["error"],
+        "curly": ["error"],
+        "eqeqeq": ["error"],
+        "no-multi-spaces": ["error"]
     }
 }
