@@ -81,5 +81,7 @@ module.exports = Sequelize => ({
     },
     associate: function (household, db) {
         household.belongsTo(db.user, {as: 'nominator'});
+        household.hasMany(db.child, {as: 'children'});
+        household.hasOne(db.household_address, {as: 'address'});
     }
 });

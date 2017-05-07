@@ -38,6 +38,7 @@
     "jquery": "^3.2.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
+    "loader-utils": "https://registry.npmjs.org/loader-utils/-/loader-utils-1.1.0.tgz",
     "morgan": "^1.8.1",
     "mysql": "^2.5.5",
     "passport": "^0.3.2",

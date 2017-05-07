@@ -50,6 +50,84 @@
     </style>
 </subcomponent>
 
+<subcomponent name="upload-attachment">
+  <!-- TODO: implement this -->
+  <template>
+    <box type="danger" title="Scanned Forms"v-if="household.id">
+      <row>
+        <div class="col-md-12 col-sm-12">
+          <label class="control-label">Existing Files</label>
+          <div v-for="attachment in household.attachment">
+            <span class="filename">
+              <a :href="`/admin/household_attachment/${attachment.id}`">
+                {{ attachment.path.split('_')[1] }}
+              </a>
+            </span>
+          </div>
+          <div v-for="file_name in uploading_forms">
+            <span class="filename">
+              {{ file_name }} (uploading...)
+            </span>
+          </div>
+        </div>
+      </row>
+      <row>
+        <form-group label="Upload File">
+          <input type="file" class="form-control" v-on:blur="upload_form_file">
+        </form-group>
+      </row>
+    </box>  
+  </template>
+  <script>
+    // TODO: implement this
+module.exports = {
+          data: function () {
+              return {uploading_forms: []};
+          },
+          method: {
+              upload_form_file: function (e) {
+                  var file = e.target.files[0];
+                  if (!file) {
+                      return;
+                  }
+                  var file_name = file.name;
+                  var data = new FormData();
+                  data.set('file', file);
+                  data.set('household_id', this.household.id);
+                  this.uploading_forms.push(file_name);
+                  $(e.target).val('');
+                  var self = this;
+                  var fail = function (msg) {
+                      msg = 'Error uploading file \'' + file_name + '\': ' + msg;
+                      alert(msg); // TODO: don't use alert
+                      self.uploading_forms.$remove(file_name);
+                  };
+                  $.ajax({
+                      url: '/api/upload_household_form_file',
+                      data: data,
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
+                      type: 'POST',
+                      success: function (res) {
+                          if (res.ok) {
+                              self.uploading_forms.$remove(file_name);
+                              self.household.attachment.push({path: res.path, id: res.id});
+                          } else {
+                              fail(res.error || 'unknown error');
+                          }
+                      },
+                      error: function (xhr, type, errmsg) {
+                          fail(type + ': ' + errmsg);
+                      }
+                  });
+              }
+          }
+};
+  </script>
+</subcomponent>
+
 <template>
   <main-layout :user="user" title="Edit Household" current_section="households">
     <div class="container-fluid">
@@ -72,7 +150,7 @@
               </select>
           </form-group>
           <form-group width="4" label="Date of Birth" required>
-              <input class="form-control" v-model="household.dob" name="dob" type="date" id="dob">
+              <input class="form-control" v-model="household.dob" name="dob" type="date">
           </form-group>
           <form-group width="4" label="Last four digits of SSN" required>
               <input class="form-control" type="number" v-model="household.last4ssn">
@@ -107,7 +185,7 @@
       </box>
 
       <box type="danger" title="Delivery Address">
-        <row v-for="address in household.address" key="address.id">
+        <row v-for="address in [household.address]" key="0">
           <form-group label="Type">
             <select class="form-control" v-model="address.type">
               <option value="Home">Home</option>
@@ -115,7 +193,7 @@
             </select>
           </form-group>
           <form-group label="Street Address" required>
-            <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="address_on_blur">
+            <input class="form-control street-address" type="text" v-model="address.address_street" v-on:blur="addressOnBlur(address.address_street)">
           </form-group>
           <form-group label="Street Address 2">
             <input class="form-control" type="text" v-model="address.address_street2">
@@ -208,7 +286,7 @@
 
         <row>
           <form-group label="Date of Birth" required>
-              <!- <input class="form-control" v-model="record.dob" type="date">
+              <input class="form-control" v-model="record.dob" type="date">
           </form-group>
           <form-group label="School Name" required>
               <select class="form-control" v-model="record.school_id">
@@ -322,30 +400,8 @@
         Please save the nomination as a draft before uploading a file.
       </box>
 
-      <box type="danger" title="Scanned Forms"v-if="household.id">
-        <row>
-          <div class="col-md-12 col-sm-12">
-            <label class="control-label">Existing Files</label>
-            <div v-for="attachment in household.attachment">
-              <span class="filename">
-                <a :href="`/admin/household_attachment/${attachment.id}`">
-                  {{ attachment.path.split('_')[1] }}
-                </a>
-              </span>
-            </div>
-            <div v-for="file_name in uploading_forms">
-              <span class="filename">
-                {{ file_name }} (uploading...)
-              </span>
-            </div>
-          </div>
-        </row>
-        <row>
-          <form-group label="Upload File">
-            <input type="file" class="form-control" v-on:blur="upload_form_file">
-          </form-group>
-        </row>
-      </box>
+      <!-- TODO: bind to attachment list
+           <upload-attachment /> -->
 
       <box>
         <button class="btn addbtn" v-show="household.draft" v-on:click="doSave(true)" :disabled="loading || saving">Save Draft</button>
@@ -360,7 +416,38 @@
 
 <script>
     /* eslint-env browser */
-    /* global $ */ // TODO: get rid of jquery use
+    /* global $ */
+
+    async function lookupFullAddress(partial_address) {
+        var result = await new Promise((ok, fail) => $.ajax({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json',
+            data: {
+                // TODO: secret, customizable api key
+                key: 'AIzaSyD0ndbvzYgkb634KIwF5qL2_yU3XdSq3PM',
+                address: partial_address,
+                components: 'administrative_area:North Carolina|country:US'
+            },
+            success: data => data.status === 'OK' ? ok(data.results[0]) : fail(`${data.status}: ${data.error_message}`),
+            error: (_, status, error) => fail(`${status}: ${error}`)
+        }));
+        if (result.address_components.length < 3) {
+            // Google did not pinpoint the address any further
+            throw new Error('Address not found');
+        }
+        var address = {};
+        result.address_components.forEach(component => {
+            component.types.forEach(type => {
+                address[type] = component.short_name;
+            });
+        });
+        return {
+            address_city: address.locality,
+            address_state: address.administrative_area_level_1,
+            address_zip: address.postal_code,
+            location: result.geometry.location
+        };
+    }
+
     module.exports = {
         props: {
             user: {required: true},
@@ -378,117 +465,34 @@
             loading: false,
             saving: false,
             showSavedMessage: false,
-            uploading_forms: []
         }),
+        created: function () {
+            if (this.household.address === null) {
+                this.household.address = {};
+            }
+        },
         methods: {
-
-            upload_form_file: function (e) {
-                var file = e.target.files[0];
-                if (!file) {
-                    return;
-                }
-                var file_name = file.name;
-                var data = new FormData();
-                data.set('file', file);
-                data.set('household_id', this.household.id);
-                this.uploading_forms.push(file_name);
-                $(e.target).val('');
-                var self = this;
-                var fail = function (msg) {
-                    msg = 'Error uploading file \'' + file_name + '\': ' + msg;
-                    alert(msg); // TODO: don't use alert
-                    self.uploading_forms.$remove(file_name);
-                };
-                $.ajax({
-                    url: '/api/upload_household_form_file',
-                    data: data,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
-                    type: 'POST',
-                    success: function (res) {
-                        if (res.ok) {
-                            self.uploading_forms.$remove(file_name);
-                            self.household.attachment.push({path: res.path, id: res.id});
-                        } else {
-                            fail(res.error || 'unknown error');
-                        }
-                    },
-                    error: function (xhr, type, errmsg) {
-                        fail(type + ': ' + errmsg);
-                    }
-                });
-            },
-            address_on_blur: function (e) {
-                // TOOD: load google maps
-                var geocoder = new google.maps.Geocoder();
-                var mapping = {
-                    locality: 'address_city',
-                    administrative_area_level_1: 'address_state',
-                    postal_code: 'address_zip'
-                };
-                var request = {
-                    'address': e.target.value,
-                    'region': 'US',
-                    'componentRestrictions': {'administrativeArea': 'North Carolina'}
-                };
-
-                var self = this;
-                geocoder.geocode(
-          request,
-          function (results, status) {
-              if (status === google.maps.GeocoderStatus.OK) {
-                  var addressElements = results[0].address_components;
-
-                  //due to the componentRestrictions parameter in the request,
-                  //even if the address is invalid, the response always has appended
-                  //the state and the country.
-                  if (addressElements.length < 3) {
-                      $('#errorMsg').modal(); // TODO: better error message
-                      return;
-                  }
-              /// at this point:
-                // addressElements = {
-                //   "locality" : "...city...",
-                //   "administrative_area_level_1": "...state...",
-                //   "postal_code": "...", ... }
-
-                  var address_index = $(e.target).parentsUntil('.box').last().parent().prevAll().length;
-                  for (var i in addressElements) {
-                      var type = mapping[addressElements[i].types[0]];
-                      if (type) {
-                          var update = {};
-                          update[type] = addressElements[i].long_name;
-                          self.household.address.$set(0, Object.assign({}, self.household.address[0], update));
-
-                      }
-                  }
-                  populate_cmpd_info(results[0].geometry.location, address_index);
-              } else {
-                  $('#errorMsg').modal();
-              }
-          }
-        );
-        //
-
-                var populate_cmpd_info = function (location) {
-                    $.ajax({
-                        url: '/api/cmpd_info',
-                        data: {lat: location.lat(), lng: location.lng()},
-                        success: function (info) {
-                            if (info.error) {
-                // TODO: maybe don't ignore errors
-                            } else {
-                                self.household.address[0].cmpd_division = info.division;
-                                self.household.address[0].cmpd_response_area = info.response_area;
-                            }
-                        },
-                        error: function () {
-                        // TODO: maybe don't ignore errors
-                        }
+            addressOnBlur: async function (partial_address) {
+                try {
+                    var address = await lookupFullAddress(partial_address);
+                    this.household.address = Object.assign({}, this.household.address, {
+                        address_zip: address.address_zip,
+                        address_state: address.address_state,
+                        address_city: address.address_city
                     });
-                };
+    
+                    var info = await new Promise((ok, fail) => $.ajax({
+                        url: '/api/cmpd_info',
+                        data: address.location,
+                        success: info => info.error ? fail(info.error) : ok(info),
+                        error: (_, status, error) => fail(`${status}: ${error}`)
+                    }));
+                    this.household.address.cmpd_division = info.division;
+                    this.household.address.cmpd_response_area = info.response_area;
+                } catch (err) {
+                    // TODO: unobtrusively display err
+                    console.log(err);
+                }
             },
 
             addAddress: function () {
@@ -608,9 +612,5 @@
 
         }
     };
-
-    // TODO: google maps
-    // script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&language=en" /script
-
 
 </script>
