@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 launch.json
 *~
+run/
+config/email.js

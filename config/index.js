@@ -1,5 +1,6 @@
 var process = require('process');
 var path = require('path');
+var emailCreds = require('./email.js');
 
 
 var config = {};
@@ -15,6 +16,8 @@ if (process.env.NODE_ENV === 'production') {
         password: 'express123',
         database: 'expresstest'
     };
+    // TODO: Setup configuration for using Amazon SES in production
+
     config.verboseAccessLog = false;
     config.useCompression = false; // TODO: enable compression on reverse proxy
     config.enableHotReload = false;
@@ -26,6 +29,12 @@ if (process.env.NODE_ENV === 'production') {
     config.db = {
         dialect: 'sqlite',
         storage: path.join(__dirname, `../run/test/db.${process.pid}.sqlite`)
+    };
+    config.email = {
+      host: emailCreds.host,
+      port: emailCreds.port,
+      user: emailCreds.user,
+      pass: emailCreds.pass
     };
     config.useCompression = false;
     config.enableHotReload = false;
@@ -39,6 +48,18 @@ if (process.env.NODE_ENV === 'production') {
     config.db = {
         dialect: 'sqlite',
         storage: path.join(__dirname, '../run/db.development.sqlite')
+    };
+    config.email = {
+      host: emailCreds.host,
+      port: emailCreds.port,
+      user: emailCreds.user,
+      pass: emailCreds.pass,
+      email_from_address: 'noreply@codeforcharlotte.org',
+      email_admin_address: 'info@codeforcharlotte.org',
+      mail_from_name: 'noreply',
+      mail_confirm_email_subject: 'Please confirm your email address',
+      mail_new_user_needs_approval_subject: 'A new user needs confirmation',
+      mail_welcome_email_subject:'Your account has been activated'
     };
     config.verboseAccessLog = true;
     config.useCompression = true;

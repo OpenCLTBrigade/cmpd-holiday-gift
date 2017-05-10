@@ -41,6 +41,8 @@
     "loader-utils": "https://registry.npmjs.org/loader-utils/-/loader-utils-1.1.0.tgz",
     "morgan": "^1.8.1",
     "mysql": "^2.5.5",
+    "nodemailer": "^4.0.1",
+    "nodemailer-ses-transport": "^1.5.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "sequelize": "^3.30.4",
