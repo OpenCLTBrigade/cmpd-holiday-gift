@@ -13,6 +13,7 @@ router.post('/login', auth.login.post);
 router.get('/logout', auth.logout);
 router.get('/register', auth.register.get);
 router.post('/register', auth.register.post);
+router.get('/register/confirm_email', auth.confirm.get);
 
 // TODO: require more than isLoggedIn for these tasks
 router.get('/household/new', auth.isLoggedIn, household.create.get);

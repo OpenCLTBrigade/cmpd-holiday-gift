@@ -3,3 +3,4 @@ node_modules
 launch.json
 *~
 run/
+config/email.js
