@@ -16,8 +16,8 @@ the application on http://localhost:3000.
 
 Install dependencies: `npm install`
 
-Set up a mailtrap.io account. Copy apps/config/email_example.js to ...email.js and
-enter account details from mailtrap.io account
+Set up a mailtrap.io account. Copy `./config/env_example.js` to `./config/env_development.js`, then edit the file with your
+mailtrap account details.
 
 Run app, and restart when code changes: `npm run nodemon`
 
@@ -28,6 +28,16 @@ Run tests: `npm test`
 Check and fix code style: `npm run lint`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
+
+### Advanced configuration
+
+`./config/index.js` includes default values. Some defaults are specific to `production`, `testing`, and `development`.
+
+You can copy `./config/env_shared_example.js` to `./config/env_shared.js` to override defaults across all environments.
+
+Copy `./config/env_example.js` to `./config/env_[environment].js` to override settings for that specific environment.
+
+The `env_[environment].js` values override any colliding `env_shared.js` values in that particular environment.
 
 ## Contact
 

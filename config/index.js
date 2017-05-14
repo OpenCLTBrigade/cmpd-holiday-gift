@@ -1,8 +1,8 @@
 var process = require('process');
 var path = require('path');
-var emailCreds = require('./email.js');
+var merge = require('deepmerge');
 
-
+// Default values here can be overridden by env_shared.js and env_{environment}.js files
 var config = {};
 
 if (process.env.NODE_ENV === 'production') {
@@ -30,12 +30,6 @@ if (process.env.NODE_ENV === 'production') {
         dialect: 'sqlite',
         storage: path.join(__dirname, `../run/test/db.${process.pid}.sqlite`)
     };
-    config.email = {
-      host: emailCreds.host,
-      port: emailCreds.port,
-      user: emailCreds.user,
-      pass: emailCreds.pass
-    };
     config.useCompression = false;
     config.enableHotReload = false;
     config.verboseSeed = false;
@@ -49,18 +43,6 @@ if (process.env.NODE_ENV === 'production') {
         dialect: 'sqlite',
         storage: path.join(__dirname, '../run/db.development.sqlite')
     };
-    config.email = {
-      host: emailCreds.host,
-      port: emailCreds.port,
-      user: emailCreds.user,
-      pass: emailCreds.pass,
-      email_from_address: 'noreply@codeforcharlotte.org',
-      email_admin_address: 'info@codeforcharlotte.org',
-      mail_from_name: 'noreply',
-      mail_confirm_email_subject: 'Please confirm your email address',
-      mail_new_user_needs_approval_subject: 'A new user needs confirmation',
-      mail_welcome_email_subject:'Your account has been activated'
-    };
     config.verboseAccessLog = true;
     config.useCompression = true;
     config.enableHotReload = true;
@@ -68,6 +50,23 @@ if (process.env.NODE_ENV === 'production') {
     config.verbose = true;
     config.buildAssets = true;
 }
+
+// Shared values (You can change these for testing by creating an env_shared.js file)
+
+/*
+ * Use env_(development/testing/production).js to specify
+ * host, port, user, pass
+ */
+config.email = {
+    from_address: 'noreply@codeforcharlotte.org',
+    from_name: 'noreply',
+    admin_address: 'info@codeforcharlotte.org',
+    subjects: {
+        confirm_email: 'Please confirm your email address',
+        new_user_needs_approval: 'A new user needs approval',
+        account_activated: 'Your account has been activated'
+    }
+};
 
 config.db.logging = false;
 
@@ -99,4 +98,22 @@ config.genders = ['F', 'M'];
 
 config.run = path.join(__dirname, '../run');
 
-module.exports = config;
+// Load overrides
+let env_vars, env_shared;
+
+try {
+    env_shared = require('./env_shared.js');
+} catch (err) {
+    env_shared = {};
+    console.log('NOTICE: Missing or invalid env_shared.js');
+}
+
+try {
+    env_vars = require (`./env_${config.mode}.js`);
+} catch (err) {
+    env_vars = {};
+    console.log(`WARNING: Invalid or missing env_${config.mode}.js file found!`);
+  // console.log('More details:', err)
+}
+
+module.exports = merge.all([config, env_shared, env_vars]);

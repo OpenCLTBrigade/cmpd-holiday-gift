@@ -8,7 +8,7 @@ var redirects = {
     failureRedirect: '/login'
 };
 
-var sendAdminEmail = function() {
+var sendAdminEmail = function () {
   /* TODO: Setup separate transporters for SES vs test environment
   var transporter = nodemailer.createTransport(ses({
     accessKeyId: 'amazon_id',
@@ -16,22 +16,23 @@ var sendAdminEmail = function() {
   }));
   */
 
-  var transporter = nodemailer.createTransport({
-    port: config.email.port,
-    host: config.email.host,
-    auth: {
-      user: config.email.user,
-      pass: config.email.pass
-    }
-  });
+    // TODO: Create a standalone module for this
+    var transporter = nodemailer.createTransport({
+        port: config.email.port,
+        host: config.email.host,
+        auth: {
+            user: config.email.user,
+            pass: config.email.pass
+        }
+    });
 
-  transporter.sendMail({
-    from: config.email.email_from_address,
-    to: config.email.email_admin_address,
-    subject: config.email.mail_new_user_needs_approval_subject,
-    html: '<p></p>'
-  });
-}
+    transporter.sendMail({
+        from: config.email.from_address,
+        to: config.email.admin_address,
+        subject: config.email.subjects.new_user_needs_approval,
+        html: '<p></p>'
+    });
+};
 
 var db = require('../../../models');
 
@@ -62,12 +63,12 @@ module.exports = {
     },
 
     confirm: {
-      get: function(req, res) {
-        var id = req.query.id;
-        var confirm_code = req.query.confirmation_code;
-        sendAdminEmail();
-        res.renderData('confirm', 'Confirm Email Address', {});
-      }
+        get: function (req, res) {
+            var id = req.query.id;
+            var confirm_code = req.query.confirmation_code;
+            sendAdminEmail();
+            res.renderData('confirm', 'Confirm Email Address', {});
+        }
     },
 
     logout: function (req, res) {

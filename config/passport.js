@@ -13,12 +13,12 @@ var transporter = nodemailer.createTransport(ses({
 */
 
 var transporter = nodemailer.createTransport({
-  port: config.email.port,
-  host: config.email.host,
-  auth: {
-    user: config.email.user,
-    pass: config.email.pass
-  }
+    port: config.email.port,
+    host: config.email.host,
+    auth: {
+        user: config.email.user,
+        pass: config.email.pass
+    }
 });
 
 var hashPassword = function (password) {
@@ -28,8 +28,8 @@ var hashPassword = function (password) {
 var confirmCode = Math.random();
 
 var hashConfirmCode = function (confirmCode) {
-  return bCrypt.hashSync(confirmCode, bCrypt.genSaltSync(8), null);
-}
+    return bCrypt.hashSync(confirmCode, bCrypt.genSaltSync(8), null);
+};
 
 var configurePassport = function (passport, user) {
     var User = user;
@@ -66,10 +66,10 @@ var configurePassport = function (passport, user) {
                         }
                         if (newUser) {
                             transporter.sendMail({
-                              from: config.email.email_from_address,
-                              to: newUser.dataValues.email,
-                              subject: config.email.mail_confirm_email_subject,
-                              html: '<p>Hello ' + newUser.dataValues.name_first + ' ' + newUser.dataValues.name_last + '</p><p><a href="register/confirm_email?id=' + newUser.dataValues.id + '&confirmation_code=' + newUser.dataValues.confirmation_code + '">Click here</a> to confirm your registration on xxx.</p>'
+                                from: config.email.from_address,
+                                to: newUser.dataValues.email,
+                                subject: config.email.subjects.confirm_email,
+                                html: '<p>Hello ' + newUser.dataValues.name_first + ' ' + newUser.dataValues.name_last + '</p><p><a href="register/confirm_email?id=' + newUser.dataValues.id + '&confirmation_code=' + newUser.dataValues.confirmation_code + '">Click here</a> to confirm your registration on xxx.</p>'
                             });
                             return done(null, newUser);
                         }
