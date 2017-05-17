@@ -29,15 +29,10 @@ Check and fix code style: `npm run lint`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
-### Advanced configuration
+### Local Configuration
 
-`./config/index.js` includes default values. Some defaults are specific to `production`, `testing`, and `development`.
-
-You can copy `./config/env_shared_example.js` to `./config/env_shared.js` to override defaults across all environments.
-
-Copy `./config/env_example.js` to `./config/env_[environment].js` to override settings for that specific environment.
-
-The `env_[environment].js` values override any colliding `env_shared.js` values in that particular environment.
+`config/env.default.js` includes default values. You can copy
+`env.example.js` to `env.js` to override defaults.
 
 ## Contact
 
@@ -55,8 +50,8 @@ Authentication is provided by [Passport]. Passwords are encrypted using [bcrypt]
 Data is stored in an [Sqlite] database using the [Sequelize] ORM. Some of
 the fields are encrypted using [sequelize-encrpyted].
 
-Email in development environment is sent through mailtrap.io. A mailtrap account
-will be required to test email services.
+Email is sent using [nodemailer]. For development, we use
+[mailtrap.io] to test sending emails.
 
 The frontend is written in [Vue] and [Less]. It is assembled using
 [Webpack] and [vue-loader]. The theme is [AdminLTE], based on
@@ -75,6 +70,7 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [Sequelize]: http://docs.sequelizejs.com/en/v3/
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [mailtrap.io]: https://mailtrap.io
+[nodemailer]: https://nodemailer.com/
 [Vue]: https://vuejs.org/v2/api/
 [Less]: http://lesscss.org/features/
 [Webpack]: https://webpack.js.org/
