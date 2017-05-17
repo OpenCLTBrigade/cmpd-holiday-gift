@@ -1,37 +1,11 @@
 var passport = require('passport');
 var config = require('../../../config');
-var nodemailer = require('nodemailer');
-var ses = require('nodemailer-ses-transport');
+var path = require('path');
+var sendMail = require('../../lib/mail')(path.join(__dirname, '../views/email'));
 
 var redirects = {
     successRedirect: '/',
     failureRedirect: '/login'
-};
-
-var sendAdminEmail = function () {
-  /* TODO: Setup separate transporters for SES vs test environment
-  var transporter = nodemailer.createTransport(ses({
-    accessKeyId: 'amazon_id',
-    secretAccessKey: 'amazon_key'
-  }));
-  */
-
-    // TODO: Create a standalone module for this
-    var transporter = nodemailer.createTransport({
-        port: config.email.port,
-        host: config.email.host,
-        auth: {
-            user: config.email.user,
-            pass: config.email.pass
-        }
-    });
-
-    transporter.sendMail({
-        from: config.email.from_address,
-        to: config.email.admin_address,
-        subject: config.email.subjects.new_user_needs_approval,
-        html: '<p></p>'
-    });
 };
 
 var db = require('../../../models');
@@ -64,9 +38,11 @@ module.exports = {
 
     confirm: {
         get: function (req, res) {
-            var id = req.query.id;
-            var confirm_code = req.query.confirmation_code;
-            sendAdminEmail();
+            // TODO handle confirmation correctly
+            var _id = req.query.id;
+            var _confirm_code = req.query.confirmation_code;
+            // TODO: handle email sending errors
+            sendMail('admin-approval', {to: config.email.adminAddress});
             res.renderData('confirm', 'Confirm Email Address', {});
         }
     },

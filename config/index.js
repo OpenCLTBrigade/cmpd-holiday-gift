@@ -31,13 +31,13 @@ vm.runInNewContext(fs.readFileSync(defaultConfig), config, {
 
 var code;
 try {
-    code = fs.readFileSync(config.customEnvFile);
+    code = fs.readFileSync(customEnvFile);
 } catch (e) {
-    console.warn('Warning: missing `env.js\' file');
+    console.warn(`Warning: missing ${customEnvFile} file`);
 }
 
 if (code) {
-    vm.runInNewContext(fs.readFileSync(config.customEnvFile), config, {
+    vm.runInNewContext(fs.readFileSync(customEnvFile), config, {
         filename: config.customEnvFile,
         displayErrors: true
     });

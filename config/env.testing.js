@@ -1,5 +1,7 @@
 // These config settings are used for running the tests.
 
+/* eslint no-undef: "off" */
+
 // Listen on a random port
 port = 0;
 

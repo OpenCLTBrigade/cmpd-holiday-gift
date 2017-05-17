@@ -1,31 +1,10 @@
 // TODO: move logic to another file
 
 var bCrypt = require('bcrypt-nodejs');
-var nodemailer = require('nodemailer');
-var ses = require('nodemailer-ses-transport');
-var config = require('../config');
-
-/* TODO: Setup separate transporters for SES vs test environment
-var transporter = nodemailer.createTransport(ses({
-  accessKeyId: 'amazon_id',
-  secretAccessKey: 'amazon_key'
-}));
-*/
-
-var transporter = nodemailer.createTransport({
-    port: config.email.port,
-    host: config.email.host,
-    auth: {
-        user: config.email.user,
-        pass: config.email.pass
-    }
-});
 
 var hashPassword = function (password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 };
-
-var confirmCode = Math.random();
 
 var hashConfirmCode = function (confirmCode) {
     return bCrypt.hashSync(confirmCode, bCrypt.genSaltSync(8), null);
@@ -47,6 +26,7 @@ var configurePassport = function (passport, user) {
                     return done(null, false, {message: 'That email is already taken'});
                 } else {
                     var userPassword = hashPassword(password);
+                    var confirmCode = Math.random();
                     var userConfirmCode = hashConfirmCode(confirmCode);
                     var data =
                         {
@@ -65,6 +45,8 @@ var configurePassport = function (passport, user) {
                             return done(null, false);
                         }
                         if (newUser) {
+                            // TODO: should not be sending mail from inside a config file
+                            /*
                             transporter.sendMail({
                                 from: config.email.from_address,
                                 to: newUser.dataValues.email,
@@ -72,6 +54,7 @@ var configurePassport = function (passport, user) {
                                 html: '<p>Hello ' + newUser.dataValues.name_first + ' ' + newUser.dataValues.name_last + '</p><p><a href="register/confirm_email?id=' + newUser.dataValues.id + '&confirmation_code=' + newUser.dataValues.confirmation_code + '">Click here</a> to confirm your registration on xxx.</p>'
                             });
                             return done(null, newUser);
+                            */
                         }
                     });
                 }

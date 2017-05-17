@@ -1,20 +1,33 @@
 // Before running this app, copy this file to env.js and edit the
-// settings. Any setting from `config/index.js' can be modified here.
+// settings. Any setting from `config/env.default.js' can be modified here.
 
-// **** Email Settings ****
+/* eslint no-undef: "off" no-unused-vars: "off" */
 
-//email.host = 'smtp.mailtrap.io';
-//email.port = 2525; 
-//email.user = '';
-//email.pass = '';
+// **** Email Settings (SMTP) ****
+
+//email.smtp = {
+//  host: 'smtp.mailtrap.io',
+//  port: 2525,
+//  user: '',
+//  pass: ''
+//}
+
+// **** Email Settings (Amazon SES) ****
+
+//email.ses = {
+//  accessKeyId: 'amazon_id',
+//  secretAccessKey: 'amazon_key'
+//};
 
 // **** Sample MySQL Database ****
 
-//db.dialect = 'mysql';
-//db.host = 'localhost';
-//db.user = 'expressuser';
-//db.password: 'express123';
-//db.database: 'expresstest'
+//db = {
+//  dialect: 'mysql',
+//  host: 'localhost',
+//  user: 'username',
+//  password: '',
+//  database: 'gift'
+//}
 
 // **** Sample Production Mode Settings ****
 

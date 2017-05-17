@@ -13,6 +13,7 @@ var encryption_key = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D
 var db = {};
 
 var sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, Object.assign({
+    // TODO: move pool settings to config file
     pool: {
         max: 5,
         min: 0,
