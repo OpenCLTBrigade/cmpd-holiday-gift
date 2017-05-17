@@ -7,9 +7,6 @@ var encrypted = require('sequelize-encrypted');
 
 var config = require('../config');
 
-// TODO: move key to secrets file
-var encryption_key = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D155469';
-
 var db = {};
 
 var sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, Object.assign({
@@ -30,7 +27,7 @@ function define_table(name, model) {
     var encrypt = null;
     function encrypt_field(column) {
         if (!encrypt) {
-            encrypt = encrypted(Sequelize, encryption_key);
+            encrypt = encrypted(Sequelize, config.databaseEncryptionKey);
             model['vault'] = encrypt.vault('vault');
         }
         return encrypt.field(column);

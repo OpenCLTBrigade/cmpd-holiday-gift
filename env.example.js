@@ -3,16 +3,18 @@
 
 /* eslint no-undef: "off" no-unused-vars: "off" */
 
-// **** Email Settings (SMTP) ****
+// **** Sample Email Settings (SMTP) ****
 
 //email.smtp = {
 //  host: 'smtp.mailtrap.io',
 //  port: 2525,
-//  user: '',
-//  pass: ''
+//  auth: {
+//    user: '',
+//    pass: ''
+//  }
 //}
 
-// **** Email Settings (Amazon SES) ****
+// **** Sample Email Settings (Amazon SES) ****
 
 //email.ses = {
 //  accessKeyId: 'amazon_id',
@@ -31,6 +33,9 @@
 
 // **** Sample Production Mode Settings ****
 
+//databaseEncryptionKey = 'change me';
+//googleMapsAPIKey = 'change me';
+//sessionSecret = 'change me';
 //verboseAccessLog = false;
 //useCompression = false;
 //enableHotReload = false;

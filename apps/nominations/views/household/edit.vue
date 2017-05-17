@@ -418,12 +418,11 @@ module.exports = {
     /* eslint-env browser */
     /* global $ */
 
-    async function lookupFullAddress(partial_address) {
+    async function lookupFullAddress(api_key, partial_address) {
         var result = await new Promise((ok, fail) => $.ajax({
             url: 'https://maps.googleapis.com/maps/api/geocode/json',
             data: {
-                // TODO: secret, customizable api key
-                key: 'AIzaSyD0ndbvzYgkb634KIwF5qL2_yU3XdSq3PM',
+                key: api_key,
                 address: partial_address,
                 components: 'administrative_area:North Carolina|country:US'
             },
@@ -459,7 +458,8 @@ module.exports = {
                     attachment: []
                 }
             },
-            schools: {default: []}
+            schools: {default: []},
+            googleMapsAPIKey: {required: true}
         },
         data: () => ({
             loading: false,
@@ -474,7 +474,7 @@ module.exports = {
         methods: {
             addressOnBlur: async function (partial_address) {
                 try {
-                    var address = await lookupFullAddress(partial_address);
+                    var address = await lookupFullAddress(googleMapsAPIKey, partial_address);
                     this.household.address = Object.assign({}, this.household.address, {
                         address_zip: address.address_zip,
                         address_state: address.address_state,

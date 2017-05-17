@@ -16,8 +16,8 @@ the application on http://localhost:3000.
 
 Install dependencies: `npm install`
 
-Set up a mailtrap.io account. Copy `./config/env_example.js` to `./config/env_development.js`, then edit the file with your
-mailtrap account details.
+Optionally, set up a [mailtrap.io] account. Put your account info in
+`env.js` (see `env.example.js` for an example).
 
 Run app, and restart when code changes: `npm run nodemon`
 
@@ -50,8 +50,9 @@ Authentication is provided by [Passport]. Passwords are encrypted using [bcrypt]
 Data is stored in an [Sqlite] database using the [Sequelize] ORM. Some of
 the fields are encrypted using [sequelize-encrpyted].
 
-Email is sent using [nodemailer]. For development, we use
-[mailtrap.io] to test sending emails.
+Email is sent using [nodemailer]. Email templates are rendered with
+[Mustache]. For development, we use [mailtrap.io] to test sending
+emails.
 
 The frontend is written in [Vue] and [Less]. It is assembled using
 [Webpack] and [vue-loader]. The theme is [AdminLTE], based on
@@ -80,3 +81,4 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [Jasmine]: https://jasmine.github.io/1.3/introduction
 [eslint]: http://eslint.org/docs/user-guide/getting-started
 [NodeJS 7]: https://nodejs.org/en/download/current/
+[Mustache]: https://www.npmjs.com/package/mustache

@@ -34,6 +34,11 @@ email = {
     }
 };
 
+// Secrets
+sessionSecret = 'codeforclt-devmode';
+googleMapsAPIKey = 'AIzaSyD0ndbvzYgkb634KIwF5qL2_yU3XdSq3PM';
+databaseEncryptionKey = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D155469';
+
 // TODO: these enums should not be in the config file
 
 raceOptions = [

@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var sequelizeSessionStore = new SessionStore({db: models.sequelize});
 app.use(cookieParser());
 app.use(expressSession({
-    secret: 'codeforCLT', // TODO: move secret to secrets file
+    secret: config.sessionSecret,
     store: sequelizeSessionStore,
     resave: true,
     saveUninitialized: true
