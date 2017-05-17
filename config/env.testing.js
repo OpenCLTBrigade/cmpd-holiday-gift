@@ -8,7 +8,7 @@ port = 0;
 // Use a separate sqlite database for each instance
 db = {
     dialect: 'sqlite',
-    storage: `${run}/test/db.${process.pid}.sqlite`,
+    storage: `${run}/test/db.${pid}.sqlite`,
     logging: false
 };
 

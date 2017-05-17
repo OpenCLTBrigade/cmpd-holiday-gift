@@ -8,6 +8,7 @@ var fs = require('fs');
 var config = {};
 
 config.run = path.join(__dirname, '../run');
+config.pid = process.pid;
 
 var customEnvFile = path.join(__dirname, '../env.js');
 
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
     config.mode = 'production';
 } else if (process.env.NODE_ENV === 'testing') {
     config.mode = 'testing';
-    customEnvFile = require.resolve('env.testing.js');
+    customEnvFile = require.resolve('./env.testing.js');
 } else if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
     config.mode = 'development';
 } else {
