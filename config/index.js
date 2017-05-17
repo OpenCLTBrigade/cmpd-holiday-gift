@@ -1,119 +1,46 @@
 var process = require('process');
 var path = require('path');
-var merge = require('deepmerge');
+var vm = require('vm');
+var fs = require('fs');
 
-// Default values here can be overridden by env_shared.js and env_{environment}.js files
+// Default config values can be overridden by ../env.js
+
 var config = {};
-
-if (process.env.NODE_ENV === 'production') {
-    config.mode = 'production';
-    config.port = 3000;
-    config.db = {
-        dialect: 'mysql',
-        host: 'localhost',
-        // TODO: load user/password/database from secrets file
-        user: 'expressuser',
-        password: 'express123',
-        database: 'expresstest'
-    };
-    // TODO: Setup configuration for using Amazon SES in production
-
-    config.verboseAccessLog = false;
-    config.useCompression = false; // TODO: enable compression on reverse proxy
-    config.enableHotReload = false;
-    config.verboseSeed = false;
-    config.buildAssets = true;
-} else if (process.env.NODE_ENV === 'testing') {
-    config.mode = 'testing';
-    config.port = 0;
-    config.db = {
-        dialect: 'sqlite',
-        storage: path.join(__dirname, `../run/test/db.${process.pid}.sqlite`)
-    };
-    config.useCompression = false;
-    config.enableHotReload = false;
-    config.verboseSeed = false;
-    config.verboseAccessLog = false;
-    config.verbose = false;
-    config.buildAssets = false;
-} else { // development
-    config.mode = 'development';
-    config.port = process.env.PORT || 3000;
-    config.db = {
-        dialect: 'sqlite',
-        storage: path.join(__dirname, '../run/db.development.sqlite')
-    };
-    config.verboseAccessLog = true;
-    config.useCompression = true;
-    config.enableHotReload = true;
-    config.verboseSeed = true;
-    config.verbose = true;
-    config.buildAssets = true;
-}
-
-// Shared values (You can change these for testing by creating an env_shared.js file)
-
-/*
- * Use env_(development/testing/production).js to specify
- * host, port, user, pass
- */
-config.email = {
-    from_address: 'noreply@codeforcharlotte.org',
-    from_name: 'noreply',
-    admin_address: 'info@codeforcharlotte.org',
-    subjects: {
-        confirm_email: 'Please confirm your email address',
-        new_user_needs_approval: 'A new user needs approval',
-        account_activated: 'Your account has been activated'
-    }
-};
-
-config.db.logging = false;
-
-config.raceOptions = [
-    'American Indian',
-    'Alaskan Native',
-    'Asian',
-    'African American',
-    'Hispanic',
-    'Pacific Islander',
-    'White',
-    'Other'
-];
-
-config.bikeSizes = [
-    'Tricycle',
-    '12” Bicycle',
-    '16” Bicycle',
-    '20” Coaster Brake Bicycle',
-    '20” Geared Bicycle',
-    '24” Geared Bicycle'
-];
-
-config.clothesSizes = ['S', 'M', 'L'];
-
-config.bikeStyles = ['Mountain', 'BMX', 'Tricycle'];
-
-config.genders = ['F', 'M'];
 
 config.run = path.join(__dirname, '../run');
 
-// Load overrides
-let env_vars, env_shared;
+var customEnvFile = path.join(__dirname, '../env.js');
 
-try {
-    env_shared = require('./env_shared.js');
-} catch (err) {
-    env_shared = {};
-    console.log('NOTICE: Missing or invalid env_shared.js');
+if (process.env.NODE_ENV === 'production') {
+    config.mode = 'production';
+} else if (process.env.NODE_ENV === 'testing') {
+    config.mode = 'testing';
+    customEnvFile = require.resolve('env.testing.js');
+} else if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    config.mode = 'development';
+} else {
+    console.error(`Unknown value for NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
+var defaultConfig = path.join(__dirname, 'env.default.js');
+
+vm.runInNewContext(fs.readFileSync(defaultConfig), config, {
+    filename: defaultConfig,
+    displayErrors: true
+});
+
+var code;
 try {
-    env_vars = require (`./env_${config.mode}.js`);
-} catch (err) {
-    env_vars = {};
-    console.log(`WARNING: Invalid or missing env_${config.mode}.js file found!`);
-  // console.log('More details:', err)
+    code = fs.readFileSync(config.customEnvFile);
+} catch (e) {
+    console.warn('Warning: missing `env.js\' file');
 }
 
-module.exports = merge.all([config, env_shared, env_vars]);
+if (code) {
+    vm.runInNewContext(fs.readFileSync(config.customEnvFile), config, {
+        filename: config.customEnvFile,
+        displayErrors: true
+    });
+}
+
+module.exports = config;

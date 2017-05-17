@@ -23,7 +23,9 @@ var nominations = require('./nominations');
 var app = express();
 
 // Log to file
-//app.use(morgan('combined', {stream: fs.createWriteStream(join(config.run, 'access.log'), {flags: 'a'})}));
+if (config.enableAccessLog) {
+    app.use(morgan('combined', {stream: fs.createWriteStream(join(config.run, 'access.log'), {flags: 'a'})}));
+}
 
 // Log to stdout for development
 if (config.verboseAccessLog) {
