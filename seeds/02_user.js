@@ -1,6 +1,6 @@
 var faker = require('faker');
 
-var auth = require('../config/passport');
+var auth = require('../apps/lib/auth');
 
 module.exports = async db => {
     for (var i = 0; i < 5; i++) {

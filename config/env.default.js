@@ -27,11 +27,6 @@ email = {
     fromAddress: 'noreply@codeforcharlotte.org',
     fromName: 'noreply', // TODO: nicer from_name?
     adminAddress: 'info@codeforcharlotte.org',
-    // TODO: email subjects should be in the email template, not the config file
-    subjects: {
-        confirm_email: 'Please confirm your email address',
-        account_activated: 'Your account has been activated'
-    }
 };
 
 // Secrets

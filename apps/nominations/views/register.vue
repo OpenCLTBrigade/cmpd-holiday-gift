@@ -1,3 +1,30 @@
+<subcomponent name="registration-field">
+    <template>
+        <div class="form-group has-feedback" :class="validate && {'has-error': errors.has(name) }">
+            <label :for="name">{{label}}</label>
+            <input :id="name" v-validate="validate" class="form-control" :name="name" :type="type" :value="devel[name]"/>
+            <i class="fa form-control-feedback" :class="{icon}"></i>
+            <p class="text-danger" v-if="validate && errors.has(name)">{{ errors.first(name) }}</p>
+        </div>
+    </template>
+    <script>
+        module.exports = {
+            props: {
+                name: {required: true},
+                label: {required: true},
+                validate: {default: null},
+                type: {default: 'text'},
+                icon: {default: null}
+            },
+            computed: {
+                devel: function () {
+                    return this.$parent.$root.devel;
+                }
+            }
+        };
+    </script>
+</subcomponent>
+
 <template>
   <auth-layout>
     <div class="container">
@@ -9,18 +36,8 @@
       <form @submit.prevent="validateBeforeSubmit" v-if="!formSubmitted" id="signup" name="register" method="post" action="/register">
         <div class="body">
             <!-- TODO: include errors.validation -->
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('firstname') }">
-              <label for="firstname">First Name</label>
-              <input v-validate="'required|regex:^[a-zA-Z-. ]+$|min:2'" class = "form-control" name="firstname"  type="text" />
-              <i class="fa form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('firstname')">{{ errors.first('firstname') }}</p>
-            </div>
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('lastname') }">
-              <label for="lastname">Last Name</label>
-              <input v-validate="'required|regex:^[a-zA-Z-. ]+$|min:2'" class = "form-control" name="lastname"  type="text" />
-              <i class="fa form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('lastname')">{{ errors.first('lastname') }}</p>
-            </div>
+            <registration-field name="firstname" label="First Name" validate="required|regex:^[a-zA-Z-. ]+$|min:1" />
+            <registration-field name="lastname" label="Last Name" validate="required|regex:^[a-zA-Z-. ]+$|min:1" />
             <div class="form-group has-feedback">
               <label for="affiliation">Affiliation</label>
               <select class="form-control" name="affiliation">
@@ -28,38 +45,14 @@
                 <option v-for="affiliate in affiliation" v-bind:value="affiliate.id">
                   {{ affiliate.type.toUpperCase() }} - {{ affiliate.name }}
                 </option>
-            </select>
+              </select>
               <i class="fa form-control-feedback"></i>
             </div>
-            <div class="form-group has-feedback">
-              <label for="rank">Rank</label>
-              <input class="form-control" name="rank" type="text" />
-              <i class="fa form-control-feedback"></i>
-            </div>
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('phone') }">
-              <label for="phone">Phone</label>
-              <input v-validate="'required'" class = "form-control" name="phone"  type="tel" />
-              <i class="fa fa-phone form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('phone')">{{ errors.first('phone') }}</p>
-            </div>
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('email') }">
-              <label for="email">Email Address</label>
-              <input v-validate="'required|email'" class = "form-control" name="email"  type="email" />
-              <i class="fa fa-envelope form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('email')">{{ errors.first('email') }}</p>
-            </div>
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('password') }">
-              <label for="password">Password</label>
-              <input v-validate="'required'" class = "form-control" name="password"  type="password" autocomplete="off" />
-              <i class="fa fa-lock form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</p>
-            </div>
-            <div class="form-group has-feedback" :class="{'has-error': errors.has('password_confirmation') }">
-              <label for="password_confirmation">Confirm Password</label>
-              <input v-validate="'confirmed:password'" class = "form-control" name="password_confirmation"  type="password" autocomplete="off" />
-              <i class="fa fa-lock form-control-feedback"></i>
-              <p class="text-danger" v-if="errors.has('password_confirmation')">{{ errors.first('password_confirmation') }}</p>
-            </div>
+            <registration-field name="rank" label="Rank" />
+            <registration-field name="phone" label="Phone" validate="required" />
+            <registration-field name="email" label="Email" validate="required|email" />
+            <registration-field name="password" label="Password" validate="required" type="password" icon="fa-lock" />
+            <registration-field name="password_confirmation" label="Password (again)" validate="confirmed:password" type="password" icon="fa-lock" />
             <div class="form-group has-feedback">
                 <!-- TODO: Add Recaptcha -->
             </div>
@@ -88,15 +81,8 @@
     Vue.use(VeeValidate);
 
     export default {
-        props: {affiliation: {required: true}},
-        data: () => {
-            return {
-                firstname: '',
-                lastname: '',
-                phone: '',
-                email: ''
-            };
-        },
+        props: ({affiliation: {required: true}, devel: {default: () => ({})}}),
+        data: () => ({formSubmitted: false}),
         components: {'auth-layout': require('./layouts/auth.vue')},
         methods: {
             validateBeforeSubmit(_e) {

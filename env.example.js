@@ -29,7 +29,7 @@
 //  user: 'username',
 //  password: '',
 //  database: 'gift'
-//}
+//};
 
 // **** Sample Production Mode Settings ****
 
@@ -41,3 +41,6 @@
 //enableHotReload = false;
 //verboseSeed = false;
 //buildAssets = true;
+//email.fromAddress = 'noreply@codeforcharlotte.org';
+//email.fromName = 'noreply';
+//email.adminAddress = 'info@codeforcharlotte.org';

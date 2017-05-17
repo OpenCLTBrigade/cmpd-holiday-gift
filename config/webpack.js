@@ -45,10 +45,11 @@ if (enableHotReload) {
 } else {
     options.devtool = 'source-map';
     options.plugins.push(new ExtractTextPlugin('style.css'));
-    options.module.rules.push({
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({use: 'css-loader'})
-    });
+    // TODO
+    // options.module.rules.push({
+    //     test: /\.css$/,
+    //     use: ExtractTextPlugin.extract({use: 'css-loader'})
+    // });
 }
 
 module.exports = options;

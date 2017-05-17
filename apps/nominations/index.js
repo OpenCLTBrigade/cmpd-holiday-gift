@@ -1,10 +1,7 @@
 var express = require('express');
-var passport = require('passport');
-var configurePassport = require('../../config/passport.js');
 var {join} = require('path');
 
 var expressVue = require('../lib/express-vue.js');
-var models = require('../../models');
 
 var app = express();
 
@@ -18,11 +15,6 @@ app.use(express.static(join(__dirname, 'assets'), {index: false}));
 
 // Use JSON middleware to expose vue data
 app.use(expressVue.jsonMiddleware);
-
-// Add authentication
-app.use(passport.initialize());
-app.use(passport.session());
-configurePassport(passport, models.user);
 
 // Load the routess
 app.use(require('./routes'));

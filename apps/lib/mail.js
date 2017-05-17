@@ -13,7 +13,8 @@ if (config.email.ses) {
     transporter = nodemailer.createTransport(config.email.smtp);
 } else {
     console.warn('Warning: email is not configured');
-    transporter = {
+    // TODO: if in testing mode, use process.send instead of stdout
+    transporter = nodemailer.createTransport({
         name: 'print',
         version: '1.0.0',
         send: (mail, callback) => {
@@ -22,14 +23,15 @@ if (config.email.ses) {
             input.pipe(process.stdout);
             input.on('end', () => callback(null, true));
         }
-    };
+    });
 }
 
 async function loadTemplate(dir, name) {
     var data = await new Promise((ok, fail) => {
-        fs.readFile(path.join(dir, `${name}.mail`), (err, data) => err ? fail(err) : ok(data));
+        fs.readFile(path.join(dir, `${name}.mail`), 'utf8', (err, data) => err ? fail(err) : ok(data));
     });
-    var [headers, contents] = data.split('\n\n', 2);
+    var [headers, ...contents] = data.split('\n\n');
+    contents = contents.join('\n\n');
     var subject = headers.match(/^subject: (.*)$/i)[1];
     return data => ({
         subject: mustache.render(subject, data),
@@ -48,7 +50,7 @@ var mailer = templatesPath => {
         if (!cache[templateName] || config.enableHotReload) {
             cache[templateName] = await loadTemplate(templatesPath, templateName);
         }
-        var message = cache[templateName].render(data);
+        var message = cache[templateName](data);
         await new Promise((ok, fail) => transporter.sendMail({
             from: data.from || config.email.fromAddress,
             to: data.to,

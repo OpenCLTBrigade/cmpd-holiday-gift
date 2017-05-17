@@ -1,7 +1,5 @@
 /*eslint no-console: "off"*/
 
-// TODO: use https and letsencrypt-express
-
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
@@ -10,15 +8,21 @@ var fs = require('fs');
 var webpack = require('webpack');
 var morgan = require('morgan');
 var compression = require('compression');
-var webpackMiddleware = require('webpack-dev-middleware');
-var webpackHotMiddleware = require('webpack-hot-middleware');
 var {join} = require('path');
 var express = require('express');
-var config = require('../config');
-var webpackConfig = require('../config/webpack');
+var passport = require('passport');
 
+var config = require('../config');
+
+if (config.enableHotReload) {
+    var webpackMiddleware = require('webpack-dev-middleware');
+    var webpackHotMiddleware = require('webpack-hot-middleware');
+}
+
+var webpackConfig = require('../config/webpack');
 var models = require('../models');
 var nominations = require('./nominations');
+var auth = require('./lib/auth');
 
 var app = express();
 
@@ -37,6 +41,8 @@ if (config.useCompression) {
     app.use(compression());
 }
 
+// TODO: handle and log errors
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -49,6 +55,11 @@ app.use(expressSession({
     resave: true,
     saveUninitialized: true
 }));
+
+// Add authentication
+app.use(passport.initialize());
+app.use(passport.session());
+auth.configurePassport(passport);
 
 // Mount the nominations app
 app.use(nominations);
