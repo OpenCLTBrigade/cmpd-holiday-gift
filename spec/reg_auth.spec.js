@@ -13,9 +13,9 @@ var sampleUser = {
     password: 'testuser123'
 };
 
-describe('Register & Authenticate tests', () => {
+describe('Authentication tests', () => {
 
-    var url = testServer({mode: 'all'});
+    var {url, server} = testServer({mode: 'all'});
 
     describe('Register test', function () {
         it('should redirect to /', function (done) {
@@ -25,6 +25,12 @@ describe('Register & Authenticate tests', () => {
             }, function (error, response, _body) {
                 expect(error).toBeNull();
                 expect(response.headers.location).toBe('/');
+                done();
+            });
+        });
+        it('should send an email to the user', done => {
+            server().once('message', event => {
+                expect(event.email).toContain(`To: ${sampleUser.email}`);
                 done();
             });
         });

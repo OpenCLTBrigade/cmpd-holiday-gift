@@ -50,7 +50,7 @@ function testServer({seed, mode}) {
         });
         info.dbPath = info.port = info.server = undefined;
     };
-    var mkurl = path => {
+    var url = path => {
         if (!info.port) {
             throw new Error('url: server not started yet');
         }
@@ -59,12 +59,14 @@ function testServer({seed, mode}) {
     if (mode === 'each') {
         beforeEach(asyncTest(before), 60000);
         afterEach(asyncTest(after), 60000);
-        return mkurl;
     } else { // all
         beforeAll(asyncTest(before), 60000);
         afterAll(asyncTest(after), 60000);
-        return mkurl;
     }
+    return {
+        url,
+        server: () => info.server
+    };
 }
 
 module.exports = {testServer, buildViews};

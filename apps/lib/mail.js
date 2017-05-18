@@ -11,9 +11,23 @@ if (config.email.ses) {
     transporter = nodemailer.createTransport(ses(config.email.ses));
 } else if (config.email.smtp) {
     transporter = nodemailer.createTransport(config.email.smtp);
+} else if (config.mode === 'testing' && process.send) {
+    transporter = nodemailer.createTransport({
+        name: 'print',
+        version: '1.0.0',
+        send: (mail, callback) => {
+            var message = '';
+            var pipe = mail.message.createReadStream();
+            pipe.setEncoding('utf8');
+            pipe.on('data', chunk => { message += chunk; });
+            pipe.on('end', () => {
+                process.send({email: message});
+                callback(null, true);
+            });
+        }
+    });
 } else {
     console.warn('Warning: email is not configured');
-    // TODO: if in testing mode, use process.send instead of stdout
     transporter = nodemailer.createTransport({
         name: 'print',
         version: '1.0.0',
