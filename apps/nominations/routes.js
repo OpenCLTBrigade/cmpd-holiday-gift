@@ -1,8 +1,10 @@
 var express = require('express');
 
 var dashboard = require('./controllers/dashboard'),
-    auth = require('./controllers/auth'),
-    household = require('./controllers/household');
+  auth = require('./controllers/auth'),
+  household = require('./controllers/household'),
+  user = require('./controllers/user'),
+  userApi = require('./controllers/user_api');
 
 var router = express.Router();
 
@@ -21,5 +23,9 @@ router.post('/household/new', auth.isLoggedIn, household.create.post);
 router.get('/household/:id/edit', auth.isLoggedIn, household.edit.get);
 router.post('/household/:id/edit', auth.isLoggedIn, household.edit.post);
 router.get('/households', auth.isLoggedIn, household.list);
+
+router.get('/users', auth.isLoggedIn, user.list);
+
+router.get('/api/users', auth.isLoggedIn, userApi.list);
 
 module.exports = router;
