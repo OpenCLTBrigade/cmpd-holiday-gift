@@ -4,6 +4,7 @@
 // Load common libraries for all views
 window.jQuery = window.$ = require('jquery');
 window.Vue = require('vue').default;
+window.Vue.use(require('vuetable-2'));
 require('admin-lte');
 require('bootstrap');
 
