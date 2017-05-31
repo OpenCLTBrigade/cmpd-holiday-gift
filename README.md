@@ -34,6 +34,14 @@ Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 `config/env.default.js` includes default values. You can copy
 `env.example.js` to `env.js` to override defaults.
 
+### Models
+
+#### Private Fields
+Add `private: true` to a field definition to prevent it from being output as JSON in API responses. 
+
+#### Encrypted Fields 
+
+
 ## Contact
 
 * Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
