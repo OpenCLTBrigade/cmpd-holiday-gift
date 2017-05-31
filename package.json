@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "admin-lte": "^2.3.11",
+    "axios": "0.16.1",
     "babel-preset-es2015": "^6.24.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.1",
