@@ -34,6 +34,14 @@ Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 `config/env.default.js` includes default values. You can copy
 `env.example.js` to `env.js` to override defaults.
 
+### Data tables
+
+We're using [vutable-2](https://github.com/ratiw/vuetable-2). 
+
+* [Documentation](https://github.com/ratiw/vuetable-2)
+* [More in-depth documentation / tutorial](https://github.com/ratiw/vuetable-2-tutorial)
+* [Sample API Endpoint](https://github.com/ratiw/vuetable-2-tutorial/wiki/prerequisite#sample-api-endpoint)
+
 ### Models
 
 #### Private Fields
