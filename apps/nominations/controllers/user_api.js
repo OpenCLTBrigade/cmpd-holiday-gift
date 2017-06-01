@@ -1,26 +1,59 @@
 var db = require('../../../models');
 
+const perPage = 2;
+
+function calculateNextPage(req, resultSet, currentPage, lastPage) {
+  if (currentPage >= lastPage) {
+    return null;
+  }
+  else if (currentPage < 1) {
+    return 1;
+  }
+  else {
+    return currentPage+1;
+  }
+}
+
+function calculatePreviousPage(req, resultSet, currentPage, lastPage) {
+  if (currentPage <= 1) {
+    return null;
+  }
+  else if (currentPage > lastPage) {
+    return lastPage;
+  }
+  else {
+    return (currentPage-1);
+  }
+}
+
 module.exports = {
   list: async (req, res) => {
-    let perPage = 2;
-    let offset = (!req.query.page || isNaN(req.query.page)) ? 0 : req.query.page;
-    var users = await db.user.findAndCountAll({
+
+    let currentPage = (!req.query.page || isNaN(req.query.page)) ? 1 : parseInt(req.query.page);
+
+    var resultSet = await db.user.findAndCountAll({
       limit: perPage,
-      offset: (offset - 1) * perPage
+      offset: (currentPage - 1) * perPage
     });
 
-    let resultSet = {
-      total: users.count,
+    let lastPage = Math.ceil(resultSet.count/perPage);
+    let baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
+
+    let nextPageNumber = calculateNextPage(req, resultSet, currentPage, lastPage);
+    let previousPageNumber = calculatePreviousPage(req, resultSet, currentPage, lastPage);
+
+    let retval = {
+      total: resultSet.count,
       per_page: perPage,
-      current_page: offset,
-      last_page: 'x',
-      next_page_url: 'x',
-      prev_page_url: 'x',
-      'from': offset,
-      'to': 'x',
-      data: users.rows
+      current_page: currentPage,
+      last_page: lastPage,
+      next_page_url: nextPageNumber !== null ? `${baseUrl}?page=${nextPageNumber}` : null,
+      prev_page_url: previousPageNumber !== null ? `${baseUrl}?page=${previousPageNumber}` : null,
+      'from': currentPage,
+      'to': (currentPage-1)+resultSet.rows.length,
+      data: resultSet.rows
     }
 
-    res.json(resultSet);
+    res.json(retval);
   }
 };
