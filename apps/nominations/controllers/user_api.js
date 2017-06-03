@@ -1,15 +1,11 @@
-const db = require('../../../models');
-const vuetableApi = require('../../lib/vuetable-api');
+const VuetableApi = require('../../lib/vuetable-api');
 
 module.exports = {
   list: async (req, res) => {
-    let apiDetail = vuetableApi.getPageAndOffset(req);
+    let apiClient = new VuetableApi(req);
 
-    var resultSet = await db.user.findAndCountAll({
-      limit: apiDetail.perPage,
-      offset: apiDetail.offset
-    });
+    var resultSet = await apiClient.fetch('user');
 
-    res.json(vuetableApi.parseResultSet(req, currentPage, resultSet));
+    res.json(resultSet);
   }
 };
