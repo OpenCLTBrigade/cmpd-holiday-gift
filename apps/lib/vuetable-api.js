@@ -6,6 +6,11 @@ class VuetableApi {
     this.itemsPerPage = itemsPerPage;
   }
 
+  /**
+   * @param  {String}  modelName  Name of model to work with
+   * @param  {Object}  [where={}] Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
+   * @return {Promise}            [description]
+   */
   async fetch(modelName, where = {}) {
     return await db[modelName].findAndCountAll({
       limit: this.itemsPerPage,
