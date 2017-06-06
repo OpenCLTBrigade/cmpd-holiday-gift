@@ -6,7 +6,7 @@ class VuetableApi {
     this.itemsPerPage = itemsPerPage;
   }
 
-  async fetch(modelName, where = '') {
+  async fetch(modelName, where = {}) {
     return await db[modelName].findAndCountAll({
       limit: this.itemsPerPage,
       offset: this.getCurrentOffset(),
