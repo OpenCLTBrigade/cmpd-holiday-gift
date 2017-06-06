@@ -1,10 +1,11 @@
-var db = require('../../../models');
+const VuetableApi = require('../../lib/vuetable-api');
 
 module.exports = {
   list: async (req, res) => {
-    var users = await db.user.findAll();
-    res.json({
-      data: users
-    });
+    let apiClient = new VuetableApi(req);
+
+    var resultSet = await apiClient.fetch('user');
+
+    res.json(resultSet);
   }
 };
