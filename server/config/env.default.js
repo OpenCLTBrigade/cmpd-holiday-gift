@@ -4,7 +4,7 @@
 /* eslint no-undef: "off" */
 
 // Web app settings
-port = 3000;
+port = 3001;
 buildAssets = true;
 useCompression = true;
 enableHotReload = true;

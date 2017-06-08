@@ -14,12 +14,6 @@ var passport = require('passport');
 
 var config = require('../config');
 
-if (config.enableHotReload) {
-    var webpackMiddleware = require('webpack-dev-middleware');
-    var webpackHotMiddleware = require('webpack-hot-middleware');
-}
-
-var webpackConfig = require('../config/webpack');
 var models = require('../models');
 var nominations = require('./nominations');
 var auth = require('./lib/auth');
@@ -77,27 +71,5 @@ initialize.push(models.sequelize.sync().then(function () {
 }));
 
 // Prepare to compile the views and web assets
-var compiler = webpack(webpackConfig);
-
-if (!config.enableHotReload) {
-    // In production mode, compile all assets once before starting the server
-    if (config.buildAssets) {
-        initialize.push(new Promise((success, fail) => compiler.run((err) => {
-            if (err) {
-                console.log('Webpack failed:', err);
-                fail();
-            } else {
-                success();
-            }
-        })));
-    }
-} else {
-    // In development mode, use hot reloading
-    app.use(webpackMiddleware(compiler, {
-        publicPath: webpackConfig.output.publicPath,
-        stats: 'minimal'
-    }));
-    app.use(webpackHotMiddleware(compiler));
-}
 
 module.exports = Promise.all(initialize).then(() => app);
