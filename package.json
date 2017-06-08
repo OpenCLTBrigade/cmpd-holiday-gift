@@ -10,7 +10,7 @@
     "start-server": "cd server && node apps/serve.js",
     "test-server": "jasmine",
     "lint-server": "cd server && eslint -f unix --fix --ext js,vue apps models seeds spec config",
-    "server-nodemon": "cd server && nodemon -w env.js -w apps -w models -w config -w node_modules --ignore '**/views/**/*.vue'"
+    "server-nodemon": "nodemon -w server/env.js -w server/apps -w server/models -w server/config -w node_modules --ignore '**/views/**/*.vue'"
   },
   "main": "server/apps/serve.js",
   "devDependencies": {
@@ -28,9 +28,6 @@
   "dependencies": {
     "admin-lte": "^2.3.11",
     "axios": "^0.16.1",
-    "react": "^15.5.4",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
     "babel-preset-es2015": "^6.24.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.1",
@@ -57,6 +54,8 @@
     "passport-local": "^1.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
     "react-scripts": "^1.0.7",
     "sequelize": "^3.30.4",
     "sequelize-encrypted": "^1.0.0",

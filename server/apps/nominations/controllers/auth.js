@@ -5,7 +5,7 @@ var sendMail = require('../../lib/mail')(path.join(__dirname, '../views/email'))
 
 var redirects = {
     successRedirect: '/',
-    failureRedirect: '/login'
+    // failureRedirect: '/login'
 };
 
 var db = require('../../../models');
@@ -16,7 +16,9 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         }
-        res.redirect('/login');
+        // TODO: Status Code...
+        res.json({'error': 'Unauthorized'});
+        // res.redirect('/login');
     },
 
     login: {
