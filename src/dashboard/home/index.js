@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Box from '../components/box';
 
 export default class Home extends React.Component {
-  render () {
+  render() {
     return (
-      <div>
+      <Box>
         Home
-      </div>
-    )
+      </Box>
+    );
   }
 }

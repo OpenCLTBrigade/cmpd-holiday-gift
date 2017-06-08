@@ -5,7 +5,7 @@ import Sidebar from './sidebar';
 import Home from './home';
 
 const ContentTitle = () => (
-  <section class="content-header">
+  <section className="content-header">
     Header
   </section>
 );

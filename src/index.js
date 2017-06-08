@@ -1,52 +1,58 @@
+// This is the main entry point of our application.
+// It tells WebPack what resources to load (css / fonts / etc) and creates the base routes for
+// our main modules such as the Dashboard and the Authentication-related screens.
+
+// Load core stuffs
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
+// JQuery? Hopefully we can remove this at some point :)
+import 'jquery';
+
+// Bootstrap
+import 'bootstrap/dist/css/bootstrap.css';
+import 'admin-lte/dist/css/AdminLTE.css';
+import 'admin-lte/dist/css/skins/skin-blue.css';
+
+// Font Awesome
+import 'font-awesome/css/font-awesome.css';
+import 'font-awesome/fonts/fontawesome-webfont.eot';
+import 'font-awesome/fonts/fontawesome-webfont.eot';
+import 'font-awesome/fonts/fontawesome-webfont.ttf';
+import 'font-awesome/fonts/fontawesome-webfont.woff';
+import 'font-awesome/fonts/fontawesome-webfont.woff2';
+import 'font-awesome/fonts/FontAwesome.otf';
+
+// Import core stylesheet
 import './index.css';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect
-} from 'react-router-dom'
+
+// Our React Components that this component uses
 import NotFound from './notFound';
 import Dashboard from './dashboard';
-import "jquery";
-import "bootstrap/dist/css/bootstrap.css";
-import "admin-lte/dist/css/AdminLTE.css";
-import "admin-lte/dist/css/skins/skin-blue.css";
+import Auth from './auth';
+import PrivateRoute from './components/privateRoute';
 
-function PrivateRoute ({component: Component, authed, ...rest}) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
-    />
-  )
-}
-
-function authenticated () {
+/**
+ * TODO: Put in actual authentication checks
+ * @return {boolean} Whether or not the user is authenticated
+ */
+function authenticated() {
   return true;
 }
 
-const Routes = (props) => (
+const Routes = props => (
   <Router {...props}>
     <Switch>
-      <PrivateRoute authed={authenticated()} path='/dashboard' component={Dashboard} />
-      <Route exact path="/login" component={App} />
-      <Route exact path="/register" component={App} />
-      <Route exact path="/password-reset" component={App} />
-      {/* TODO: Better redirect handling for auth */}
+      <PrivateRoute authed={authenticated()} path="/dashboard" component={Dashboard} />
+      {/* TODO: Change to !authenticated */}
+      <PrivateRoute authed={authenticated()} path="/auth" component={Auth} />
+      {/* TODO: 404 handler? */}
       {/* <Route component={NotFound} /> */}
     </Switch>
   </Router>
 );
 
-ReactDOM.render(
-  <Routes />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Routes />, document.getElementById('root'));
 registerServiceWorker();
