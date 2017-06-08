@@ -14,6 +14,7 @@ import NotFound from './notFound';
 import Dashboard from './dashboard';
 import "bootstrap/dist/css/bootstrap.css";
 import "admin-lte/dist/css/AdminLTE.css";
+import "admin-lte/dist/css/skins/skin-blue.css";
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
