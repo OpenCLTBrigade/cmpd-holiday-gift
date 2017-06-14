@@ -7,8 +7,14 @@ the [CMPD Explorers Christmas Project].
 
 Run `npm install` to install the dependencies.
 
-Then run `npm start` to start the server in development mode. Access
+### Run front end
+Then run `npm start` to start the front end in development mode. Access
 the application on http://localhost:3000.
+
+### Run back end
+In a separate terminal, run `npm run server-nodemon` to start the back end in development mode. The back end
+runs at http://localhost:3001 but the front end does not need to be configured to use the different port. Port
+forwarding is handled by `proxy` in the `package.json` :)
 
 ## Development
 
@@ -16,27 +22,34 @@ the application on http://localhost:3000.
 
 Install dependencies: `npm install`
 
+### Front end development
+
+...
+
+### Back end development
+
+Work in the `/server` directory.
+
 Optionally, set up a [mailtrap.io] account. Put your account info in
 `env.js` (see `env.example.js` for an example).
 
-Run app, and restart when code changes: `npm run nodemon`
-
 Seed database: `node seeds`
 
-Run tests: `npm test`
+Run tests: `npm test` <-- Not working yet
 
-Check and fix code style: `npm run lint`
+Check and fix code style: `npm run lint` <-- Not working yet
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
-### Local Configuration
+### Local Configuration - Back end
 
-`config/env.default.js` includes default values. You can copy
-`env.example.js` to `env.js` to override defaults.
+`server/config/env.default.js` includes default values. You can copy
+`server/env.example.js` to `server/env.js` to override defaults.
 
 ### Data tables
 
-We're using [vutable-2](https://github.com/ratiw/vuetable-2). 
+We *were* using [vutable-2](https://github.com/ratiw/vuetable-2). Stand by for readme updates when we
+complete replacing it.
 
 * [Documentation](https://github.com/ratiw/vuetable-2)
 * [More in-depth documentation / tutorial](https://github.com/ratiw/vuetable-2-tutorial)
@@ -45,9 +58,9 @@ We're using [vutable-2](https://github.com/ratiw/vuetable-2).
 ### Models
 
 #### Private Fields
-Add `private: true` to a field definition to prevent it from being output as JSON in API responses. 
+Add `private: true` to a field definition to prevent it from being output as JSON in API responses.
 
-#### Encrypted Fields 
+#### Encrypted Fields
 
 
 ## Contact
@@ -70,8 +83,8 @@ Email is sent using [nodemailer]. Email templates are rendered with
 [Mustache]. For development, we use [mailtrap.io] to test sending
 emails.
 
-The frontend is written in [Vue] and [Less]. It is assembled using
-[Webpack] and [vue-loader]. The theme is [AdminLTE], based on
+The frontend is written with [React]. It is assembled using
+[create-react-app]. The theme is [AdminLTE], based on
 [Bootstrap 3].
 
 Tests are run using [Jasmine]. Coding style is enforced by [eslint].
@@ -88,10 +101,8 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [mailtrap.io]: https://mailtrap.io
 [nodemailer]: https://nodemailer.com/
-[Vue]: https://vuejs.org/v2/api/
-[Less]: http://lesscss.org/features/
-[Webpack]: https://webpack.js.org/
-[vue-loader]: https://vue-loader.vuejs.org/en/
+[react]: https://facebook.github.io/react/
+[create-react-app]: https://github.com/facebookincubator/create-react-app
 [AdminLTE]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
 [Bootstrap 3]: http://getbootstrap.com/getting-started/
 [Jasmine]: https://jasmine.github.io/1.3/introduction

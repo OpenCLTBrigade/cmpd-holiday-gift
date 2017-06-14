@@ -18,10 +18,6 @@ router.post('/register', Auth.register.post);
 router.get('/register/confirm_email', Auth.confirm.get);
 
 // TODO: require more than isLoggedIn for these tasks
-router.get('/household/new', Auth.isLoggedIn, Household.create.get);
-router.post('/household/new', Auth.isLoggedIn, Household.create.post);
-router.get('/household/:id/edit', Auth.isLoggedIn, Household.edit.get);
-router.post('/household/:id/edit', Auth.isLoggedIn, Household.edit.post);
 router.get('/households', Auth.isLoggedIn, Household.list);
 
 router.get('/api/user', Auth.isLoggedIn, User.list);
