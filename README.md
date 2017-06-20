@@ -83,9 +83,10 @@ Email is sent using [nodemailer]. Email templates are rendered with
 [Mustache]. For development, we use [mailtrap.io] to test sending
 emails.
 
-The frontend is written with [React]. It is assembled using
+The frontend is written with [React]. It is scaffolded using
 [create-react-app]. The theme is [AdminLTE], based on
-[Bootstrap 3].
+[Bootstrap 3]. To use bootstrap components, use [react-bootstrap].
+We're using [styled-components] for custom styles (in place of LESS / SCSS).
 
 Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 
@@ -101,7 +102,9 @@ Tests are run using [Jasmine]. Coding style is enforced by [eslint].
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [mailtrap.io]: https://mailtrap.io
 [nodemailer]: https://nodemailer.com/
-[react]: https://facebook.github.io/react/
+[React]: https://facebook.github.io/react/
+[react-bootstrap]: https://react-bootstrap.github.io/
+[styled-components]: https://github.com/styled-components/styled-components
 [create-react-app]: https://github.com/facebookincubator/create-react-app
 [AdminLTE]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
 [Bootstrap 3]: http://getbootstrap.com/getting-started/
