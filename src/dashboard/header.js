@@ -1,22 +1,29 @@
-import React from 'react'
+import React from 'react';
 
 export default class Header extends React.Component {
-  render () {
-    let {props} = this;
+  componentWillMount() {}
+
+  toggleNavCollapsed() {
+    document.querySelector('body').classList.toggle('sidebar-collapse');
+    document.querySelector('body').classList.toggle('sidebar-open');
+  }
+
+  render() {
+    let { props } = this;
 
     return (
       <header className="main-header">
         <a href="/" className="logo">
           Home
         </a>
-        <nav className="navbar navbar-static-top" role="navigation">
-          <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <nav className="navbar navbar-static-top" role="navigation" onClick={() => this.toggleNavCollapsed()}>
+          <a href="#" className="sidebar-toggle">
             <span className="sr-only">Toggle</span>
           </a>
           <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
               <li className="user">
-                <a href="#" >
+                <a href="#">
                   <span className="hidden-xs">
                     TODO: Name
                   </span>
@@ -24,13 +31,13 @@ export default class Header extends React.Component {
               </li>
               <li className="dropdown user user-menu">
                 <a href="/logout">
-                  <i className="fa fa-sign-out"></i>Logout
+                  <i className="fa fa-sign-out" />Logout
                 </a>
               </li>
             </ul>
           </div>
         </nav>
       </header>
-    )
+    );
   }
 }
