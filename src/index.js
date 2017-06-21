@@ -8,9 +8,6 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
-// JQuery? Hopefully we can remove this at some point :)
-import 'jquery';
-
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.css';
@@ -29,7 +26,6 @@ import 'font-awesome/fonts/FontAwesome.otf';
 import './index.css';
 
 // Our React Components that this component uses
-import NotFound from './notFound';
 import Dashboard from './dashboard';
 import Auth from './auth';
 import PrivateRoute from './components/privateRoute';

@@ -9,8 +9,6 @@ export default class Header extends React.Component {
   }
 
   render() {
-    let { props } = this;
-
     return (
       <header className="main-header">
         <a href="/" className="logo">
