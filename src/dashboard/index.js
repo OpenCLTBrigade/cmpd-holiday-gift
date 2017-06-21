@@ -6,7 +6,9 @@ import Home from './home';
 
 const ContentTitle = () => (
   <section className="content-header">
-    Header
+    <h1>
+      Header
+    </h1>
   </section>
 );
 
@@ -20,13 +22,11 @@ export default class Dashboard extends React.Component {
         <div className="content-wrapper">
           <ContentTitle />
           <section className="content">
-            <div className="row">
-              <Route exact path="/dashboard" component={Home} />
-              {/* TODO: Finish routes */}
-              {/* <Route exact path="/dashboard/household" component={Home} /> */}
-              {/* <Route exact path="/dashboard/household/create" component={Home} /> */}
-              {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
-            </div>
+            <Route exact path="/dashboard" component={Home} />
+            {/* TODO: Finish routes */}
+            {/* <Route exact path="/dashboard/household" component={Home} /> */}
+            {/* <Route exact path="/dashboard/household/create" component={Home} /> */}
+            {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
           </section>
         </div>
       </div>
