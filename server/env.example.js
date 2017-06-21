@@ -34,13 +34,10 @@
 // **** Sample Production Mode Settings ****
 
 //databaseEncryptionKey = 'change me';
-//googleMapsAPIKey = 'change me';
 //sessionSecret = 'change me';
 //verboseAccessLog = false;
 //useCompression = false;
-//enableHotReload = false;
 //verboseSeed = false;
-//buildAssets = true;
 //email.fromAddress = 'noreply@codeforcharlotte.org';
 //email.fromName = 'noreply';
 //email.adminAddress = 'info@codeforcharlotte.org';
