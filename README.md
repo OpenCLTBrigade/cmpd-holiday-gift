@@ -58,7 +58,7 @@ Seed database: `node seeds`
 
 Run tests: `npm test` <-- Not working yet
 
-Check and fix code style: `npm run lint-server`
+Check and fix code style: `npm run lint`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
@@ -101,7 +101,9 @@ The frontend is written with [React]. It is scaffolded using
 [Bootstrap 3]. To use bootstrap components, use [react-bootstrap].
 We're using [styled-components] for custom styles (in place of LESS / SCSS).
 
-Back end tests are run using [Jasmine]. Coding style is enforced by [eslint].
+Back end tests are run using [Jasmine].
+
+Coding style is enforced by [eslint].
 
 
 [Code for Charlotte]: http://www.codeforcharlotte.org/

@@ -7,24 +7,24 @@ var db = require('../models');
 var config = require('../config');
 
 async function seed() {
-    await db.sequelize.sync();
-    var seq = Promise.resolve();
-    fs
+  await db.sequelize.sync();
+  var seq = Promise.resolve();
+  fs
         .readdirSync(__dirname)
         .filter(function (file) {
-            return file.match(/.js$/) && (file !== 'index.js');
+          return file.match(/.js$/) && (file !== 'index.js');
         })
         .forEach(async function (file) {
-            if (config.verboseSeed) {
-                seq = seq.then(() => console.log(`* Seeding from ${file}`));
-            }
-            seq = seq.then(() => require(path.join(__dirname, file))(db, config.verboseSeed));
+          if (config.verboseSeed) {
+            seq = seq.then(() => console.log(`* Seeding from ${file}`));
+          }
+          seq = seq.then(() => require(path.join(__dirname, file))(db, config.verboseSeed));
         });
-    await seq;
+  await seq;
 }
 
 if (require.main === module) {
-    seed();
+  seed();
 }
 
 module.exports = seed;

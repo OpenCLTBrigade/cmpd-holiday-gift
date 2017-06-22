@@ -7,7 +7,7 @@ var SessionStore = require('express-session-sequelize')(expressSession.Store);
 var fs = require('fs');
 var morgan = require('morgan');
 var compression = require('compression');
-var {join} = require('path');
+var { join } = require('path');
 var express = require('express');
 var passport = require('passport');
 
@@ -21,32 +21,32 @@ var app = express();
 
 // Log to file
 if (config.enableAccessLog) {
-    app.use(morgan('combined', {stream: fs.createWriteStream(join(config.run, 'access.log'), {flags: 'a'})}));
+  app.use(morgan('combined', { stream: fs.createWriteStream(join(config.run, 'access.log'), { flags: 'a' }) }));
 }
 
 // Log to stdout for development
 if (config.verboseAccessLog) {
-    app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // Compress contents
 if (config.useCompression) {
-    app.use(compression());
+  app.use(compression());
 }
 
 // TODO: handle and log errors
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enable persistent sessions
-var sequelizeSessionStore = new SessionStore({db: models.sequelize});
+var sequelizeSessionStore = new SessionStore({ db: models.sequelize });
 app.use(cookieParser());
 app.use(expressSession({
-    secret: config.sessionSecret,
-    store: sequelizeSessionStore,
-    resave: true,
-    saveUninitialized: true
+  secret: config.sessionSecret,
+  store: sequelizeSessionStore,
+  resave: true,
+  saveUninitialized: true
 }));
 
 // Add authentication
@@ -58,9 +58,9 @@ auth.configurePassport(passport);
 app.use(nominations);
 
 // Expose compiled assets
-app.use(express.static(join(__dirname, '../../build'), {index: false}));
+app.use(express.static(join(__dirname, '../../build'), { index: false }));
 app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, '../../build/index.html'));
+  res.sendFile(join(__dirname, '../../build/index.html'));
 });
 
 // Array of promises that must complete before starting the server
@@ -68,11 +68,11 @@ var initialize = [];
 
 // Sync the database
 initialize.push(models.sequelize.sync().then(function () {
-    if (config.verbose) {
-        console.log('Nice! Database sync succeeded.');
-    }
+  if (config.verbose) {
+    console.log('Nice! Database sync succeeded.');
+  }
 }).catch(function (err) {
-    console.log('Database sync failed:', err);
+  console.log('Database sync failed:', err);
 }));
 
 // Prepare to compile the views and web assets

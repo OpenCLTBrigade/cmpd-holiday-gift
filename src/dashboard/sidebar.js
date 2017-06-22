@@ -32,7 +32,8 @@ export default class Sidebar extends React.Component {
       <aside className="main-sidebar">
         <section className="sidebar">
           {/* <ul className="sidebar-menu">
-            <li v-for="item in menu" :className="`${item.name == current_section ? 'active' : ''} ${item.children ? 'treeview' : ''}`">
+            <li v-for="item in menu"
+            :className="`${item.name == current_section ? 'active' : ''} ${item.children ? 'treeview' : ''}`">
               <a :href="item.url || '#'">
                 <i v-if="item.icon" :className="item.icon"></i>
                 {{item.title}}

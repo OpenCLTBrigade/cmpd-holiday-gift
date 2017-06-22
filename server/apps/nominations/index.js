@@ -1,5 +1,4 @@
 var express = require('express');
-var {join} = require('path');
 
 var app = express();
 

@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    "process": true
+  },
+  "extends": ["plugin:react/recommended"],
+  "rules": {
+    "react/jsx-indent": ["error", 2],
+    "react/prop-types": ["off"],
+    "react/display-name": ["off"],
+    "no-global-assign": "error"
+  }
+}

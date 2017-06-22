@@ -13,35 +13,35 @@ config.pid = process.pid;
 var customEnvFile = path.join(__dirname, '../env.js');
 
 if (process.env.NODE_ENV === 'production') {
-    config.mode = 'production';
+  config.mode = 'production';
 } else if (process.env.NODE_ENV === 'testing') {
-    config.mode = 'testing';
-    customEnvFile = require.resolve('./env.testing.js');
+  config.mode = 'testing';
+  customEnvFile = require.resolve('./env.testing.js');
 } else if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
-    config.mode = 'development';
+  config.mode = 'development';
 } else {
-    console.error(`Unknown value for NODE_ENV: ${process.env.NODE_ENV}`);
+  console.error(`Unknown value for NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
 var defaultConfig = path.join(__dirname, 'env.default.js');
 
 vm.runInNewContext(fs.readFileSync(defaultConfig), config, {
-    filename: defaultConfig,
-    displayErrors: true
+  filename: defaultConfig,
+  displayErrors: true
 });
 
 var code;
 try {
-    code = fs.readFileSync(customEnvFile);
+  code = fs.readFileSync(customEnvFile);
 } catch (e) {
-    console.warn(`Warning: missing ${customEnvFile} file`);
+  console.warn(`Warning: missing ${customEnvFile} file`);
 }
 
 if (code) {
-    vm.runInNewContext(fs.readFileSync(customEnvFile), config, {
-        filename: config.customEnvFile,
-        displayErrors: true
-    });
+  vm.runInNewContext(fs.readFileSync(customEnvFile), config, {
+    filename: config.customEnvFile,
+    displayErrors: true
+  });
 }
 
 module.exports = config;
