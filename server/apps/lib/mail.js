@@ -19,7 +19,9 @@ if (config.email.ses) {
             var message = '';
             var pipe = mail.message.createReadStream();
             pipe.setEncoding('utf8');
-            pipe.on('data', chunk => { message += chunk; });
+            pipe.on('data', chunk => {
+                message += chunk;
+            });
             pipe.on('end', () => {
                 process.send({email: message});
                 callback(null, true);

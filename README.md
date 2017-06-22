@@ -3,18 +3,32 @@
 This application, developed by [Code for Charlotte], helps automate
 the [CMPD Explorers Christmas Project].
 
-## Usage
+## Quick start
 
 Run `npm install` to install the dependencies.
 
-### Run front end
+Run `node server/seeds` to generate sample data.
+
 Then run `npm start` to start the front end in development mode. Access
 the application on http://localhost:3000.
 
-### Run back end
-In a separate terminal, run `npm run server-nodemon` to start the back end in development mode. The back end
-runs at http://localhost:3001 but the front end does not need to be configured to use the different port. Port
-forwarding is handled by `proxy` in the `package.json` :)
+In a separate terminal, run `npm run server-nodemon` to start the back
+end in development mode. The back end will run on port 3001 and the
+development mode front end server will act as a reverse proxy for it.
+
+## Contact
+
+* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
+* Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
+* Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+
+## Production
+
+To prepare the server for production, run `npm run build`.
+
+Optionally run `npm prune --production`.
+
+Start the production-mode server with `NODE_ENV=production npm run start-server`
 
 ## Development
 
@@ -24,50 +38,49 @@ Install dependencies: `npm install`
 
 ### Front end development
 
-...
+Static assets are in `public/`. The react app is in `src/`.
+
+All front-end dependencies should be added using `npm install
+--save-dev`. They will be bundled into `build/` in production mode.
 
 ### Back end development
 
-Work in the `/server` directory.
+The entire backend is in `server/`, except for the dependencies and
+scripts which are in `package.json`.
 
-Optionally, set up a [mailtrap.io] account. Put your account info in
-`env.js` (see `env.example.js` for an example).
+Most commands in this section assume the working directory is `server/`.
+
+Optionally, set up a [mailtrap.io] account if you are working on
+emails. Put your account info in `env.js` (see `env.example.js` for an
+example).
 
 Seed database: `node seeds`
 
 Run tests: `npm test` <-- Not working yet
 
-Check and fix code style: `npm run lint` <-- Not working yet
+Check and fix code style: `npm run lint-server`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
-### Local Configuration - Back end
+### Back End Configuration
 
-`server/config/env.default.js` includes default values. You can copy
-`server/env.example.js` to `server/env.js` to override defaults.
+The default configuration is stored in `server/config/env.default.js`.
 
-### Data tables
+The values can be overridden in `server/env.js`. See `server/env.example.js` for examples.
 
-We *were* using [vutable-2](https://github.com/ratiw/vuetable-2). Stand by for readme updates when we
-complete replacing it.
-
-* [Documentation](https://github.com/ratiw/vuetable-2)
-* [More in-depth documentation / tutorial](https://github.com/ratiw/vuetable-2-tutorial)
-* [Sample API Endpoint](https://github.com/ratiw/vuetable-2-tutorial/wiki/prerequisite#sample-api-endpoint)
+The tests ignore `server/env.js` and use the values from `server/config/env.default.js` instead.
 
 ### Models
 
+Each file in `server/models/` describes a different table.
+
 #### Private Fields
-Add `private: true` to a field definition to prevent it from being output as JSON in API responses.
+
+The `private: true` property prevents a field from being output as JSON in API responses.
 
 #### Encrypted Fields
 
-
-## Contact
-
-* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
-* Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
-* Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+The `encrypted: true` property causes the field to be encrypted before storing it into the database.
 
 ## Dependencies Documentation
 
@@ -88,7 +101,8 @@ The frontend is written with [React]. It is scaffolded using
 [Bootstrap 3]. To use bootstrap components, use [react-bootstrap].
 We're using [styled-components] for custom styles (in place of LESS / SCSS).
 
-Tests are run using [Jasmine]. Coding style is enforced by [eslint].
+Back end tests are run using [Jasmine]. Coding style is enforced by [eslint].
+
 
 [Code for Charlotte]: http://www.codeforcharlotte.org/
 [CMPD Explorers Christmas Project]: http://charlottenc.gov/CMPD/Organization/Pages/SupportSvcs/Explorer_XmasProject.aspx

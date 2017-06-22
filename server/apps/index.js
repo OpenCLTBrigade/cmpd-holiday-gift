@@ -58,7 +58,7 @@ auth.configurePassport(passport);
 app.use(nominations);
 
 // Expose compiled assets
-app.use(express.static(join(__dirname, '../../build'), { index: false }));
+app.use(express.static(join(__dirname, '../../build'), {index: false}));
 app.get('*', (req, res) => {
     res.sendFile(join(__dirname, '../../build/index.html'));
 });

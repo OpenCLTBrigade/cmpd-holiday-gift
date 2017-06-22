@@ -14,14 +14,14 @@ var sequelize = new Sequelize(
   config.db.user,
   config.db.password,
   Object.assign(
-    {
+      {
       // TODO: move pool settings to config file
-      pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-      }
-    },
+          pool: {
+              max: 5,
+              min: 0,
+              idle: 10000
+          }
+      },
     config.db
   )
 );
@@ -32,38 +32,38 @@ var associations = [];
 // - fields marked `encrypted: true` are encrypted using `sequelize-encrypted`
 // - a 'vault' column is added if necessary to store the encrypted fields
 function define_table(name, model) {
-  var encrypt = null;
+    var encrypt = null;
 
-  function encrypt_field(column) {
-    if (!encrypt) {
-      encrypt = encrypted(Sequelize, config.databaseEncryptionKey);
-      model['vault'] = encrypt.vault('vault');
+    function encrypt_field(column) {
+        if (!encrypt) {
+            encrypt = encrypted(Sequelize, config.databaseEncryptionKey);
+            model['vault'] = encrypt.vault('vault');
+        }
+        return encrypt.field(column);
     }
-    return encrypt.field(column);
-  }
 
-  let privateFields = [];
+    let privateFields = [];
 
-  Object.keys(model).forEach(function(field) {
-    if (model[field].encrypted) {
-      model[field] = encrypt_field(model[field]);
-    }
-    if (model[field].private) {
-      privateFields.push(field);
-    }
-  });
+    Object.keys(model).forEach(function (field) {
+        if (model[field].encrypted) {
+            model[field] = encrypt_field(model[field]);
+        }
+        if (model[field].private) {
+            privateFields.push(field);
+        }
+    });
 
-  return sequelize.define(name, model, {
-    instanceMethods: {
-      toJSON: function() {
-        var values = Object.assign({}, this.dataValues);
-        privateFields.forEach(field => {
-          delete values[field];
-        });
-        return values;
-      }
-    }
-  });
+    return sequelize.define(name, model, {
+        instanceMethods: {
+            toJSON: function () {
+                var values = Object.assign({}, this.dataValues);
+                privateFields.forEach(field => {
+                    delete values[field];
+                });
+                return values;
+            }
+        }
+    });
 }
 
 // This model loader is different from the Seqeulize sample project
@@ -75,15 +75,15 @@ function define_table(name, model) {
 //   and performs associations such as `belongsTo`
 fs
   .readdirSync(__dirname)
-  .filter(function(file) {
-    return file.indexOf('.') !== 0 && file !== 'index.js';
+  .filter(function (file) {
+      return file.indexOf('.') !== 0 && file !== 'index.js';
   })
-  .forEach(function(file) {
-    var table = require(path.join(__dirname, file))(Sequelize);
-    db[table.name] = define_table(table.name, table.fields);
-    if (table.associate2) {
-      associations.push(() => table.associate(db[table.name], db));
-    }
+  .forEach(function (file) {
+      var table = require(path.join(__dirname, file))(Sequelize);
+      db[table.name] = define_table(table.name, table.fields);
+      if (table.associate2) {
+          associations.push(() => table.associate(db[table.name], db));
+      }
   });
 
 associations.forEach(associate => associate());

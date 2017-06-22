@@ -1,11 +1,11 @@
 var Express = require('express');
-var { Household, User, Auth, Dashboard } = require('./controllers');
+var {Household, User, Auth, Dashboard} = require('./controllers');
 
 var dashboard = require('./controllers/dashboard'),
-  auth = require('./controllers/auth'),
-  household = require('./controllers/household'),
-  user = require('./controllers/user'),
-  userApi = require('./controllers/user_api');
+    auth = require('./controllers/auth'),
+    household = require('./controllers/household'),
+    user = require('./controllers/user'),
+    userApi = require('./controllers/user_api');
 
 let router = Express.Router();
 router.get('/', Auth.isLoggedIn, Dashboard);
