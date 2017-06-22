@@ -5,12 +5,15 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prepack": "npm run build",
     "test-client": "react-scripts test --env=jsdom",
     "start-server": "cd server && node apps/serve.js",
     "test-server": "jasmine",
     "lint-server": "cd server && eslint -f unix --fix --ext js apps models seeds spec config",
-    "server-nodemon": "cd server && nodemon -w env.js -w apps -w models -w config -w ../node_modules'"
+    "server-nodemon": "cd server && nodemon apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules"
   },
+  "bin": { "cmpd-explorers": "server/apps/serve.js" },
+  "files": [ "build", "server" ],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "debug": "~2.6.3",

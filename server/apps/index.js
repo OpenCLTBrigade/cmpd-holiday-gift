@@ -5,7 +5,6 @@ var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
 var SessionStore = require('express-session-sequelize')(expressSession.Store);
 var fs = require('fs');
-var webpack = require('webpack');
 var morgan = require('morgan');
 var compression = require('compression');
 var {join} = require('path');
@@ -57,6 +56,12 @@ auth.configurePassport(passport);
 
 // Mount the nominations app
 app.use(nominations);
+
+// Expose compiled assets
+app.use(express.static(join(__dirname, '../../build'), { index: false }));
+app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, '../../build/index.html'));
+});
 
 // Array of promises that must complete before starting the server
 var initialize = [];
