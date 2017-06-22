@@ -12,23 +12,28 @@ module.exports = Sequelize => ({
     },
     address_street: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     address_street2: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     address_city: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     address_state: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     address_zip: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     cmpd_division: {
       type: Sequelize.STRING,

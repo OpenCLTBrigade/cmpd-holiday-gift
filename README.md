@@ -80,7 +80,7 @@ The `private: true` property prevents a field from being output as JSON in API r
 
 #### Encrypted Fields
 
-The `encrypted: true` property causes the field to be encrypted before storing it into the database.
+The `encrypt: true` property causes the field to be encrypted before storing it into the database.
 
 ## Dependencies Documentation
 

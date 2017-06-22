@@ -22,7 +22,8 @@ module.exports = Sequelize => ({
     },
     dob: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     race: {
       type: Sequelize.ENUM,
@@ -35,11 +36,13 @@ module.exports = Sequelize => ({
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     last4ssn: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     preferred_contact_method: {
       type: Sequelize.STRING,

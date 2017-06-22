@@ -22,7 +22,8 @@ module.exports = Sequelize => ({
     },
     dob: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     race: {
       type: Sequelize.ENUM,
@@ -31,7 +32,8 @@ module.exports = Sequelize => ({
     },
     last4ssn: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     free_or_reduced_lunch: {
       type: Sequelize.BOOLEAN,

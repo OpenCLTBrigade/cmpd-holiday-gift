@@ -12,7 +12,8 @@ module.exports = Sequelize => ({
     },
     phone_number: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     }
   },
   associate: function (phone, db) {
