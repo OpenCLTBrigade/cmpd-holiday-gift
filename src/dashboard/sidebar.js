@@ -53,7 +53,7 @@ export default class Sidebar extends React.Component {
           <ul className="sidebar-menu">
             <li>
               <a href="#">
-                TODO
+                <i className="fa fa-dashboard fa-fw" /> Dashboard
               </a>
             </li>
             <li className="treeview">
@@ -74,10 +74,34 @@ export default class Sidebar extends React.Component {
                 </li>
               </ul>
             </li>
+
             <li className="treeview">
-              <a href="#">
-                Test
+              <a onClick={this.toggleMenu}>
+                <i className="fa fa-users fa-fw" /> Users
+                <i className="fa fa-angle-left pull-right" />{' '}
               </a>
+              <ul className="treeview-menu">
+                <li className="">
+                  <a href="/user/create">
+                    <i className="fa fa-circle-o fa-fw" /> Add a User
+                  </a>
+                </li>
+                <li className="">
+                  <a href="/user">
+                    <i className="fa fa-circle-o fa-fw" /> Active Users
+                  </a>
+                </li>
+                <li className="">
+                  <a href="/user/pending">
+                    <i className="fa fa-circle-o fa-fw" /> Pending Registrations
+                  </a>
+                </li>
+                <li className="">
+                  <a href="/affiliation">
+                    <i className="fa fa-circle-o fa-fw" /> List Affiliations
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
         </section>
