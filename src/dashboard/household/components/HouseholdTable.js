@@ -98,7 +98,7 @@ export default class HouseholdTable extends Component {
         search
       >
         <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
-        <TableHeaderColumn dataField="head_of_household_name">
+        <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
         <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>Children</TableHeaderColumn>
