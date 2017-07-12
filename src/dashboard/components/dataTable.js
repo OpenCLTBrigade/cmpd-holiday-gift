@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable } from 'react-bootstrap-table';
 
 const mockApiProvider = {
   fetch(page) {
@@ -29,7 +29,7 @@ const mockApiProvider = {
   }
 };
 
-export default class HouseholdTable extends Component {
+export default class DataTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,27 +49,8 @@ export default class HouseholdTable extends Component {
     });
   }
 
-  // It's a data format example.
-  priceFormatter(cell, row) {
-    return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
-  }
-
   handlePageChange(page) {
     this.fetchData(page);
-  }
-
-  uploadedFormFormatter(cell, row) {
-    return <i className="fa fa-check" />;
-  }
-
-  actionCellFormatter(cell, row) {
-    return (
-      <div>
-        <button className="btn btn-sm btn-primary">Show</button>
-        <button className="btn btn-sm btn-info">Edit</button>
-        <button className="btn btn-sm btn-danger">Delete</button>
-      </div>
-    );
   }
 
   render() {
@@ -95,21 +76,9 @@ export default class HouseholdTable extends Component {
         hover
         remote
         pagination
-        search
+        search={this.props.search || false}
       >
-        <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
-        <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
-          Head of Household
-        </TableHeaderColumn>
-        <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>Children</TableHeaderColumn>
-        <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${cell.name_first} ${cell.name_last}`}>
-          Nominated by
-        </TableHeaderColumn>
-        <TableHeaderColumn dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
-          Uploaded Form
-        </TableHeaderColumn>
-        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>Actions</TableHeaderColumn>
-        <TableHeaderColumn dataField="surname">Review</TableHeaderColumn>
+        {this.props.children}
       </BootstrapTable>
     );
   }
