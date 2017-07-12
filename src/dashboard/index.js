@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import Header from './header';
 import Sidebar from './sidebar';
 import Home from './home';
+import HouseholdIndex from './household/householdIndex.js';
 
 const ContentTitle = () => (
   <section className="content-header">
@@ -24,7 +25,7 @@ export default class Dashboard extends React.Component {
           <section className="content">
             <Route exact path="/dashboard" component={Home} />
             {/* TODO: Finish routes */}
-            {/* <Route exact path="/dashboard/household" component={Home} /> */}
+            <Route exact path="/dashboard/household" component={HouseholdIndex} />
             {/* <Route exact path="/dashboard/household/create" component={Home} /> */}
             {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
           </section>

@@ -24,6 +24,9 @@ import 'font-awesome/fonts/FontAwesome.otf';
 // Import core stylesheet
 import './index.css';
 
+// react-bootstrap-table
+import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
+
 // Our React Components that this component uses
 import Dashboard from './dashboard';
 import Auth from './auth';
