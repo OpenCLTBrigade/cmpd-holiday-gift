@@ -4,6 +4,9 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
+import AffiliationList from './affiliations/AffiliationList';
+import UsersList from './users/UsersList';
+import PendingUsersList from './users/PendingUsersList';
 
 const ContentTitle = () => (
   <section className="content-header">
@@ -28,6 +31,9 @@ export default class Dashboard extends React.Component {
             <Route exact path="/dashboard/household" component={HouseholdIndex} />
             {/* <Route exact path="/dashboard/household/create" component={Home} /> */}
             {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
+            <Route exact path="/dashboard/affiliation" component={AffiliationList} />
+            <Route exact path="/dashboard/user" component={UsersList} />
+            <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
           </section>
         </div>
       </div>
