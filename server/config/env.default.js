@@ -28,7 +28,7 @@ email = {
 };
 
 // Secrets
-sessionSecret = 'codeforclt-devmode';
+jwtSecret = '452e39e25362a0d03914';
 databaseEncryptionKey = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D155469';
 
 // TODO: these enums should not be in the config file

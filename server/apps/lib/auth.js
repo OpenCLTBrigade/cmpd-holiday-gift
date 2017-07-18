@@ -41,6 +41,7 @@ function configurePassport(passport) {
         password: hashedPassword,
         confirmation_code: confirmCode
       });
+      // TODO: regroup phases of sign-in process into same lib file
       asyncDo(sendMail('verify-email', {
         to: newUser.dataValues.email,
         user: newUser,
