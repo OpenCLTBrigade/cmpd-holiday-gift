@@ -28,9 +28,9 @@ import './index.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 
 // Our React Components that this component uses
-import Dashboard from './dashboard';
-import Auth from './auth';
-import PrivateRoute from './components/privateRoute';
+import Dashboard from 'app/dashboard';
+import Auth from 'app/auth';
+import PrivateRoute from 'app/components/privateRoute';
 
 /**
  * TODO: Put in actual authentication checks
