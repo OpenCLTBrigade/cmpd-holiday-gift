@@ -3,10 +3,14 @@ import axios from 'axios';
 
 // Axios config object
 type RequestConfigType = {
-  baseURL: string,
+  baseURL?: string,
   headers?: Object,
   params?: Object,
-  headers?: Object
+  headers?: Object,
+  url?: string,
+  method?: string,
+  params?: Object,
+  data?: Object
 };
 
 /**
@@ -14,7 +18,8 @@ type RequestConfigType = {
  * @type {RequestConfigType}
  */
 const _requestConfig: RequestConfigType = {
-  baseURL: `${window.location.protocol}//${window.location.hostname}/api/`
+  baseURL: `${window.location.protocol}//${window.location.hostname}/api/`,
+  method: 'get'
 };
 
 /**
@@ -35,11 +40,16 @@ const preProcessError = function(err: Object, next) {
   next(err);
 };
 
-const makeRequest = function(method: string, url: string, data: ?Object = null, config: Object = {}) {
-  config.url = url;
-  config.method = method.toLowerCase();
+const makeRequest = function(method: string, url: string, data: ?Object = null, config: ?RequestConfigType = null) {
+  if (config === null) {
+    config = {
+      baseURL: '',
+      url: url,
+      method: method.toLowerCase()
+    };
+  }
 
-  if (data !== null) {
+  if (config !== undefined && data !== null) {
     if (config.method === 'get' || config.method === 'delete') {
       config.params = data;
     } else {
