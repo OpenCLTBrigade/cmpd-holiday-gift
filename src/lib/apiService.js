@@ -13,7 +13,7 @@ type RequestConfigType = {
  * Default axios config object
  * @type {RequestConfigType}
  */
-let _requestConfig: RequestConfigType = {
+const _requestConfig: RequestConfigType = {
   baseURL: `${window.location.protocol}//${window.location.hostname}/api/`
 };
 
@@ -66,15 +66,15 @@ let apiService = {
   },
 
   post: function post(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('get', url, data, config);
+    return makeRequest('post', url, data, config);
   },
 
   put: function put(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('get', url, data, config);
+    return makeRequest('put', url, data, config);
   },
 
   delete: function del(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('get', url, data, config);
+    return makeRequest('delete', url, data, config);
   }
 };
 

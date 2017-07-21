@@ -14,24 +14,22 @@ export default class PendingUsersList extends Component {
   render() {
     return (
       <DataTable search={true}>
-        <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
-        <TableHeaderColumn dataField="name_last">
-          Last Name
+        <TableHeaderColumn dataField="id" hidden isKey>
+          Id
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="name_first">
-          First Name
+        <TableHeaderColumn dataField="name_last">Last Name</TableHeaderColumn>
+        <TableHeaderColumn dataField="name_first">First Name</TableHeaderColumn>
+        <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>
+          Email
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>Email</TableHeaderColumn>
         <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${cell.name_first} ${cell.name_last}`}>
           Phone
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="uploaded_form">
-          Affiliation
+        <TableHeaderColumn dataField="uploaded_form">Affiliation</TableHeaderColumn>
+        <TableHeaderColumn dataField="uploaded_form">Location</TableHeaderColumn>
+        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
+          Actions
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="uploaded_form">
-          Location
-        </TableHeaderColumn>
-        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>Actions</TableHeaderColumn>
       </DataTable>
     );
   }
