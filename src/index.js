@@ -1,7 +1,7 @@
+// @flow
 // This is the main entry point of our application.
 // It tells WebPack what resources to load (css / fonts / etc) and creates the base routes for
 // our main modules such as the Dashboard and the Authentication-related screens.
-
 // Load core stuffs
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,7 +19,7 @@ import 'font-awesome/fonts/fontawesome-webfont.eot';
 import 'font-awesome/fonts/fontawesome-webfont.ttf';
 import 'font-awesome/fonts/fontawesome-webfont.woff';
 import 'font-awesome/fonts/fontawesome-webfont.woff2';
-import 'font-awesome/fonts/FontAwesome.otf';
+// import 'font-awesome/fonts/FontAwesome.otf';
 
 // Import core stylesheet
 import './index.css';
@@ -36,12 +36,14 @@ import PrivateRoute from 'app/components/privateRoute';
  * TODO: Put in actual authentication checks
  * @return {boolean} Whether or not the user is authenticated
  */
-function authenticated() {
+
+
+function authenticated(): boolean{
   return true;
 }
 
-const Routes = props => (
-  <Router {...props}>
+const Routes = (): React.Element<*> =>
+  <Router>
     <Switch>
       <PrivateRoute authed={authenticated()} path="/dashboard" component={Dashboard} />
       {/* TODO: Change to !authenticated */}
@@ -49,8 +51,7 @@ const Routes = props => (
       {/* TODO: 404 handler? */}
       {/* <Route component={NotFound} /> */}
     </Switch>
-  </Router>
-);
+  </Router>;
 
 ReactDOM.render(<Routes />, document.getElementById('root'));
 registerServiceWorker();

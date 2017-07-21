@@ -1,7 +1,8 @@
+// @flow
 import React, { Component } from 'react';
 
 export default class NotFound extends Component {
-  render() {
+  render(): React.Element<*> {
     return (
       <div>
         404
