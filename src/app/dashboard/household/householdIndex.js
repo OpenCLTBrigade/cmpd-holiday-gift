@@ -4,10 +4,6 @@ import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 
 export default class HouseholdIndex extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>

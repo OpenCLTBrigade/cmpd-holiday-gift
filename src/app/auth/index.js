@@ -13,7 +13,7 @@ export default class Auth extends React.Component {
     return (
       <div className="auth-wrapper">
         <div className="auth-header login-box">
-          <img src={logo} title="CMPD Explorers Christmas Project" />
+          <img src={logo} title="CMPD Explorers Christmas Project" alt="CMPD Explorers Christmas Project"/>
           <div className="made-by">
             By Code for Charlotte
           </div>

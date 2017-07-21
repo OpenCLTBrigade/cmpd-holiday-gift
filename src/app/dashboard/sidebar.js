@@ -1,9 +1,24 @@
+// @flow
 import React from 'react';
 
-export default class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
+type MenuItemType = {
+  name?: string,
+  url?: string,
+  title: string,
+  icon?: string,
+  children?: Array<SubMenuItemType>
+};
 
+type SubMenuItemType = {
+  url: string,
+  title: string
+};
+
+export default class Sidebar extends React.Component {
+  menu: Array<MenuItemType>;
+
+  constructor(props: Object) {
+    super(props)
     this.menu = [
       {
         name: 'dashboard',
@@ -25,11 +40,11 @@ export default class Sidebar extends React.Component {
     ];
   }
 
-  toggleMenu(event) {
-    event.target.parentElement.classList.toggle('active');
+  toggleMenu(e: Object) {
+    e.target.parentElement.classList.toggle('active');
   }
 
-  render() {
+  render(): React.Element<*> {
     // TODO: Finish this
     // const navItems = this.menu.map(item => )
     return (
@@ -53,7 +68,7 @@ export default class Sidebar extends React.Component {
           </ul> */}
           <ul className="sidebar-menu">
             <li>
-              <a href="#">
+              <a>
                 <i className="fa fa-dashboard fa-fw" /> Dashboard
               </a>
             </li>

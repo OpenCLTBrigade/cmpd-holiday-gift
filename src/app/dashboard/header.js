@@ -1,27 +1,30 @@
+// @flow
 import React from 'react';
 
 export default class Header extends React.Component {
   componentWillMount() {}
 
-  toggleNavCollapsed() {
-    document.querySelector('body').classList.toggle('sidebar-collapse');
-    document.querySelector('body').classList.toggle('sidebar-open');
-  }
+  toggleNavCollapsed = () => {
+    let body: ?HTMLElement = document.querySelector('body');
+    if (!(body instanceof HTMLElement)) throw new Error("Expected to find sidebar element.");
+    body.classList.toggle('sidebar-collapse');
+    body.classList.toggle('sidebar-open');
+  };
 
-  render() {
+  render(): React.Element<*> {
     return (
       <header className="main-header">
         <a href="/" className="logo">
           Home
         </a>
-        <nav className="navbar navbar-static-top" role="navigation" onClick={() => this.toggleNavCollapsed()}>
-          <a href="#" className="sidebar-toggle">
+        <nav className="navbar navbar-static-top" onClick={this.toggleNavCollapsed}>
+          <a className="sidebar-toggle">
             <span className="sr-only">Toggle</span>
           </a>
           <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
               <li className="user">
-                <a href="#">
+                <a>
                   <span className="hidden-xs">
                     TODO: Name
                   </span>

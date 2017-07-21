@@ -3,9 +3,6 @@ import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
 export default class List extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   uploadedFormFormatter(cell, row) {
     return <i className="fa fa-check" />;

@@ -18,13 +18,13 @@ export default props => (
       <hr />
       <div className="row">
         <div className="col-xs-6">
-          <a className="btn btn-link" href="#">
+          <a className="btn btn-link">
             {' '}<i className="fa fa-lock" />
             Forgot Password
           </a>
         </div>
         <div className="col-xs-6">
-          <a className="btn btn-link pull-right" href="#">
+          <a className="btn btn-link pull-right">
             {' '}
             <i className="fa fa-user-plus" />
             Register
