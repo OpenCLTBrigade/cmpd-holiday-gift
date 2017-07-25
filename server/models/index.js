@@ -66,7 +66,7 @@ function define_table(name, model) {
   });
 }
 
-// This model loader is different from the Seqeulize sample project
+// This model loader is different from the Sequelize sample project
 // Each module is passed only the `Sequelize` object, not `sequelize`
 // Modules in this folder should export an object with the following fields:
 // - name: the table name
@@ -81,7 +81,7 @@ fs
   .forEach(function (file) {
     var table = require(path.join(__dirname, file))(Sequelize);
     db[table.name] = define_table(table.name, table.fields);
-    if (table.associate2) {
+    if (table.associate) {
       associations.push(() => table.associate(db[table.name], db));
     }
   });

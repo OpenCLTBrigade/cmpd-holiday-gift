@@ -6,10 +6,7 @@ module.exports = {
     var users = await db.user.findAll();
 
     // TODO: Passing in where clauses as needed... http://docs.sequelizejs.com/manual/tutorial/querying.html#where
-    res.renderData('user/list', 'Users', {
-      users,
-      user: req.user
-    });
+    res.json({users});
   },
 
   edit: {

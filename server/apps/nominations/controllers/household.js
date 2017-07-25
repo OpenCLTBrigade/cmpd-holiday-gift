@@ -2,9 +2,9 @@ var db = require('../../../models');
 
 module.exports = {
   list: async (req, res) => {
-        // TODO: paging, search
+    // TODO: paging, search
     var households = await db.household.findAll();
-    res.renderData('household/list', 'Households', { households, user: req.user });
+    res.json({households});
   },
   edit: {
     get: async (req, res) => {
@@ -18,7 +18,7 @@ module.exports = {
         attributes: ['id', 'name'],
         where: { type: 'cms' }
       });
-      res.renderData('household/edit', 'Edit Household', { household, schools, user: req.user });
+      res.json({household, schools});
     },
     post: (_req, _res) => {
 
