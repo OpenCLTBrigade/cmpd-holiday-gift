@@ -27,7 +27,7 @@ const _requestConfig: RequestConfigType = {
  * @param  {Object}   response Request response
  * @param  {Function} next     resolve(data)
  */
-const preProcessResponse = function(response: Object, next) {
+const preProcessResponse = function (response: Object, next) {
   next(response.data);
 };
 
@@ -36,11 +36,11 @@ const preProcessResponse = function(response: Object, next) {
  * @param  {Object}   err
  * @param  {Function} next     reject(error)
  */
-const preProcessError = function(err: Object, next) {
+const preProcessError = function (err: Object, next) {
   next(err);
 };
 
-const makeRequest = function(method: string, url: string, data: ?Object = null, config: ?RequestConfigType = null) {
+const makeRequest = function (method: string, url: string, data: ?Object = null, config: ?RequestConfigType = null) {
   if (config === null) {
     config = {
       baseURL: '',

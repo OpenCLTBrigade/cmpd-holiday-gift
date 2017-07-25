@@ -1,7 +1,6 @@
 /*eslint no-console: "off"*/
 
 var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
 var fs = require('fs');
 var morgan = require('morgan');
 var compression = require('compression');
