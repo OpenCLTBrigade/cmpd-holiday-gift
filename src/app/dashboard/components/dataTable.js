@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
@@ -5,7 +6,7 @@ const mockApiProvider = {
   fetch(page) {
     return new Promise((resolve, reject) => {
       resolve({
-        total: 1,
+        total: 150,
         items: [
           {
             id: 1,
@@ -29,8 +30,18 @@ const mockApiProvider = {
   }
 };
 
+type PropType = {
+  search: boolean,
+  children: ?React.Element<*>
+};
 export default class DataTable extends Component {
-  constructor(props) {
+  state: {
+    items: Array<*>,
+    totalSize: number,
+    page: number
+  };
+
+  constructor(props: PropType) {
     super(props);
     this.state = {
       items: [],
@@ -43,17 +54,17 @@ export default class DataTable extends Component {
     this.fetchData();
   }
 
-  fetchData(page = this.state.page) {
+  fetchData = (page: number = this.state.page) => {
     mockApiProvider.fetch(page).then(data => {
       this.setState({ items: data.items, totalSize: data.total, page });
     });
-  }
+  };
 
-  handlePageChange(page) {
+  handlePageChange = (page: number) => {
     this.fetchData(page);
-  }
+  };
 
-  render() {
+  render(): React.Element<*> {
     var options = {
       sizePerPage: 25, // which size per page you want to locate as default
       pageStartIndex: 0, // where to start counting the pages
