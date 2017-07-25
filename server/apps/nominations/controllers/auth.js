@@ -11,14 +11,14 @@ module.exports = {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.json({ 'error': 'Unauthorized' });
+    res.send(403);
   },
 
-  login: passport.authenticate('local-signin', redirects),
+  login: passport.authenticate('local-signin'),
 
   // TODO: the validation error isn't being handled properly:
   // "Unhandled rejection SequelizeValidationError: Validation error: Validation isEmail failed"
-  register: passport.authenticate('local-signup', redirects),
+  register: passport.authenticate('local-signup'),
 
   confirm: {
     get: function (req, res) {
@@ -28,6 +28,7 @@ module.exports = {
       // TODO: handle email sending errors
       sendMail('admin-approval', { to: config.email.adminAddress });
       res.renderData('confirm', 'Confirm Email Address', {});
+      // TODO move user registration steps into separate module
     }
   }
 };

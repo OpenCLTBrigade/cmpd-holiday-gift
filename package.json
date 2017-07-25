@@ -12,8 +12,13 @@
     "lint": "eslint -f unix --fix --ext js server src",
     "server-nodemon": "cd server && nodemon apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules"
   },
-  "bin": { "cmpd-explorers": "server/apps/serve.js" },
-  "files": [ "build", "server" ],
+  "bin": {
+    "cmpd-explorers": "server/apps/serve.js"
+  },
+  "files": [
+    "build",
+    "server"
+  ],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "debug": "~2.6.3",
@@ -49,7 +54,7 @@
     "nodemailer": "^4.0.1",
     "nodemailer-ses-transport": "^1.5.1",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
+    "passport-jwt": "^2.2.1",
     "sequelize": "^3.30.4",
     "sequelize-encrypted": "^1.0.0",
     "sqlite3": "^3.1.8",
