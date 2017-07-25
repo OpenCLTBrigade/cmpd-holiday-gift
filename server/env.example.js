@@ -34,7 +34,8 @@
 // **** Sample Production Mode Settings ****
 
 //databaseEncryptionKey = 'change me';
-//sessionSecret = 'change me';
+//jwtSecrets.auth = 'changeme';
+//jwtSecrets.nominations = 'changeme';
 //verboseAccessLog = false;
 //useCompression = false;
 //verboseSeed = false;

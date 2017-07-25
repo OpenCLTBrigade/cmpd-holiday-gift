@@ -6,7 +6,8 @@ var config = require('../../config');
 var app = express();
 
 // Add authentication
-app.use(auth.authMiddleware(config.jwtSecrets.nominations));
+app.use(auth.authMiddleware(config.jwtSecrets.auth));
+app.use(auth.sessionMiddleware);
 
 // Load the routess
 app.use(require('./routes'));

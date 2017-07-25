@@ -1,20 +1,18 @@
 /*eslint no-console: "off"*/
 
 var bodyParser = require('body-parser');
-var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
-var SessionStore = require('express-session-sequelize')(expressSession.Store);
 var fs = require('fs');
 var morgan = require('morgan');
 var compression = require('compression');
 var { join } = require('path');
 var express = require('express');
-var passport = require('passport');
 
 var config = require('../config');
 
 var models = require('../models');
 var nominations = require('./nominations');
+var authApp = require('./auth');
 var auth = require('./lib/auth');
 
 var app = express();
@@ -37,25 +35,10 @@ if (config.useCompression) {
 // TODO: handle and log errors
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-// Enable persistent sessions
-var sequelizeSessionStore = new SessionStore({ db: models.sequelize });
-app.use(cookieParser());
-app.use(expressSession({
-  secret: config.sessionSecret,
-  store: sequelizeSessionStore,
-  resave: true,
-  saveUninitialized: true
-}));
-
-// Add authentication
-app.use(passport.initialize());
-app.use(passport.session());
-auth.configurePassport(passport);
-
-// Mount the nominations app
-app.use(nominations);
+// Mount the apps
+app.use('/nominations', nominations);
+app.use('/auth', authApp);
 
 // Expose compiled assets
 app.use(express.static(join(__dirname, '../../build'), { index: false }));

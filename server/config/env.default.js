@@ -28,8 +28,13 @@ email = {
 };
 
 // Secrets
-sessionSecret = 'codeforclt-devmode';
+jwtSecrets = {
+  auth: '452e39e25362a0d03914',
+  nominations: 'd4d1709e5ed2fb32ae56564'
+};
 databaseEncryptionKey = '53E19CAB12F077ECDCC03C01BC621C8E950F9198C568A41A6DFDCE2E2D155469';
+appTokenLifetime = '10m';
+authTokenLifetime = '1d';
 
 // TODO: these enums should not be in the config file
 

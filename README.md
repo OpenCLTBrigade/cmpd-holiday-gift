@@ -87,7 +87,7 @@ The `encrypt: true` property causes the field to be encrypted before storing it 
 The backend is an [Express] application running in [Node]. Some newer
 [ES6 features] are used.
 
-Authentication is provided by [Passport]. Passwords are encrypted using [bcrypt].
+Authentication is provided by [express-jwt] and [node-jsonwebtoken]. Passwords are encrypted using [bcrypt].
 
 Data is stored in an [Sqlite] database using the [Sequelize] ORM. Some of
 the fields are encrypted using [sequelize-encrpyted].
@@ -111,7 +111,8 @@ Coding style is enforced by [eslint].
 [Node]: https://nodejs.org/dist/latest-v6.x/docs/api/
 [Express]: https://expressjs.com/en/4x/api.html
 [ES6 features]: https://github.com/lukehoban/es6features
-[Passport]: http://passportjs.org/docs
+[express-jwt]: https://github.com/auth0/express-jwt
+[node-jsonwebtoken]: https://github.com/auth0/node-jsonwebtoken
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
 [Sqlite]: https://sqlite.org/docs.html
 [Sequelize]: http://docs.sequelizejs.com/en/v3/
