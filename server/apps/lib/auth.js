@@ -2,8 +2,6 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var db = require('../../models');
 var { join } = require('path');
-var sendMail = require('./mail')(join(__dirname, '../nominations/views/email'));
-var asyncDo = require('./asyncDo');
 var config = require('../../config');
 var jwtMiddleware = require('express-jwt');
 var jwt = require('jsonwebtoken');
@@ -45,14 +43,14 @@ async function sessionMiddleware(req, res, next) {
 }
 
 function makeToken(payload, secret, expiresIn) {
-  return jwt.sign(payload, secret, {expiresIn});
+  return jwt.sign(payload, secret, { expiresIn });
 }
 
 function ensureLoggedIn(req, res, next) {
-    if (req.user) {
-      return next();
-    }
-    res.send(403);
+  if (req.user) {
+    return next();
+  }
+  res.send(403);
 }
 
 function isInvalidPassword(password) {

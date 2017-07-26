@@ -18,7 +18,7 @@ export default class Sidebar extends React.Component {
   menu: Array<MenuItemType>;
 
   constructor(props: Object) {
-    super(props)
+    super(props);
     this.menu = [
       {
         name: 'dashboard',

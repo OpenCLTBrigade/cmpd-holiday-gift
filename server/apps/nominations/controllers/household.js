@@ -4,7 +4,7 @@ module.exports = {
   list: async (req, res) => {
     // TODO: paging, search
     var households = await db.household.findAll();
-    res.json({households});
+    res.json({ households });
   },
   edit: {
     get: async (req, res) => {
@@ -18,7 +18,7 @@ module.exports = {
         attributes: ['id', 'name'],
         where: { type: 'cms' }
       });
-      res.json({household, schools});
+      res.json({ household, schools });
     },
     post: (_req, _res) => {
 

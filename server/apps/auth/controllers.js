@@ -3,17 +3,19 @@ var path = require('path');
 var sendMail = require('../lib/mail')(path.join(__dirname, 'templates'));
 var auth = require('../lib/auth');
 var db = require('../../models');
+var asyncDo = require('./asyncDo');
 
 async function register(req, res) {
-  var user = await db.user.findOne({ where: { email: email } });
+  var user = await db.user.findOne({ where: { email: req.body.email } });
   if (user) {
     return res.json({ error: 'An account with that email already exists' });
   }
-  if(reason = auth.isInvalidPassword(password)){
-    return res.json({error: `Invalid password: ${reason}`})
+  var reason = auth.isInvalidPassword(req.body.password);
+  if (reason) {
+    return res.json({ error: `Invalid password: ${reason}` });
   }
-  var hashedPassword = hashPassword(password);
-  var confirmCode = generateConfirmationCode();
+  var hashedPassword = auth.hashPassword(password);
+  var confirmCode = auth.generateConfirmationCode();
   // TODO: handle errors from create
   var newUser = await db.user.create({
     name_first: req.body.firstname,
@@ -21,7 +23,7 @@ async function register(req, res) {
     rank: req.body.rank,
     phone: req.body.phone,
     affiliation_id: req.body.affiliation,
-    email: email,
+    email: req.body.email,
     password: hashedPassword,
     confirmation_code: confirmCode
   });
@@ -31,16 +33,14 @@ async function register(req, res) {
     user: newUser,
     confirm_email_url: req.protocol + '://' + req.get('host') + '/register/confirm_email'
   }));
-  res.json({success: true});
+  res.json({ success: true });
 }
 
 async function login(req, res) {
   var user = await db.user.findOne({ where: { email: req.body.email } });
   if (user && auth.validHashOfPassword(user.password, req.body.password)) {
-    var session = await db.session.create({user_id: user.id});
-    res.json({
-      token: auth.makeToken({session_id: session.id}, config.jwtSecrets.auth, config.authTokenLifetime)
-    });
+    var session = await db.session.create({ user_id: user.id });
+    res.json({ token: auth.makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime) });
   } else {
     res.status(403).send();
   }
@@ -48,9 +48,7 @@ async function login(req, res) {
 
 async function getToken(req, res) {
   if (req.user && auth.userCanUseApp(req.user, req.body.app)) {
-    res.json({
-      token: auth.makeToken({id: req.user.id}, config.jwtSecrets[req.body.app], config.appTokenLifetime)
-    });
+    res.json({ token: auth.makeToken({ id: req.user.id }, config.jwtSecrets[req.body.app], config.appTokenLifetime) });
   } else {
     res.status(404).send();
   }
@@ -62,9 +60,9 @@ function confirm(req, res) {
   var _confirm_code = req.body.confirmation_code;
   // TODO: handle email sending errors
   sendMail('admin-approval', { to: config.email.adminAddress });
-  res.json({todo: 'TODO'});
+  res.json({ todo: 'TODO' });
   // TODO move user registration steps into separate module
-};
+}
 
 module.exports = {
   login,

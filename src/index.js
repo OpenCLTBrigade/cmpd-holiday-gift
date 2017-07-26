@@ -38,7 +38,7 @@ import PrivateRoute from 'app/components/privateRoute';
  */
 
 
-function authenticated(): boolean{
+function authenticated(): boolean {
   return true;
 }
 
