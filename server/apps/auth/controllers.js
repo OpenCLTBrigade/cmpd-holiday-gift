@@ -3,7 +3,7 @@ var path = require('path');
 var sendMail = require('../lib/mail')(path.join(__dirname, 'templates'));
 var auth = require('../lib/auth');
 var db = require('../../models');
-var asyncDo = require('./asyncDo');
+var asyncDo = require('../lib/asyncDo');
 
 async function register(req, res) {
   var user = await db.user.findOne({ where: { email: req.body.email } });
@@ -14,7 +14,7 @@ async function register(req, res) {
   if (reason) {
     return res.json({ error: `Invalid password: ${reason}` });
   }
-  var hashedPassword = auth.hashPassword(password);
+  var hashedPassword = auth.hashPassword(req.body.password);
   var confirmCode = auth.generateConfirmationCode();
   // TODO: handle errors from create
   var newUser = await db.user.create({
@@ -46,6 +46,16 @@ async function login(req, res) {
   }
 }
 
+async function extend(req, res) {
+  if (req.user.id) {
+    // TODO: test this
+    var session = await db.session.create({ user_id: req.user.id });
+    res.json({ token: auth.makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime) });
+  } else {
+    res.status(403).send();
+  }
+}
+
 async function getToken(req, res) {
   if (req.user && auth.userCanUseApp(req.user, req.body.app)) {
     res.json({ token: auth.makeToken({ id: req.user.id }, config.jwtSecrets[req.body.app], config.appTokenLifetime) });
@@ -68,5 +78,6 @@ module.exports = {
   login,
   register,
   getToken,
-  confirm
+  confirm,
+  extend
 };
