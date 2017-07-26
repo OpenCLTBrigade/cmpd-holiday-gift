@@ -6,7 +6,9 @@ export default class Header extends React.Component {
 
   toggleNavCollapsed = () => {
     let body: ?HTMLElement = document.querySelector('body');
-    if (!(body instanceof HTMLElement)) throw new Error("Expected to find sidebar element.");
+    if (!(body instanceof HTMLElement)) {
+      throw new Error('Expected to find sidebar element.');
+    }
     body.classList.toggle('sidebar-collapse');
     body.classList.toggle('sidebar-open');
   };

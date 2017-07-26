@@ -15,9 +15,7 @@ const mockApiProvider = {
             name_last: 'Doe',
             head_of_household_name: 'John Doe',
             child: [
-              {
-                name: 'Test Buddy'
-              }
+              { name: 'Test Buddy' }
             ],
             nominator: {
               name_first: 'Sample',
