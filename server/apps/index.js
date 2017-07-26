@@ -12,7 +12,6 @@ var config = require('../config');
 var models = require('../models');
 var nominations = require('./nominations');
 var authApp = require('./auth');
-var auth = require('./lib/auth');
 
 var app = express();
 

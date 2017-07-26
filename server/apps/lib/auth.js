@@ -2,9 +2,10 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var db = require('../../models');
 var { join } = require('path');
-var config = require('../../config');
 var jwtMiddleware = require('express-jwt');
 var jwt = require('jsonwebtoken');
+
+// TODO automatically delete expired sessions from database
 
 function hashPassword(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -61,7 +62,7 @@ function isInvalidPassword(password) {
 isInvalidPassword.english = 'The password must have 6 or more characters';
 
 function userCanUseApp(user, app) {
-  if (app == 'nominations') {
+  if (app === 'nominations') {
     return true; // TODO: proper access control
   }
   return false;
