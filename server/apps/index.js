@@ -37,8 +37,8 @@ if (config.useCompression) {
 app.use(bodyParser.json());
 
 // Mount the apps
-app.use('/nominations', nominations);
-app.use('/auth', authApp);
+app.use('/api/nominations', nominations);
+app.use('/api/auth', authApp);
 
 // Expose compiled assets
 app.use(express.static(join(__dirname, '../../build'), { index: false }));
