@@ -16,7 +16,10 @@
   "bin": {
     "cmpd-explorers": "server/apps/serve.js"
   },
-  "files": ["build", "server"],
+  "files": [
+    "build",
+    "server"
+  ],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "admin-lte": "^2.3.11",
@@ -26,16 +29,20 @@
     "bootstrap": "^3.3.7",
     "debug": "~2.6.3",
     "eslint": "https://registry.npmjs.org/eslint/-/eslint-3.19.0.tgz",
+    "eslint-plugin-flowtype": "https://registry.npmjs.org/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.33.0.tgz",
     "eslint-plugin-flowtype-errors": "^3.3.1",
     "eslint-plugin-html": "^2.0.1",
-    "eslint-plugin-flowtype": "https://registry.npmjs.org/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.33.0.tgz",
     "faker": "^4.1.0",
     "flow-bin": "^0.50.0",
     "font-awesome": "^4.7.0",
     "jasmine": "^2.6.0",
+    "jwt-decode": "^2.2.0",
     "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
+    "react-bootstrap-table": "^3.4.6",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
@@ -43,11 +50,7 @@
     "styled-components": "^2.1.0",
     "webpack-create-file-plugin": "^0.1.0",
     "webpack-dev-middleware": "^1.10.2",
-    "webpack-hot-middleware": "^2.18.0",
-    "flow-bin": "^0.50.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "react-bootstrap-table": "^3.4.6"
+    "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
     "axios": "^0.16.2",

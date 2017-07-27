@@ -6,7 +6,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -31,27 +31,22 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import Dashboard from 'app/dashboard';
 import Auth from 'app/auth';
 import PrivateRoute from 'app/components/privateRoute';
+import NotFound from 'notFound'
 
-/**
- * TODO: Put in actual authentication checks
- * @return {boolean} Whether or not the user is authenticated
- */
-
-
-function authenticated(): boolean {
-  return true;
+class Routes extends React.Component {
+  render() {
+    return <Router>
+      <Switch>
+        <Route exact path="/" render={() => (
+            <Redirect to="/dashboard"/>
+        )}/>
+      <PrivateRoute path="/dashboard" component={Dashboard} />
+      <Route path="/auth" component={Auth} />
+      <Route path='*' component={NotFound} />
+      </Switch>
+    </Router>;
+  }
 }
-
-const Routes = (): React.Element<*> =>
-  <Router>
-    <Switch>
-      <PrivateRoute authed={authenticated()} path="/dashboard" component={Dashboard} />
-      {/* TODO: Change to !authenticated */}
-      <PrivateRoute authed={authenticated()} path="/auth" component={Auth} />
-      {/* TODO: 404 handler? */}
-      {/* <Route component={NotFound} /> */}
-    </Switch>
-  </Router>;
 
 ReactDOM.render(<Routes />, document.getElementById('root'));
 registerServiceWorker();

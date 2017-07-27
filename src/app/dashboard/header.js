@@ -33,7 +33,7 @@ export default class Header extends React.Component {
                 </a>
               </li>
               <li className="dropdown user user-menu">
-                <a href="/logout">
+                <a href="/auth/logout">
                   <i className="fa fa-sign-out" />Logout
                 </a>
               </li>

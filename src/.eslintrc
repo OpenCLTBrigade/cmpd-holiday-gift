@@ -7,7 +7,6 @@
     "plugin:flowtype/recommended"
   ],
   "rules": {
-    "flowtype-errors/show-errors": 2,
     "flowtype/boolean-style": [
       2,
       "boolean"
@@ -65,7 +64,6 @@
     "flowtype/valid-syntax": 1
   },
   "plugins": [
-    "flowtype",
-    # "flowtype-errors"
+    "flowtype"
   ]
 }

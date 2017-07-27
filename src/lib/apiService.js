@@ -1,6 +1,8 @@
 // @flow
 import axios from 'axios';
 
+import {getAuthorization} from 'lib/auth';
+
 // Axios config object
 type RequestConfigType = {
   baseURL?: string,
@@ -17,8 +19,8 @@ type RequestConfigType = {
  * Default axios config object
  * @type {RequestConfigType}
  */
-const _requestConfig: RequestConfigType = {
-  baseURL: `${window.location.protocol}//${window.location.hostname}/api/`,
+const defaultRequestConfig: RequestConfigType = {
+  baseURL: `/api/`,
   method: 'get'
 };
 
@@ -27,7 +29,7 @@ const _requestConfig: RequestConfigType = {
  * @param  {Object}   response Request response
  * @param  {Function} next     resolve(data)
  */
-const preProcessResponse = function (response: Object, next) {
+const preProcessResponse = function(response: Object, next) {
   next(response.data);
 };
 
@@ -36,20 +38,42 @@ const preProcessResponse = function (response: Object, next) {
  * @param  {Object}   err
  * @param  {Function} next     reject(error)
  */
-const preProcessError = function (err: Object, next) {
+const preProcessError = function(err: Object, next) {
   next(err);
 };
 
-const makeRequest = function (method: string, url: string, data: ?Object = null, config: ?RequestConfigType = null) {
-  if (config === null) {
-    config = {
-      baseURL: '',
-      url: url,
-      method: method.toLowerCase()
-    };
+/**
+ * [description]
+ * @param  {String} method HTTP Verb
+ * @param  {String} url    Endpoint to hit. No starting slash
+ * @param  {Object} data   URL parameters OR post body to be sent
+ * @param  {Object} config Axios configuration object
+ * @return {Promise}       Promise with response.data OR error
+ */
+const makeRequest = async function(
+  method: string,
+  app: string,
+  path: string,
+  data: ?Object = null,
+  config: RequestConfigType = {}
+): Promise<any> {
+  config.url = `${app}/${path}`;
+  config.method = method.toLowerCase();
+
+  // Add an authorization header to the request if a token is available
+  var authorization = await getAuthorization(app);
+  if (authorization) {
+    if (!config.headers) {
+      config.headers = {};
+    }
+    config.headers.Authorization = authorization;
   }
 
-  if (config !== undefined && data !== null) {
+  // Combine our passed configuration with the base configuration
+  config = Object.assign({}, defaultRequestConfig, config);
+
+  // Set data to the post body or query string
+  if (data !== null) {
     if (config.method === 'get' || config.method === 'delete') {
       config.params = data;
     } else {
@@ -57,35 +81,37 @@ const makeRequest = function (method: string, url: string, data: ?Object = null,
     }
   }
 
-  let requestConfig: RequestConfigType = Object.assign(_requestConfig, config);
   return new Promise((resolve, reject) => {
     axios
-      .request(requestConfig)
+      .request(config)
       .then(response => {
+        // Pre-process the response before handing it back to the calling controller
         preProcessResponse(response, resolve);
       })
       .catch(err => {
+        // Pre-process the response before handing it back to the calling controller
         preProcessError(err, reject);
       });
   });
 };
 
-let apiService = {
-  get: function get(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('get', url, data, config);
-  },
+/*
+ * Exported methods shouldn't be used directly from a component; use
+ * one of the actual API libs instead.
+ */
 
-  post: function post(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('post', url, data, config);
-  },
+export function get(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('get', app, path, data, config);
+}
 
-  put: function put(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('put', url, data, config);
-  },
+export function post(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('post', app, path, data, config);
+}
 
-  delete: function del(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return makeRequest('delete', url, data, config);
-  }
-};
+export function put(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('put', app, path, data, config);
+}
 
-export { apiService };
+export function delete_(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('delete', app, path, data, config);
+}
