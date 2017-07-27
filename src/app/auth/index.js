@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 // Components
 import Login from './login';
+import Logout from './logout';
 import Register from './register';
 
 // Assets used by this component
@@ -19,6 +20,7 @@ export default class Auth extends React.Component {
           </div>
         </div>
         <Route exact path="/auth/login" component={Login} />
+        <Route exact path="/auth/logout" component={Logout} />
         <Route exact path="/auth/register" component={Register} />
       </div>
     );

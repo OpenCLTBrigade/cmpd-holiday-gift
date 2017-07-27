@@ -2,32 +2,6 @@
 import React, { Component } from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
-const mockApiProvider = {
-  fetch(page) {
-    return new Promise((resolve, reject) => {
-      resolve({
-        total: 150,
-        items: [
-          {
-            id: 1,
-            name_first: 'John',
-            uploaded_form: true,
-            name_last: 'Doe',
-            head_of_household_name: 'John Doe',
-            child: [
-              { name: 'Test Buddy' }
-            ],
-            nominator: {
-              name_first: 'Sample',
-              name_last: 'Nominator'
-            }
-          }
-        ]
-      });
-    });
-  }
-};
-
 type PropType = {
   search: boolean,
   children: ?React.Element<*>
@@ -52,8 +26,8 @@ export default class DataTable extends Component {
     this.fetchData();
   }
 
-  fetchData = (page: number = this.state.page) => {
-    mockApiProvider.fetch(page).then(data => {
+  fetchData(page: number = this.state.page) {
+    this.props.fetch(page).then(data => {
       this.setState({ items: data.items, totalSize: data.total, page });
     });
   };

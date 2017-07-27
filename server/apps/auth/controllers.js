@@ -39,10 +39,12 @@ async function register(req, res) {
 async function login(req, res) {
   var user = await db.user.findOne({ where: { email: req.body.email } });
   if (user && auth.validHashOfPassword(user.password, req.body.password)) {
+    // TODO handle errors from create
     var session = await db.session.create({ user_id: user.id });
     res.json({ token: auth.makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime) });
   } else {
-    res.status(403).send();
+    // Unknown username or invalid password
+    res.json({failed: true});
   }
 }
 

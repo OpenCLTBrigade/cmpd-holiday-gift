@@ -110,12 +110,20 @@ export const AuthToken = (() => {
 
   async function login(email: string, password: string): Promise<bool> {
     var res = await post('auth', 'login', {email, password});
-    setToken(res.token);
-    return true;
+    if (res.failed) {
+      return false;
+    } else {
+      setToken(res.token);
+      return true;
+    }
+  }
+
+  function logout() {
+    setToken(null);
   }
 
   load();
-  return {login, expired, getAuthorization};
+  return {login, logout, expired, getAuthorization};
 })()
 
 export const AppToken = (() => {

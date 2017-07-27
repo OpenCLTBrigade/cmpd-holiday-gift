@@ -20,14 +20,22 @@ export default class List extends Component {
     );
   }
 
+  async fetch(page: number) {
+    console.log('TODO ATN fetching page', page);
+    var {households} = await getHouseholdList(page);
+    console.log('TODO ATN got page', page, households);
+    var total = 150; // TODO
+    return {items: households, total};
+  }
+
   render() {
     return (
-      <DataTable search={true}>
+      <DataTable search={true} fetch={this.fetch.bind(this)}>
         <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
         <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>Children</TableHeaderColumn>
+        <TableHeaderColumn dataField="children" dataFormat={(cell, row) => cell.length}>Children</TableHeaderColumn>
         <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${cell.name_first} ${cell.name_last}`}>
           Nominated by
         </TableHeaderColumn>
