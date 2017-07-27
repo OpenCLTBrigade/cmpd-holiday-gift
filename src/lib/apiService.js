@@ -1,6 +1,8 @@
 // @flow
 import axios from 'axios';
 
+import {getAuthorization} from 'lib/auth';
+
 // Axios config object
 type RequestConfigType = {
   baseURL?: string,
@@ -17,8 +19,8 @@ type RequestConfigType = {
  * Default axios config object
  * @type {RequestConfigType}
  */
-const _requestConfig: RequestConfigType = {
-  baseURL: `${window.location.protocol}//${window.location.hostname}/api/`,
+const defaultRequestConfig: RequestConfigType = {
+  baseURL: `/api/`,
   method: 'get'
 };
 
@@ -48,14 +50,27 @@ const preProcessError = function(err: Object, next) {
  * @param  {Object} config Axios configuration object
  * @return {Promise}       Promise with response.data OR error
  */
-const _makeRequest = function(
+const makeRequest = async function(
   method: string,
-  url: string,
+  app: string,
+  path: string,
   data: ?Object = null,
   config: RequestConfigType = {}
 ): Promise<any> {
-  config.url = url;
+  config.url = `${app}/${path}`;
   config.method = method.toLowerCase();
+
+  // Add an authorization header to the request if a token is available
+  var authorization = await getAuthorization(app);
+  if (authorization) {
+    if (!config.headers) {
+      config.headers = {};
+    }
+    config.headers.Authorization = authorization;
+  }
+
+  // Combine our passed configuration with the base configuration
+  config = Object.assign({}, defaultRequestConfig, config);
 
   // Set data to the post body or query string
   if (data !== null) {
@@ -66,11 +81,9 @@ const _makeRequest = function(
     }
   }
 
-  // Combine our passed configuration with the base configuration
-  let requestConfig: RequestConfigType = Object.assign(_requestConfig, config);
   return new Promise((resolve, reject) => {
     axios
-      .request(requestConfig)
+      .request(config)
       .then(response => {
         // Pre-process the response before handing it back to the calling controller
         preProcessResponse(response, resolve);
@@ -82,27 +95,23 @@ const _makeRequest = function(
   });
 };
 
-/**
- * Export the API service. It shouldn't be used directly from a component; use
+/*
+ * Exported methods shouldn't be used directly from a component; use
  * one of the actual API libs instead.
- * @type {Object}
  */
-let apiService = {
-  get: function get(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return _makeRequest('get', url, data, config);
-  },
 
-  post: function post(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return _makeRequest('post', url, data, config);
-  },
+export function get(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('get', app, path, data, config);
+}
 
-  put: function put(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return _makeRequest('put', url, data, config);
-  },
+export function post(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('post', app, path, data, config);
+}
 
-  delete: function del(url: string, data: ?Object = null, config: RequestConfigType): Promise<any> {
-    return _makeRequest('delete', url, data, config);
-  }
-};
+export function put(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('put', app, path, data, config);
+}
 
-export { apiService };
+export function delete_(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+  return makeRequest('delete', app, path, data, config);
+}

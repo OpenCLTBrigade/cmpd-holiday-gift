@@ -48,7 +48,7 @@ async function login(req, res) {
 
 async function extend(req, res) {
   if (req.user.id) {
-    // TODO: test this
+    // TODO: extend existing session instead
     var session = await db.session.create({ user_id: req.user.id });
     res.json({ token: auth.makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime) });
   } else {
