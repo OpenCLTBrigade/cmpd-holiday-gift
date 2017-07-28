@@ -36,7 +36,7 @@ export default class List extends Component {
         <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="child" dataFormat={cell => cell.length}>Children</TableHeaderColumn>
+        <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn>
         <TableHeaderColumn dataField="nominator" dataFormat={cell => `${cell.name_first} ${cell.name_last}`}>
           Nominated by
         </TableHeaderColumn>

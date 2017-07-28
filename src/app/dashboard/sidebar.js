@@ -1,17 +1,17 @@
 // @flow
 import React from 'react';
 
+type SubMenuItemType = {
+  url: string,
+  title: string
+};
+
 type MenuItemType = {
   name?: string,
   url?: string,
   title: string,
   icon?: string,
   children?: Array<SubMenuItemType>
-};
-
-type SubMenuItemType = {
-  url: string,
-  title: string
 };
 
 export default class Sidebar extends React.Component {
