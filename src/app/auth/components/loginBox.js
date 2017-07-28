@@ -1,25 +1,31 @@
+// @flow
+
 import React from 'react';
 
 export default class LoginBox extends React.Component {
+  state: {errorMessage: ?string}
+  email: HTMLInputElement
+  password: HTMLInputElement
+
   constructor() {
     super();
-    this.state = {errorMessage:null};
+    this.state = { errorMessage: null };
   }
 
-  onSubmit(ev) {
+  onSubmit(ev: Event) {
     ev.preventDefault();
-    this.props.onSubmit({email: this.email.value, password: this.password.value});
+    this.props.onSubmit({ email: this.email.value, password: this.password.value });
   }
 
-  flashErrorMessage(message) {
-    this.setState({errorMessage: message});
+  flashErrorMessage(message: string) {
+    this.setState({ errorMessage: message });
   }
 
-  render() {
+  render(): React.Element<any> {
     return <div className="login-box" id="login-box">
       {/* TODO: Better flash message */}
       { !this.state.errorMessage ? '' :
-        <div style={{border: '2px solid #f00', background: '#fdd'}}>
+        <div style={{ border: '2px solid #f00', background: '#fdd' }}>
           {this.state.errorMessage}
         </div> }
       <div className="header">

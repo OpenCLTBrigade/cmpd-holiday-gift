@@ -1,7 +1,9 @@
-import React from 'react';
-import {Redirect} from 'react-router';
+// @flow
 
-import {AuthToken} from 'lib/auth'
+import React from 'react';
+import { Redirect } from 'react-router';
+
+import { AuthToken } from 'lib/auth';
 
 export default class Logout extends React.Component {
   constructor() {
@@ -9,7 +11,7 @@ export default class Logout extends React.Component {
     AuthToken.logout();
   }
 
-  render() {
-    return <Redirect to="/auth/login"/>
+  render(): React.Element<any> {
+    return <Redirect to="/auth/login"/>;
   }
 }

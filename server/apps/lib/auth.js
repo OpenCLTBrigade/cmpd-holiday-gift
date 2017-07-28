@@ -1,7 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var db = require('../../models');
-var { join } = require('path');
 var jwtMiddleware = require('express-jwt');
 var jwt = require('jsonwebtoken');
 

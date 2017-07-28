@@ -5,8 +5,8 @@ module.exports = {
     // TODO: paging, search
     var households = await db.household.findAll({
       include: [
-        {model: db.child, as: 'children'},
-        {model: db.user, as: 'nominator'}
+        { model: db.child, as: 'children' },
+        { model: db.user, as: 'nominator' }
       ]
     });
     res.json({ households });

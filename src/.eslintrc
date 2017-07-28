@@ -4,8 +4,14 @@
     "browser": true
   },
   "extends": [
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "plugin:react/recommended"
   ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "flowtype/boolean-style": [
       2,
@@ -32,10 +38,11 @@
       2,
       "always",
       {
-        "annotateUndefined": "never"
+        "annotateUndefined": "never",
+        "excludeArrowFunctions": true
       }
     ],
-    "flowtype/require-valid-file-annotation": 2,
+    "flowtype/require-valid-file-annotation": [ 2, "always" ],
     "flowtype/semi": [
       2,
       "always"
@@ -52,18 +59,18 @@
       2,
       "never"
     ],
-    "flowtype/type-id-match": [
-      2,
-      "^([A-Z][a-z0-9]+)+Type$"
-    ],
     "flowtype/union-intersection-spacing": [
       2,
       "always"
     ],
     "flowtype/use-flow-type": 1,
-    "flowtype/valid-syntax": 1
+    "flowtype/valid-syntax": 1,
+    "react/prop-types": 0,
+    "no-console": 0,
+    "no-duplicate-imports": 0
   },
   "plugins": [
-    "flowtype"
+    "flowtype",
+    "react"
   ]
 }

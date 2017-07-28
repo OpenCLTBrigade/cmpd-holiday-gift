@@ -44,7 +44,7 @@ async function login(req, res) {
     res.json({ token: auth.makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime) });
   } else {
     // Unknown username or invalid password
-    res.json({failed: true});
+    res.json({ failed: true });
   }
 }
 

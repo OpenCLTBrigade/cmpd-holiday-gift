@@ -1,20 +1,23 @@
+// @flow
+
 import React from 'react';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 import LoginBox from './components/loginBox';
 
-import {AuthToken} from 'lib/auth'
+import { AuthToken } from 'lib/auth';
 
 export default class Login extends React.Component {
-  render() {
+  box: LoginBox
+  render(): React.Element<any> {
     if (!AuthToken.expired()) {
-      return <Redirect to="/dashboard"/>
+      return <Redirect to="/dashboard"/>;
     }
     return (
         <LoginBox title="Log in" onSubmit={this.onSubmit.bind(this)} ref={ref => this.box = ref} />
     );
   }
 
-  async onSubmit({email, password}) {
+  async onSubmit({ email, password }: {email: string, password: string}): Promise<void> {
     try {
       var success = await AuthToken.login(email, password);
       if (success) {

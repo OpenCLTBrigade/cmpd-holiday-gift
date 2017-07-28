@@ -1,6 +1,7 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/.*/fbjs/.*
 <PROJECT_ROOT>/node_modules/.*/test/.*
+<PROJECT_ROOT>/node_modules/styled-components/.*
 <PROJECT_ROOT>/.git/.*
 <PROJECT_ROOT>/server/.*
 <PROJECT_ROOT>/run/.*

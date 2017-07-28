@@ -1,7 +1,7 @@
 // @flow
 
-import {post} from 'lib/apiService'
-import jwt_decode from 'jwt-decode'
+import { post } from 'lib/apiService';
+import jwt_decode from 'jwt-decode';
 
 const authTokenRefreshWhenSecondsLeft = 6 * 60 * 60; // 6 hours
 const minRefreshInterval = 1 * 60; // 1 minutes
@@ -24,13 +24,12 @@ export const AuthToken = (() => {
   // Should be called only on page load and by getAuthorization
   function load() {
     token = localStorage.getItem('authToken');
-    console.log('TODO ATN auth loaded from cache', token);
     if (!token) {
       expirationTime = 0;
     } else {
       try {
-        expirationTime =  jwt_decode(token).exp;
-      } catch(err) {
+        expirationTime = jwt_decode(token).exp;
+      } catch (err) {
         console.log('Failed to decode stored auth token', err);
         token = null;
         expirationTime = 0;
@@ -47,17 +46,16 @@ export const AuthToken = (() => {
     }
     token = t;
     if (token) {
-      expirationTime =  jwt_decode(token).exp;
+      expirationTime = jwt_decode(token).exp;
     } else {
       expirationTime = 0;
     }
   }
 
   // Returns an up-to-date authorization header, or the empty string
-  async function getAuthorization() {
+  async function getAuthorization(): Promise<string> {
     load();
     maybeRefreshOrExpire();
-    console.log('TODO ATN auth get', token);
     if (token) {
       return `Bearer ${token}`;
     } else {
@@ -73,12 +71,12 @@ export const AuthToken = (() => {
     }
   }
 
-  function shouldExpire() {
-    return expirationTime < Date.now()/1000;
+  function shouldExpire(): boolean {
+    return expirationTime < Date.now() / 1000;
   }
 
-  function shouldRefresh() {
-    return expirationTime - Date.now()/1000 < authTokenRefreshWhenSecondsLeft;
+  function shouldRefresh(): boolean {
+    return expirationTime - Date.now() / 1000 < authTokenRefreshWhenSecondsLeft;
   }
 
   function expire() {
@@ -87,7 +85,7 @@ export const AuthToken = (() => {
     }
   }
 
-  function expired() {
+  function expired(): boolean {
     return shouldExpire();
   }
 
@@ -104,12 +102,14 @@ export const AuthToken = (() => {
       refreshing = false;
     }).catch(err => {
       console.log(`Error refreshing auth token: ${err}`);
-      setTimeout(() => { refreshing = false; }, minRefreshInterval * 1000);
+      setTimeout(() => {
+        refreshing = false;
+      }, minRefreshInterval * 1000);
     });
   }
 
-  async function login(email: string, password: string): Promise<bool> {
-    var res = await post('auth', 'login', {email, password});
+  async function login(email: string, password: string): Promise<boolean> {
+    var res = await post('auth', 'login', { email, password });
     if (res.failed) {
       return false;
     } else {
@@ -123,26 +123,24 @@ export const AuthToken = (() => {
   }
 
   load();
-  return {login, logout, expired, getAuthorization};
-})()
+  return { login, logout, expired, getAuthorization };
+})();
 
 export const AppToken = (() => {
 
   var tokens = {};
 
-  async function getToken(app) {
+  async function getToken(app: string): Promise<string> {
     try {
-      console.log('TODO ATN app get start');
-      var res = await post('auth', 'access', {app});
-      console.log('TODO ATN app got', res);
+      var res = await post('auth', 'access', { app });
       return res.token;
-    } catch(exc) {
+    } catch (exc) {
       console.log(`Error retrieving app token: ${exc}`);
       throw exc;
     }
   }
 
-  async function getAuthorization(app) {
+  async function getAuthorization(app: string): Promise<string> {
     if (AuthToken.expired()) {
       return '';
     }
@@ -150,17 +148,17 @@ export const AppToken = (() => {
       tokens[app] = getToken(app);
     }
     var token = await tokens[app];
-    if (!token || jwt_decode(token).exp > Date.now()/1000 - appTokenMinRemainingTime) {
+    if (!token || jwt_decode(token).exp > Date.now() / 1000 - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];
     }
     return `Bearer ${token}`;
   }
 
-  return {getAuthorization};
-})()
+  return { getAuthorization };
+})();
 
-export function getAuthorization(app) {
+export function getAuthorization(app: string): Promise<string> {
   if (app === 'auth') {
     return AuthToken.getAuthorization();
   } else {

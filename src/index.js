@@ -31,10 +31,10 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import Dashboard from 'app/dashboard';
 import Auth from 'app/auth';
 import PrivateRoute from 'app/components/privateRoute';
-import NotFound from 'notFound'
+import NotFound from 'notFound';
 
 class Routes extends React.Component {
-  render() {
+  render(): React.Element<any> {
     return <Router>
       <Switch>
         <Route exact path="/" render={() => (

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { Route } from 'react-router-dom';
 
@@ -10,7 +12,7 @@ import Register from './register';
 import logo from './assets/auth-logo.png';
 
 export default class Auth extends React.Component {
-  render() {
+  render(): React.Element<any> {
     return (
       <div className="auth-wrapper">
         <div className="auth-header login-box">

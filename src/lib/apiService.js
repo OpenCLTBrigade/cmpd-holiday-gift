@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 
-import {getAuthorization} from 'lib/auth';
+import { getAuthorization } from 'lib/auth';
 
 // Axios config object
 type RequestConfigType = {
@@ -20,7 +20,7 @@ type RequestConfigType = {
  * @type {RequestConfigType}
  */
 const defaultRequestConfig: RequestConfigType = {
-  baseURL: `/api/`,
+  baseURL: '/api/',
   method: 'get'
 };
 
@@ -29,7 +29,7 @@ const defaultRequestConfig: RequestConfigType = {
  * @param  {Object}   response Request response
  * @param  {Function} next     resolve(data)
  */
-const preProcessResponse = function(response: Object, next) {
+const preProcessResponse = function (response: Object, next) {
   next(response.data);
 };
 
@@ -38,7 +38,7 @@ const preProcessResponse = function(response: Object, next) {
  * @param  {Object}   err
  * @param  {Function} next     reject(error)
  */
-const preProcessError = function(err: Object, next) {
+const preProcessError = function (err: Object, next) {
   next(err);
 };
 
@@ -50,40 +50,41 @@ const preProcessError = function(err: Object, next) {
  * @param  {Object} config Axios configuration object
  * @return {Promise}       Promise with response.data OR error
  */
-const makeRequest = async function(
+const makeRequest = async function (
   method: string,
   app: string,
   path: string,
   data: ?Object = null,
   config: RequestConfigType = {}
 ): Promise<any> {
-  config.url = `${app}/${path}`;
-  config.method = method.toLowerCase();
+  // Combine our passed configuration with the base configuration
+  var requestConfig: Object = Object.assign({}, defaultRequestConfig, config);
+
+  requestConfig.url = `${app}/${path}`;
+  requestConfig.method = method.toLowerCase();
 
   // Add an authorization header to the request if a token is available
   var authorization = await getAuthorization(app);
   if (authorization) {
-    if (!config.headers) {
-      config.headers = {};
+    if (!requestConfig.headers) {
+      requestConfig.headers = {};
     }
-    config.headers.Authorization = authorization;
+    requestConfig.headers.Authorization = authorization;
   }
 
-  // Combine our passed configuration with the base configuration
-  config = Object.assign({}, defaultRequestConfig, config);
 
   // Set data to the post body or query string
   if (data !== null) {
-    if (config.method === 'get' || config.method === 'delete') {
-      config.params = data;
+    if (requestConfig.method === 'get' || config.method === 'delete') {
+      requestConfig.params = data;
     } else {
-      config.data = data;
+      requestConfig.data = data;
     }
   }
 
   return new Promise((resolve, reject) => {
     axios
-      .request(config)
+      .request(requestConfig)
       .then(response => {
         // Pre-process the response before handing it back to the calling controller
         preProcessResponse(response, resolve);

@@ -1,6 +1,9 @@
+// @flow
 import React from 'react';
 
-export default function Box(props) {
+export default function Box(
+  props: {title: string, children: React.Element<any>[]}
+): React.Element<any> {
   return (
     <div className="box">
       {props.title &&

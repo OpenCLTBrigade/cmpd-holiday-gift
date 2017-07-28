@@ -1,9 +1,13 @@
+// @flow
+
 import React, { Component } from 'react';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
+type User = any; // TODO
+
 export default class UsersList extends Component {
-  actionCellFormatter(cell, row) {
+  actionCellFormatter(_cell: any, _row: User): React.Element<any> {
     return (
       <div>
         <button className="btn btn-sm btn-primary">Show</button>
@@ -11,7 +15,7 @@ export default class UsersList extends Component {
     );
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <DataTable search={true}>
         <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
@@ -21,8 +25,8 @@ export default class UsersList extends Component {
         <TableHeaderColumn dataField="name_first">
           First Name
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="child" dataFormat={(cell, row) => cell.length}>Email</TableHeaderColumn>
-        <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${cell.name_first} ${cell.name_last}`}>
+        <TableHeaderColumn dataField="child" dataFormat={cell => cell.length}>Email</TableHeaderColumn>
+        <TableHeaderColumn dataField="nominator" dataFormat={cell => `${cell.name_first} ${cell.name_last}`}>
           Phone
         </TableHeaderColumn>
         <TableHeaderColumn dataField="uploaded_form">

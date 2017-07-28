@@ -2,19 +2,18 @@
 import React, { Component } from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
-type PropType = {
-  search: boolean,
-  children: ?React.Element<*>
-};
-export default class DataTable extends Component {
+export default class DataTable<Row> extends Component<*, *, *> {
   state: {
-    items: Array<*>,
+    items: Row[],
     totalSize: number,
     page: number
   };
-
-  constructor(props: PropType) {
-    super(props);
+  props: {
+    fetch: number => Promise<{items: Row[], total: number}>,
+    children: Component<any, any, any>[]
+  }
+  constructor() {
+    super();
     this.state = {
       items: [],
       totalSize: 1,
@@ -30,7 +29,7 @@ export default class DataTable extends Component {
     this.props.fetch(page).then(data => {
       this.setState({ items: data.items, totalSize: data.total, page });
     });
-  };
+  }
 
   handlePageChange = (page: number) => {
     this.fetchData(page);
@@ -52,7 +51,7 @@ export default class DataTable extends Component {
 
     return (
       <BootstrapTable
-        data={this.state.items}
+        data={(this.state.items: Array<any>)}
         fetchInfo={{ dataTotalSize: this.state.totalSize }}
         options={options}
         striped
