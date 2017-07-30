@@ -1,6 +1,6 @@
 const db = require('../../models');
 
-class VuetableApi {
+class TableApi {
   constructor(req, itemsPerPage = 10) {
     this.req = req;
     this.itemsPerPage = itemsPerPage;
@@ -9,19 +9,21 @@ class VuetableApi {
   /**
    * @param  {String}  modelName  Name of model to work with
    * @param  {Object}  [where={}] Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
+   * @param  {Object}  [include={}] Include related models
    * @return {Promise}            [description]
    */
-  async fetch(modelName, where = {}) {
+  async fetch(modelName, where = {}, include = {}) {
     return await db[modelName].findAndCountAll({
       limit: this.itemsPerPage,
       offset: this.getCurrentOffset(),
-      where: where
+      where: where,
+      include: include
     });
   }
 
-  fetchAndParse(modelName, where = {}) {
-    let resultSet = this.fetch(modelName, where);
-    return this.parseResultSet();
+  fetchAndParse(modelName, where = {}, include = {}) {
+    let resultSet = this.fetch(modelName, where, include);
+    return this.parseResultSet(resultSet);
   }
 
   getCurrentPage() {
@@ -39,8 +41,8 @@ class VuetableApi {
     let lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
     let baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
 
-    let nextPageNumber = VuetableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
-    let previousPageNumber = VuetableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
+    let nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
+    let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
 
     return {
       total: resultSet.count,
@@ -56,7 +58,7 @@ class VuetableApi {
   }
 }
 
-VuetableApi.calculateNextPage = (req, resultSet, currentPage, lastPage) => {
+TableApi.calculateNextPage = (req, resultSet, currentPage, lastPage) => {
   if (currentPage >= lastPage) {
     return null;
   } else if (currentPage < 1) {
@@ -66,7 +68,7 @@ VuetableApi.calculateNextPage = (req, resultSet, currentPage, lastPage) => {
   }
 };
 
-VuetableApi.calculatePreviousPage = (req, resultSet, currentPage, lastPage) => {
+TableApi.calculatePreviousPage = (req, resultSet, currentPage, lastPage) => {
   if (currentPage <= 1) {
     return null;
   } else if (currentPage > lastPage) {
@@ -76,4 +78,4 @@ VuetableApi.calculatePreviousPage = (req, resultSet, currentPage, lastPage) => {
   }
 };
 
-module.exports = VuetableApi;
+module.exports = TableApi;

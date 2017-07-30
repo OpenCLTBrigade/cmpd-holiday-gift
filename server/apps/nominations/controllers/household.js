@@ -1,15 +1,17 @@
 var db = require('../../../models');
+var tableApi = require('../../lib/tableApi');
+
+const related = {
+  include: [
+    { model: db.child, as: 'children' },
+    { model: db.user, as: 'nominator' }
+  ]
+};
 
 module.exports = {
   list: async (req, res) => {
-    // TODO: paging, search
-    var households = await db.household.findAll({
-      include: [
-        { model: db.child, as: 'children' },
-        { model: db.user, as: 'nominator' }
-      ]
-    });
-    res.json({ households });
+    let resultSet = tableApi.fetchAndParse('Household', {}, related)
+    res.json(resultSet);
   },
   edit: {
     get: async (req, res) => {
