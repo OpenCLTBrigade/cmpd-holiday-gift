@@ -1,5 +1,5 @@
 var db = require('../../../models');
-var tableApi = require('../../lib/tableApi');
+var TableApi = require('../../lib/tableApi');
 
 const related = {
   include: [
@@ -8,9 +8,11 @@ const related = {
   ]
 };
 
+
 module.exports = {
   list: async (req, res) => {
-    let resultSet = tableApi.fetchAndParse('Household', {}, related)
+    let api = new TableApi(req);
+    let resultSet = api.fetchAndParse('household', {}, related);
     res.json(resultSet);
   },
   edit: {
