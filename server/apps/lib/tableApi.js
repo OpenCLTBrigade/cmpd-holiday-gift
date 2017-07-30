@@ -13,17 +13,30 @@ class TableApi {
    * @return {Promise}            [description]
    */
   async fetch(modelName, where = {}, include = {}) {
-    return await db[modelName].findAndCountAll({
-      limit: this.itemsPerPage,
-      offset: this.getCurrentOffset(),
-      where: where,
-      include: include
+    return new Promise((resolve, reject) => {
+      // TODO: Make include work :(
+      let currentOffset = this.getCurrentOffset();
+      db[modelName]
+        .findAndCountAll({
+          limit: this.itemsPerPage,
+          offset: currentOffset,
+          where: where
+        })
+        .then(results => {
+          resolve(results);
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   }
 
-  fetchAndParse(modelName, where = {}, include = {}) {
-    let resultSet = this.fetch(modelName, where, include);
-    return this.parseResultSet(resultSet);
+  async fetchAndParse(modelName, where = {}, include = {}) {
+    return new Promise((resolve, reject) => {
+      this.fetch(modelName, where, include).then(results => {
+        resolve(this.parseResultSet(results));
+      });
+    })
   }
 
   getCurrentPage() {
@@ -45,16 +58,28 @@ class TableApi {
     let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
 
     return {
-      total: resultSet.count,
+      totalSize: resultSet.count,
       per_page: this.itemsPerPage,
-      current_page: currentPage,
+      page: currentPage,
       last_page: lastPage,
       next_page_url: nextPageNumber !== null ? `${baseUrl}?page=${nextPageNumber}` : null,
       prev_page_url: previousPageNumber !== null ? `${baseUrl}?page=${previousPageNumber}` : null,
       from: currentPage,
       to: currentPage - 1 + resultSet.rows.length,
-      data: resultSet.rows
+      items: resultSet.rows
     };
+
+    // return {
+    //   total: resultSet.count,
+    //   per_page: this.itemsPerPage,
+    //   current_page: currentPage,
+    //   last_page: lastPage,
+    //   next_page_url: nextPageNumber !== null ? `${baseUrl}?page=${nextPageNumber}` : null,
+    //   prev_page_url: previousPageNumber !== null ? `${baseUrl}?page=${previousPageNumber}` : null,
+    //   from: currentPage,
+    //   to: currentPage - 1 + resultSet.rows.length,
+    //   data: resultSet.rows
+    // };
   }
 }
 

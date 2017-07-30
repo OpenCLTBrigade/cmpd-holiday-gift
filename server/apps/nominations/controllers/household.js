@@ -12,8 +12,12 @@ const related = {
 module.exports = {
   list: async (req, res) => {
     let api = new TableApi(req);
-    let resultSet = api.fetchAndParse('household', {}, related);
-    res.json(resultSet);
+    try {
+      let result = await api.fetchAndParse('household', {}, related);
+      res.json(result);
+    } catch (err) {
+      console.log( err)
+    }
   },
   edit: {
     get: async (req, res) => {
