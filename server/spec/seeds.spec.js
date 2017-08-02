@@ -10,14 +10,15 @@ describe('All seeds', () => {
 
   it('allows logging in as developer@condeforcharlotte.org', (done) => {
     request.post({
-      url: url('/login'),
-      form: {
+      url: url('/api/auth/login'),
+      json: {
         email: 'developer@codeforcharlotte.org',
         password: 'admin'
       }
-    }, function (error, response, _body) {
+    }, function (error, response, body) {
       expect(error).toBeNull();
-      expect(response.headers.location).toBe('/');
+      expect(response.statusCode).toBe(200);
+      expect(body.token).toBeTruthy();
       done();
     });
   });
