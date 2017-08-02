@@ -8,7 +8,7 @@
     "prepack": "NODE_PATH=./src npm run build",
     "test-client": "NODE_PATH=./src react-scripts test --env=jsdom",
     "start-server": "cd server && node apps/serve.js",
-    "test-server": "jasmine",
+    "test-server": "cd server && jasmine",
     "lint": "eslint -f unix --fix --ext js server src",
     "server-nodemon": "cd server && nodemon apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
     "flow": "flow"

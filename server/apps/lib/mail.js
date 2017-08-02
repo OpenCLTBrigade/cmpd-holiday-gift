@@ -6,13 +6,8 @@ var fs = require('fs');
 var mustache = require('mustache');
 var path = require('path');
 
-var transporter;
-if (config.email.ses) {
-  transporter = nodemailer.createTransport(ses(config.email.ses));
-} else if (config.email.smtp) {
-  transporter = nodemailer.createTransport(config.email.smtp);
-} else if (config.mode === 'testing' && process.send) {
-  transporter = nodemailer.createTransport({
+function testTransporter(cb) {
+  return nodemailer.createTransport({
     name: 'print',
     version: '1.0.0',
     send: (mail, callback) => {
@@ -23,14 +18,23 @@ if (config.email.ses) {
         message += chunk;
       });
       pipe.on('end', () => {
-        process.send({ email: message });
+        cb({ email: message });
         callback(null, true);
       });
     }
   });
+}
+
+var defaultTransporter;
+if (config.email.ses) {
+  defaultTransporter = nodemailer.createTransport(ses(config.email.ses));
+} else if (config.email.smtp) {
+  defaultTransporter = nodemailer.createTransport(config.email.smtp);
+} else if (config.mode === 'testing' && process.send) {
+  defaultTransporter = testTransporter(process.send);
 } else {
   console.warn('Warning: email is not configured');
-  transporter = nodemailer.createTransport({
+  defaultTransporter = nodemailer.createTransport({
     name: 'print',
     version: '1.0.0',
     send: (mail, callback) => {
@@ -57,7 +61,7 @@ async function loadTemplate(dir, name) {
 
 var globalCache = {};
 
-var mailer = templatesPath => {
+function mailer(templatesPath, transporter = defaultTransporter) {
   if (!globalCache[templatesPath]) {
     globalCache[templatesPath] = {};
   }
@@ -74,8 +78,8 @@ var mailer = templatesPath => {
       html: message.contents
     }, (err, res) => err ? fail(err) : ok(res)));
   };
-};
+}
 
-mailer.transporter = transporter;
+mailer.testTransporter = testTransporter;
 
 module.exports = mailer;

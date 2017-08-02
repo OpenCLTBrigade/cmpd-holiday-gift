@@ -36,7 +36,7 @@ class TableApi {
       this.fetch(modelName, where, include).then(results => {
         resolve(this.parseResultSet(results));
       });
-    })
+    });
   }
 
   getCurrentPage() {

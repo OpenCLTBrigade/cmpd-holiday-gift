@@ -1,8 +1,8 @@
 /* eslint-env jasmine */
 
-// TODO: test new config setup: default, testing, local
+var process = require('process');
 
-describe('Configuration setup', function () {
+describe('Default development configuration', function () {
   it('should load fine', function () {
     require('../config');
   });

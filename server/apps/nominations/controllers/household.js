@@ -16,7 +16,7 @@ module.exports = {
       let result = await api.fetchAndParse('household', {}, related);
       res.json(result);
     } catch (err) {
-      console.log( err)
+      console.log(err);
     }
   },
   edit: {
