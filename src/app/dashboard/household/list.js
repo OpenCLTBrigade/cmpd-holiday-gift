@@ -23,10 +23,9 @@ export default class List extends Component {
     );
   }
 
-  async fetch(page: number): Promise<{items: Household[], total: number}> {
-    var { households } = await getHouseholdList(page);
-    var total = 150; // TODO: use correct total
-    return { items: households, total };
+  async fetch(page: number): Promise<{items: Household[], totalSize: number}> {
+    var response = await getHouseholdList(page);
+    return { items: response.items, totalSize: response.totalSize };
   }
 
   render(): React.Element<any> {
@@ -36,8 +35,8 @@ export default class List extends Component {
         <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn>
-        <TableHeaderColumn dataField="nominator" dataFormat={cell => `${cell.name_first} ${cell.name_last}`}>
+        {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}
+        <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Nominated by
         </TableHeaderColumn>
         <TableHeaderColumn dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">

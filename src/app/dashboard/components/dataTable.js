@@ -9,7 +9,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
     page: number
   };
   props: {
-    fetch: number => Promise<{items: Row[], total: number}>,
+    fetch: number => Promise<{items: Row[], totalSize: number}>,
     children: Component<any, any, any>[]
   }
   constructor() {
@@ -27,7 +27,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
 
   fetchData(page: number = this.state.page) {
     this.props.fetch(page).then(data => {
-      this.setState({ items: data.items, totalSize: data.total, page });
+      this.setState({ items: data.items, totalSize: data.totalSize, page });
     });
   }
 
@@ -38,7 +38,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
   render(): React.Element<*> {
     var options = {
       sizePerPage: 25, // which size per page you want to locate as default
-      pageStartIndex: 0, // where to start counting the pages
+      pageStartIndex: 1, // where to start counting the pages
       paginationSize: 5, // the pagination bar size.
       prePage: 'Prev', // Previous page button text
       nextPage: 'Next', // Next page button text
