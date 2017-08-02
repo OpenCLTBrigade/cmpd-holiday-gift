@@ -38,7 +38,6 @@ export const AuthToken = (() => {
   }
 
   function setToken(t) {
-    console.log('TODO ATN auth set', t);
     if (t) {
       localStorage.setItem('authToken', t);
     } else {
@@ -95,9 +94,7 @@ export const AuthToken = (() => {
       return;
     }
     refreshing = true;
-    console.log('TODO ATN auth bg refresh start');
     post('auth', 'extend').then(res => {
-      console.log('TODO ATN auth bg refresh success', token);
       setToken(res.token);
       refreshing = false;
     }).catch(err => {
@@ -166,7 +163,3 @@ export function getAuthorization(app: string): Promise<string> {
   }
 }
 
-// TODO ATN
-window.AuthToken = AuthToken;
-window.AppToken = AppToken;
-window.jwt_decode = jwt_decode;

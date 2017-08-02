@@ -31,7 +31,7 @@ if (config.email.ses) {
 } else if (config.email.smtp) {
   defaultTransporter = nodemailer.createTransport(config.email.smtp);
 } else if (config.mode === 'testing' && process.send) {
-  defaultTransporter = testTransporter(process.send);
+  defaultTransporter = testTransporter(process.send.bind(process));
 } else {
   console.warn('Warning: email is not configured');
   defaultTransporter = nodemailer.createTransport({
