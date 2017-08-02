@@ -2,7 +2,6 @@
 
 var { asyncTest } = require('./helpers/asyncTest');
 var mailer = require('../apps/lib/mail.js');
-var config = require('../config');
 
 var sendMail = cb => mailer(__dirname + '/helpers/templates', mailer.testTransporter(cb));
 

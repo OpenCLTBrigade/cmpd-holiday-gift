@@ -55,14 +55,12 @@ describe('Authentication tests', () => {
         done();
       });
     });
-    it('nomination app token', function(done) {
+    it('nomination app token', function (done) {
       request.post({
         url: url('/api/auth/access'),
-        json: {app: 'nominations'},
-        headers: {
-          authorization: `Bearer ${authToken}`
-        }
-      }, function(error, response, body) {
+        json: { app: 'nominations' },
+        headers: { authorization: `Bearer ${authToken}` }
+      }, function (error, response, body) {
         expect(error).toBeNull();
         expect(response.statusCode).toBe(200);
         expect(body.token).toBeTruthy();

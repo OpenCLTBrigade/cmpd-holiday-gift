@@ -16,7 +16,9 @@ module.exports = {
       let result = await api.fetchAndParse('household', {}, related);
       res.json(result);
     } catch (err) {
+      // TODO: properly log error
       console.log(err);
+      res.json({ error: 'error fetching data' });
     }
   },
   edit: {
