@@ -23,14 +23,18 @@ export default class List extends Component {
     );
   }
 
-  async fetch(page: number): Promise<{items: Household[], totalSize: number}> {
-    var response = await getHouseholdList(page);
+  async fetch(page: number, search: string = ''): Promise<{items: Household[], totalSize: number}> {
+    let response: Object = await getHouseholdList(page, search);
     return { items: response.items, totalSize: response.totalSize };
+  }
+
+  async doSearch(searchText: string, _colInfos: ?Object, _multiColumnSearch: ?Object): Promise<*> {
+    return await this.fetch(0, searchText);
   }
 
   render(): React.Element<any> {
     return (
-      <DataTable search={true} fetch={this.fetch.bind(this)}>
+      <DataTable search={true} fetch={this.fetch.bind(this)} onSearchChange={this.doSearch.bind(this)}>
         <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
         <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household

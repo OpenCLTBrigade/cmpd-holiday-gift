@@ -46,7 +46,9 @@ export default class DataTable<Row> extends Component<*, *, *> {
       lastPage: 'Last', // Last page button text
       paginationShowsTotal: true, // Accept bool or function
       hideSizePerPage: true,
-      onPageChange: this.handlePageChange
+      onPageChange: this.handlePageChange,
+      searchDelayTime: 500,
+      onSearchChange: this.props.onSearchChange || undefined
     };
 
     return (
@@ -58,7 +60,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         hover
         remote
         pagination
-        search={this.props.search || false}
+        search={this.props.onSearchChange || false}
       >
         {this.props.children}
       </BootstrapTable>
