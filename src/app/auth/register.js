@@ -3,7 +3,7 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 
-import LoginBox from './components/loginBox';
+import RegisterBox from './components/registerBox';
 
 import { AuthToken } from 'lib/auth';
 
@@ -13,9 +13,9 @@ export default class Register extends React.Component {
       return <Redirect to="/dashboard"/>;
     }
     return (
-      <LoginBox title="Register">
+      <RegisterBox title="Register">
         WIP
-      </LoginBox>
+      </RegisterBox>
     );
   }
 }
