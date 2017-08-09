@@ -8,7 +8,6 @@ import { getHouseholdList } from 'api/household';
 import type { Household } from 'api/household';
 
 export default class List extends Component {
-
   uploadedFormFormatter(_cell: any, _row: Household): React.Element<any> {
     return <i className="fa fa-check" />;
   }
@@ -23,7 +22,7 @@ export default class List extends Component {
     );
   }
 
-  async fetch(page: number, search: string = ''): Promise<{items: Household[], totalSize: number}> {
+  async fetch(page: number, search: string = ''): Promise<{ items: Household[], totalSize: number }> {
     let response: Object = await getHouseholdList(page, search);
     return { items: response.items, totalSize: response.totalSize };
   }
@@ -34,8 +33,15 @@ export default class List extends Component {
 
   render(): React.Element<any> {
     return (
-      <DataTable search={true} fetch={this.fetch.bind(this)} onSearchChange={this.doSearch.bind(this)}>
-        <TableHeaderColumn dataField="id" hidden isKey>Id</TableHeaderColumn>
+      <DataTable
+        search={true}
+        fetch={this.fetch.bind(this)}
+        onSearchChange={this.doSearch.bind(this)}
+        searchPlaceholder="Search by last name"
+      >
+        <TableHeaderColumn dataField="id" hidden isKey>
+          Id
+        </TableHeaderColumn>
         <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
@@ -46,7 +52,9 @@ export default class List extends Component {
         <TableHeaderColumn dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
           Uploaded Form
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>Actions</TableHeaderColumn>
+        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
+          Actions
+        </TableHeaderColumn>
         <TableHeaderColumn dataField="surname">Review</TableHeaderColumn>
       </DataTable>
     );

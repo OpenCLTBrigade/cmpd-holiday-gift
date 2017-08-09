@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BootstrapTable, SearchField } from 'react-bootstrap-table';
 
-const customSearchField = (props: Object): React.Element<*> => {
+const CustomSearchField = (props: Object): React.Element<*> => {
   return <SearchField defaultValue="" placeholder={props.searchPlaceholder || 'Search'} />;
 };
 //...
@@ -54,7 +54,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
       onSearchChange: this.props.onSearchChange || undefined,
-      searchField: customSearchField
+      searchField: () => <CustomSearchField searchPlaceholder={this.props.searchPlaceholder || 'Search'} />
     };
 
     return (
