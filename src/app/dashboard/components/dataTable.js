@@ -3,11 +3,7 @@ import React, { Component } from 'react';
 import { BootstrapTable, SearchField } from 'react-bootstrap-table';
 
 const customSearchField = (props: Object): React.Element<*> => {
-  return (
-    <SearchField
-        defaultValue=''
-        placeholder= {props.searchPlaceholder || 'Search'}/>
-  );
+  return <SearchField defaultValue="" placeholder={props.searchPlaceholder || 'Search'} />;
 };
 //...
 
@@ -18,9 +14,9 @@ export default class DataTable<Row> extends Component<*, *, *> {
     page: number
   };
   props: {
-    fetch: number => Promise<{items: Row[], totalSize: number}>,
+    fetch: number => Promise<{ items: Row[], totalSize: number }>,
     children: Component<any, any, any>[]
-  }
+  };
   constructor() {
     super();
     this.state = {
@@ -70,7 +66,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         hover
         remote
         pagination
-        search={this.props.onSearchChange || false}
+        search={this.props.onSearchChange ? true : false}
       >
         {this.props.children}
       </BootstrapTable>

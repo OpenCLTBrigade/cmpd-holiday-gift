@@ -7,7 +7,12 @@ module.exports = {
   list: async (req, res) => {
     let api = new TableApi(req);
     try {
-      let result = await api.fetchAndParse('household', {}, related, { method: ['filteredByUser', req.user] });
+      let whereClause = {};
+      if (req.query.search) {
+        console.log(req.query.search);
+        whereClause = { name_last: { $like: `${req.query.search}%` } };
+      }
+      let result = await api.fetchAndParse('household', whereClause, related, { method: ['filteredByUser', req.user] });
       res.json(result);
     } catch (err) {
       // TODO: properly log error
