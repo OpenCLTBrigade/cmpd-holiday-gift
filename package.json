@@ -11,15 +11,13 @@
     "test-server": "cd server && jasmine",
     "lint": "eslint -f unix --fix --ext js server src",
     "server-nodemon": "cd server && nodemon apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
-    "flow": "flow"
+    "flow": "flow",
+    "seeds": "node server/seeds"
   },
   "bin": {
     "cmpd-explorers": "server/apps/serve.js"
   },
-  "files": [
-    "build",
-    "server"
-  ],
+  "files": ["build", "server"],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "admin-lte": "^2.3.11",
