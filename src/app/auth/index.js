@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Route } from 'react-router-dom';
+import styled from 'styled-components';
 
 // Components
 import Login from './login';
@@ -11,16 +12,29 @@ import Register from './register';
 // Assets used by this component
 import logo from './assets/auth-logo.png';
 
+const AuthHeader = styled.div`
+    width: 360px;
+    margin: 7% auto;
+    text-align: center;
+}
+`;
+
+const MadeBy = styled.div`
+    font-size: 180%;
+    color: #6da1e4;
+    position: relative;
+    top: -10px;
+    font-weight: bold;
+`;
+
 export default class Auth extends React.Component {
   render(): React.Element<any> {
     return (
       <div className="auth-wrapper">
-        <div className="auth-header login-box">
+        <AuthHeader>
           <img src={logo} title="CMPD Explorers Christmas Project" alt="CMPD Explorers Christmas Project"/>
-          <div className="made-by">
-            By Code for Charlotte
-          </div>
-        </div>
+          <MadeBy>By Code for Charlotte</MadeBy>
+        </AuthHeader>
         <Route exact path="/auth/login" component={Login} />
         <Route exact path="/auth/logout" component={Logout} />
         <Route exact path="/auth/register" component={Register} />
