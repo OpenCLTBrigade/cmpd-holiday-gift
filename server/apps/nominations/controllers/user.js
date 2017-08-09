@@ -21,6 +21,10 @@ module.exports = {
   getUser: async (req, res) => {
     let user = null;
     try {
+      if (req.user.role !== 'admin' && parseInt(req.user.id) !== parseInt(req.params.id)) {
+        console.log('NOPE', req.user.id, req.params.id);
+        throw new Error('User not found');
+      }
       user = await db.user.findById(req.params.id);
     } catch (err) {
       user = null;
