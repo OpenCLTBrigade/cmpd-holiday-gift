@@ -31,7 +31,7 @@ var associations = [];
 // A wrapper around sequelize.define that handles encrypted fields
 // - fields marked `encrypted: true` are encrypted using `sequelize-encrypted`
 // - a 'vault' column is added if necessary to store the encrypted fields
-function define_table(name, model) {
+function define_table(name, model, scopes = null, defaultScope = null) {
   var encrypt = null;
 
   function encrypt_field(column) {
@@ -66,12 +66,12 @@ function define_table(name, model) {
     }
   };
 
-  if (model.defaultScope !== undefined) {
-    attributes.defaultScope = model.defaultScope;
+  if (defaultScope) {
+    attributes.defaultScope = defaultScope;
   }
 
-  if (model.scopes !== undefined) {
-    attributes.scopes = model.scopes;
+  if (scopes) {
+    attributes.scopes = scopes;
   }
 
   return sequelize.define(name, model, attributes);
@@ -91,7 +91,7 @@ fs
   })
   .forEach(function (file) {
     var table = require(path.join(__dirname, file))(Sequelize);
-    db[table.name] = define_table(table.name, table.fields);
+    db[table.name] = define_table(table.name, table.fields, table.scopes, table.defaultScope);
     if (table.associate) {
       associations.push(() => table.associate(db[table.name], db));
     }

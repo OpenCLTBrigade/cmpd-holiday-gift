@@ -41,9 +41,9 @@ async function sessionMiddleware(req, res, next) {
         user = await session.getUser();
         req.user = user;
       }
-    } else if (req.user.user_id) {
+    } else if (req.user.id) {
       // When used by an application service
-      user = await db.user.findById();
+      user = await db.user.findById(req.user.id);
       req.user = user;
     }
   }

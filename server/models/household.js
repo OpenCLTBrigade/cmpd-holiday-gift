@@ -77,12 +77,23 @@ module.exports = Sequelize => ({
       allowNull: false,
       defaultValue: ''
     },
+    nominator_user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     deleted_at: {
       type: Sequelize.DATE,
       defaultValue: null
     }
   },
-  scopes: { filteredByUser: function (userId) {} },
+  scopes: {
+    filteredByUser: function (user) {
+      if (user.role !== 'admin') {
+        return { where: { nominator_user_id: user.id } };
+      }
+      return {};
+    }
+  },
   associate: function (household, db) {
     household.belongsTo(db.user, { as: 'nominator' });
     household.hasMany(db.child, { as: 'children' });
