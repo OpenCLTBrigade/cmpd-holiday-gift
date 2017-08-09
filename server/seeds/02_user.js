@@ -34,7 +34,7 @@ module.exports = async db => {
     name_last: 'Account',
     affiliation_id: 2,
     email: 'nominator@codeforcharlotte.org',
-    password: auth.hashPassword('nomnom'),
+    password: auth.hashPassword('admin'),
     nomination_limit: 5,
     active: 'Y'
   });

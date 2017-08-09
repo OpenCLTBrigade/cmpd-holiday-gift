@@ -9,7 +9,6 @@ module.exports = {
     try {
       let whereClause = {};
       if (req.query.search) {
-        console.log(req.query.search);
         whereClause = { name_last: { $like: `${req.query.search}%` } };
       }
       let result = await api.fetchAndParse('household', whereClause, related, { method: ['filteredByUser', req.user] });

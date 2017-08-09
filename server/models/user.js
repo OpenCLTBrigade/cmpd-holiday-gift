@@ -97,6 +97,14 @@ module.exports = Sequelize => ({
       encrypted: true
     }
   },
+  scopes: {
+    filteredByUser: function (user) {
+      if (user.role !== 'admin') {
+        return { where: { id: user.id } };
+      }
+      return {};
+    }
+  },
   associate: function (user, db) {
     user.belongsTo(db.affiliation, { foreignKey: 'affiliation_id' });
   }
