@@ -16,6 +16,10 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       allowNull: false
     },
+    role: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
     rank: {
       type: Sequelize.STRING,
       defaultValue: null
