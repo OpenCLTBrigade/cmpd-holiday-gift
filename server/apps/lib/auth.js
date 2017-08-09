@@ -29,13 +29,21 @@ function authMiddleware(secret) {
 }
 
 async function sessionMiddleware(req, res, next) {
+  let user = null;
   if (req.user) {
-    var session = await db.session.findById(req.user.session_id);
-    if (!session) {
-      req.user = undefined;
-    } else {
-      // TODO: validate session expiration
-      var user = await session.getUser();
+    if (req.user.session_id) {
+      // When used by the authentication service
+      var session = await db.session.findById(req.user.session_id);
+      if (!session) {
+        req.user = undefined;
+      } else {
+        // TODO: validate session expiration
+        user = await session.getUser();
+        req.user = user;
+      }
+    } else if (req.user.user_id) {
+      // When used by an application service
+      user = await db.user.findById();
       req.user = user;
     }
   }
