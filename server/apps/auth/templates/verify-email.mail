@@ -3,7 +3,7 @@ Subject: Please confirm your email address
 <p>Hello {{user.name_first}} {{user.name_last}}</p>
 
 <p>
-  <a href="{{confirm_email_url}}?id={{user.id}}&confirmation_code={{user.confirmation_code}}">
+  <a href="{{confirm_email_url}}?id={{user.id}}&confirmation_code={{confirmation_code}}">
     Click here
   </a>
   to confirm your registration.

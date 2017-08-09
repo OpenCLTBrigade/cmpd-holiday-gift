@@ -4,7 +4,8 @@ var db = require('../../models');
 var jwtMiddleware = require('express-jwt');
 var jwt = require('jsonwebtoken');
 
-// TODO automatically delete expired sessions from database
+// TODO: automatically delete expired sessions from database
+// TODO: check if user is approved and active
 
 function hashPassword(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

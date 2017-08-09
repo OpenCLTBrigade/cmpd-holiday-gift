@@ -48,7 +48,7 @@ app.get('*', (req, res) => {
 var initialize = [];
 
 // Sync the database
-initialize.push(models.sequelize.sync().then(function () {
+initialize.push(models.sync().then(function () {
   if (config.verbose) {
     console.log('Nice! Database sync succeeded.');
   }

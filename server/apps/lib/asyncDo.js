@@ -1,6 +1,8 @@
-module.exports = promise => {
-  promise.then(() => {}).catch((error) => {
-    console.error('Unhandled error:', error);
-        // TODO: log error to file
-  });
+module.exports = fun => {
+  setTimeout(() => {
+    fun().then(() => {}).catch((error) => {
+      console.error('Unhandled error:', error);
+      // TODO: log error to file
+    });
+  }, 0);
 };
