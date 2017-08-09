@@ -10,15 +10,38 @@ const related = {
 
 
 module.exports = {
+  /**
+   * List households
+   * @param  {[type]}  req [description]
+   * @param  {[type]}  res [description]
+   * @return {Promise}     [description]
+   */
   list: async (req, res) => {
     let api = new TableApi(req);
+    let whereClause = {};
+    let search = req.query.search || undefined;
+
+    if (search) {
+      whereClause = {
+        $or: [
+          { name_first: { $like: `${search}%` } },
+          { name_last: { $like: `${search}%` } }
+        ]
+      }
+    }
+
     try {
-      let result = await api.fetchAndParse('household', {}, related);
+      let result = await api.fetchAndParse('household', whereClause, related);
       res.json(result);
     } catch (err) {
-      console.log( err)
+      console.log(err)
     }
   },
+
+  /**
+   * Edit Household
+   * @type {Object}
+   */
   edit: {
     get: async (req, res) => {
       var household = await db.household.findById(req.params.id, {
@@ -37,6 +60,11 @@ module.exports = {
 
     }
   },
+
+  /**
+   * Create and store new household record
+   * @type {Object}
+   */
   create: {
     get: (_req, _res) => {
 
