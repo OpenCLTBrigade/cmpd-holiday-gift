@@ -62,7 +62,7 @@ async function getToken(req, res) {
   if (req.user && auth.userCanUseApp(req.user, req.body.app)) {
     res.json({ token: auth.makeToken({ id: req.user.id }, config.jwtSecrets[req.body.app], config.appTokenLifetime) });
   } else {
-    res.status(404).send();
+    res.status(403).send();
   }
 }
 

@@ -2,20 +2,8 @@
 
 var child_process = require('child_process');
 var fs = require('fs');
-var webpack = require('webpack');
-var webpackConfig = require('../../config/webpack');
 
 var { asyncTest } = require('./asyncTest');
-
-var buildViews = new Promise((ok, fail) => {
-  webpack(webpackConfig).run(err => {
-    if (err) {
-      fail(err);
-    } else {
-      ok();
-    }
-  });
-});
 
 function testServer({ seed, mode }) {
   var info = {};
@@ -69,4 +57,4 @@ function testServer({ seed, mode }) {
   };
 }
 
-module.exports = { testServer, buildViews };
+module.exports = { testServer };

@@ -12,7 +12,7 @@ class TableApi {
    * @param  {Object}  [include={}] Include related models
    * @return {Promise}            [description]
    */
-  async fetch(modelName, where = {}, include = {}) {
+  async fetch(modelName, where = {}, _include = {}) {
     return new Promise((resolve, reject) => {
       // TODO: Make include work :(
       let currentOffset = this.getCurrentOffset();
@@ -32,11 +32,11 @@ class TableApi {
   }
 
   async fetchAndParse(modelName, where = {}, include = {}) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       this.fetch(modelName, where, include).then(results => {
         resolve(this.parseResultSet(results));
       });
-    })
+    });
   }
 
   getCurrentPage() {
