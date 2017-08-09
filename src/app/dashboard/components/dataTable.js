@@ -1,6 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-import { BootstrapTable } from 'react-bootstrap-table';
+import { BootstrapTable, SearchField } from 'react-bootstrap-table';
+
+const customSearchField = (props: Object): React.Element<*> => {
+  return (
+    <SearchField
+        defaultValue=''
+        placeholder= {props.searchPlaceholder || 'Search'}/>
+  );
+};
+//...
 
 export default class DataTable<Row> extends Component<*, *, *> {
   state: {
@@ -48,7 +57,8 @@ export default class DataTable<Row> extends Component<*, *, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.onSearchChange || undefined
+      onSearchChange: this.props.onSearchChange || undefined,
+      searchField: customSearchField
     };
 
     return (

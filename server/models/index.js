@@ -42,6 +42,7 @@ function define_table(name, model) {
     return encrypt.field(column);
   }
 
+  // Note which fields are private and bind them to the model
   let privateFields = [];
 
   Object.keys(model).forEach(function (field) {
@@ -53,7 +54,7 @@ function define_table(name, model) {
     }
   });
 
-  return sequelize.define(name, model, {
+  let attributes = {
     instanceMethods: {
       toJSON: function () {
         var values = Object.assign({}, this.dataValues);
@@ -63,7 +64,17 @@ function define_table(name, model) {
         return values;
       }
     }
-  });
+  };
+
+  if (model.defaultScope !== undefined) {
+    attributes.defaultScope = model.defaultScope;
+  }
+
+  if (model.scopes !== undefined) {
+    attributes.scopes = model.scopes;
+  }
+
+  return sequelize.define(name, model, attributes);
 }
 
 // This model loader is different from the Sequelize sample project

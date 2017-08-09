@@ -82,6 +82,7 @@ module.exports = Sequelize => ({
       defaultValue: null
     }
   },
+  scopes: { filteredByUser: function (userId) {} },
   associate: function (household, db) {
     household.belongsTo(db.user, { as: 'nominator' });
     household.hasMany(db.child, { as: 'children' });

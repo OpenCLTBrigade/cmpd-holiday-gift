@@ -1,13 +1,7 @@
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
-const related = {
-  include: [
-    { model: db.child, as: 'children' },
-    { model: db.user, as: 'nominator' }
-  ]
-};
-
+const related = { include: [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }] };
 
 module.exports = {
   /**
@@ -17,24 +11,25 @@ module.exports = {
    * @return {Promise}     [description]
    */
   list: async (req, res) => {
-    let api = new TableApi(req);
+    let tableApi = new TableApi(req);
     let whereClause = {};
     let search = req.query.search || undefined;
 
     if (search) {
-      whereClause = {
-        $or: [
-          { name_first: { $like: `${search}%` } },
-          { name_last: { $like: `${search}%` } }
-        ]
-      }
+      // whereClause = {
+      //   $or: [
+      //     { name_first: { $like: `${search}%` } },
+      //     { name_last: { $like: `${search}%` } }
+      //   ]
+      // }
+      whereClause = { name_last: { $like: '$search%' } };
     }
 
     try {
-      let result = await api.fetchAndParse('household', whereClause, related);
+      let result = await tableApi.fetchAndParse('household', whereClause, related);
       res.json(result);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   },
 
@@ -44,21 +39,14 @@ module.exports = {
    */
   edit: {
     get: async (req, res) => {
-      var household = await db.household.findById(req.params.id, {
-        include: [
-                    { model: db.child, as: 'children' },
-                    { model: db.household_address, as: 'address' }
-        ]
-      });
+      var household = await db.household.findById(req.params.id, { include: [{ model: db.child, as: 'children' }, { model: db.household_address, as: 'address' }] });
       var schools = await db.affiliation.findAll({
         attributes: ['id', 'name'],
         where: { type: 'cms' }
       });
       res.json({ household, schools });
     },
-    post: (_req, _res) => {
-
-    }
+    post: (_req, _res) => {}
   },
 
   /**
@@ -66,11 +54,7 @@ module.exports = {
    * @type {Object}
    */
   create: {
-    get: (_req, _res) => {
-
-    },
-    post: (_req, _res) => {
-
-    }
+    get: (_req, _res) => {},
+    post: (_req, _res) => {}
   }
 };
