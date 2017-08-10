@@ -25,14 +25,21 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.fetchData();
   }
 
-  fetchData(page: number = this.state.page) {
-    this.props.fetch(page).then(data => {
+  fetchData(page: number = this.state.page, searchText: string = '') {
+    console.log('fetchData', page, searchText);
+    this.props.fetch(page, searchText).then(data => {
+      console.log('results', data.items);
       this.setState({ items: data.items, totalSize: data.totalSize, page });
     });
   }
 
   handlePageChange = (page: number) => {
     this.fetchData(page);
+  };
+
+  handleSearchChange = (searchText?: string) => {
+    console.log('searching for', searchText);
+    this.fetchData(this.state.page, searchText);
   };
 
   render(): React.Element<*> {
@@ -48,7 +55,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.onSearchChange || undefined
+      onSearchChange: this.props.search ? this.handleSearchChange : undefined
     };
 
     return (
@@ -60,7 +67,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         hover
         remote
         pagination
-        search={this.props.onSearchChange ? true : false}
+        search={this.props.search ? true : false}
         searchPlaceholder={this.props.searchPlaceholder || 'Search'}
       >
         {this.props.children}

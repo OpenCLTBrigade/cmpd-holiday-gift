@@ -21,21 +21,12 @@ export default class AffiliationList extends Component {
     return { items: response.items, totalSize: response.totalSize };
   }
 
-  async doSearch(searchText: string, _colInfos: ?Object, _multiColumnSearch: ?Object): Promise<*> {
-    return await this.fetch(0, searchText);
-  }
-
   render(): React.Element<any> {
     return (
       <Row>
         <Col xs={12}>
           <Box title="Affiliation List">
-            <DataTable
-              search={true}
-              fetch={this.fetch.bind(this)}
-              onSearchChange={this.doSearch}
-              searchPlaceholder="Filter by name"
-            >
+            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by name">
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
