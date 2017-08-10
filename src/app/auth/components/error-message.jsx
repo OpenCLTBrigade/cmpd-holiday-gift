@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-let ErrorMessage = ({
+const ErrorMessage = ({
   errorMessage,
   onDismissError
 }: {
