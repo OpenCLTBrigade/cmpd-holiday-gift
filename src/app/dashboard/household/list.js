@@ -21,23 +21,17 @@ export default class List extends Component {
     );
   }
 
-  async fetch(page: number, search: string = ''): Promise<{ items: HouseholdType[], totalSize: number }> {
+  async fetch(
+    page: number,
+    search: string = ''
+  ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
     let response: Object = await getHouseholdList(page, search);
-    return { items: response.items, totalSize: response.totalSize };
-  }
-
-  async doSearch(searchText: string, _colInfos: ?Object, _multiColumnSearch: ?Object): Promise<*> {
-    return await this.fetch(0, searchText);
+    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
   render(): React.Element<any> {
     return (
-      <DataTable
-        search={true}
-        fetch={this.fetch.bind(this)}
-        onSearchChange={this.doSearch.bind(this)}
-        searchPlaceholder="Search by last name"
-      >
+      <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name">
         <TableHeaderColumn dataField="id" hidden isKey>
           Id
         </TableHeaderColumn>

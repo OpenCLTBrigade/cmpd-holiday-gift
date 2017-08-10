@@ -6,7 +6,8 @@ export default class DataTable<Row> extends Component<*, *, *> {
   state: {
     items: Row[],
     totalSize: number,
-    page: number
+    page: number,
+    sizePerPage: number
   };
   props: {
     fetch: number => Promise<{ items: Row[], totalSize: number }>,
@@ -17,6 +18,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.state = {
       items: [],
       totalSize: 1,
+      sizePerPage: 25,
       page: 1
     };
   }
@@ -26,10 +28,10 @@ export default class DataTable<Row> extends Component<*, *, *> {
   }
 
   fetchData(page: number = this.state.page, searchText: string = '') {
-    console.log('fetchData', page, searchText);
+    // console.log('fetchData', page, searchText);
     this.props.fetch(page, searchText).then(data => {
-      console.log('results', data.items);
-      this.setState({ items: data.items, totalSize: data.totalSize, page });
+      // console.log('results', data.items);
+      this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage });
     });
   }
 
@@ -44,7 +46,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
 
   render(): React.Element<*> {
     var options = {
-      sizePerPage: 25, // which size per page you want to locate as default
+      sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
       pageStartIndex: 1, // where to start counting the pages
       paginationSize: 5, // the pagination bar size.
       prePage: 'Prev', // Previous page button text
@@ -66,7 +68,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         striped
         hover
         remote
-        pagination
+        pagination={this.props.pagination !== undefined ? this.props.pagination : true}
         search={this.props.search ? true : false}
         searchPlaceholder={this.props.searchPlaceholder || 'Search'}
       >

@@ -16,9 +16,12 @@ export default class AffiliationList extends Component {
     );
   }
 
-  async fetch(page: number, search: string = ''): Promise<{ items: AffiliationType[], totalSize: number }> {
+  async fetch(
+    page: number,
+    search: string = ''
+  ): Promise<{ items: AffiliationType[], totalSize: number, sizePerPage: number }> {
     let response: Object = await getAffiliationList(page, search);
-    return { items: response.items, totalSize: response.totalSize };
+    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
   render(): React.Element<any> {
@@ -26,7 +29,7 @@ export default class AffiliationList extends Component {
       <Row>
         <Col xs={12}>
           <Box title="Affiliation List">
-            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by name">
+            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by name" pagination={false}>
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
