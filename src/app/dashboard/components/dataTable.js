@@ -1,11 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { BootstrapTable, SearchField } from 'react-bootstrap-table';
-
-const CustomSearchField = (props: Object): React.Element<*> => {
-  return <SearchField defaultValue="" placeholder={props.searchPlaceholder || 'Search'} />;
-};
-//...
+import { BootstrapTable } from 'react-bootstrap-table';
 
 export default class DataTable<Row> extends Component<*, *, *> {
   state: {
@@ -53,8 +48,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.onSearchChange || undefined,
-      searchField: () => <CustomSearchField searchPlaceholder={this.props.searchPlaceholder || 'Search'} />
+      onSearchChange: this.props.onSearchChange || undefined
     };
 
     return (
@@ -67,6 +61,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         remote
         pagination
         search={this.props.onSearchChange ? true : false}
+        searchPlaceholder={this.props.searchPlaceholder || 'Search'}
       >
         {this.props.children}
       </BootstrapTable>

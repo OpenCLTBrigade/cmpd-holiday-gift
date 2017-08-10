@@ -33,7 +33,7 @@ export default class AffiliationList extends Component {
             <DataTable
               search={true}
               fetch={this.fetch.bind(this)}
-              onSearchChange={this.doSearch.bind(this)}
+              onSearchChange={this.doSearch}
               searchPlaceholder="Filter by name"
             >
               <TableHeaderColumn dataField="type" hidden isKey>
