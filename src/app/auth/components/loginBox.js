@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import ErrorMessage from './error-message';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -65,19 +66,13 @@ export default class LoginBox extends React.Component {
         {/* TODO: Better flash message */}
         <Header>
           <i className="fa fa-sign-in" />
-          {this.props.title}
+          {` ${this.props.title}`}
         </Header>
         <Body className="body">
-          {!this.state.errorMessage
-            ? ''
-            : <div className="alert alert-danger validation">
-                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                </button>
-                <span>
-                  {this.state.errorMessage}
-                </span>
-              </div>}
+          <ErrorMessage
+            errorMessage={this.state.errorMessage}
+            onDismissError={() => this.setState(() => ({ errorMessage: '' }))}
+          />
           <Form onSubmit={this.onSubmit.bind(this)}>
             <label>
               Email:
