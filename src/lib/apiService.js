@@ -3,6 +3,18 @@ import axios from 'axios';
 
 import { getAuthorization } from 'lib/auth';
 
+export type DataTableResponse = {
+  totalSize: number,
+  per_page: number,
+  page: number,
+  last_page: number,
+  next_page_url?: string,
+  prev_page_url?: string,
+  from: number,
+  to: number,
+  items: Array<Object>
+};
+
 // Axios config object
 type RequestConfigType = {
   baseURL?: string,
