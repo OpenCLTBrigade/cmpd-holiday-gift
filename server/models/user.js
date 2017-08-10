@@ -100,6 +100,7 @@ module.exports = Sequelize => ({
   scopes: {
     filteredByUser: function (user) {
       if (user.role !== 'admin') {
+        // Pro-tip: If your where clause competes with the scope, the where-clause wins
         return { where: { id: user.id } };
       }
       return {};

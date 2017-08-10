@@ -34,10 +34,10 @@ class TableApi {
     });
   }
 
-  async fetchAndParse(modelName, where = {}, include = {}, scope = '') {
+  async fetchAndParse(modelName, where = {}, include = {}, scope = '', fieldWhitelist = null) {
     return new Promise((resolve, _reject) => {
       this.fetch(modelName, where, include, scope).then(results => {
-        resolve(this.parseResultSet(results));
+        resolve(this.parseResultSet(results, fieldWhitelist));
       });
     });
   }
@@ -51,7 +51,13 @@ class TableApi {
     return (this.getCurrentPage() - 1) * this.itemsPerPage;
   }
 
-  parseResultSet(resultSet) {
+  /**
+   * [parseResultSet description]
+   * @param  {[type]} resultSet             [description]
+   * @param  {Array<String>} [fieldWhitelist=null] Fields to be returned if not null
+   * @return {[type]}                       [description]
+   */
+  parseResultSet(resultSet, fieldWhitelist = null) {
     const req = this.req;
     const currentPage = this.getCurrentPage();
     let lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
@@ -59,6 +65,18 @@ class TableApi {
 
     let nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
     let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
+
+    if (fieldWhitelist !== null) {
+      let newRows = [];
+      resultSet.rows.forEach(record => {
+        let newRecord = {};
+        fieldWhitelist.forEach(field => {
+          newRecord[field] = record[field];
+        });
+        newRows.push(newRecord);
+      });
+      resultSet.rows = newRows;
+    }
 
     return {
       totalSize: resultSet.count,

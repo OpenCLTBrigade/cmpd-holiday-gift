@@ -1,17 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { BootstrapTable, SearchField } from 'react-bootstrap-table';
-
-const CustomSearchField = (props: Object): React.Element<*> => {
-  return <SearchField defaultValue="" placeholder={props.searchPlaceholder || 'Search'} />;
-};
-//...
+import { BootstrapTable } from 'react-bootstrap-table';
 
 export default class DataTable<Row> extends Component<*, *, *> {
   state: {
     items: Row[],
     totalSize: number,
-    page: number
+    page: number,
+    sizePerPage: number
   };
   props: {
     fetch: number => Promise<{ items: Row[], totalSize: number }>,
@@ -22,6 +18,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.state = {
       items: [],
       totalSize: 1,
+      sizePerPage: 25,
       page: 1
     };
   }
@@ -30,9 +27,11 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.fetchData();
   }
 
-  fetchData(page: number = this.state.page) {
-    this.props.fetch(page).then(data => {
-      this.setState({ items: data.items, totalSize: data.totalSize, page });
+  fetchData(page: number = this.state.page, searchText: string = '') {
+    // console.log('fetchData', page, searchText);
+    this.props.fetch(page, searchText).then(data => {
+      // console.log('results', data.items);
+      this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage });
     });
   }
 
@@ -40,9 +39,14 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.fetchData(page);
   };
 
+  handleSearchChange = (searchText?: string) => {
+    console.log('searching for', searchText);
+    this.fetchData(this.state.page, searchText);
+  };
+
   render(): React.Element<*> {
     var options = {
-      sizePerPage: 25, // which size per page you want to locate as default
+      sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
       pageStartIndex: 1, // where to start counting the pages
       paginationSize: 5, // the pagination bar size.
       prePage: 'Prev', // Previous page button text
@@ -53,8 +57,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.onSearchChange || undefined,
-      searchField: () => <CustomSearchField searchPlaceholder={this.props.searchPlaceholder || 'Search'} />
+      onSearchChange: this.props.search ? this.handleSearchChange : undefined
     };
 
     return (
@@ -65,8 +68,9 @@ export default class DataTable<Row> extends Component<*, *, *> {
         striped
         hover
         remote
-        pagination
-        search={this.props.onSearchChange ? true : false}
+        pagination={this.props.pagination !== undefined ? this.props.pagination : true}
+        search={this.props.search ? true : false}
+        searchPlaceholder={this.props.searchPlaceholder || 'Search'}
       >
         {this.props.children}
       </BootstrapTable>
