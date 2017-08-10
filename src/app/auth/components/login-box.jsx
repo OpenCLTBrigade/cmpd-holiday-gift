@@ -5,6 +5,18 @@ import styled from 'styled-components';
 
 import ErrorMessage from './error-message';
 
+const formToJSON = elements =>
+  [].reduce.call(
+    elements,
+    (data, { name, value }) => {
+      if (name) {
+        data[name] = value;
+      }
+      return data;
+    },
+    {}
+  );
+
 const Wrapper = styled.div`
   background-color: white;
   margin: 10px auto;
@@ -46,12 +58,6 @@ const Button = styled.input`
   }
 `;
 
-const FormGroup = styled.div`display: flex;`;
-
-const Label = styled.label`flex: 1;`;
-
-const Icon = styled.i`top: 20px !important;`;
-
 export default class LoginBox extends React.Component {
   state: {
     errorMessage: ?string
@@ -66,8 +72,15 @@ export default class LoginBox extends React.Component {
   }
 
   onSubmit(ev: Event) {
+    let { onSubmit } = this.props;
     ev.preventDefault();
-    this.props.onSubmit({ email: this.email.value, password: this.password.value });
+    let data = formToJSON(ev.target);
+
+    if (!onSubmit) {
+      console.error('LoginBox: onSubmit missing from props');
+    } else {
+      onSubmit(data);
+    }
   }
 
   flashErrorMessage(message: string) {
@@ -88,21 +101,8 @@ export default class LoginBox extends React.Component {
             onDismissError={() => this.setState(() => ({ errorMessage: '' }))}
           />
           <Form onSubmit={this.onSubmit.bind(this)}>
-            <FormGroup className="form-group has-feedback">
-              <Label>
-                E-mail address
-                <input className="form-control" name="email" type="text" ref={ref => (this.email = ref)} />
-              </Label>
-              <Icon className="fa fa-envelope form-control-feedback" />
-            </FormGroup>
-            <FormGroup className="form-group has-feedback">
-              <Label>
-                Password
-                <input className="form-control" name="password" type="password" ref={ref => (this.password = ref)} />
-              </Label>
-              <Icon className="fa fa-lock form-control-feedback" />
-            </FormGroup>
-            <Button className="btn bg-auth btn-block btn-flat" type="submit" value="Login" />
+            {this.props.body}
+            <Button className="btn bg-auth btn-block btn-flat" type="submit" value={this.props.submitText} />
           </Form>
         </Body>
         {this.props.footer}

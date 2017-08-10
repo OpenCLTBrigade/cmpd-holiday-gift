@@ -5,10 +5,13 @@ import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import FooterLink from './components/footer-link.jsx';
 
-import LoginBox from './components/loginBox';
+import LoginBox from './components/login-box';
 
 import { AuthToken } from 'lib/auth';
 import Footer from './components/footer.jsx';
+import FormGroup from './components/form-group.jsx';
+import Label from './components/form-label.jsx';
+const Icon = styled.i`top: 20px !important;`;
 
 export default class Login extends React.Component {
   box: LoginBox;
@@ -19,8 +22,27 @@ export default class Login extends React.Component {
     return (
       <LoginBox
         title="Log in"
+        submitText="Login"
         onSubmit={this.onSubmit.bind(this)}
         ref={ref => (this.box = ref)}
+        body={
+          <div>
+            <FormGroup className="form-group has-feedback">
+              <Label>
+                E-mail address
+                <input className="form-control" name="email" type="text" />
+              </Label>
+              <Icon className="fa fa-envelope form-control-feedback" />
+            </FormGroup>
+            <FormGroup className="form-group has-feedback">
+              <Label>
+                Password
+                <input className="form-control" name="password" type="password" />
+              </Label>
+              <Icon className="fa fa-lock form-control-feedback" />
+            </FormGroup>
+          </div>
+        }
         footer={
           <Footer>
             <div className="col-xs-6">
