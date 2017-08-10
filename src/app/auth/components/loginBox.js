@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+
 import ErrorMessage from './error-message';
 
 const Wrapper = styled.div`
@@ -21,7 +22,7 @@ const Header = styled.div`
 `;
 
 const Body = styled.div`
-  padding: 10px 20px;
+  padding: 10px 20px 0 20px;
   display: flex;
   flex-direction: column;
 `;
@@ -39,10 +40,23 @@ const Button = styled.input`
   &:hover {
     color: #fff;
   }
+
+  &:focus {
+    color: #fff;
+  }
 `;
 
+const FormGroup = styled.div`display: flex;`;
+
+const Label = styled.label`flex: 1;`;
+
+const Icon = styled.i`top: 20px !important;`;
+
 export default class LoginBox extends React.Component {
-  state: { errorMessage: ?string };
+  state: {
+    errorMessage: ?string
+  };
+  footer: any;
   email: HTMLInputElement;
   password: HTMLInputElement;
 
@@ -63,47 +77,35 @@ export default class LoginBox extends React.Component {
   render(): React.Element<any> {
     return (
       <Wrapper className="login-box" id="login-box">
-        {/* TODO: Better flash message */}
         <Header>
           <i className="fa fa-sign-in" />
           {` ${this.props.title}`}
         </Header>
+        {/* TODO:  Login box needs to accept content  */}
         <Body className="body">
           <ErrorMessage
             errorMessage={this.state.errorMessage}
             onDismissError={() => this.setState(() => ({ errorMessage: '' }))}
           />
           <Form onSubmit={this.onSubmit.bind(this)}>
-            <label>
-              Email:
-              <input className="form-control" name="email" type="text" ref={ref => (this.email = ref)} />
-            </label>
-            <label>
-              Password:
-              <input className="form-control" name="password" type="password" ref={ref => (this.password = ref)} />
-            </label>
+            <FormGroup className="form-group has-feedback">
+              <Label>
+                E-mail address
+                <input className="form-control" name="email" type="text" ref={ref => (this.email = ref)} />
+              </Label>
+              <Icon className="fa fa-envelope form-control-feedback" />
+            </FormGroup>
+            <FormGroup className="form-group has-feedback">
+              <Label>
+                Password
+                <input className="form-control" name="password" type="password" ref={ref => (this.password = ref)} />
+              </Label>
+              <Icon className="fa fa-lock form-control-feedback" />
+            </FormGroup>
             <Button className="btn bg-auth btn-block btn-flat" type="submit" value="Login" />
           </Form>
         </Body>
-        <div className="body" />
-
-        <div className="footer">
-          <hr />
-          <div className="row">
-            <div className="col-xs-6">
-              <a className="btn btn-link">
-                {' '}<i className="fa fa-lock" />
-                Forgot Password
-              </a>
-            </div>
-            <div className="col-xs-6">
-              <a className="btn btn-link pull-right">
-                {' '}<i className="fa fa-user-plus" />
-                Register
-              </a>
-            </div>
-          </div>
-        </div>
+        {this.props.footer}
       </Wrapper>
     );
   }
