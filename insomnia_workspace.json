@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2017-08-10T02:09:37.025Z",
+	"__export_date": "2017-08-10T02:15:25.468Z",
 	"__export_source": "insomnia.desktop.app:v5.7.4",
 	"resources": [
 		{
@@ -36,7 +36,7 @@
 		{
 			"_id": "req_a0eaf2d5c4cc413da7358f91c6a84926",
 			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
-			"modified": 1502330692797,
+			"modified": 1502331319034,
 			"created": 1501433885282,
 			"url": "{{base_url}}/auth/login",
 			"name": "Log in (Auth token)",
@@ -44,7 +44,7 @@
 			"method": "POST",
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"email\": \"developer@codeforcharlotte.org\",\n\t\"password\": \"admin\"\n}\n\n/*{\n\t\"email\": \"nominator@codeforcharlotte.org\",\n\t\"password\": \"admin\"\n}*/"
+				"text": "{\n\t\"email\": \"developer@codeforcharlotte.org\",\n\t\"password\": \"admin\"\n}"
 			},
 			"parameters": [],
 			"headers": [
