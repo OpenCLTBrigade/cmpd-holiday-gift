@@ -10,7 +10,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
     sizePerPage: number
   };
   props: {
-    fetch: number => Promise<{ items: Row[], totalSize: number }>,
+    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number }>,
     children: Component<any, any, any>[]
   };
   constructor() {

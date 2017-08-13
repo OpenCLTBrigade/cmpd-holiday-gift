@@ -5,7 +5,7 @@ import Box from '../components/box';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getAffiliationList } from 'api/affiliation';
-import type { AffiliationType } from 'api/Affiliation';
+import type { AffiliationType } from 'api/affiliation';
 
 export default class AffiliationList extends Component {
   actionCellFormatter(_cell: any, _row: AffiliationType): React.Element<any> {
