@@ -20,7 +20,7 @@ export default class UsersList extends Component {
 
   async fetch(
     page: number,
-    search: string = ''
+    search: ?string
   ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
     let response: Object = await getUserList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };

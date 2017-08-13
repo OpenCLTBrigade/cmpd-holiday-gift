@@ -18,7 +18,7 @@ export default class AffiliationList extends Component {
 
   async fetch(
     page: number,
-    search: string = ''
+    search: ?string
   ): Promise<{ items: AffiliationType[], totalSize: number, sizePerPage: number }> {
     let response: Object = await getAffiliationList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };

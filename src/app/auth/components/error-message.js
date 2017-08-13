@@ -8,7 +8,7 @@ const ErrorMessage = ({
   errorMessage: ?string,
   onDismissError: Function
 }): React.Element<any> | null =>
-  !errorMessage
+  errorMessage === null
     ? null
     : <div className="alert alert-danger validation">
         <button
