@@ -7,6 +7,8 @@ import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getUserList } from 'api/user';
 import type { UserType } from 'api/user';
 
+const PAGE_TITLE = 'Active Users';
+
 export default class UsersList extends Component {
   actionCellFormatter(_cell: any, _row: UserType): React.Element<any> {
     return (
@@ -28,7 +30,7 @@ export default class UsersList extends Component {
     return (
       <Row>
         <Col xs={12}>
-          <Box title="Active Users">
+          <Box title={PAGE_TITLE}>
             <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name">
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id

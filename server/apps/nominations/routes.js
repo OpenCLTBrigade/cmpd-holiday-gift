@@ -13,6 +13,7 @@ router.get('/households/:id', auth.ensureLoggedIn, Household.getHousehold);
 // Users
 router.get('/me', auth.ensureLoggedIn, Me.getMe);
 router.get('/users', auth.ensureLoggedIn, User.list);
+router.get('/users/pending', auth.ensureLoggedIn, User.listPendingUsers);
 router.get('/users/:id', auth.ensureLoggedIn, User.getUser);
 
 // Affiliations

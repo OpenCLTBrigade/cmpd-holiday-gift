@@ -26,6 +26,7 @@ module.exports = async db => {
     password: auth.hashPassword('admin'),
     nomination_limit: 1000000,
     active: 'Y',
+    approved: 'Y',
     role: 'admin'
   });
 
@@ -36,6 +37,40 @@ module.exports = async db => {
     email: 'nominator@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
-    active: 'Y'
+    active: 'Y',
+    approved: 'Y'
+  });
+
+  await db.user.create({
+    name_first: 'NotYetApproved',
+    name_last: 'Account',
+    affiliation_id: 1,
+    email: 'notyetapproved@codeforcharlotte.org',
+    password: auth.hashPassword('admin'),
+    nomination_limit: 5,
+    active: 'Y',
+    approved: 'N'
+  });
+
+  await db.user.create({
+    name_first: 'Unapproved',
+    name_last: 'Account',
+    affiliation_id: 1,
+    email: 'unapproved@codeforcharlotte.org',
+    password: auth.hashPassword('admin'),
+    nomination_limit: 5,
+    active: 'N',
+    approved: 'N'
+  });
+
+  await db.user.create({
+    name_first: 'Deactivated',
+    name_last: 'Account',
+    affiliation_id: 1,
+    email: 'deactivated@codeforcharlotte.org',
+    password: auth.hashPassword('admin'),
+    nomination_limit: 5,
+    active: 'N',
+    approved: 'Y'
   });
 };
