@@ -2,6 +2,7 @@
 import { get } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
+// TODO: the types of some of these fields is wrong. We use proper booleans and dates instead of strings
 /*
 "id": 1,
 "name_first": "Karelle",

@@ -1,16 +1,14 @@
 var TableApi = require('../../lib/tableApi');
 const db = require('../../../models');
 
-var whiteList = ['id', 'type', 'name'];
+const guestWhiteList = ['id', 'type', 'name'];
 
 module.exports = {
   list: async (req, res) => {
     let api = new TableApi(req, 1000);
     try {
       // Limit fields shown to guests
-      if (req.user) {
-        whiteList = null;
-      }
+      var whiteList = req.user ? null : guestWhiteList;
       // Filter by name
       let whereClause = {};
       if (req.query.search) {
