@@ -3,11 +3,19 @@
 This application, developed by [Code for Charlotte], helps automate
 the [CMPD Explorers Christmas Project].
 
-## Quick start
+# Getting Started
+
+[NodeJS 7.9.0] is **required**. We recommend installing `nvm` if you're on a Mac so you can
+easily switch between Node versions on a per-project basis.
+
+See [Dependencies Documentation](#dependencies-documentation) below for more information
+on the dependencies we use.
+
+Clone.
 
 Run `npm install` to install the dependencies.
 
-Run `node server/seeds` to generate sample data.
+Run `npm run seeds` to generate sample data.
 
 Then run `npm start` to start the front end in development mode. Access
 the application on http://localhost:3000.
@@ -16,13 +24,15 @@ In a separate terminal, run `npm run server-nodemon` to start the back
 end in development mode. The back end will run on port 3001 and the
 development mode front end server will act as a reverse proxy for it.
 
-## Contact
+Read [Front end development notes here](#front-end-development).
 
-* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
-* Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
-* Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+Read [Back end development notes here](#back-end-development).
 
-## Production
+## Checking out the old codebase
+
+To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`
+
+# Build for Production
 
 To prepare the server for production, run `npm run build`.
 
@@ -30,20 +40,14 @@ Optionally run `npm prune --production`.
 
 Start the production-mode server with `NODE_ENV=production npm run start-server`
 
-## Development
-
-[NodeJS 7] is required.
-
-Install dependencies: `npm install`
-
-### Front end development
+# Front end development
 
 Static assets are in `public/`. The react app is in `src/`.
 
 All front-end dependencies should be added using `npm install
 --save-dev`. They will be bundled into `build/` in production mode.
 
-### Back end development
+# Back end development
 
 The entire backend is in `server/`, except for the dependencies and
 scripts which are in `package.json`.
@@ -62,7 +66,7 @@ Check and fix code style: `npm run lint`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
-### Back End Configuration
+## Back End Configuration
 
 The default configuration is stored in `server/config/env.default.js`.
 
@@ -70,19 +74,19 @@ The values can be overridden in `server/env.js`. See `server/env.example.js` for
 
 The tests ignore `server/env.js` and use the values from `server/config/env.default.js` instead.
 
-### Models
+## Models
 
 Each file in `server/models/` describes a different table.
 
-#### Private Fields
+### Private Fields
 
 The `private: true` property prevents a field from being output as JSON in API responses.
 
-#### Encrypted Fields
+### Encrypted Fields
 
 The `encrypt: true` property causes the field to be encrypted before storing it into the database.
 
-## Dependencies Documentation
+# Dependencies Documentation
 
 The backend is an [Express] application running in [Node]. Some newer
 [ES6 features] are used.
@@ -104,6 +108,12 @@ We're using [styled-components] for custom styles (in place of LESS / SCSS).
 Back end tests are run using [Jasmine].
 
 Coding style is enforced by [eslint].
+
+# Contact
+
+* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
+* Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
+* Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
 
 
 [Code for Charlotte]: http://www.codeforcharlotte.org/
