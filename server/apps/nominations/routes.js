@@ -16,4 +16,5 @@ router.get('/users/:id', auth.ensureLoggedIn, User.getUser);
 
 // Affiliations
 router.get('/affiliations', Affiliation.list);
+router.get('/affiliations/:id', auth.ensureLoggedIn, Affiliation.get);
 module.exports = router;
