@@ -21,7 +21,12 @@ module.exports = {
   },
   edit: {
     get: async (req, res) => {
-      var household = await db.household.findById(req.params.id, { include: [{ model: db.child, as: 'children' }, { model: db.household_address, as: 'address' }] });
+      var household = await db.household.findById(req.params.id, {
+        include: [
+          { model: db.child, as: 'children' },
+          { model: db.household_address, as: 'address' }
+        ]
+      });
       var schools = await db.affiliation.findAll({
         attributes: ['id', 'name'],
         where: { type: 'cms' }
