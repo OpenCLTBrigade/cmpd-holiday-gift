@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import DataTable from '../components/dataTable';
 import { Row, Col } from 'react-bootstrap';

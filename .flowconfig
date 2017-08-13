@@ -15,7 +15,6 @@
 module.system.node.resolve_dirname=src
 module.system.node.resolve_dirname=node_modules
 include_warnings=true
-all=true
 
 [lints]
 all=warn

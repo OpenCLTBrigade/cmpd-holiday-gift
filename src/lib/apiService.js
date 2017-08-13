@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios';
 
 import { getAuthorization } from 'lib/auth';

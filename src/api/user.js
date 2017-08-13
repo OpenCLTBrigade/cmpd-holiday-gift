@@ -1,3 +1,4 @@
+// @flow
 import { get } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 

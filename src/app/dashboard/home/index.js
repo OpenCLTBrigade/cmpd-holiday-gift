@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import Box from '../components/box';
 import { Row, Col } from 'react-bootstrap';

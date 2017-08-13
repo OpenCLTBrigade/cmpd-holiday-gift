@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
@@ -9,7 +10,8 @@ export default class DataTable<Row> extends Component<*, *, *> {
     sizePerPage: number
   };
   props: {
-    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number }>,
+    // TODO: is sizePerPage actually returned by the server?
+    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
     children: Component<any, any, any>[]
   };
   constructor() {
