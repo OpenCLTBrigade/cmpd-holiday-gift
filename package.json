@@ -31,6 +31,7 @@
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
     "eslint": "https://registry.npmjs.org/eslint/-/eslint-3.19.0.tgz",
+    "eslint-plugin-dependencies": "^2.4.0",
     "eslint-plugin-flowtype": "https://registry.npmjs.org/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.33.0.tgz",
     "eslint-plugin-flowtype-errors": "^3.3.1",
     "eslint-plugin-html": "^2.0.1",

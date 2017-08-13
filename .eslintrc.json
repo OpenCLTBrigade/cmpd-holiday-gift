@@ -2,6 +2,9 @@
     "env": {
         "es6": true
     },
+    "plugins": [
+        "dependencies"
+    ],
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 8,
@@ -43,6 +46,9 @@
         "brace-style": ["error"],
         "curly": ["error"],
         "eqeqeq": ["error"],
-        "no-multi-spaces": ["error"]
+        "no-multi-spaces": ["error"],
+        "dependencies/case-sensitive": ["error"],
+        "dependencies/no-cycles": ["error"],
+        "dependencies/no-unresolved": ["error", {"paths": ["src"]}]
     }
 }
