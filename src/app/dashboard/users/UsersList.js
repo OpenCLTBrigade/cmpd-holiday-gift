@@ -29,7 +29,7 @@ export default class UsersList extends Component {
       <Row>
         <Col xs={12}>
           <Box title="Active Users">
-            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name" pagination={false}>
+            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name">
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
