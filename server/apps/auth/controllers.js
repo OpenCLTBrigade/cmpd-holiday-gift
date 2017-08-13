@@ -5,17 +5,15 @@ var registration = require('../lib/registration');
 var { rootUrl } = require('../lib/misc');
 
 async function register(req, res) {
-  var error = await registration.steps.register(
-    rootUrl(req),
-    {
-      name_first: req.body.firstname,
-      name_last: req.body.lastname,
-      rank: req.body.rank,
-      phone: req.body.phone,
-      affiliation_id: req.body.affiliation,
-      email: req.body.email,
-      raw_password: req.body.password
-    });
+  var error = await registration.steps.register(rootUrl(req), {
+    name_first: req.body.firstname,
+    name_last: req.body.lastname,
+    rank: req.body.rank,
+    phone: req.body.phone,
+    affiliation_id: req.body.affiliation,
+    email: req.body.email,
+    raw_password: req.body.password
+  });
   if (error) {
     res.json(error);
   } else {
@@ -54,13 +52,10 @@ async function getToken(req, res) {
 }
 
 async function confirm(req, res) {
-  var error = await registration.steps.confirmEmail(
-    rootUrl(req),
-    {
-      user_id: req.body.id,
-      confirmation_code: req.body.confirmation_code
-    }
-  );
+  var error = await registration.steps.confirmEmail(rootUrl(req), {
+    user_id: req.body.id,
+    confirmation_code: req.body.confirmation_code
+  });
   if (error) {
     res.json(error);
   } else {

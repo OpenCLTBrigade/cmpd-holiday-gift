@@ -71,7 +71,7 @@ isInvalidPassword.english = 'The password must have 6 or more characters';
 
 function userCanUseApp(user, app) {
   if (app === 'nominations') {
-    return true; // TODO: proper access control
+    return user.approved === 'Y' && user.active === 'Y';
   }
   return false;
 }
