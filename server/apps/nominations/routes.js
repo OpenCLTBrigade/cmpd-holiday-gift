@@ -8,6 +8,7 @@ let router = Express.Router();
 
 // Households
 router.get('/households', auth.ensureLoggedIn, Household.list);
+router.get('/households/:id', auth.ensureLoggedIn, Household.getHousehold);
 
 // Users
 router.get('/me', auth.ensureLoggedIn, Me.getMe);
@@ -16,5 +17,5 @@ router.get('/users/:id', auth.ensureLoggedIn, User.getUser);
 
 // Affiliations
 router.get('/affiliations', Affiliation.list);
-router.get('/affiliations/:id', auth.ensureLoggedIn, Affiliation.get);
+router.get('/affiliations/:id', auth.ensureLoggedIn, Affiliation.getAffiliation);
 module.exports = router;

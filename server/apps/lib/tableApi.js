@@ -9,22 +9,28 @@ class TableApi {
   /**
    * @param  {String}  modelName  Name of model to work with
    * @param  {Object}  [where={}] Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
-   * @param  {Object}  [include={}] Include related models
+   * @param  {Object|Null}  [include=null] Include related models
    * @param {String} [scope=''] Scope name
    * @param {Object} [scopeParams={}] Scope function arguments
    * @return {Promise}            [description]
    */
-  async fetch(modelName, where = {}, _include = {}, scope = '') {
+  async fetch(modelName, where = {}, _include = null, scope = '') {
     return new Promise((resolve, reject) => {
       // TODO: Make include work :(
       let currentOffset = this.getCurrentOffset();
+      let opts = {
+        limit: this.itemsPerPage,
+        offset: currentOffset,
+        where: where
+      };
+
+      if (_include !== null) {
+        opts['include'] = _include;
+      }
+
       db[modelName]
         .scope(scope)
-        .findAndCountAll({
-          limit: this.itemsPerPage,
-          offset: currentOffset,
-          where: where
-        })
+        .findAndCountAll(opts)
         .then(results => {
           resolve(results);
         })
@@ -34,7 +40,7 @@ class TableApi {
     });
   }
 
-  async fetchAndParse(modelName, where = {}, include = {}, scope = '', fieldWhitelist = null) {
+  async fetchAndParse(modelName, where = {}, include = null, scope = '', fieldWhitelist = null) {
     return new Promise((resolve, _reject) => {
       this.fetch(modelName, where, include, scope).then(results => {
         resolve(this.parseResultSet(results, fieldWhitelist));

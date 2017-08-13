@@ -24,7 +24,15 @@ module.exports = {
       if (req.user.role !== 'admin' && parseInt(req.user.id) !== parseInt(req.params.id)) {
         throw new Error('User not found');
       }
-      user = await db.user.findById(req.params.id);
+      user = await db.user.findOne({
+        where: { id: req.params.id },
+        include: [
+          {
+            model: db.affiliation,
+            as: 'affiliation'
+          }
+        ]
+      });
     } catch (err) {
       user = null;
     }

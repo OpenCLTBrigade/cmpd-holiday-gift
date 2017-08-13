@@ -23,7 +23,7 @@ module.exports = {
     }
   },
 
-  get: async (req, res) => {
+  getAffiliation: async (req, res) => {
     let id = parseInt(req.params.id);
     let affiliation = await db.affiliation.findById(id);
 
