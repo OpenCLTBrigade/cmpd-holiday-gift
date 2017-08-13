@@ -1,5 +1,3 @@
-// @flow
-
 import React, { Component } from 'react';
 import List from './list';
 import { Row, Col } from 'react-bootstrap';

@@ -1,4 +1,3 @@
-// @flow
 // This is the main entry point of our application.
 // It tells WebPack what resources to load (css / fonts / etc) and creates the base routes for
 // our main modules such as the Dashboard and the Authentication-related screens.

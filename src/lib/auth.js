@@ -1,5 +1,3 @@
-// @flow
-
 import { post } from 'lib/apiService';
 import jwt_decode from 'jwt-decode';
 
