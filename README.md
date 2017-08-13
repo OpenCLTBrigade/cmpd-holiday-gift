@@ -32,6 +32,14 @@ Read [Back end development notes here](#back-end-development).
 
 To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`
 
+## Troubleshooting
+
+### Resetting your database
+
+When you pull changes to the database schema or sample data the application may stop working. When this occurs you need
+to delete the SQLite database in `/server/run` and restart your server instance. After restarting the server be sure to
+seed the database using `npm run seeds`. You should now be good to keep going!
+
 # Build for Production
 
 To prepare the server for production, run `npm run build`.
