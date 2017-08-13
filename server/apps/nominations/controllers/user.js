@@ -1,6 +1,8 @@
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
+const related = [{ model: db.affiliation, as: 'affiliation' }];
+
 // TODO: move user endpoints to auth app
 
 module.exports = {
@@ -11,7 +13,7 @@ module.exports = {
       if (req.query.search) {
         whereClause = { name_last: { $like: `${req.query.search}%` } };
       }
-      let result = await api.fetchAndParse('user', whereClause, null, { method: ['filteredByUser', req.user] });
+      let result = await api.fetchAndParse('user', whereClause, related, { method: ['filteredByUser', req.user] });
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });

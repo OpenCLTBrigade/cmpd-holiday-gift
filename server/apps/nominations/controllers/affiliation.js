@@ -25,7 +25,7 @@ module.exports = {
 
   getAffiliation: async (req, res) => {
     let id = parseInt(req.params.id);
-    let affiliation = await db.affiliation.findById(id);
+    let affiliation = await db.affiliation.findFirst(id);
 
     if (!affiliation) {
       res.status(404);
