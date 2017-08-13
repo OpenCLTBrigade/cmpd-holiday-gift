@@ -3,14 +3,14 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
-import FooterLink from './components/footer-link.jsx';
+import FooterLink from './components/footer-link';
 
 import LoginBox from './components/login-box';
 
 import { AuthToken } from 'lib/auth';
-import Footer from './components/footer.jsx';
-import FormGroup from './components/form-group.jsx';
-import Label from './components/form-label.jsx';
+import Footer from './components/footer';
+import FormGroup from './components/form-group';
+import Label from './components/form-label';
 const Icon = styled.i`top: 20px !important;`;
 
 export default class Login extends React.Component {

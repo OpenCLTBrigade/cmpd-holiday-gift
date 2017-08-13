@@ -7,10 +7,10 @@ import styled from 'styled-components';
 import LoginBox from './components/login-box';
 
 import { AuthToken } from 'lib/auth';
-import Footer from './components/footer.jsx';
-import FooterLink from './components/footer-link.jsx';
-import FormGroup from './components/form-group.jsx';
-import Label from './components/form-label.jsx';
+import Footer from './components/footer';
+import FooterLink from './components/footer-link';
+import FormGroup from './components/form-group';
+import Label from './components/form-label';
 const Icon = styled.i`top: 20px !important;`;
 
 export default class Register extends React.Component {
