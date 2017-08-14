@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Row, Col, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 
-export default class DeliveryAddress extends Component {
+export default class AddressForm extends Component {
   constructor(props = { phoneNumbers: [] }) {
     super(props);
 
@@ -37,7 +37,7 @@ export default class DeliveryAddress extends Component {
       <div>
         <Row>
           <Col xs={12}>
-            <Box title="Delivery Address">
+            <Box title="Phone Numbers">
               {this.state.phoneNumbers &&
                 this.state.phoneNumbers.map((phoneNumber, idx) => {
                   return (

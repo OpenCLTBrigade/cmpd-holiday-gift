@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Row, Col, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import Box from '../../components/box';
 
-export default class HeadOfHousehold extends Component {
+export default class HouseholdForm extends Component {
   render() {
     return (
       <div>

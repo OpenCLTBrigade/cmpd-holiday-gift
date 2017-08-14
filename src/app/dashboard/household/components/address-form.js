@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Row, Col, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import Box from '../../components/box';
 
-export default class DeliveryAddress extends Component {
+export default class AddressForm extends Component {
   render() {
     return (
       <div>
