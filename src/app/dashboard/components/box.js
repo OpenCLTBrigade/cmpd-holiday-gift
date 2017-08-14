@@ -1,11 +1,14 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
 
-export default function Box(
-  props: {title: string, children: React.Element<any>[]}
-): React.Element<any> {
+export default function Box(props: {
+  title: string,
+  children: React.Element<any>[],
+  bsStyle: string
+}): React.Element<any> {
   return (
-    <div className="box">
+    <div className={`box ${props.bsStyle && 'box-' + props.bsStyle}`}>
       {props.title &&
         <div className="box-header with-border">
           <h1 className="box-title">
