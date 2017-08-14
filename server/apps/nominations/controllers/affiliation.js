@@ -18,7 +18,7 @@ module.exports = {
       if (req.query.search) {
         whereClause = { name: { $like: `${req.query.search}%` } };
       }
-      let result = await api.fetchAndParse('affiliation', whereClause, null, '', whiteList);
+      let result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });

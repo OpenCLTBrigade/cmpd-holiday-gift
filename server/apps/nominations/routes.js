@@ -4,7 +4,9 @@ var Express = require('express');
 var { Household, User, Me, Affiliation } = require('./controllers');
 var auth = require('../lib/auth');
 
-let router = Express.Router();
+import type {Router} from './types';
+
+let router: Router = (Express.Router(): any);
 
 // TODO: require more than ensureLoggedIn for these tasks
 
