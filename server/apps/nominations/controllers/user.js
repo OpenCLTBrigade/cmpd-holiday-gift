@@ -1,14 +1,18 @@
+// @flow
+
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
 const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
-const PENDING_CRITERIA = { active: 'Y', approved: 'N' };
-const APPROVED_CRITERA = { active: 'Y', approved: 'Y' };
+const criteria = {
+  PENDING: { active: 'Y', approved: 'N' },
+  APPROVED: { active: 'Y', approved: 'Y' } // TODO: rename
+};
 
-const FILTERED_BY_USER = function (user) {
-  return { method: ['filteredByUser', user] };
+const scope = {
+  FILTERED_BY_USER: user => ['filteredByUser', user]; 
 };
 
 // TODO: move user endpoints to auth app
@@ -19,9 +23,9 @@ module.exports = {
     try {
       let whereClause = {};
       if (req.query.search) {
-        whereClause = Object.assign({ name_last: { $like: `${req.query.search}%` } }, APPROVED_CRITERA);
+        whereClause = Object.assign({ name_last: { $like: `${req.query.search}%` } }, criteria.APPROVED);
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -32,11 +36,11 @@ module.exports = {
     let api = new TableApi(req);
     try {
       // TODO: Confirm criteria for what makes a pending user
-      let whereClause = PENDING_CRITERIA;
+      let whereClause = criteria.PENDING;
       if (req.query.search) {
-        whereClause = Object.assign(PENDING_CRITERIA, { name_last: { $like: `${req.query.search}%` } });
+        whereClause = Object.assign(criteria.PENDING, { name_last: { $like: `${req.query.search}%` } });
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -61,7 +65,7 @@ module.exports = {
     } catch (err) {
       user = null;
     }
-    if (user === null) {
+    if (user == null) {
       res.status(404);
     }
     res.json({ data: user });

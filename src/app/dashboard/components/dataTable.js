@@ -6,12 +6,12 @@ type PropType<Row> = {|
     // ATN TODO: is sizePerPage actually returned by the server?
     fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
     children: Component<any, any, any>[],
-    search: bool,
-    pagination: bool,
+    search: boolean,
+    pagination: boolean,
     searchPlaceholder: string
 |};
 
-export default class DataTable<Row> extends Component<{pagination: bool}, PropType<Row>, *> {
+export default class DataTable<Row> extends Component<{pagination: boolean}, PropType<Row>, *> {
   state: {|
     items: Row[],
     totalSize: number,
@@ -19,9 +19,7 @@ export default class DataTable<Row> extends Component<{pagination: bool}, PropTy
     sizePerPage: number
   |};
   props: PropType<Row>;
-  static defaultProps = {
-    pagination: true
-  };
+  static defaultProps = { pagination: true };
   constructor() {
     super();
     this.state = {

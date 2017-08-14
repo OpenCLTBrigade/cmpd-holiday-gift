@@ -1,3 +1,5 @@
+// @flow
+
 var Express = require('express');
 var { login, register, getToken, confirm, extend, approve } = require('./controllers');
 

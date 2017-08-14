@@ -1,2 +1,5 @@
+// @flow
 
-module.exports = { rootUrl: req => req.protocol + '://' + req.get('host') };
+import type { $Request } from 'express';
+
+module.exports = { rootUrl: (req: $Request): string => req.protocol + '://' + ((req.get('host'): any): string) };

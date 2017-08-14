@@ -1,3 +1,5 @@
+// @flow
+
 module.exports = {
   /*
    * Redirects the user to /user/:theirId

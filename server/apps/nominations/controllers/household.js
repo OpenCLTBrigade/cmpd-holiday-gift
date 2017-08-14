@@ -1,10 +1,16 @@
+// @flow
+
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
+import type { $Request, $Response } from 'express';
+
+type Request = $Request & { user: $TODO };
+
 module.exports = {
-  list: async (req, res) => {
+  list: async (req: Request, res: $Response): Promise<void> => {
     let api = new TableApi(req);
     try {
       let whereClause = {};
@@ -19,7 +25,7 @@ module.exports = {
       res.json({ error: 'error fetching data' });
     }
   },
-  getHousehold: async (req, res) => {
+  getHousehold: async (req: $Request, res: $Response): Promise<void> => {
     let household = null;
     try {
       household = await db.household.findById(req.params.id, { include: related });

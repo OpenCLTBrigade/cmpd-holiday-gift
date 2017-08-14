@@ -1,3 +1,5 @@
+// @flow
+
 var Express = require('express');
 var { Household, User, Me, Affiliation } = require('./controllers');
 var auth = require('../lib/auth');

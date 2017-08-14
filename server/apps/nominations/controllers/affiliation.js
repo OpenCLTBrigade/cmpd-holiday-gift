@@ -1,14 +1,18 @@
+// @flow
+
 var TableApi = require('../../lib/tableApi');
 const db = require('../../../models');
 
 const guestWhiteList = ['id', 'type', 'name'];
 
+import type { $Request, $Response } from 'express';
+
 module.exports = {
-  list: async (req, res) => {
+  list: async (req: $Request, res: $Response): Promise<void> => {
     let api = new TableApi(req, 1000);
     try {
       // Limit fields shown to guests
-      var whiteList = req.user ? null : guestWhiteList;
+      const whiteList = req.user != null ? null : guestWhiteList;
       // Filter by name
       let whereClause = {};
       if (req.query.search) {
@@ -21,7 +25,7 @@ module.exports = {
     }
   },
 
-  getAffiliation: async (req, res) => {
+  getAffiliation: async (req: $Request, res: $Response): Promise<void> => {
     let id = parseInt(req.params.id);
     let affiliation = await db.affiliation.findFirst(id);
 

@@ -1,3 +1,5 @@
+// @flow
+
 var express = require('express');
 
 var auth = require('../lib/auth');
