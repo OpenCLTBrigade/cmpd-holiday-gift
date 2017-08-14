@@ -37,7 +37,7 @@ export default class AddressForm extends Component {
       <div>
         <Row>
           <Col xs={12}>
-            <Box title="Phone Numbers">
+            <Box title="Phone Numbers" bsStyle="danger">
               {this.state.phoneNumbers &&
                 this.state.phoneNumbers.map((phoneNumber, idx) => {
                   return (

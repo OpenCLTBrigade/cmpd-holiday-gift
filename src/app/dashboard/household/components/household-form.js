@@ -9,7 +9,7 @@ export default class HouseholdForm extends Component {
       <div>
         <Row>
           <Col xs={12}>
-            <Box title="Head of Household Information">
+            <Box title="Head of Household Information" bsStyle="primary">
               <Row>
                 <Col md={6} xs={12}>
                   <FormGroup>

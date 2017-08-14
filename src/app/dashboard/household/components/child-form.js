@@ -8,7 +8,7 @@ export default class ChildForm extends Component {
     super();
 
     this.state = {
-      childNominations: [{}]
+      childNominations: []
     };
   }
 
@@ -37,7 +37,7 @@ export default class ChildForm extends Component {
           return (
             <Row key={`childNomination${idx}`}>
               <Col xs={12}>
-                <Box title={`Child #${idx + 1}`}>
+                <Box title={`Child #${idx + 1}`} bsStyle="success">
                   <Row>
                     <Col md={6} xs={12}>
                       <FormGroup>

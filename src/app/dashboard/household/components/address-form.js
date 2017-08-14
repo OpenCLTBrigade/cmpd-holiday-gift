@@ -9,7 +9,7 @@ export default class AddressForm extends Component {
       <div>
         <Row>
           <Col xs={12}>
-            <Box title="Delivery Address">
+            <Box title="Delivery Address" bsStyle="danger">
               <Row>
                 <Col md={4} xs={12}>
                   <FormGroup controlId="formControlsSelect">
