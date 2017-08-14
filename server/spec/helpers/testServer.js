@@ -1,8 +1,10 @@
 /* eslint-env jasmine */
+/*eslint no-console: "off"*/
 
 var child_process = require('child_process');
 var fs = require('fs');
 
+var db = require('../../models');
 var { asyncTest } = require('./asyncTest');
 
 function testServer({ seed, mode }) {
@@ -16,10 +18,22 @@ function testServer({ seed, mode }) {
     });
     var { port, dbPath } = await new Promise((ok, fail) => {
       info.server.once('message', ok);
-      info.server.on('error', fail);
+      info.server.on('error', event => {
+        console.log('Test server error:', event);
+        fail();
+      });
     });
     info.port = port;
     info.dbPath = dbPath;
+    info.eventQueue = [];
+    info.listenerQueue = [];
+    info.server.on('message', event => {
+      if (info.listenerQueue.length) {
+        info.listenerQueue.shift()(event);
+      } else {
+        info.eventQueue.push(event);
+      }
+    });
   };
   var after = async () => {
     info.server.kill();
@@ -38,6 +52,15 @@ function testServer({ seed, mode }) {
     });
     info.dbPath = info.port = info.server = undefined;
   };
+  var nextEvent = async () => {
+    if (info.eventQueue.length) {
+      return info.eventQueue.shift();
+    } else {
+      return await new Promise(ok => {
+        info.listenerQueue.push(ok);
+      });
+    }
+  };
   var url = path => {
     if (!info.port) {
       throw new Error('url: server not started yet');
@@ -53,7 +76,8 @@ function testServer({ seed, mode }) {
   }
   return {
     url,
-    server: () => info.server
+    nextEvent,
+    openDB: () => db.test.open(info.dbPath)
   };
 }
 

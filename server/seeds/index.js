@@ -7,7 +7,7 @@ var db = require('../models');
 var config = require('../config');
 
 async function seed() {
-  await db.sequelize.sync();
+  await db.sync();
   var seq = Promise.resolve();
   fs
         .readdirSync(__dirname)

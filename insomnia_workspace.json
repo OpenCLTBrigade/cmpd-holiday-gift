@@ -1,8 +1,8 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2017-08-10T02:15:25.468Z",
-	"__export_source": "insomnia.desktop.app:v5.7.4",
+	"__export_date": "2017-08-13T17:57:43.542Z",
+	"__export_source": "insomnia.desktop.app:v5.7.11",
 	"resources": [
 		{
 			"_id": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
@@ -22,6 +22,7 @@
 			"name": "Base Environment",
 			"data": {},
 			"color": null,
+			"isPrivate": false,
 			"_type": "environment"
 		},
 		{
@@ -367,6 +368,180 @@
 			"_type": "request"
 		},
 		{
+			"_id": "req_58f0013b1b6545cc8c6b9c85c4bae011",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502640455852,
+			"created": 1502640327842,
+			"url": "{{ base_url }}/nominations/affiliations/1",
+			"name": "Affiliation Show",
+			"description": "",
+			"method": "GET",
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1501443547422.8125,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_fcf62f48bf134baca5218d4c5a8d2f53",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502640467277,
+			"created": 1502640458677,
+			"url": "{{ base_url }}/nominations/affiliations/1000000",
+			"name": "Affiliation Show Not Found",
+			"description": "",
+			"method": "GET",
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1501443113653.5938,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_830bc2ab6c344263a815106705cbf350",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502641998967,
+			"created": 1502641961697,
+			"url": "{{ base_url }}/nominations/households/1",
+			"name": "Household Show",
+			"description": "",
+			"method": "GET",
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1500614539185.875,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_4ef54c87b5a1445d883574ca1679ee6f",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502641992485,
+			"created": 1502641970402,
+			"url": "{{ base_url }}/nominations/households/100000",
+			"name": "Household Show Not Found",
+			"description": "",
+			"method": "GET",
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1500204806528.8125,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_1edf42ba1af24835a824bdf19fb5a06e",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502645001436,
+			"created": 1502644974467,
+			"url": "{{base_url}}/nominations/users/pending?search=Account",
+			"name": "User Pending List  Search",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1501435956461.4844,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_5baeca649d4140a3aaf6354eb04dcb46",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1502644995727,
+			"created": 1502644987650,
+			"url": "{{base_url}}/nominations/users/pending",
+			"name": "User Pending List",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1501436064903.789,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
 			"_id": "env_eaa771b33aba4008be2465fa8bae242f",
 			"parentId": "env_ee02745db2334e9f95c1819108d82d4f",
 			"modified": 1501433833669,
@@ -374,6 +549,7 @@
 			"name": "Staging",
 			"data": {},
 			"color": null,
+			"isPrivate": false,
 			"_type": "environment"
 		},
 		{
@@ -387,6 +563,7 @@
 				"token": " eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNTAxNDM2NDk5LCJleHAiOjE1MDE0MzcwOTl9.3TqAZrhov4L2Z8x7_tjBzU_Sxp_L0S0bbg6Yor81zdE"
 			},
 			"color": "#7d69cb",
+			"isPrivate": false,
 			"_type": "environment"
 		}
 	]

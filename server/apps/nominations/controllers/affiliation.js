@@ -1,15 +1,15 @@
 var TableApi = require('../../lib/tableApi');
+const db = require('../../../models');
+
+var whiteList = ['id', 'type', 'name'];
 
 module.exports = {
   list: async (req, res) => {
     let api = new TableApi(req, 1000);
     try {
       // Limit fields shown to guests
-      let whiteList = [];
       if (req.user) {
         whiteList = null;
-      } else {
-        whiteList = ['id', 'type', 'name'];
       }
       // Filter by name
       let whereClause = {};
@@ -21,5 +21,16 @@ module.exports = {
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
+  },
+
+  getAffiliation: async (req, res) => {
+    let id = parseInt(req.params.id);
+    let affiliation = await db.affiliation.findFirst(id);
+
+    if (!affiliation) {
+      res.status(404);
+    }
+
+    res.json(affiliation);
   }
 };

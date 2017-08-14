@@ -36,66 +36,36 @@ module.exports = Sequelize => ({
     password: {
       type: Sequelize.STRING,
       allowNull: false,
-      private: true
-    },
-    remember_token: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-      private: true
-    },
-    logged_in_at: {
-      type: Sequelize.DATE,
-      defaultValue: null,
-      private: true
-    },
-    logged_out_at: {
-      type: Sequelize.DATE,
-      defaultValue: null,
-      private: true
-    },
-    ip_address: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-      private: true
     },
     active: {
       type: Sequelize.BOOLEAN,
+      allowNull: false,
       defaultValue: false,
-      private: true
     },
     nomination_limit: {
       type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: 5,
-      private: true
     },
     confirmation_email: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-      private: true
     },
     confirmation_code: {
       type: Sequelize.STRING,
       defaultValue: null,
       private: true
     },
+    email_verified: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     approved: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false,
-      private: true
-    },
-    declined: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-      private: true
-    },
-    username: { type: Sequelize.TEXT },
-    encryption_test: {
-      type: Sequelize.TEXT,
       defaultValue: null,
-      encrypted: true
-    }
+    },
   },
   scopes: {
     filteredByUser: function (user) {

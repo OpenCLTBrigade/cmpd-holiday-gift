@@ -6,6 +6,8 @@ var fs = require('fs');
 var mustache = require('mustache');
 var path = require('path');
 
+// TODO: emails sent should be standardized and mention the project name
+
 function testTransporter(cb) {
   return nodemailer.createTransport({
     name: 'print',
