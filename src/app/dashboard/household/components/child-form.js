@@ -144,23 +144,19 @@ export default class ChildForm extends Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12}>
+                    <Col md={4} xs={12}>
                       <FormGroup controlId="formControlsTextarea">
                         <ControlLabel>Child's Interests</ControlLabel>
                         <FormControl name={`nomination[${idx}].interests`} componentClass="textarea" placeholder="" />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
+                    <Col md={4} xs={12}>
                       <FormGroup controlId="formControlsTextarea">
                         <ControlLabel>Additional Ideas</ControlLabel>
                         <FormControl name={`nomination[${idx}].additionalIdeas`} componentClass="textarea" />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
+                    <Col md={4} xs={12}>
                       <FormGroup controlId="formControlsTextarea">
                         <ControlLabel>Reason for nomination</ControlLabel>
                         <FormControl name={`nomination[${idx}].nominationReason`} componentClass="textarea" />
