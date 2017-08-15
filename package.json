@@ -42,6 +42,7 @@
     "jwt-decode": "^2.2.0",
     "neoform": "^0.2.0",
     "neoform-plain-object-helpers": "^0.1.0",
+    "neoform-validation": "^0.3.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

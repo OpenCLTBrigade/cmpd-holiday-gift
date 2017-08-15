@@ -4,10 +4,16 @@ import { Row, Col, FormGroup, ControlLabel } from 'react-bootstrap';
 import Box from '../../components/box';
 import Input from './form/input';
 import { Form } from 'neoform';
+import { FormValidation } from 'neoform-validation';
+import requiredValidator from '../validators/required.validator';
 
-const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
+const HouseholdForm = ({ onSubmit, validate, onInvalid }) => {
   return (
-    <form onSubmit={e => onSubmit(e)}>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        validate(onSubmit, onInvalid);
+      }}>
       <Row>
         <Col xs={12}>
           <Box title="Head of Household Information" bsStyle="primary">
@@ -15,13 +21,13 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
               <Col md={6} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="firstName">First Name</ControlLabel>
-                  <Input name="household.firstName" id="firstName" type="text" required />
+                  <Input name="household.firstName" id="firstName" type="text" validator={requiredValidator} />
                 </FormGroup>
               </Col>
               <Col md={6} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="lastName">Last Name</ControlLabel>
-                  <Input name="household.lastName" id="lastName" type="text" required />
+                  <Input name="household.lastName" id="lastName" type="text" validator={requiredValidator} />
                 </FormGroup>
               </Col>
             </Row>
@@ -29,7 +35,11 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
               <Col md={4} xs={12}>
                 <FormGroup controlId="formControlsSelect">
                   <ControlLabel>Gender</ControlLabel>
-                  <Input name="household.gender" componentClass="select" placeholder="select" required>
+                  <Input
+                    name="household.gender"
+                    componentClass="select"
+                    placeholder="select"
+                    validator={requiredValidator}>
                     <option value="select">Select...</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
@@ -39,13 +49,20 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
               <Col md={4} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="dob">Date of Birth</ControlLabel>
-                  <Input id="dob" name="household.dob" type="date" required />
+                  <Input id="dob" name="household.dob" type="date" validator={requiredValidator} />
                 </FormGroup>
               </Col>
               <Col md={4} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="ssn">Last four digits of SSN</ControlLabel>
-                  <Input id="ssn" name="household.ssn" type="text" pattern="[0-9]{4}" required maxLength="4" />
+                  <Input
+                    id="ssn"
+                    name="household.ssn"
+                    type="text"
+                    pattern="[0-9]{4}"
+                    validator={requiredValidator}
+                    maxLength="4"
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -53,13 +70,17 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
               <Col md={4} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="email">Email</ControlLabel>
-                  <Input id="email" name="household.email" type="email" required />
+                  <Input id="email" name="household.email" type="email" validator={requiredValidator} />
                 </FormGroup>
               </Col>
               <Col md={4} xs={12}>
                 <FormGroup controlId="formControlsSelect">
                   <ControlLabel>Preferred Contact Method</ControlLabel>
-                  <Input name="household.contactMethod" componentClass="select" placeholder="select" required>
+                  <Input
+                    name="household.contactMethod"
+                    componentClass="select"
+                    placeholder="select"
+                    validator={requiredValidator}>
                     <option value="">Select...</option>
                     <option value="email">Email</option>
                     <option value="text">Text</option>
@@ -70,7 +91,11 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
               <Col md={4} xs={12}>
                 <FormGroup controlId="formControlsSelect">
                   <ControlLabel>Ethnicity</ControlLabel>
-                  <Input name="household.ethnicity" componentClass="select" placeholder="select" required>
+                  <Input
+                    name="household.ethnicity"
+                    componentClass="select"
+                    placeholder="select"
+                    validator={requiredValidator}>
                     <option value="">Select...</option>
                     <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
                     <option value="Asian">Asian</option> <option value="African American">African American</option>
@@ -88,4 +113,4 @@ const HouseholdForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) =>
   );
 };
 
-export default Form(HouseholdForm);
+export default Form(FormValidation(HouseholdForm));

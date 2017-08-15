@@ -2,13 +2,19 @@
 import React from 'react';
 import { Row, Col, FormGroup, ControlLabel } from 'react-bootstrap';
 import { Form } from 'neoform';
+import { FormValidation } from 'neoform-validation';
 
 import Box from '../../components/box';
 import Input from './form/input';
+import requiredValidator from '../validators/required.validator';
 
-const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
+const AddressForm = ({ onSubmit, validate, onInvalid }) => {
   return (
-    <form onSubmit={e => onSubmit(e)}>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        validate(onSubmit, onInvalid);
+      }}>
       <Row>
         <Col xs={12}>
           <Box title="Delivery Address" bsStyle="danger">
@@ -30,7 +36,7 @@ const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
                     id="streetAddress"
                     name="address.addressLine1"
                     type="text"
-                    required
+                    validator={requiredValidator}
                     autoComplete="shipping address-line1"
                   />
                 </FormGroup>
@@ -42,7 +48,6 @@ const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
                     id="streetAddress"
                     name="address.addressLine2"
                     type="text"
-                    required
                     autoComplete="shipping address-line2"
                   />
                 </FormGroup>
@@ -52,13 +57,25 @@ const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
               <Col md={4} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="city">City</ControlLabel>
-                  <Input id="city" name="address.city" type="text" required autoComplete="shipping locality city" />
+                  <Input
+                    id="city"
+                    name="address.city"
+                    type="text"
+                    validator={requiredValidator}
+                    autoComplete="shipping locality city"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4} xs={12}>
                 <FormGroup>
                   <ControlLabel htmlFor="state">State</ControlLabel>
-                  <Input id="state" name="address.state" type="text" required autoComplete="shipping region state" />
+                  <Input
+                    id="state"
+                    name="address.state"
+                    type="text"
+                    validator={requiredValidator}
+                    autoComplete="shipping region state"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4} xs={12}>
@@ -68,7 +85,7 @@ const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
                     id="zip"
                     name="address.zip"
                     type="text"
-                    required
+                    validator={requiredValidator}
                     pattern="(\d{5}([\-]\d{4})?)"
                     maxLength="5"
                     autoComplete="shipping postal-code"
@@ -83,4 +100,4 @@ const AddressForm = ({ data, onSubmit }: { data: any, onSubmit: Function }) => {
   );
 };
 
-export default Form(AddressForm);
+export default Form(FormValidation(AddressForm));
