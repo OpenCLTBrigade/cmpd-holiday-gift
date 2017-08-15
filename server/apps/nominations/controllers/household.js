@@ -1,19 +1,20 @@
-
+// @flow
 
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
-import type { Request, RequestWithParams, Response } from '../../types';
-import type {TableRequest} from '../../lib/tableApi';
+import type { Response } from '../../lib/typed-express';
+import type { UserRequest, AnyRole } from '../../lib/auth';
+import type { TableRequest } from '../../lib/tableApi';
 
 type ListRequest = {
   ...TableRequest,
   search: string
 };
 module.exports = {
-  list: async (req: Request, res: Response, _next: *): Promise<void> => {
+  list: async (req: UserRequest<>, res: Response): Promise<void> => {
     const query: ListRequest = (req.query: any);
     let api = new TableApi(req, query);
     try {
@@ -29,7 +30,7 @@ module.exports = {
       res.json({ error: 'error fetching data' });
     }
   },
-  getHousehold: async (req: RequestWithParams<{id: string}>, res: Response): Promise<void> => {
+  getHousehold: async (req: UserRequest<AnyRole, {id: string}>, res: Response): Promise<void> => {
     let household = null;
     try {
       household = await db.household.findById(req.params.id, { include: related });

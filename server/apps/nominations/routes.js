@@ -11,11 +11,11 @@ let router: Router<UserRequest<>> = new Router();
 
 // TODO: require more than ensureLoggedIn for these tasks
 
-/* ATN
 // Households
 router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
-router.get<{id: string}>('/households/:id').use(auth.ensureLoggedIn).handle(Household.getHousehold);
+router.get(('/households/:id': Path<{id: string}>)).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
 
+/* ATN
 // Users
 router.get('/me', auth.ensureLoggedIn, Me.getMe);
 router.get('/users', auth.ensureLoggedIn, User.list);
