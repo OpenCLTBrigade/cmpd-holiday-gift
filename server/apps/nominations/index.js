@@ -9,7 +9,7 @@ var app = express();
 
 // Add authentication
 app.use(auth.authMiddleware(config.jwtSecrets.nominations));
-app.use(auth.sessionMiddleware);
+app.use((auth.sessionMiddleware: any));
 
 // Load the routess
 app.use((require('./routes'): $TODO));

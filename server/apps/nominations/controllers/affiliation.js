@@ -5,18 +5,25 @@ const db = require('../../../models');
 
 const guestWhiteList = ['id', 'type', 'name'];
 
-import type { $Request, $Response } from 'express';
+import type { Response } from '../../lib/typed-express';
+import type { TableRequest } from '../../lib/tableApi';
+import type { UserRequest } from '../../lib/auth';
 
+type ListRequest = {|
+  ...TableRequest,
+  search: string;
+|};
 module.exports = {
-  list: async (req: $Request, res: $Response): Promise<void> => {
-    let api = new TableApi(req, 1000);
+  list: async (req: UserRequest<>, res: Response): Promise<void> => {
+    const query: ListRequest = (req.query: any);
+    let api = new TableApi(req, query, 1000);
     try {
       // Limit fields shown to guests
       const whiteList = req.user != null ? null : guestWhiteList;
       // Filter by name
       let whereClause = {};
-      if (req.query.search) {
-        whereClause = { name: { $like: `${req.query.search}%` } };
+      if (query.search) {
+        whereClause = { name: { $like: `${query.search}%` } };
       }
       let result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
       res.json(result);
@@ -25,8 +32,8 @@ module.exports = {
     }
   },
 
-  getAffiliation: async (req: $Request, res: $Response): Promise<void> => {
-    let id = parseInt(req.params.id);
+  getAffiliation: async (req: UserRequest<any, {id: string}>, res: Response): Promise<void> => {
+    let id: number = parseInt(req.params.id);
     let affiliation = await db.affiliation.findFirst(id);
 
     if (!affiliation) {

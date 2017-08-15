@@ -1,6 +1,8 @@
 // @flow
 
-import type { $Request } from 'express';
+const misc = require('./misc');
+
+import type { Request } from '../types';
 
 type CountedSet<Row> = {
   rows: Row[],
@@ -16,12 +18,18 @@ interface Model {
   scope: $TODO
 }
 
+export type TableRequest = {
+  page?: number
+};
+
 class TableApi<Row: {}> {
-  req: $Request;
+  baseUrl: string;
+  page: number;
   itemsPerPage: number;
 
-  constructor(req: $Request, itemsPerPage: number = 10) {
-    this.req = req;
+  constructor(req: Request, query: TableRequest, itemsPerPage: number = 10) {
+    this.baseUrl = misc.baseUrl(req);
+    this.page = query.page == null ? 1 : parseInt(query.page);
     this.itemsPerPage = itemsPerPage;
   }
 
@@ -59,26 +67,18 @@ class TableApi<Row: {}> {
     return this.parseResultSet(results, fieldWhitelist);
   }
 
-  getCurrentPage(): $TODO {
-    let { req } = this;
-    return !req.query.page || isNaN(req.query.page) ? 1 : parseInt(req.query.page);
-  }
-
   getCurrentOffset(): number {
-    return (this.getCurrentPage() - 1) * this.itemsPerPage;
+    return (this.page - 1) * this.itemsPerPage;
   }
 
   parseResultSet(
     resultSet: CountedSet<Row>,
     fieldWhitelist: ?$Keys<Row>[] = null // Fields to be returned if not null
   ): $TODO {
-    const req = this.req;
-    const currentPage = this.getCurrentPage();
     let lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
-    let baseUrl = `${req.protocol}://${(req.get('host'): any)}${req.path}`;
 
-    let nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
-    let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
+    let nextPageNumber = TableApi.calculateNextPage(resultSet, this.page, lastPage);
+    let previousPageNumber = TableApi.calculatePreviousPage(resultSet, this.page, lastPage);
 
     var rows;
     if (fieldWhitelist != null) {
@@ -99,17 +99,17 @@ class TableApi<Row: {}> {
     return {
       totalSize: resultSet.count,
       per_page: this.itemsPerPage,
-      page: currentPage,
+      page: this.page,
       last_page: lastPage,
-      next_page_url: nextPageNumber != null ? `${baseUrl}?page=${nextPageNumber}` : null,
-      prev_page_url: previousPageNumber != null ? `${baseUrl}?page=${previousPageNumber}` : null,
-      from: currentPage,
-      to: currentPage - 1 + rows.length,
+      next_page_url: nextPageNumber != null ? `${this.baseUrl}?page=${nextPageNumber}` : null,
+      prev_page_url: previousPageNumber != null ? `${this.baseUrl}?page=${previousPageNumber}` : null,
+      from: this.page,
+      to: this.page - 1 + rows.length,
       items: rows
     };
   }
 
-  static calculateNextPage(req, resultSet, currentPage, lastPage): ?number {
+  static calculateNextPage(resultSet, currentPage, lastPage): ?number {
     if (currentPage >= lastPage) {
       return null;
     } else if (currentPage < 1) {
@@ -119,7 +119,7 @@ class TableApi<Row: {}> {
     }
   }
 
-  static calculatePreviousPage = (req, resultSet, currentPage, lastPage) => {
+  static calculatePreviousPage = (resultSet, currentPage, lastPage) => {
     if (currentPage <= 1) {
       return null;
     } else if (currentPage > lastPage) {

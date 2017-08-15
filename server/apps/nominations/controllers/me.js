@@ -1,6 +1,6 @@
-// @flow
 
-import type {Request, Response} from '../types';
+
+import type {Request, Response} from '../../types';
 
 module.exports = {
   /*

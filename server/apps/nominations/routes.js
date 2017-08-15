@@ -1,10 +1,10 @@
-// @flow
+
 
 var Express = require('express');
 var { Household, User, Me, Affiliation } = require('./controllers');
 var auth = require('../lib/auth');
 
-import type {Router} from './types';
+import type {Router} from '../types';
 
 let router: Router = (Express.Router(): any);
 

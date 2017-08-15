@@ -3,13 +3,19 @@
 var Express = require('express');
 var { login, register, getToken, confirm, extend, approve } = require('./controllers');
 
-let router = Express.Router();
+const { Router } = require('../lib/typed-express');
+const { ensureLoggedIn, ensureAdmin } = require('../lib/auth');
 
-router.post('/login', login);
-router.post('/register', register);
-router.post('/access', getToken);
-router.post('/extend', extend);
-router.post('/confirm_email', confirm);
-router.post('/approve', approve);
+import type { UserType } from '../lib/auth';
+import type { AuthRequest } from '../lib/typed-express';
 
-module.exports = router;
+const router: Router<AuthRequest<?UserType>> = new Router();
+
+router.post('/login').handleAsync(login);
+router.post('/register').handleAsync(register);
+router.post('/access').use(ensureLoggedIn).handleAsync(getToken);
+router.post('/confirm_email').handleAsync(confirm);
+router.post('/extend').use(ensureLoggedIn).handleAsync(extend);
+router.post('/approve').use(ensureAdmin).handleAsync(approve);
+
+module.exports = router;;

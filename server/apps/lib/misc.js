@@ -1,5 +1,10 @@
-// @flow
 
-import type { $Request } from 'express';
 
-module.exports = { rootUrl: (req: $Request): string => req.protocol + '://' + ((req.get('host'): any): string) };
+import type { BaseRequest } from '../types';
+
+module.exports = {
+  rootUrl: (req: BaseRequest): string =>
+    `${req.protocol || 'http'}://${(req.get('host'): any)}`,
+  baseUrl: (req: BaseRequest): string => 
+    `${req.protocol || 'http'}://${(req.get('host'): any)}${req.path || ''}`
+};

@@ -1,9 +1,10 @@
-// @flow
+
 
 var db = require('../../../models');
 var TableApi = require('../../lib/tableApi');
 
-import type {Request, Response, Next} from '../types';
+import type {Request, Response, Next, RequestWithParams} from '../../types';
+import type {TableRequest} from '../../lib/tableApi';
 
 const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
@@ -19,18 +20,20 @@ const scope = {
 
 // TODO: move user endpoints to auth app
 
-type ListRequest = {
+type ListRequest = {|
+  ...$Exact<TableRequest>,
   search?: string
-};
+|};
+
 module.exports = {
   list: async (req: Request, res: Response, next: Next) => {
-    
-    let api = new TableApi(req);
+    const query: ListRequest = (req.query: any);
+    let api = new TableApi(req, query);
     try {
       let whereClause = {};
-      if (req.query.search) {
+      if (query.search != null) {
         // TODO: why search only approved users?
-        whereClause = Object.assign({}, { name_last: { $like: `${req.query.search}%` } }, criteria.APPROVED);
+        whereClause = Object.assign({}, { name_last: { $like: `${query.search}%` } }, criteria.APPROVED);
       }
       let result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
@@ -40,12 +43,13 @@ module.exports = {
   },
 
   listPendingUsers: async (req: Request, res: Response) => {
-    let api = new TableApi(req);
+    let query: ListRequest = (req.query: any);
+    let api = new TableApi(req, query);
     try {
       // TODO: Confirm criteria for what makes a pending user
       let whereClause = criteria.PENDING;
-      if (req.query.search) {
-        whereClause = Object.assign({}, whereClause, { name_last: { $like: `${req.query.search}%` } });
+      if (query.search) {
+        whereClause = Object.assign({}, whereClause, { name_last: { $like: `${query.search}%` } });
       }
       let result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
@@ -54,10 +58,10 @@ module.exports = {
     }
   },
 
-  getUser: async (req: Request, res: Response): Promise<void> => {
+  getUser: async (req: RequestWithParams<{id: string}>, res: Response, next: Next): Promise<void> => {
     let user = null;
     try {
-      if (req.user.role !== 'admin' && parseInt(req.user.id) !== parseInt(req.params.id)) {
+      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
         throw new Error('User not found');
       }
       user = await db.user.findOne({
