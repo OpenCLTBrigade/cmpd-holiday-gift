@@ -1,22 +1,57 @@
 // @flow
 import React, { Component } from 'react';
 
-import HeadOfHousehold from './components/household-form';
-import DeliveryAddresss from './components/address-form';
+import HouseholdForm from './components/household-form';
+import AddressForm from './components/address-form';
 import PhoneNumbers from './components/phone-numbers-form';
 import ChildForm from './components/child-form';
-export default class NewHousehold extends Component {
+import { Row, Col, Button } from 'react-bootstrap';
+import { setValue, getValue } from 'neoform-plain-object-helpers';
+
+export default class NewHousehold extends Component<any, any, any> {
   constructor() {
     super();
+
+    this.state = {
+      household: {},
+      address: {}
+    };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(name: string, value: any) {
+    this.setState(prevState => {
+      let newState = setValue(prevState, name, value);
+
+      return newState;
+    });
+  }
+
+  onInvalid() {
+    console.log('onInvalid');
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
   }
 
   render() {
+    console.log(this.state);
+
     return (
       <div>
-        <HeadOfHousehold />
-        <DeliveryAddresss />
+        <HouseholdForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
+        <AddressForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
         <PhoneNumbers />
         <ChildForm />
+        <Row>
+          <Col xs={12}>
+            <Button>Save Draft</Button>
+          </Col>
+        </Row>
       </div>
     );
   }
