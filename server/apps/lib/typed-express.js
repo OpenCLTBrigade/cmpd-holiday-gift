@@ -5,16 +5,16 @@ var Express = require('express');
 import type { $Response } from 'express';
 
 export type Request<Params: { [string]: string } = {}> = {
-  body: ?{},
-  query: ?{},
-  protocol: 'https' | 'http',
+  +body: ?{},
+  +query: ?{},
+  +protocol: 'https' | 'http',
   get('host'): 'string',
-  path: string,
-  params: Params
+  +path: string,
+  +params: Params
 };
 
 export type AuthRequest<User, Params: { [string]: string } = {}> = Request<Params> & {
-  user: User
+  +user: User
 };
 
 export type Response = $Response;
@@ -74,6 +74,10 @@ class Chain<Req: Request<>> {
   }
 }
 
+type Parameters = { [string]: string };
+
+export type Path<Params: Parameters = {}> = string;
+
 class Router<Req: Request<>> {
   router: Express.Router;
   
@@ -81,12 +85,12 @@ class Router<Req: Request<>> {
     this.router = Express.Router();
   }
 
-  get<Params>(path: string): Chain<Req & {params: Params}> {
-    return new Chain(this.router, 'get', path);
+  get<Params: Parameters>(path: Path<Params>): Chain<Req & {params: Params}> {
+    return new Chain(this.router, 'get', (path: string));
   }
 
-  post<Params>(path: string): Chain<Req & {params: Params}> {
-    return new Chain(this.router, 'post', path);
+  post<Params: Parameters>(path: Path<Params>): Chain<Req & {params: Params}> {
+    return new Chain(this.router, 'post', (path: string));
   }
 }
 

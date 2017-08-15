@@ -2,7 +2,7 @@
 
 const misc = require('./misc');
 
-import type { Request } from '../types';
+import type { Request } from '../lib/typed-express';
 
 type CountedSet<Row> = {
   rows: Row[],
@@ -27,7 +27,7 @@ class TableApi<Row: {}> {
   page: number;
   itemsPerPage: number;
 
-  constructor(req: Request, query: TableRequest, itemsPerPage: number = 10) {
+  constructor(req: Request<>, query: TableRequest, itemsPerPage: number = 10) {
     this.baseUrl = misc.baseUrl(req);
     this.page = query.page == null ? 1 : parseInt(query.page);
     this.itemsPerPage = itemsPerPage;

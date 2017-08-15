@@ -12,6 +12,6 @@ app.use(auth.authMiddleware(config.jwtSecrets.nominations));
 app.use((auth.sessionMiddleware: any));
 
 // Load the routess
-app.use((require('./routes'): $TODO));
+app.use(require('./routes').router);
 
 module.exports = app;

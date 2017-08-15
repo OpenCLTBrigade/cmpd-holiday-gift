@@ -10,6 +10,7 @@ import type { Request, AuthRequest, Response, Middleware, Next } from '../lib/ty
 import type Express from 'express';
 
 export type RoleType = null | 'admin';
+export type AnyRole = RoleType;
 
 // TODO: import from model
 export type UserType = {
@@ -22,7 +23,7 @@ export type UserType = {
 export type UserIdRequest = AuthRequest<{id: number}>;
 export type SessionIdRequest = AuthRequest<{session_id: number}>;
 export type AppName = 'nominations';
-export type UserRequest<Role = RoleType, Params = {}> = AuthRequest<UserType & { role: Role }, Params>;
+export type UserRequest<Role: RoleType = RoleType, Params = {}> = AuthRequest<UserType & { role: Role }, Params>;
 
 // TODO: automatically delete expired sessions from database
 
@@ -41,8 +42,7 @@ function generateConfirmationCode(): string {
 // This middleware will set req.user to the token payload
 // if the token is valid has has not expired.
 // The token is retrieved from the Authorization header
-
-function authMiddleware(secret: string): * {
+function authMiddleware(secret: string): $TODO {
   return jwtMiddleware({
     secret: secret,
     credentialsRequired: false
@@ -81,9 +81,10 @@ function ensureLoggedIn<
 >(req: ReqIn, res: Response, next: Next) {
   // TODO: is this the right check for a logged in user?
   if (req.user && req.user.active && req.user.approved) {
-    return next(); 
+    next(); 
+  } else {
+    res.send(403);
   }
-  res.send(403);
 };
 
 function ensureAdmin<
@@ -91,9 +92,10 @@ function ensureAdmin<
   ReqOut: ReqIn & {user: {role: 'admin'}}
 >(req: ReqIn, res: Response, next: Next) {
   if (req.user && req.user.role === 'admin') {
-    return next();
+    next();
+  } else {
+    res.send(403);
   }
-  res.send(403);
 };
 
 function isInvalidPassword(password: string): null | string {

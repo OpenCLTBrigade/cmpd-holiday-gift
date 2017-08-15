@@ -7,10 +7,10 @@ const guestWhiteList = ['id', 'type', 'name'];
 
 import type { Response } from '../../lib/typed-express';
 import type { TableRequest } from '../../lib/tableApi';
-import type { UserRequest } from '../../lib/auth';
+import type { UserRequest, AnyRole } from '../../lib/auth';
 
 type ListRequest = {|
-  ...TableRequest,
+  ...$Exact<TableRequest>,
   search: string;
 |};
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
     }
   },
 
-  getAffiliation: async (req: UserRequest<any, {id: string}>, res: Response): Promise<void> => {
+  getAffiliation: async (req: UserRequest<AnyRole, {id: string}>, res: Response): Promise<void> => {
     let id: number = parseInt(req.params.id);
     let affiliation = await db.affiliation.findFirst(id);
 
