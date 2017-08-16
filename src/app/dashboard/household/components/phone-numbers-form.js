@@ -1,9 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { Row, Col, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import Box from '../../components/box';
+import Input from './form/input';
+import { Form } from 'neoform';
+import { FormValidation } from 'neoform-validation';
+import requiredValidator from '../validators/required.validator';
 
-export default class AddressForm extends Component {
+class PhoneNumbersForm extends Component {
   constructor(props = { phoneNumbers: [] }) {
     super(props);
 
@@ -33,8 +37,15 @@ export default class AddressForm extends Component {
   }
 
   render() {
+    const { onSubmit, validate, onInvalid } = this.props;
+
     return (
-      <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          validate(onSubmit, onInvalid);
+        }}
+      >
         <Row>
           <Col xs={12}>
             <Box title="Phone Numbers" bsStyle="danger">
@@ -43,21 +54,29 @@ export default class AddressForm extends Component {
                   return (
                     <Row key={`phoneNumber-${idx}`}>
                       <Col md={6} xs={12}>
-                        <FormGroup controlId="formControlsSelect">
-                          <ControlLabel>Type</ControlLabel>
-                          <FormControl name="phoneType" componentClass="select" placeholder="select" required>
-                            <option value="select">Select...</option>
-                            <option value="home">Home</option>
-                            <option value="work">Work</option>
-                            <option value="work">Mobile</option>
-                          </FormControl>
-                        </FormGroup>
+                        <Input
+                          label="Type"
+                          name={`phoneNumbers[${idx}].phoneType`}
+                          componentClass="select"
+                          placeholder="select"
+                          validator={requiredValidator}
+                        >
+                          <option value="">Select...</option>
+                          <option value="home">Home</option>
+                          <option value="work">Work</option>
+                          <option value="work">Mobile</option>
+                        </Input>
                       </Col>
                       <Col md={6} xs={12}>
-                        <FormGroup>
-                          <ControlLabel htmlFor="phone">Phone</ControlLabel>
-                          <FormControl id="phone" name="phone" type="tel" required autoComplete="tel" />
-                        </FormGroup>
+                        <Input
+                          label="Phone"
+                          id="phone"
+                          name={`phoneNumbers[${idx}].phone`}
+                          type="tel"
+                          required
+                          autoComplete="tel"
+                          validator={requiredValidator}
+                        />
                       </Col>
                     </Row>
                   );
@@ -75,7 +94,9 @@ export default class AddressForm extends Component {
             </Box>
           </Col>
         </Row>
-      </div>
+      </form>
     );
   }
 }
+
+export default Form(FormValidation(PhoneNumbersForm));

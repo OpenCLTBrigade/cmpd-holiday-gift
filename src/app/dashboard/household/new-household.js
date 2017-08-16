@@ -14,7 +14,8 @@ export default class NewHousehold extends Component<any, any, any> {
 
     this.state = {
       household: {},
-      address: {}
+      address: {},
+      nominations: []
     };
 
     this.onChange = this.onChange.bind(this);
@@ -45,8 +46,8 @@ export default class NewHousehold extends Component<any, any, any> {
       <div>
         <HouseholdForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
         <AddressForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
-        <PhoneNumbers />
-        <ChildForm />
+        <PhoneNumbers data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
+        <ChildForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
         <Row>
           <Col xs={12}>
             <Button>Save Draft</Button>
