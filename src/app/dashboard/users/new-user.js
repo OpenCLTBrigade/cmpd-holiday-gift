@@ -6,18 +6,16 @@ import UserForm from './components/user-form.js';
 
 export default class NewUser extends Component<any> {
 
-    constructor() {
-        super();
-        
-        this.state ={
-            user: {}
-        };
+  constructor() {
+    super();
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
+    this.state = { user: {} };
 
-   onChange(name: string, value: any) {
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(name: string, value: any) {
     this.setState(prevState => {
       let newState = setValue(prevState, name, value);
 
@@ -25,28 +23,27 @@ export default class NewUser extends Component<any> {
     });
   }
 
-    onInvalid() {
-        console.log('onInvalid');
-    }
+  onInvalid() {
+    console.log('onInvalid');
+  }
 
-    onSubmit(e) {
-        e.preventDefault();
-        console.log(this.state);
-    }
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
+  }
 
-    render() {
-        console.log(this.state);
+  render() {
+    console.log(this.state);
 
-        return (
-            <div>
-                <UserForm
-                    data={this.state}
-                    getValue={getValue}
-                    onChange={this.onChange}
-                    onSubmit={this.onSubmit}
-                />
-            </div>      
-
-        );
-    }
+    return (
+      <div>
+        <UserForm
+            data={this.state}
+            getValue={getValue}
+            onChange={this.onChange}
+            onSubmit={this.onSubmit}
+        />
+      </div>
+    );
+  }
 }

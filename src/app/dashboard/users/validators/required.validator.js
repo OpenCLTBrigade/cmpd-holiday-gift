@@ -2,9 +2,10 @@
 
 export default value => {
 
-    if (typeof value === 'undefined' || value === null || value === '') {
-        return Promise.reject('required');
-    }
-
+  if (typeof value === 'undefined' || value === '' || value === null ) {
+    return Promise.reject('required');
+  } else {
     return Promise.resolve('valid');
-}
+  }
+
+};
