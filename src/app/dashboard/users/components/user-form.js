@@ -5,10 +5,18 @@ import Box from '../../components/box';
 import Input from './form/input';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
+import  SelectOptions from './form-parital';
 import requiredValidator from '../validators/required.validator';
+import { getAffiliationList } from 'api/affiliation';
+
+import type { AffiliationType } from 'api/affiliation';
+
 
 const UserForm = ({ onSubmit, validate, onInvalid }) => {
+
+
   return (
+
     <form
       onSubmit={e => {
         e.preventDefault();
@@ -50,10 +58,12 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
                 <Input
                   label="Affilation"
                   name="user.affilaiton"
-                  id="affilation"
-                  type="text"
+                  componentClass="select"
                   validator={requiredValidator}
-                />
+                >
+                  
+                </Input>
+                <SelectOptions></SelectOptions>
               </Col>
             </Row>
             <Row>
@@ -72,10 +82,16 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
                 <Input
                   label="Access Level"
                   name="user.accessLevel"
-                  id="accessLevel"
-                  type="text"
+                  componentClass="select"
                   validator={requiredValidator}
-                />
+                >
+                  <option value="admin">admin</option>
+                  <option value="nominator">nominator</option>
+                  <option value="nominee">nominee</option>
+                  <option value="partner">partner</option>
+                  <option value="volunteer">volunteer</option>
+
+                </Input>
               </Col>
             </Row>
             <Row>
@@ -116,10 +132,12 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
                 <Input
                   label="Confirmed Email Address"
                   name="user.emailConformation"
-                  id="emailConformation"
-                  type="text"
+                  componentClass="select"
                   validator={requiredValidator}
-                />
+                >
+                  <option value="unconfirmedEmail">No</option>
+                  <option value="confirmedEmail">Yes-Confirmed</option>
+                </Input>
               </Col>
             </Row>
             <Row>
@@ -127,10 +145,12 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
                 <Input
                   label="Account Enabled"
                   name="user.enabled"
-                  id="enabled"
-                  type="text"
+                  componentClass="select"
                   validator={requiredValidator}
-                />
+                >
+                  <option value="deactivated">No-Deactivated</option>
+                  <option value="active">Yes-Active</option>
+                </Input>
               </Col>
             </Row>
             <Row>

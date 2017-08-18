@@ -4,22 +4,18 @@ import { BootstrapTable } from 'react-bootstrap-table';
 
 export default class DataTable<Row> extends Component<*, *, *> {
   state: {
-    items: Row[],
-    totalSize: number,
-    page: number,
-    sizePerPage: number
+    items:  Row[],
+
   };
   props: {
-    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number }>,
-    children: Component<any, any, any>[]
+    fetch: (number, ?string) => Promise < { items: Row[]} >,
+    children: Component < any, any, any>[]
   };
   constructor() {
     super();
     this.state = {
       items: [],
-      totalSize: 1,
-      sizePerPage: 25,
-      page: 1
+
     };
   }
 
@@ -30,8 +26,8 @@ export default class DataTable<Row> extends Component<*, *, *> {
   fetchData(page: number = this.state.page, searchText: string = '') {
     console.log('fetchData', page, searchText);
     this.props.fetch(page, searchText).then(data => {
-      console.log('results', data.items);
-      this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage });
+      console.log('In Fetch:', data.items);
+      this.setState({ items: data.items });
     });
   }
 
@@ -59,21 +55,17 @@ export default class DataTable<Row> extends Component<*, *, *> {
       searchDelayTime: 500,
       onSearchChange: this.props.search ? this.handleSearchChange : undefined
     };
-
-    return (
-      <BootstrapTable
-        data={(this.state.items: Array<any>)}
-        fetchInfo={{ dataTotalSize: this.state.totalSize }}
-        options={options}
-        striped
-        hover
-        remote
-        pagination={this.props.pagination !== undefined ? this.props.pagination : true}
-        search={this.props.search ? true : false}
-        searchPlaceholder={this.props.searchPlaceholder || 'Search'}
-      >
-        {this.props.children}
-      </BootstrapTable>
-    );
+    console.log(this.props.items);
+    // var data = this.state.items[0];
+    // console.log(data);
+    return(
+      <ul>
+        {this.state.items.map(function(item){
+          return (
+            <li>{item.type}</li>
+          );
+        })}
+      </ul>
+    )
   }
 }
