@@ -1,6 +1,11 @@
 // @flow
 import React, { Component } from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
+import Input from './form/input';
+import { Form } from 'neoform';
+import { FormValidation } from 'neoform-validation';
+import requiredValidator from '../validators/required.validator';
+
 
 export default class DataTable<Row> extends Component<*, *, *> {
   state: {
@@ -41,31 +46,21 @@ export default class DataTable<Row> extends Component<*, *, *> {
   };
 
   render(): React.Element<*> {
-    var options = {
-      sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
-      pageStartIndex: 1, // where to start counting the pages
-      paginationSize: 5, // the pagination bar size.
-      prePage: 'Prev', // Previous page button text
-      nextPage: 'Next', // Next page button text
-      firstPage: 'First', // First page button text
-      lastPage: 'Last', // Last page button text
-      paginationShowsTotal: true, // Accept bool or function
-      hideSizePerPage: true,
-      onPageChange: this.handlePageChange,
-      searchDelayTime: 500,
-      onSearchChange: this.props.search ? this.handleSearchChange : undefined
-    };
-    console.log(this.props.items);
-    // var data = this.state.items[0];
-    // console.log(data);
     return(
-      <ul>
+      <Input
+        label="Affilation"
+        name="user.affilaiton"
+        componentClass="select"
+        validator={requiredValidator}
+      >
         {this.state.items.map(function(item){
           return (
-            <li>{item.type}</li>
+            <option key={item.id} value={item.id}>{item.type.toUpperCase()} {item.name}</option>
           );
-        })}
-      </ul>
+        })}  
+      </Input>
     )
   }
 }
+
+// TODO Refactor select list to return entire element.

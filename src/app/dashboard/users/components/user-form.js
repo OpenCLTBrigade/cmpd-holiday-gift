@@ -55,14 +55,6 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
             </Row>
             <Row>
               <Col md={12}>
-                <Input
-                  label="Affilation"
-                  name="user.affilaiton"
-                  componentClass="select"
-                  validator={requiredValidator}
-                >
-                  
-                </Input>
                 <SelectOptions></SelectOptions>
               </Col>
             </Row>
