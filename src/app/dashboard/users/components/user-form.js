@@ -1,19 +1,16 @@
 // @flow
 import React from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { Route } from 'react-router-dom';
+import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 import Input from './form/input';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
-import  SelectOptions from './form-parital';
+import SelectOptions from './form-parital';
 import requiredValidator from '../validators/required.validator';
-import { getAffiliationList } from 'api/affiliation';
-
-import type { AffiliationType } from 'api/affiliation';
 
 
 const UserForm = ({ onSubmit, validate, onInvalid }) => {
-
 
   return (
 
@@ -28,7 +25,14 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
           <Box bsStyle="primary">
             <Row>
               <Col md={12}>
-                <p>Note: After creating a new user they will need to be activated from the pending registrations screen.</p>
+                <p>
+                  <strong>Note:</strong> After creating a new user they will need to be activated from the
+                  <a href="/dashboard/user/pending"> pending registrations </a>
+                  screen.
+                </p>
+
+                
+                
               </Col>
             </Row>
             <Row>
