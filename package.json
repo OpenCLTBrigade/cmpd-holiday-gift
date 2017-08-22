@@ -9,7 +9,7 @@
     "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
     "start-server": "cd server-notypes && node apps/serve.js",
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
-    "nodemon-server": "cd server && nodemon -x flow-node apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
+    "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js server src",
