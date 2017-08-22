@@ -25,7 +25,7 @@ export default class NewHousehold extends React.Component<any, any> {
 
   onChange(name: string, value: any) {
     this.setState(prevState => {
-      let newState = setValue(prevState, name, value);
+      const newState = setValue(prevState, name, value);
 
       return newState;
     });

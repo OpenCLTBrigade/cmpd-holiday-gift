@@ -1,14 +1,14 @@
 /* eslint-env jasmine */
 
-var { asyncTest } = require('./helpers/asyncTest');
-var mailer = require('../apps/lib/mail.js');
+const { asyncTest } = require('./helpers/asyncTest');
+const mailer = require('../apps/lib/mail.js');
 
-var sendMail = cb => mailer(__dirname + '/helpers/templates', mailer.testTransporter(cb));
+const sendMail = cb => mailer(__dirname + '/helpers/templates', mailer.testTransporter(cb));
 
 describe('Sending test e-mail', function () {
   it('should work', asyncTest(async function () {
-    var text = 'lorem ipsum dolor sit amet';
-    var message = await new Promise(ok => sendMail(ok)('test', {
+    const text = 'lorem ipsum dolor sit amet';
+    const message = await new Promise(ok => sendMail(ok)('test', {
       to: 'test@example.com',
       text
     }));

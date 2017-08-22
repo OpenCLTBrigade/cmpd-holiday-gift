@@ -10,13 +10,14 @@
     "start-server": "cd server-notypes && node apps/serve.js",
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "cd server && nodemon -x flow-node apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
-    "server-nodemon": "echo 'Please use `npm run nodemon-server` instead.' && false",
     "seed-server": "flow-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js server src",
     "flow": "flow",
     "test": "npm run test-client && npm run test-server",
-    "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false"
+    "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false",
+    "server-nodemon": "echo 'Please use `npm run nodemon-server` instead.' && false",
+    "seeds": "echo 'Please use `npm run seed-server` instead.' && false"
   },
   "bin": {
     "cmpd-explorers": "server-notypes/apps/serve.js"
@@ -69,6 +70,8 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
+    "eslint-plugin-dependencies": "^2.4.0",
+    "eslint-plugin-flowtype-errors": "^3.3.1",
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
     "flow-remove-types": "^1.2.1",

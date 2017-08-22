@@ -45,7 +45,7 @@ export default class DataTable<Row> extends React.Component<{
   };
 
   render(): React.Node {
-    var options = {
+    const options = {
       sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
       pageStartIndex: 1, // where to start counting the pages
       paginationSize: 5, // the pagination bar size.
@@ -70,7 +70,7 @@ export default class DataTable<Row> extends React.Component<{
         remote
         pagination={this.props.pagination !== undefined ? this.props.pagination : true}
         search={this.props.search ? true : false}
-        searchPlaceholder={this.props.searchPlaceholder != null || this.props.searchPlaceholder || 'Search'}
+        searchPlaceholder={this.props.searchPlaceholder != null ? this.props.searchPlaceholder : 'Search'}
       >
         {this.props.children}
       </BootstrapTable>

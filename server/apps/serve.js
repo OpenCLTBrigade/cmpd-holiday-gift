@@ -1,20 +1,20 @@
 /*eslint no-console: "off"*/
 
-var process = require('process');
+const process = require('process');
 
-var loadApp = require('.');
-var config = require('../config');
-var seed = require('../seeds/');
+const loadApp = require('.');
+const config = require('../config');
+const seed = require('../seeds/');
 
 (async () => {
   if (process.env.SEED_ON_START === 'true') {
     await seed();
   }
 
-  var app = await loadApp;
+  const app = await loadApp;
 
-  var listener = app.listen(config.port, () => {
-    var port = listener.address().port;
+  const listener = app.listen(config.port, () => {
+    const port = listener.address().port;
     if (config.verbose) {
       console.log('Express server listening on port ' + port);
     }

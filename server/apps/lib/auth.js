@@ -1,8 +1,8 @@
-var bcrypt = require('bcrypt-nodejs');
-var crypto = require('crypto');
-var db = require('../../models');
-var jwtMiddleware = require('express-jwt');
-var jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
+const crypto = require('crypto');
+const db = require('../../models');
+const jwtMiddleware = require('express-jwt');
+const jwt = require('jsonwebtoken');
 
 // TODO: automatically delete expired sessions from database
 // TODO: check if user is approved and active
@@ -34,7 +34,7 @@ async function sessionMiddleware(req, res, next) {
   if (req.user) {
     if (req.user.session_id) {
       // When used by the authentication service
-      var session = await db.session.findById(req.user.session_id);
+      const session = await db.session.findById(req.user.session_id);
       if (!session) {
         req.user = undefined;
       } else {
@@ -71,7 +71,7 @@ isInvalidPassword.english = 'The password must have 6 or more characters';
 
 function userCanUseApp(user, app) {
   if (app === 'nominations') {
-    return user.approved === 'Y' && user.active === 'Y';
+    return user.approved === true && user.active === true;
   }
   return false;
 }

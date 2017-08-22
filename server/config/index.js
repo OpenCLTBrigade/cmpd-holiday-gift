@@ -1,26 +1,28 @@
-var process = require('process');
-var path = require('path');
-var vm = require('vm');
-var fs = require('fs');
+const process = require('process');
+const path = require('path');
+const vm = require('vm');
+const fs = require('fs');
 
 // Default config values can be overridden by ../../env.js
 
 if (fs.existsSync(path.join(__dirname, '../run'))) {
-  console.error('Refusing to run: detected presence of `server/run/`. The `run/` folder should be moved to the root of the repository');
+  console.error('Refusing to run: detected presence of `server/run/`. ' +
+                'The `run/` folder should be moved to the root of the repository');
   process.exit(1);
 }
 
 if (fs.existsSync(path.join(__dirname, '../env.js'))) {
-  console.error('Refusing to run: detected presence of `server/env.js`. The `env.js` file should be moved to the root of the repository');
+  console.error('Refusing to run: detected presence of `server/env.js`. ' +
+                'The `env.js` file should be moved to the root of the repository');
   process.exit(1);
 }
 
-var config = {};
+const config = {};
 
 config.run = path.join(__dirname, '../../run');
 config.pid = process.pid;
 
-var customEnvFile = path.join(__dirname, '../../env.js');
+let customEnvFile = path.join(__dirname, '../../env.js');
 
 if (process.env.NODE_ENV === 'production') {
   config.mode = 'production';
@@ -33,14 +35,14 @@ if (process.env.NODE_ENV === 'production') {
   console.error(`Unknown value for NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
-var defaultConfig = path.join(__dirname, 'env.default.js');
+const defaultConfig = path.join(__dirname, 'env.default.js');
 
 vm.runInNewContext(fs.readFileSync(defaultConfig), config, {
   filename: defaultConfig,
   displayErrors: true
 });
 
-var code;
+let code;
 try {
   code = fs.readFileSync(customEnvFile);
 } catch (e) {

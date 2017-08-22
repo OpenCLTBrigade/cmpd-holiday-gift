@@ -16,9 +16,9 @@ const localStorage = window.localStorage;
 // The token is stored in the localStorage under 'authToken'
 export const AuthToken = (() => {
 
-  var token; // Cached JWT string
-  var expirationTime; // Cached exp
-  var refreshing = false; // Flag to avoid concurrent refresh
+  let token; // Cached JWT string
+  let expirationTime; // Cached exp
+  let refreshing = false; // Flag to avoid concurrent refresh
 
   // Load token from localStorage
   // Should be called only on page load and by getAuthorization
@@ -106,7 +106,7 @@ export const AuthToken = (() => {
   }
 
   async function login(email: string, password: string): Promise<boolean> {
-    var res = await post('auth', 'login', { email, password });
+    const res = await post('auth', 'login', { email, password });
     if (res.failed) {
       return false;
     } else {
@@ -125,11 +125,11 @@ export const AuthToken = (() => {
 
 export const AppToken = (() => {
 
-  var tokens = {};
+  const tokens = {};
 
   async function getToken(app: string): Promise<string> {
     try {
-      var res = await post('auth', 'access', { app });
+      const res = await post('auth', 'access', { app });
       return res.token;
     } catch (exc) {
       console.log(`Error retrieving app token: ${exc}`);
@@ -142,9 +142,10 @@ export const AppToken = (() => {
       return '';
     }
     if (!tokens[app]) {
+      // TODO: handle 403 exception
       tokens[app] = getToken(app);
     }
-    var token = await tokens[app];
+    let token = await tokens[app];
     if (!token || jwt_decode(token).exp > Date.now() / 1000 - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];

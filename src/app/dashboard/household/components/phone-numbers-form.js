@@ -37,7 +37,7 @@ class PhoneNumbersForm extends React.Component<{
   }
 
   removePhoneNumber() {
-    let phoneNumbers = this.state.phoneNumbers.slice();
+    const phoneNumbers = this.state.phoneNumbers.slice();
     phoneNumbers.pop();
     this.setState(() => {
       return { phoneNumbers };

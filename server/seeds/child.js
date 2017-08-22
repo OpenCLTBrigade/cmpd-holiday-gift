@@ -1,10 +1,10 @@
-var faker = require('faker');
+const faker = require('faker');
 
-var config = require('../config');
+const config = require('../config');
 
 module.exports = async db => {
     // Add ten children to the DB
-  for (var i = 0; i < 55; i++) {
+  for (let i = 0; i < 55; i++) {
     await db.child.create({
       'household_id': faker.random.number(48) + 1,
       'name_first': faker.name.firstName(),

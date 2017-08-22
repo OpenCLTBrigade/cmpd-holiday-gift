@@ -77,9 +77,9 @@ export default class LoginBox extends React.Component<{
   }
 
   onSubmit(ev: Event) {
-    let { onSubmit } = this.props;
+    const { onSubmit } = this.props;
     ev.preventDefault();
-    let data = formToJSON(ev.target);
+    const data = formToJSON(ev.target);
 
     if (!onSubmit) {
       console.error('LoginBox: onSubmit missing from props');

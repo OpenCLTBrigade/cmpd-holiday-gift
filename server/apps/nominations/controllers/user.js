@@ -1,11 +1,11 @@
-var db = require('../../../models');
-var TableApi = require('../../lib/tableApi');
+const db = require('../../../models');
+const TableApi = require('../../lib/tableApi');
 
 const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
-const PENDING_CRITERIA = { active: 'Y', approved: 'N' };
-const APPROVED_CRITERA = { active: 'Y', approved: 'Y' };
+const PENDING_CRITERIA = { active: true, approved: false };
+const APPROVED_CRITERA = { active: false, approved: true };
 
 const FILTERED_BY_USER = function (user) {
   return { method: ['filteredByUser', user] };
@@ -15,13 +15,13 @@ const FILTERED_BY_USER = function (user) {
 
 module.exports = {
   list: async (req, res) => {
-    let api = new TableApi(req);
+    const api = new TableApi(req);
     try {
       let whereClause = {};
       if (req.query.search) {
         whereClause = Object.assign({ name_last: { $like: `${req.query.search}%` } }, APPROVED_CRITERA);
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -29,14 +29,14 @@ module.exports = {
   },
 
   listPendingUsers: async (req, res) => {
-    let api = new TableApi(req);
+    const api = new TableApi(req);
     try {
       // TODO: Confirm criteria for what makes a pending user
       let whereClause = PENDING_CRITERIA;
       if (req.query.search) {
         whereClause = Object.assign(PENDING_CRITERIA, { name_last: { $like: `${req.query.search}%` } });
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });

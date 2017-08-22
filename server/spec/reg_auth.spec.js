@@ -2,12 +2,12 @@
 
 /* eslint-env jasmine */
 
-var request = require('request');
-var quoted_printable = require('quoted-printable');
+const request = require('request');
+const quoted_printable = require('quoted-printable');
 
-var { testServer } = require('./helpers/testServer');
+const { testServer } = require('./helpers/testServer');
 
-var sampleUser = {
+const sampleUser = {
   email: 'test.user@example.com',
   firstname: 'Test',
   lastname: 'User',
@@ -18,10 +18,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Authentication tests', () => {
 
-  var { url, nextEvent, openDB } = testServer({ mode: 'all' });
-  var db;
-  var user;
-  var confirmation_code;
+  const { url, nextEvent, openDB } = testServer({ mode: 'all' });
+  let db;
+  let user;
+  let confirmation_code;
 
   describe('Register test', function () {
     it('should be successful', function (done) {
@@ -42,8 +42,8 @@ describe('Authentication tests', () => {
 
     it('should send an email to the user', done => {
       nextEvent().then(event => {
-        var [headers, ...parts] = event.email.split('\r\n\r\n');
-        var message = parts.join('\r\n\r\n');
+        const [headers, ...parts] = event.email.split('\r\n\r\n');
+        let message = parts.join('\r\n\r\n');
         if (headers.match(/Content-Transfer-Encoding: quoted-printable/i)) {
           message = quoted_printable.decode(message);
         }
@@ -93,7 +93,7 @@ describe('Authentication tests', () => {
   });
 
   describe('Requesting tokens:', function () {
-    var authToken;
+    let authToken;
     it('auth token', function (done) {
       request.post({
         url: url('/api/auth/login'),

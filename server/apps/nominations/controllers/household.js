@@ -1,17 +1,22 @@
-var db = require('../../../models');
-var TableApi = require('../../lib/tableApi');
+const db = require('../../../models');
+const TableApi = require('../../lib/tableApi');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
 module.exports = {
   list: async (req, res) => {
-    let api = new TableApi(req);
+    const api = new TableApi(req);
     try {
       let whereClause = {};
       if (req.query.search) {
         whereClause = { name_last: { $like: `${req.query.search}%` } };
       }
-      let result = await api.fetchAndParse('household', whereClause, related, { method: ['filteredByUser', req.user] });
+      const result = await api.fetchAndParse(
+        'household',
+        whereClause,
+        related,
+        { method: ['filteredByUser', req.user] }
+      );
       res.json(result);
     } catch (err) {
       // TODO: properly log error

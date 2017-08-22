@@ -68,7 +68,7 @@ export default class Login extends React.Component<{
 
   async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
     try {
-      var success = await AuthToken.login(email, password);
+      const success = await AuthToken.login(email, password);
       if (success) {
         // TODO: return to the correct page after logging in
         this.props.history.replace(this.props.returnTo != null ? this.props.returnTo : '/dashboard');

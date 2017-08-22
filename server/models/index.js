@@ -1,11 +1,11 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize');
-var encrypted = require('sequelize-encrypted');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const encrypted = require('sequelize-encrypted');
 
-var config = require('../config');
+const config = require('../config');
 
 function connect(dbConfig) {
   return new Sequelize(
@@ -27,14 +27,14 @@ function connect(dbConfig) {
 }
 
 function loadModels(sequelize) {
-  var db = {};
-  var associations = [];
+  const db = {};
+  const associations = [];
 
   // A wrapper around sequelize.define that handles encrypted fields
   // - fields marked `encrypted: true` are encrypted using `sequelize-encrypted`
   // - a 'vault' column is added if necessary to store the encrypted fields
   function define_table(name, model, scopes, defaultScope) {
-    var encrypt = null;
+    let encrypt = null;
 
     function encrypt_field(column) {
       if (!encrypt) {
@@ -45,7 +45,7 @@ function loadModels(sequelize) {
     }
 
     // Note which fields are private and bind them to the model
-    let privateFields = [];
+    const privateFields = [];
 
     Object.keys(model).forEach(function (field) {
       if (model[field].encrypted) {
@@ -59,7 +59,7 @@ function loadModels(sequelize) {
     return sequelize.define(name, model, {
       instanceMethods: {
         toJSON: function () {
-          var values = Object.assign({}, this.dataValues);
+          const values = Object.assign({}, this.dataValues);
           privateFields.forEach(field => {
             delete values[field];
           });
@@ -84,7 +84,7 @@ function loadModels(sequelize) {
       return file.indexOf('.') !== 0 && file !== 'index.js';
     })
     .forEach(function (file) {
-      var table = require(path.join(__dirname, file))(Sequelize);
+      const table = require(path.join(__dirname, file))(Sequelize);
       db[table.name] = define_table(table.name, table.fields, table.scopes, table.defaultScope);
       if (table.associate) {
         associations.push(() => table.associate(db[table.name], db));
@@ -96,8 +96,8 @@ function loadModels(sequelize) {
   return db;
 }
 
-var sequelize = connect(config.db);
-var db = loadModels(sequelize);
+const sequelize = connect(config.db);
+const db = loadModels(sequelize);
 
 db.test = {
   open: path => loadModels(connect({

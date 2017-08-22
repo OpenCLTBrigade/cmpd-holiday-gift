@@ -1,9 +1,9 @@
-var express = require('express');
+const express = require('express');
 
-var auth = require('../lib/auth');
-var config = require('../../config');
+const auth = require('../lib/auth');
+const config = require('../../config');
 
-var app = express();
+const app = express();
 
 // Add authentication
 app.use(auth.authMiddleware(config.jwtSecrets.nominations));

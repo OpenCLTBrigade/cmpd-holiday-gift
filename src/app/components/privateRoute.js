@@ -15,7 +15,7 @@ export default class PrivateRoute<Props: {}> extends React.Component<ComponentPr
   constructor(props: ComponentProps<Props>) {
     super(props);
     this.state = { authenticated: !AuthToken.expired() };
-    var { component, ...rest } = this.props;
+    const { component, ...rest } = this.props;
     this.component = component;
     this.rest = rest;
     // TODO: listen for login/logout events

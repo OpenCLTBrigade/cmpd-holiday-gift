@@ -22,7 +22,7 @@ export default class UsersList extends React.Component<{}> {
     page: number,
     search: ?string
   ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
-    let response: Object = await getUserList(page, search);
+    const response: Object = await getUserList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 

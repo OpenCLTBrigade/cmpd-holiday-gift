@@ -1,22 +1,22 @@
 /* eslint-env jasmine */
 /*eslint no-console: "off"*/
 
-var child_process = require('child_process');
-var fs = require('fs');
+const child_process = require('child_process');
+const fs = require('fs');
 
-var db = require('../../models');
-var { asyncTest } = require('./asyncTest');
+const db = require('../../models');
+const { asyncTest } = require('./asyncTest');
 
 function testServer({ seed, mode }) {
-  var info = {};
-  var before = async () => {
+  const info = {};
+  const before = async () => {
     info.server = child_process.fork(require.resolve('../../apps/serve.js'), [], {
       env: {
         NODE_ENV: 'testing',
         SEED_ON_START: seed ? 'true' : undefined
       }
     });
-    var { port, dbPath } = await new Promise((ok, fail) => {
+    const { port, dbPath } = await new Promise((ok, fail) => {
       info.server.once('message', ok);
       info.server.on('error', event => {
         console.log('Test server error:', event);
@@ -35,7 +35,7 @@ function testServer({ seed, mode }) {
       }
     });
   };
-  var after = async () => {
+  const after = async () => {
     info.server.kill();
     await new Promise((ok, fail) => {
       info.server.on('exit', ok);
@@ -52,7 +52,7 @@ function testServer({ seed, mode }) {
     });
     info.dbPath = info.port = info.server = undefined;
   };
-  var nextEvent = async () => {
+  const nextEvent = async () => {
     if (info.eventQueue.length) {
       return info.eventQueue.shift();
     } else {
@@ -61,7 +61,7 @@ function testServer({ seed, mode }) {
       });
     }
   };
-  var url = path => {
+  const url = path => {
     if (!info.port) {
       throw new Error('url: server not started yet');
     }

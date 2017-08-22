@@ -1,8 +1,8 @@
-var Express = require('express');
-var { Household, User, Me, Affiliation } = require('./controllers');
-var auth = require('../lib/auth');
+const Express = require('express');
+const { Household, User, Me, Affiliation } = require('./controllers');
+const auth = require('../lib/auth');
 
-let router = Express.Router();
+const router = Express.Router();
 
 // TODO: require more than ensureLoggedIn for these tasks
 

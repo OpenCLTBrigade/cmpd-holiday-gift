@@ -32,7 +32,7 @@ class ChildForm extends React.Component<{
   }
 
   removeChild() {
-    let nominations = this.state.nominations.slice();
+    const nominations = this.state.nominations.slice();
     nominations.pop();
     this.setState(() => {
       return { nominations };

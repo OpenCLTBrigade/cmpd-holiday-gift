@@ -1,7 +1,7 @@
-var Express = require('express');
-var { login, register, getToken, confirm, extend, approve } = require('./controllers');
+const Express = require('express');
+const { login, register, getToken, confirm, extend, approve } = require('./controllers');
 
-let router = Express.Router();
+const router = Express.Router();
 
 router.post('/login', login);
 router.post('/register', register);

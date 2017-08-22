@@ -2,25 +2,6 @@
 import { get } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
-/*
-"id": 1,
-"name_first": "Karelle",
-"name_last": "Mante",
-"role": "nominator",
-"rank": null,
-"phone": null,
-"email": "Duane_Senger@yahoo.com",
-"active": "N",
-"nomination_limit": 5,
-"confirmation_email": false,
-"confirmation_code": null,
-"email_verified": false,
-"approved": "Y",
-"createdAt": "2017-08-13T14:24:43.488Z",
-"updatedAt": "2017-08-13T14:24:43.488Z",
-"affiliation_id": 46,
- */
-
 export type UserType = {
   id: number,
   name_first: string,

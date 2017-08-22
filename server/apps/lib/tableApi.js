@@ -17,8 +17,8 @@ class TableApi {
   async fetch(modelName, where = {}, _include = null, scope = '') {
     return new Promise((resolve, reject) => {
       // TODO: Make include work :(
-      let currentOffset = this.getCurrentOffset();
-      let opts = {
+      const currentOffset = this.getCurrentOffset();
+      const opts = {
         limit: this.itemsPerPage,
         offset: currentOffset,
         where: where
@@ -49,7 +49,7 @@ class TableApi {
   }
 
   getCurrentPage() {
-    let { req } = this;
+    const { req } = this;
     return !req.query.page || isNaN(req.query.page) ? 1 : parseInt(req.query.page);
   }
 
@@ -66,16 +66,16 @@ class TableApi {
   parseResultSet(resultSet, fieldWhitelist = null) {
     const req = this.req;
     const currentPage = this.getCurrentPage();
-    let lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
-    let baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
+    const lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
+    const baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
 
-    let nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
-    let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
+    const nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
+    const previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
 
     if (fieldWhitelist != null) {
-      let newRows = [];
+      const newRows = [];
       resultSet.rows.forEach(record => {
-        let newRecord = {};
+        const newRecord = {};
         fieldWhitelist.forEach(field => {
           newRecord[field] = record[field];
         });
