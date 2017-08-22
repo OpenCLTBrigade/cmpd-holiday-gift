@@ -5,7 +5,7 @@ import { BootstrapTable } from 'react-bootstrap-table';
 type PropType<Row> = {|
     // ATN TODO: is sizePerPage actually returned by the server?
     fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
-    children: Node,
+    children: React.Node,
     search: boolean,
     pagination: boolean,
     searchPlaceholder: string
