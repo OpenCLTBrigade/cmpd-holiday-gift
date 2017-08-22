@@ -1,11 +1,13 @@
 // Before running this app, copy this file to env.js and edit the
 // settings. Any setting from `config/env.default.js' can be modified here.
 
-/* eslint no-undef: "off", no-unused-vars: "off" */
+// @flow
+
+module.exports = (config: *) => { // eslint-disable-line
 
 // **** Sample Email Settings (SMTP) ****
 
-//email.smtp = {
+//config.email.smtp = {
 //  host: 'smtp.mailtrap.io',
 //  port: 2525,
 //  auth: {
@@ -16,14 +18,14 @@
 
 // **** Sample Email Settings (Amazon SES) ****
 
-//email.ses = {
+//config.email.ses = {
 //  accessKeyId: 'amazon_id',
 //  secretAccessKey: 'amazon_key'
 //};
 
 // **** Sample MySQL Database ****
 
-//db = {
+//config.db = {
 //  dialect: 'mysql',
 //  host: 'localhost',
 //  user: 'username',
@@ -33,12 +35,14 @@
 
 // **** Sample Production Mode Settings ****
 
-//databaseEncryptionKey = 'change me';
-//jwtSecrets.auth = 'changeme';
-//jwtSecrets.nominations = 'changeme';
-//verboseAccessLog = false;
-//useCompression = false;
-//verboseSeed = false;
-//email.fromAddress = 'noreply@codeforcharlotte.org';
-//email.fromName = 'noreply';
-//email.adminAddress = 'info@codeforcharlotte.org';
+//config.databaseEncryptionKey = 'change me';
+//config.jwtSecrets.auth = 'changeme';
+//config.jwtSecrets.nominations = 'changeme';
+//config.verboseAccessLog = false;
+//config.useCompression = false;
+//config.verboseSeed = false;
+//config.email.fromAddress = 'noreply@codeforcharlotte.org';
+//config.email.fromName = 'noreply';
+//config.email.adminAddress = 'info@codeforcharlotte.org';
+
+};

@@ -1,3 +1,4 @@
+// @flow
 /*eslint no-console: "off"*/
 
 const bodyParser = require('body-parser');
@@ -17,7 +18,11 @@ const app = express();
 
 // Log to file
 if (config.enableAccessLog) {
-  app.use(morgan('combined', { stream: fs.createWriteStream(join(config.run, 'access.log'), { flags: 'a' }) }));
+  app.use(morgan('combined', {
+    stream: (fs.createWriteStream(
+      join(config.run, 'access.log'),
+      { flags: 'a' }): any)
+  }));
 }
 
 // Log to stdout for development
@@ -40,7 +45,7 @@ app.use('/api/auth', authApp);
 
 // Expose compiled assets
 app.use(express.static(join(__dirname, '../../build'), { index: false }));
-app.get('*', (req, res) => {
+app.get((_req: *, res: *, _next: *): * => {
   res.sendFile(join(__dirname, '../../build/index.html'));
 });
 

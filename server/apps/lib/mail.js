@@ -1,3 +1,4 @@
+// @flow
 const nodemailer = require('nodemailer');
 const ses = require('nodemailer-ses-transport');
 const config = require('../../config');
@@ -8,7 +9,16 @@ const path = require('path');
 
 // TODO: emails sent should be standardized and mention the project name
 
-function testTransporter(cb) {
+interface Transporter {
+  sendMail({
+    from: string,
+    to: string,
+    subject: string,
+    html: string
+  }, (any, any) => mixed): Promise<mixed>
+}
+
+function testTransporter(cb: {email: string} => void): Transporter {
   return nodemailer.createTransport({
     name: 'print',
     version: '1.0.0',
@@ -27,7 +37,7 @@ function testTransporter(cb) {
   });
 }
 
-let defaultTransporter;
+let defaultTransporter: Transporter;
 if (config.email.ses) {
   defaultTransporter = nodemailer.createTransport(ses(config.email.ses));
 } else if (config.email.smtp) {
@@ -48,27 +58,34 @@ if (config.email.ses) {
   });
 }
 
-async function loadTemplate(dir, name) {
-  const data = await new Promise((ok, fail) => {
-    fs.readFile(path.join(dir, `${name}.mail`), 'utf8', (err, data) => err ? fail(err) : ok(data));
+async function loadTemplate(dir: string, name: string): Promise<Object => {subject: string, contents: string}> {
+  const data: string = await new Promise((ok, fail) => {
+    fs.readFile(
+      path.join(dir, `${name}.mail`),
+      'utf8',
+      (err, data) => err ? fail(err) : ok(data));
   });
   const [headers, ...contentsArray] = data.split('\n\n');
   const contents = contentsArray.join('\n\n');
-  const subject = headers.match(/^subject: (.*)$/i)[1];
+  const subjectMatch = headers.match(/^subject: (.*)$/i);
+  const subject = subjectMatch ? subjectMatch[1] : 'No subject';
   return data => ({
     subject: mustache.render(subject, data),
     contents: mustache.render(contents, data)
   });
 }
 
-const globalCache = {};
+const globalCache: Object = {};
 
-function mailer(templatesPath, transporter = defaultTransporter) {
+function mailer(
+  templatesPath: string,
+  transporter: Transporter = defaultTransporter
+): (string, Object) => Promise<void> {
   if (!globalCache[templatesPath]) {
     globalCache[templatesPath] = {};
   }
   const cache = globalCache[templatesPath];
-  return async (templateName, data) => {
+  return async (templateName: string, data: Object) => {
     if (!cache[templateName] || config.enableHotReload) {
       cache[templateName] = await loadTemplate(templatesPath, templateName);
     }

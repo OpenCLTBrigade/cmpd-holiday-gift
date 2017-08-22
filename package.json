@@ -12,7 +12,7 @@
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
-    "lint": "eslint -f unix --fix --ext js server src",
+    "lint": "eslint -f unix --fix --ext js server src env.js env.example.js",
     "flow": "flow",
     "test": "npm run test-client && npm run test-server",
     "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false",
