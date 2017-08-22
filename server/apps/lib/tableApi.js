@@ -1,133 +1,133 @@
-const db = require('../../models');
+// @flow
 
-class TableApi {
-  constructor(req, itemsPerPage = 10) {
-    this.req = req;
+const misc = require('./misc');
+
+import type { Request } from '../lib/typed-express';
+
+type CountedSet<Row> = {
+  rows: Row[],
+  count: number
+};
+
+type IncludeSpec = ?{
+  model: $TODO,
+  as?: string
+}[];
+
+interface Model {
+  scope: $TODO
+}
+
+export type TableRequest = {
+  page?: number
+};
+
+class TableApi<Row: {}> {
+  baseUrl: string;
+  page: number;
+  itemsPerPage: number;
+
+  constructor(req: Request<>, query: TableRequest, itemsPerPage: number = 10) {
+    this.baseUrl = misc.baseUrl(req);
+    this.page = query.page == null ? 1 : parseInt(query.page);
     this.itemsPerPage = itemsPerPage;
   }
 
-  /**
-   * @param  {String}  modelName  Name of model to work with
-   * @param  {Object}  [where={}] Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
-   * @param  {Object|Null}  [include=null] Include related models
-   * @param {String} [scope=''] Scope name
-   * @param {Object} [scopeParams={}] Scope function arguments
-   * @return {Promise}            [description]
-   */
-  async fetch(modelName, where = {}, _include = null, scope = '') {
-    return new Promise((resolve, reject) => {
-      // TODO: Make include work :(
-      const currentOffset = this.getCurrentOffset();
-      const opts = {
-        limit: this.itemsPerPage,
-        offset: currentOffset,
-        where: where
-      };
+  async fetch(
+    model: Model,                 // Name of model to work with
+    where: $TODO = {},            // Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
+    _include: IncludeSpec = null, // Include related models
+    scope: $TODO = ''             // Scope name
+  ): Promise<CountedSet<Row>> {
+    // TODO: Make include work :(
+    const currentOffset = this.getCurrentOffset();
+    const opts: Object = {
+      limit: this.itemsPerPage,
+      offset: currentOffset,
+      where: where
+    };
 
-      if (_include != null) {
-        opts['include'] = _include;
-      }
+    if (_include != null) {
+      opts['include'] = _include;
+    }
 
-      db[modelName]
-        .scope(scope)
-        .findAndCountAll(opts)
-        .then(results => {
-          resolve(results);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    return model
+      .scope(scope)
+      .findAndCountAll(opts);
   }
 
-  async fetchAndParse(modelName, where = {}, include = null, scope = '', fieldWhitelist = null) {
-    return new Promise((resolve, _reject) => {
-      this.fetch(modelName, where, include, scope).then(results => {
-        resolve(this.parseResultSet(results, fieldWhitelist));
-      });
-    });
+  async fetchAndParse(
+    model: Model,
+    where: $TODO = {},
+    include: IncludeSpec = null,
+    scope: $TODO = '',
+    fieldWhitelist: ?$Keys<Row>[] = null
+  ): Promise<*> { // TODO: fill in type
+    const results = await this.fetch(model, where, include, scope);
+    return this.parseResultSet(results, fieldWhitelist);
   }
 
-  getCurrentPage() {
-    const { req } = this;
-    return !req.query.page || isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+  getCurrentOffset(): number {
+    return (this.page - 1) * this.itemsPerPage;
   }
 
-  getCurrentOffset() {
-    return (this.getCurrentPage() - 1) * this.itemsPerPage;
-  }
-
-  /**
-   * [parseResultSet description]
-   * @param  {[type]} resultSet             [description]
-   * @param  {Array<String>} [fieldWhitelist=null] Fields to be returned if not null
-   * @return {[type]}                       [description]
-   */
-  parseResultSet(resultSet, fieldWhitelist = null) {
-    const req = this.req;
-    const currentPage = this.getCurrentPage();
+  parseResultSet(
+    resultSet: CountedSet<Row>,
+    fieldWhitelist: ?$Keys<Row>[] = null // Fields to be returned if not null
+  ): $TODO {
     const lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
-    const baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
 
-    const nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
-    const previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
+    const nextPageNumber = TableApi.calculateNextPage(resultSet, this.page, lastPage);
+    const previousPageNumber = TableApi.calculatePreviousPage(resultSet, this.page, lastPage);
 
+    let rows;
     if (fieldWhitelist != null) {
+      const wl = fieldWhitelist;
       const newRows = [];
       resultSet.rows.forEach(record => {
         const newRecord = {};
-        fieldWhitelist.forEach(field => {
+        wl.forEach(field => {
           newRecord[field] = record[field];
         });
         newRows.push(newRecord);
       });
-      resultSet.rows = newRows;
+      rows = newRows;
+    } else {
+      rows = resultSet.rows;
     }
 
     return {
       totalSize: resultSet.count,
       per_page: this.itemsPerPage,
-      page: currentPage,
+      page: this.page,
       last_page: lastPage,
-      next_page_url: nextPageNumber != null ? `${baseUrl}?page=${nextPageNumber}` : null,
-      prev_page_url: previousPageNumber != null ? `${baseUrl}?page=${previousPageNumber}` : null,
-      from: currentPage,
-      to: currentPage - 1 + resultSet.rows.length,
-      items: resultSet.rows
+      next_page_url: nextPageNumber != null ? `${this.baseUrl}?page=${nextPageNumber}` : null,
+      prev_page_url: previousPageNumber != null ? `${this.baseUrl}?page=${previousPageNumber}` : null,
+      from: this.page,
+      to: this.page - 1 + rows.length,
+      items: rows
     };
+  }
 
-    // return {
-    //   total: resultSet.count,
-    //   per_page: this.itemsPerPage,
-    //   current_page: currentPage,
-    //   last_page: lastPage,
-    //   next_page_url: nextPageNumber !== null ? `${baseUrl}?page=${nextPageNumber}` : null,
-    //   prev_page_url: previousPageNumber !== null ? `${baseUrl}?page=${previousPageNumber}` : null,
-    //   from: currentPage,
-    //   to: currentPage - 1 + resultSet.rows.length,
-    //   data: resultSet.rows
-    // };
+  static calculateNextPage(resultSet, currentPage, lastPage): ?number {
+    if (currentPage >= lastPage) {
+      return null;
+    } else if (currentPage < 1) {
+      return 1;
+    } else {
+      return currentPage + 1;
+    }
+  }
+
+  static calculatePreviousPage(resultSet, currentPage, lastPage) {
+    if (currentPage <= 1) {
+      return null;
+    } else if (currentPage > lastPage) {
+      return lastPage;
+    } else {
+      return currentPage - 1;
+    }
   }
 }
-
-TableApi.calculateNextPage = (req, resultSet, currentPage, lastPage) => {
-  if (currentPage >= lastPage) {
-    return null;
-  } else if (currentPage < 1) {
-    return 1;
-  } else {
-    return currentPage + 1;
-  }
-};
-
-TableApi.calculatePreviousPage = (req, resultSet, currentPage, lastPage) => {
-  if (currentPage <= 1) {
-    return null;
-  } else if (currentPage > lastPage) {
-    return lastPage;
-  } else {
-    return currentPage - 1;
-  }
-};
 
 module.exports = TableApi;
