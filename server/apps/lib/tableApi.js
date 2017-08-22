@@ -24,7 +24,7 @@ class TableApi {
         where: where
       };
 
-      if (_include !== null) {
+      if (_include != null) {
         opts['include'] = _include;
       }
 
@@ -72,7 +72,7 @@ class TableApi {
     let nextPageNumber = TableApi.calculateNextPage(req, resultSet, currentPage, lastPage);
     let previousPageNumber = TableApi.calculatePreviousPage(req, resultSet, currentPage, lastPage);
 
-    if (fieldWhitelist !== null) {
+    if (fieldWhitelist != null) {
       let newRows = [];
       resultSet.rows.forEach(record => {
         let newRecord = {};
@@ -89,8 +89,8 @@ class TableApi {
       per_page: this.itemsPerPage,
       page: currentPage,
       last_page: lastPage,
-      next_page_url: nextPageNumber !== null ? `${baseUrl}?page=${nextPageNumber}` : null,
-      prev_page_url: previousPageNumber !== null ? `${baseUrl}?page=${previousPageNumber}` : null,
+      next_page_url: nextPageNumber != null ? `${baseUrl}?page=${nextPageNumber}` : null,
+      prev_page_url: previousPageNumber != null ? `${baseUrl}?page=${previousPageNumber}` : null,
       from: currentPage,
       to: currentPage - 1 + resultSet.rows.length,
       items: resultSet.rows

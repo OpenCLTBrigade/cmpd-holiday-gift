@@ -1,18 +1,18 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
-export default class DataTable<Row> extends Component<*, *, *> {
-  state: {
-    items: Row[],
-    totalSize: number,
-    page: number,
-    sizePerPage: number
-  };
-  props: {
-    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number }>,
-    children: Component<any, any, any>[]
-  };
+export default class DataTable<Row> extends React.Component<{
+  fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
+  children: React.Node,
+  search: boolean
+}, {
+  items: Row[],
+  totalSize: number,
+  page: number,
+  sizePerPage: number
+}> {
+
   constructor() {
     super();
     this.state = {
@@ -44,7 +44,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
     this.fetchData(this.state.page, searchText);
   };
 
-  render(): React.Element<*> {
+  render(): React.Node {
     var options = {
       sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
       pageStartIndex: 1, // where to start counting the pages
@@ -57,7 +57,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.search ? this.handleSearchChange : undefined
+      onSearchChange: this.props.search ? this.handleSearchChange.bind(this) : undefined
     };
 
     return (
@@ -70,7 +70,7 @@ export default class DataTable<Row> extends Component<*, *, *> {
         remote
         pagination={this.props.pagination !== undefined ? this.props.pagination : true}
         search={this.props.search ? true : false}
-        searchPlaceholder={this.props.searchPlaceholder || 'Search'}
+        searchPlaceholder={this.props.searchPlaceholder != null || this.props.searchPlaceholder || 'Search'}
       >
         {this.props.children}
       </BootstrapTable>

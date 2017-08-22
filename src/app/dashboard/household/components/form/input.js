@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 import { Field } from 'neoform';

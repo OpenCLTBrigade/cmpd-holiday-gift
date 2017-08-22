@@ -4,7 +4,6 @@
 <PROJECT_ROOT>/node_modules/styled-components/.*
 <PROJECT_ROOT>/.git/.*
 <PROJECT_ROOT>/server/.*
-<PROJECT_ROOT>/run/.*
 <PROJECT_ROOT>/public/.*
 
 [include]
@@ -14,5 +13,7 @@
 [options]
 module.system.node.resolve_dirname=src
 module.system.node.resolve_dirname=node_modules
+include_warnings=true
 
 [lints]
+all=warn

@@ -15,7 +15,7 @@ module.exports = {
       res.json(result);
     } catch (err) {
       // TODO: properly log error
-      console.log(err);
+      console.error(err);
       res.json({ error: 'error fetching data' });
     }
   },

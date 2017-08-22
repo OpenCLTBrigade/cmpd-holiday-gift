@@ -1,26 +1,33 @@
 // @flow
-import React, { Component } from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button, Checkbox } from 'react-bootstrap';
+import * as React from 'react';
+import { Row, Col, Button, Checkbox } from 'react-bootstrap';
 import Box from '../../components/box';
 import { FormValidation } from 'neoform-validation';
 import { Form } from 'neoform';
 import Input from './form/input';
 import requiredValidator from '../validators/required.validator';
 
-class ChildForm extends Component {
+type NominationType = {
+  // TODO
+};
+
+class ChildForm extends React.Component<{
+  data: {nominations: NominationType[]},
+  onSubmit: *,
+  validate: *,
+  onInvalid: *
+}, {
+  nominations: NominationType[]
+}> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      nominations: props.data.nominations || []
-    };
+    this.state = { nominations: props.data.nominations || [] };
   }
 
   addChild() {
     this.setState(() => {
-      return {
-        nominations: this.state.nominations.concat({})
-      };
+      return { nominations: this.state.nominations.concat({}) };
     });
   }
 
@@ -28,13 +35,11 @@ class ChildForm extends Component {
     let nominations = this.state.nominations.slice();
     nominations.pop();
     this.setState(() => {
-      return {
-        nominations
-      };
+      return { nominations };
     });
   }
 
-  render() {
+  render(): React.Node {
     const { onSubmit, validate, onInvalid } = this.props;
 
     return (

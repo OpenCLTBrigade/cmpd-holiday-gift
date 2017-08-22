@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
 type SubMenuItemType = {
   url: string,
@@ -14,7 +14,7 @@ type MenuItemType = {
   children?: Array<SubMenuItemType>
 };
 
-export default class Sidebar extends React.Component {
+export default class Sidebar extends React.Component<Object> {
   menu: Array<MenuItemType>;
 
   constructor(props: Object) {
@@ -44,7 +44,7 @@ export default class Sidebar extends React.Component {
     e.target.parentElement.classList.toggle('active');
   }
 
-  render(): React.Element<*> {
+  render(): React.Node {
     // TODO: Finish this
     // const navItems = this.menu.map(item => )
     return (

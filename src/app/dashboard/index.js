@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { Route } from 'react-router-dom';
 import Header from './header';
 import Sidebar from './sidebar';
@@ -10,14 +10,14 @@ import AffiliationList from './affiliations/AffiliationList';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
 
-const ContentTitle = (): React.Element<*> =>
+const ContentTitle = (): React.Element<any> =>
   <section className="content-header">
     <h1>Header</h1>
   </section>;
 
-export default class Dashboard extends React.Component {
+export default class Dashboard extends React.Component<{}> {
   // TODO: Return AdminLTE base template and register sub-routes here
-  render(): React.Element<*> {
+  render(): React.Node {
     return (
       <div className="wrapper">
         <Header />

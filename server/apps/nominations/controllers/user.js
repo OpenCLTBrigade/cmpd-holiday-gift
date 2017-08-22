@@ -61,7 +61,7 @@ module.exports = {
     } catch (err) {
       user = null;
     }
-    if (user === null) {
+    if (user == null) {
       res.status(404);
     }
     res.json({ data: user });

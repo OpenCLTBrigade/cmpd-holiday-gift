@@ -86,7 +86,7 @@ const makeRequest = async function (
 
 
   // Set data to the post body or query string
-  if (data !== null) {
+  if (data != null) {
     if (requestConfig.method === 'get' || config.method === 'delete') {
       requestConfig.params = data;
     } else {

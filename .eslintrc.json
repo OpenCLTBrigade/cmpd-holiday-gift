@@ -42,7 +42,7 @@
         "key-spacing": ["error"],
         "brace-style": ["error"],
         "curly": ["error"],
-        "eqeqeq": ["error"],
+        "eqeqeq": ["error", "always", {"null": "never"}],
         "no-multi-spaces": ["error"]
     }
 }
