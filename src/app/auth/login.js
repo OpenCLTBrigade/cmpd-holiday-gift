@@ -11,6 +11,7 @@ import { AuthToken } from 'lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
+
 const Icon = styled.i`top: 20px !important;`;
 
 export default class Login extends React.Component<{

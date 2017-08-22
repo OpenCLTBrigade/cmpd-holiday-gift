@@ -11,6 +11,7 @@ import Footer from './components/footer';
 import FooterLink from './components/footer-link';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
+
 const Icon = styled.i`top: 20px !important;`;
 
 export default class Register extends React.Component<{}> {

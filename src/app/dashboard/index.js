@@ -10,10 +10,10 @@ import AffiliationList from './affiliations/AffiliationList';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
 
-const ContentTitle = (): React.Element<any> =>
+const ContentTitle = (): React.Node => (
   <section className="content-header">
     <h1>Header</h1>
-  </section>;
+  </section>);
 
 export default class Dashboard extends React.Component<{}> {
   // TODO: Return AdminLTE base template and register sub-routes here

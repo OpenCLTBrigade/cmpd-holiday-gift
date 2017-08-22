@@ -14,7 +14,7 @@ type MenuItemType = {
   children?: Array<SubMenuItemType>
 };
 
-export default class Sidebar extends React.Component<Object> {
+export default class Sidebar extends React.Component<{}> {
   menu: Array<MenuItemType>;
 
   constructor(props: Object) {

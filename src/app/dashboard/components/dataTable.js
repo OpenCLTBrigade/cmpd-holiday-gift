@@ -2,17 +2,23 @@
 import * as React from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
-export default class DataTable<Row> extends React.Component<{
-  fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
-  children: React.Node,
-  search: boolean
-}, {
-  items: Row[],
-  totalSize: number,
-  page: number,
-  sizePerPage: number
-}> {
+type PropType<Row> = {|
+    // ATN TODO: is sizePerPage actually returned by the server?
+    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
+    children: Node,
+    search: boolean,
+    pagination: boolean,
+    searchPlaceholder: string
+|};
 
+export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
+  state: {|
+    items: Row[],
+    totalSize: number,
+    page: number,
+    sizePerPage: number
+  |};
+  static defaultProps = { pagination: true };
   constructor() {
     super();
     this.state = {
