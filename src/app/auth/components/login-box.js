@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 
 import ErrorMessage from './error-message';
@@ -58,10 +58,15 @@ const Button = styled.input`
   }
 `;
 
-export default class LoginBox extends React.Component {
-  state: {
-    errorMessage: ?string
-  };
+export default class LoginBox extends React.Component<{
+  onSubmit(Object): void | Promise<void>,
+  title: string,
+  body: React.Node,
+  submitText: string,
+  footer: React.Node
+}, {
+  errorMessage: ?string
+}> {
   footer: any;
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -72,9 +77,9 @@ export default class LoginBox extends React.Component {
   }
 
   onSubmit(ev: Event) {
-    let { onSubmit } = this.props;
+    const { onSubmit } = this.props;
     ev.preventDefault();
-    let data = formToJSON(ev.target);
+    const data = formToJSON(ev.target);
 
     if (!onSubmit) {
       console.error('LoginBox: onSubmit missing from props');
@@ -87,7 +92,7 @@ export default class LoginBox extends React.Component {
     this.setState({ errorMessage: message });
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     return (
       <Wrapper className="login-box" id="login-box">
         <Header>

@@ -1,4 +1,7 @@
-module.exports = fun => {
+// @ flow
+
+// module.exports = (fun: () => Promise<void>) => {
+module.exports = (fun) => {
   setTimeout(() => {
     fun().then(() => {}).catch((error) => {
       console.error('Unhandled error:', error);

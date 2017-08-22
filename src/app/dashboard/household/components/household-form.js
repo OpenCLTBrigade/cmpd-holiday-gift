@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
-import { Row, Col, FormGroup, ControlLabel } from 'react-bootstrap';
+import * as React from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Box from '../../components/box';
 import Input from './form/input';
 import { Form } from 'neoform';

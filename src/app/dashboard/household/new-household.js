@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 
 import HouseholdForm from './components/household-form';
 import AddressForm from './components/address-form';
@@ -8,7 +8,8 @@ import ChildForm from './components/child-form';
 import { Row, Col, Button } from 'react-bootstrap';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 
-export default class NewHousehold extends Component<any, any, any> {
+export default class NewHousehold extends React.Component<any, any> {
+  static defaultProps: any;
   constructor() {
     super();
 
@@ -18,13 +19,13 @@ export default class NewHousehold extends Component<any, any, any> {
       nominations: []
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    (this: any).onChange = this.onChange.bind(this);
+    (this: any).onSubmit = this.onSubmit.bind(this);
   }
 
   onChange(name: string, value: any) {
     this.setState(prevState => {
-      let newState = setValue(prevState, name, value);
+      const newState = setValue(prevState, name, value);
 
       return newState;
     });
@@ -34,12 +35,12 @@ export default class NewHousehold extends Component<any, any, any> {
     console.log('onInvalid');
   }
 
-  onSubmit(e) {
+  onSubmit(e: Event) {
     e.preventDefault();
     console.log(this.state);
   }
 
-  render() {
+  render(): React.Node {
     console.log(this.state);
 
     return (

@@ -1,11 +1,11 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
-export default class Header extends React.Component {
+export default class Header extends React.Component<{}> {
   componentWillMount() {}
 
   toggleNavCollapsed = () => {
-    let body: ?HTMLElement = document.querySelector('body');
+    const body: ?HTMLElement = document.querySelector('body');
     if (!(body instanceof HTMLElement)) {
       throw new Error('Expected to find sidebar element.');
     }
@@ -13,7 +13,7 @@ export default class Header extends React.Component {
     body.classList.toggle('sidebar-open');
   };
 
-  render(): React.Element<*> {
+  render(): React.Node {
     return (
       <header className="main-header">
         <a href="/" className="logo">

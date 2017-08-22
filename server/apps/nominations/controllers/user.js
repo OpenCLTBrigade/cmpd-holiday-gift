@@ -1,52 +1,66 @@
-var db = require('../../../models');
-var TableApi = require('../../lib/tableApi');
+// @flow
+
+const db = require('../../../models');
+const TableApi = require('../../lib/tableApi');
+
+import type { Response } from '../../lib/typed-express';
+import type { UserRequest, AdminRole } from '../../lib/auth';
+import type { TableRequest } from '../../lib/tableApi';
 
 const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
-const PENDING_CRITERIA = { active: 'Y', approved: 'N' };
-const APPROVED_CRITERA = { active: 'Y', approved: 'Y' };
-
-const FILTERED_BY_USER = function (user) {
-  return { method: ['filteredByUser', user] };
+const criteria = {
+  PENDING: { active: true, approved: false },
+  LIVE: { active: true, approved: true }
 };
+
+const scope = { FILTERED_BY_USER: user => ['filteredByUser', user] };
 
 // TODO: move user endpoints to auth app
 
+type ListRequest = {|
+  ...$Exact<TableRequest>,
+  search?: string
+|};
+
 module.exports = {
-  list: async (req, res) => {
-    let api = new TableApi(req);
+  list: async (req: UserRequest<AdminRole>, res: Response) => {
+    const query: ListRequest = (req.query: any);
+    const api = new TableApi(req, query);
     try {
       let whereClause = {};
-      if (req.query.search) {
-        whereClause = Object.assign({ name_last: { $like: `${req.query.search}%` } }, APPROVED_CRITERA);
+      if (query.search != null) {
+        // TODO: why search only live users?
+        whereClause = Object.assign({}, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  listPendingUsers: async (req, res) => {
-    let api = new TableApi(req);
+  listPendingUsers: async (req: UserRequest<AdminRole>, res: Response) => {
+    const query: ListRequest = (req.query: any);
+    const api = new TableApi(req, query);
     try {
       // TODO: Confirm criteria for what makes a pending user
-      let whereClause = PENDING_CRITERIA;
-      if (req.query.search) {
-        whereClause = Object.assign(PENDING_CRITERIA, { name_last: { $like: `${req.query.search}%` } });
+      let whereClause = criteria.PENDING;
+      if (query.search != null) {
+        whereClause = Object.assign({}, whereClause, { name_last: { $like: `${query.search}%` } });
       }
-      let result = await api.fetchAndParse('user', whereClause, RELATED_MODELS, FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  getUser: async (req, res) => {
+  getUser: async (req: UserRequest<AdminRole, {id: string}>, res: Response): Promise<void> => {
     let user = null;
     try {
-      if (req.user.role !== 'admin' && parseInt(req.user.id) !== parseInt(req.params.id)) {
+      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
         throw new Error('User not found');
       }
       user = await db.user.findOne({
@@ -61,7 +75,7 @@ module.exports = {
     } catch (err) {
       user = null;
     }
-    if (user === null) {
+    if (user == null) {
       res.status(404);
     }
     res.json({ data: user });

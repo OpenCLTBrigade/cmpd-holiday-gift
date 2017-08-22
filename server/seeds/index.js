@@ -1,14 +1,14 @@
 /* eslint no-console: "off" */
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var db = require('../models');
-var config = require('../config');
+const db = require('../models');
+const config = require('../config');
 
 async function seed() {
   await db.sync();
-  var seq = Promise.resolve();
+  let seq = Promise.resolve();
   fs
         .readdirSync(__dirname)
         .filter(function (file) {

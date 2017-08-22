@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -27,8 +27,8 @@ const MadeBy = styled.div`
   font-weight: bold;
 `;
 
-export default class Auth extends React.Component {
-  render(): React.Element<any> {
+export default class Auth extends React.Component<{}> {
+  render(): React.Node {
     return (
       <div className="auth-wrapper">
         <AuthHeader>

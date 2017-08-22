@@ -1,7 +1,7 @@
 // @flow
 
-export default value => {
-  if (typeof value === 'undefined' || value === null || value === '') {
+export default (value: ?string): Promise<string> => {
+  if (value == null || value === '') {
     return Promise.reject('required');
   }
 

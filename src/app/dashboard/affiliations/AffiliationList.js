@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 import DataTable from '../components/dataTable';
@@ -7,8 +7,8 @@ import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getAffiliationList } from 'api/affiliation';
 import type { AffiliationType } from 'api/affiliation';
 
-export default class AffiliationList extends Component {
-  actionCellFormatter(_cell: any, _row: AffiliationType): React.Element<any> {
+export default class AffiliationList extends React.Component<{}> {
+  actionCellFormatter(_cell: any, _row: AffiliationType): React.Node {
     return (
       <div>
         <button className="btn btn-sm btn-primary">Show</button>
@@ -18,18 +18,19 @@ export default class AffiliationList extends Component {
 
   async fetch(
     page: number,
-    search: string = ''
+    search: ?string
   ): Promise<{ items: AffiliationType[], totalSize: number, sizePerPage: number }> {
-    let response: Object = await getAffiliationList(page, search);
+    const response: Object = await getAffiliationList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     return (
       <Row>
         <Col xs={12}>
           <Box title="Affiliation List">
-            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by name" pagination={false}>
+            <DataTable search={true} fetch={this.fetch.bind(this)}
+                       searchPlaceholder="Filter by name" pagination={false}>
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
@@ -38,7 +39,7 @@ export default class AffiliationList extends Component {
               <TableHeaderColumn
                 dataField="address_street"
                 dataFormat={(cell, row) =>
-                  `${row.address_street} ${row.address_street2 !== null
+                  `${row.address_street} ${row.address_street2 != null
                     ? row.address_street2
                     : ''}<br/> ${row.address_city}, ${row.address_state}, ${row.address_zip}`}
               >

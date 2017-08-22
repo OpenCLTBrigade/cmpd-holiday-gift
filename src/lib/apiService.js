@@ -70,13 +70,13 @@ const makeRequest = async function (
   config: RequestConfigType = {}
 ): Promise<any> {
   // Combine our passed configuration with the base configuration
-  var requestConfig: Object = Object.assign({}, defaultRequestConfig, config);
+  const requestConfig: Object = Object.assign({}, defaultRequestConfig, config);
 
   requestConfig.url = `${app}/${path}`;
   requestConfig.method = method.toLowerCase();
 
   // Add an authorization header to the request if a token is available
-  var authorization = await getAuthorization(app);
+  const authorization = await getAuthorization(app);
   if (authorization) {
     if (!requestConfig.headers) {
       requestConfig.headers = {};
@@ -86,7 +86,7 @@ const makeRequest = async function (
 
 
   // Set data to the post body or query string
-  if (data !== null) {
+  if (data != null) {
     if (requestConfig.method === 'get' || config.method === 'delete') {
       requestConfig.params = data;
     } else {

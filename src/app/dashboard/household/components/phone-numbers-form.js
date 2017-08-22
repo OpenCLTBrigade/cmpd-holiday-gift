@@ -1,42 +1,50 @@
 // @flow
-import React, { Component } from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import * as React from 'react';
+import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 import Input from './form/input';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
 import requiredValidator from '../validators/required.validator';
 
-class PhoneNumbersForm extends Component {
-  constructor(props = { phoneNumbers: [] }) {
+type PhoneNumber = {
+  // TODO
+};
+
+class PhoneNumbersForm extends React.Component<{
+  phoneNumbers: PhoneNumber[],
+  onSubmit: *,
+  validate: *,
+  onInvalid: *
+}, {
+  phoneNumbers: PhoneNumber[]
+}> {
+
+  static defaultProps = { phoneNumbers: [] };
+
+  constructor(props) {
     super(props);
 
-    this.state = {
-      phoneNumbers: props.phoneNumbers || []
-    };
+    this.state = { phoneNumbers: props.phoneNumbers };
 
     console.log(props);
   }
 
   addPhoneNumber() {
     this.setState(() => {
-      return {
-        phoneNumbers: this.state.phoneNumbers.concat({})
-      };
+      return { phoneNumbers: this.state.phoneNumbers.concat({}) };
     });
   }
 
   removePhoneNumber() {
-    let phoneNumbers = this.state.phoneNumbers.slice();
+    const phoneNumbers = this.state.phoneNumbers.slice();
     phoneNumbers.pop();
     this.setState(() => {
-      return {
-        phoneNumbers
-      };
+      return { phoneNumbers };
     });
   }
 
-  render() {
+  render(): React.Node {
     const { onSubmit, validate, onInvalid } = this.props;
 
     return (

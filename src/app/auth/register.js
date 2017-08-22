@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 
@@ -11,10 +11,11 @@ import Footer from './components/footer';
 import FooterLink from './components/footer-link';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
+
 const Icon = styled.i`top: 20px !important;`;
 
-export default class Register extends React.Component {
-  render(): React.Element<any> {
+export default class Register extends React.Component<{}> {
+  render(): React.Node {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
@@ -22,6 +23,7 @@ export default class Register extends React.Component {
       <LoginBox
         title="Register"
         submitText="Register"
+        onSubmit={() => console.error('TODO UNIMPLEMENTED')}
         body={
           <div>
             <FormGroup className="form-group has-feedback">

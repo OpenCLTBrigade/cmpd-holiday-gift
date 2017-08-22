@@ -1,31 +1,40 @@
-var TableApi = require('../../lib/tableApi');
+// @flow
+
+const TableApi = require('../../lib/tableApi');
 const db = require('../../../models');
 
-var whiteList = ['id', 'type', 'name'];
+const guestWhiteList = ['id', 'type', 'name'];
 
+import type { Response } from '../../lib/typed-express';
+import type { TableRequest } from '../../lib/tableApi';
+import type { UserRequest, AnyRole } from '../../lib/auth';
+
+type ListRequest = {|
+  ...$Exact<TableRequest>,
+  search: string
+|};
 module.exports = {
-  list: async (req, res) => {
-    let api = new TableApi(req, 1000);
+  list: async (req: UserRequest<>, res: Response): Promise<void> => {
+    const query: ListRequest = (req.query: any);
+    const api = new TableApi(req, query, 1000);
     try {
       // Limit fields shown to guests
-      if (req.user) {
-        whiteList = null;
-      }
+      const whiteList = req.user != null ? null : guestWhiteList;
       // Filter by name
       let whereClause = {};
-      if (req.query.search) {
-        whereClause = { name: { $like: `${req.query.search}%` } };
+      if (query.search) {
+        whereClause = { name: { $like: `${query.search}%` } };
       }
-      let result = await api.fetchAndParse('affiliation', whereClause, null, '', whiteList);
+      const result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  getAffiliation: async (req, res) => {
-    let id = parseInt(req.params.id);
-    let affiliation = await db.affiliation.findFirst(id);
+  getAffiliation: async (req: UserRequest<AnyRole, {id: string}>, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+    const affiliation = await db.affiliation.findFirst(id);
 
     if (!affiliation) {
       res.status(404);

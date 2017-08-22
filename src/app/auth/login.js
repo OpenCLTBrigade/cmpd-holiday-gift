@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import FooterLink from './components/footer-link';
@@ -11,11 +11,15 @@ import { AuthToken } from 'lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
+
 const Icon = styled.i`top: 20px !important;`;
 
-export default class Login extends React.Component {
-  box: LoginBox;
-  render(): React.Element<any> {
+export default class Login extends React.Component<{
+  history: *,
+  returnTo: ?string
+}> {
+  box: ?LoginBox;
+  render(): React.Node {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
@@ -65,15 +69,15 @@ export default class Login extends React.Component {
 
   async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
     try {
-      var success = await AuthToken.login(email, password);
+      const success = await AuthToken.login(email, password);
       if (success) {
         // TODO: return to the correct page after logging in
-        this.props.history.replace(this.props.returnTo || '/dashboard');
+        this.props.history.replace(this.props.returnTo != null ? this.props.returnTo : '/dashboard');
       } else {
-        this.box.flashErrorMessage('Login failed: wrong email or password');
+        (this.box: any).flashErrorMessage('Login failed: wrong email or password');
       }
     } catch (exc) {
-      this.box.flashErrorMessage('Login failed: unknown error');
+      (this.box: any).flashErrorMessage('Login failed: unknown error');
     }
   }
 }

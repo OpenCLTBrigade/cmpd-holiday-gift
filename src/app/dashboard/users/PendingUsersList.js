@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import DataTable from '../components/dataTable';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
@@ -9,8 +9,8 @@ import type { UserType } from 'api/user';
 
 const PAGE_TITLE = 'Pending Users';
 
-export default class UsersList extends Component {
-  actionCellFormatter(_cell: any, _row: UserType): React.Element<any> {
+export default class UsersList extends React.Component<{}> {
+  actionCellFormatter(_cell: any, _row: UserType): React.Node {
     return (
       <div>
         <button className="btn btn-sm btn-primary">Show</button>
@@ -20,13 +20,13 @@ export default class UsersList extends Component {
 
   async fetch(
     page: number,
-    search: string = ''
+    search: ?string
   ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
-    let response: Object = await getUserList(page, search);
+    const response: Object = await getUserList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     return (
       <Row>
         <Col xs={12}>
