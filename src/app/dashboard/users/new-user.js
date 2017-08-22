@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
+import UserForm2 from './components/user-form2.js';
 
 export default class NewUser extends Component<any> {
 
@@ -37,7 +38,7 @@ export default class NewUser extends Component<any> {
 
     return (
       <div>
-        <UserForm
+        <UserForm2
             data={this.state}
             getValue={getValue}
             onChange={this.onChange}

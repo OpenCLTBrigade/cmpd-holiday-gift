@@ -8,14 +8,21 @@ import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
 import SelectOptions from './form-parital';
 import requiredValidator from '../validators/required.validator';
+import ReactDOM from 'react-dom';
 
 
+class UserForm extends React.Component {
 
-const UserForm = ({ onSubmit, validate, onInvalid }) => {
+  onReset = () => {
+    console.log('reset');
+    
+  }
 
- 
 
-  return (
+  render () {
+    const {onSubmit, validate, onInvalid} = this.props;
+
+      return (
 
     <form id='create-new-user'
       onSubmit={e => {
@@ -177,7 +184,7 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
                 <span>  </span>
                 <Button 
                   bsStyle="warning"
-                  onClick={this.resetForm}
+                  onClick={this.onReset}
                 >Reset
                 </Button>
               </Col>
@@ -187,8 +194,7 @@ const UserForm = ({ onSubmit, validate, onInvalid }) => {
       </Row>
     </form>
   );
+  }
 };
-
-
 
 export default Form(FormValidation(UserForm));
