@@ -3,23 +3,27 @@
   "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start": "cross-env-shell NODE_PATH=./src react-scripts start",
-    "build": "cross-env-shell NODE_PATH=./src react-scripts build",
-    "prepack": "cross-env-shell NODE_PATH=./src npm run build",
+    "start-client": "cross-env-shell NODE_PATH=./src react-scripts start",
+    "build-client": "cross-env-shell NODE_PATH=./src react-scripts build",
     "test-client": "cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
-    "start-server": "cd server && node apps/serve.js",
-    "test-server": "cd server && jasmine",
+    "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
+    "start-server": "cd server-notypes && node apps/serve.js",
+    "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
+    "nodemon-server": "cd server && nodemon -x flow-node apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
+    "server-nodemon": "echo 'Please use `npm run nodemon-server` instead.' && false",
+    "seed-server": "flow-node server/seeds",
+    "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js server src",
-    "server-nodemon": "cd server && nodemon apps/serve.js -w env.js -w apps -w models -w config -w ../node_modules",
     "flow": "flow",
-    "seeds": "node server/seeds"
+    "test": "npm run test-client && npm run test-server",
+    "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false"
   },
   "bin": {
-    "cmpd-explorers": "server/apps/serve.js"
+    "cmpd-explorers": "server-notypes/apps/serve.js"
   },
   "files": [
     "build",
-    "server"
+    "server-notypes"
   ],
   "main": "server/apps/serve.js",
   "devDependencies": {
@@ -67,6 +71,7 @@
     "compression": "^1.6.2",
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
+    "flow-remove-types": "^1.2.1",
     "jsonwebtoken": "^7.4.1",
     "morgan": "^1.8.1",
     "mustache": "^2.3.0",

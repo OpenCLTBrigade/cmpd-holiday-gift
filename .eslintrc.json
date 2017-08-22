@@ -2,7 +2,13 @@
     "env": {
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "plugins": [
+        "flowtype"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:flowtype/recommended"
+    ],
     "parserOptions": {
         "ecmaVersion": 8,
         "sourceType": "module"
@@ -43,6 +49,22 @@
         "brace-style": ["error"],
         "curly": ["error"],
         "eqeqeq": ["error", "always", {"null": "never"}],
-        "no-multi-spaces": ["error"]
+        "no-multi-spaces": ["error"],
+        "flowtype/boolean-style": ["error", "boolean"],
+        "flowtype/define-flow-type": 1,
+        "flowtype/delimiter-dangle": ["error", "never"],
+        "flowtype/generic-spacing": ["error", "never"],
+        "flowtype/no-primitive-constructor-types": "error",
+        "flowtype/no-types-missing-file-annotation": "error",
+        "flowtype/no-weak-types": 0,
+        "flowtype/object-type-delimiter": ["error", "comma"],
+        "flowtype/require-parameter-type": 0,
+        "flowtype/semi": ["error", "always"],
+        "flowtype/space-after-type-colon": ["error", "always"],
+        "flowtype/space-before-generic-bracket": ["error", "never"],
+        "flowtype/space-before-type-colon": ["error", "never"],
+        "flowtype/union-intersection-spacing": ["error", "always"],
+        "flowtype/use-flow-type": "warn",
+        "flowtype/valid-syntax": "warn"
     }
 }

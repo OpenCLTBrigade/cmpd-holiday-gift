@@ -3,14 +3,24 @@ var path = require('path');
 var vm = require('vm');
 var fs = require('fs');
 
-// Default config values can be overridden by ../env.js
+// Default config values can be overridden by ../../env.js
+
+if (fs.existsSync(path.join(__dirname, '../run'))) {
+  console.error('Refusing to run: detected presence of `server/run/`. The `run/` folder should be moved to the root of the repository');
+  process.exit(1);
+}
+
+if (fs.existsSync(path.join(__dirname, '../env.js'))) {
+  console.error('Refusing to run: detected presence of `server/env.js`. The `env.js` file should be moved to the root of the repository');
+  process.exit(1);
+}
 
 var config = {};
 
-config.run = path.join(__dirname, '../run');
+config.run = path.join(__dirname, '../../run');
 config.pid = process.pid;
 
-var customEnvFile = path.join(__dirname, '../env.js');
+var customEnvFile = path.join(__dirname, '../../env.js');
 
 if (process.env.NODE_ENV === 'production') {
   config.mode = 'production';
