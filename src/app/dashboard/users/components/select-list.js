@@ -43,12 +43,12 @@ export default class SelectList extends Component<*> {
         componentClass="select"
         validator={requiredValidator}
       >
-        {this.state.items.map(function(item){
+        {this.state.items.map(function (item) {
           return (
             <option key={item.id} value={item.id}>{item.type.toUpperCase()} - {item.name}</option>
           );
-        })}  
+        })}
       </Input>
-    )
+    );
   }
 }
