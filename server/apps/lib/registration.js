@@ -1,3 +1,4 @@
+// @flow
 const path = require('path');
 
 const auth = require('./auth.js');
@@ -6,8 +7,10 @@ const config = require('../../config');
 const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 const asyncDo = require('./asyncDo');
 
+export type NullOrError<T={}> = null | { error: string, ...T };
+
 // Step 1
-async function register(rootUrl, userInfo) {
+async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{field?: $Keys<$TODO>}>> {
   const user = await db.user.findOne({ where: { email: userInfo.email } });
   if (user) {
     return {
@@ -16,7 +19,7 @@ async function register(rootUrl, userInfo) {
     };
   }
   const reason = auth.isInvalidPassword(userInfo.raw_password);
-  if (reason) {
+  if (reason != null) {
     return { field: 'password', error: `Invalid password: ${reason}` };
   }
   const hashedPassword = auth.hashPassword(userInfo.raw_password);
@@ -40,7 +43,7 @@ async function register(rootUrl, userInfo) {
 }
 
 // Step 2
-async function sendVerification(rootUrl, user) {
+async function sendVerification(rootUrl: string, user: $TODO): Promise<void> {
   const confirmation_code = auth.generateConfirmationCode();
   user.confirmation_code = confirmation_code;
   await user.save();
@@ -55,8 +58,10 @@ async function sendVerification(rootUrl, user) {
   await user.save();
 }
 
-// Step 3
-async function confirmEmail(rootUrl, { user_id, confirmation_code }) {
+async function confirmEmail(
+  rootUrl: string,
+  { user_id, confirmation_code }: {| user_id: number, confirmation_code: string |}
+): Promise<NullOrError<>> {
   const user = await db.user.findById(user_id);
   if (!user) {
     return { error: 'confirmation code does not match' };
@@ -72,13 +77,13 @@ async function confirmEmail(rootUrl, { user_id, confirmation_code }) {
 }
 
 // Step 4
-async function sendApproval(rootUrl, user) {
+async function sendApproval(rootUrl: string, user: $TODO): Promise<void> {
   const url = `${rootUrl}/users/needing/approval`; // TODO: correct url
   await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
 }
 
 // Step 5
-async function approve(user_id) {
+async function approve(user_id: number): Promise<NullOrError<>> {
   const user = await db.user.findById(user_id);
   if (!user) {
     return { error: 'unknown user' };

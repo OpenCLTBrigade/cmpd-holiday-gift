@@ -1,4 +1,5 @@
 /*eslint no-console: "off"*/
+// @flow
 
 const process = require('process');
 
