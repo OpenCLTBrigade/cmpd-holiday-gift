@@ -1,6 +1,6 @@
 /*eslint no-console: "off", max-lines: "off" */
 
-var cmpdStations = [
+const cmpdStations = [
   {
     'name': 'Eastway',
     'captain': 'Jim Wright',
@@ -200,7 +200,7 @@ var cmpdStations = [
   }
 ];
 
-var cfdStations = [
+const cfdStations = [
   {
     'name': 'Station 1',
     'street': '221 N. Myers St.',
@@ -539,7 +539,7 @@ var cfdStations = [
   }
 ];
 
-var cmsSchools = [
+const cmsSchools = [
   {
     'name': 'Albemarle Road ',
     'street': '7800 Riding Trail Road ',

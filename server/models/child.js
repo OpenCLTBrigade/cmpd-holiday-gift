@@ -1,4 +1,4 @@
-var config = require('../config');
+const config = require('../config');
 
 module.exports = Sequelize => ({
   name: 'child',
@@ -43,32 +43,8 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       allowNull: false
     },
-    school_name: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_address: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_address2: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_city: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_state: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_zip: {
-      type: Sequelize.STRING,
-      defaultValue: null
-    },
-    school_phone: {
-      type: Sequelize.STRING,
+    school_id: {
+      type: Sequelize.INTEGER,
       defaultValue: null
     },
     bike_want: {
@@ -125,7 +101,7 @@ module.exports = Sequelize => ({
       type: Sequelize.ENUM,
       values: config.genders,
       defaultValue: null
-    },
+    }
   },
   associate: function (child, db) {
     child.belongsTo(db.household);

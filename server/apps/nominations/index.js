@@ -1,15 +1,17 @@
-var express = require('express');
+// @flow
 
-var auth = require('../lib/auth');
-var config = require('../../config');
+const express = require('express');
 
-var app = express();
+const auth = require('../lib/auth');
+const config = require('../../config');
+
+const app = express();
 
 // Add authentication
 app.use(auth.authMiddleware(config.jwtSecrets.nominations));
-app.use(auth.sessionMiddleware);
+app.use((auth.sessionMiddleware: any));
 
 // Load the routess
-app.use(require('./routes'));
+app.use(require('./routes').router);
 
 module.exports = app;

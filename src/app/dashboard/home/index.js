@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import Box from '../components/box';
 import { Row, Col } from 'react-bootstrap';
 
-export default class Home extends React.Component {
-  render(): React.Element<any> {
+export default class Home extends React.Component<{}> {
+  render(): React.Node {
     return (
       <div>
         {/* Quick Overview */}

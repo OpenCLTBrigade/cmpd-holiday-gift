@@ -5,22 +5,20 @@ the [CMPD Explorers Christmas Project].
 
 # Getting Started
 
-[NodeJS 7.9.0] is **required**. We recommend installing `nvm` if you're on a Mac so you can
+[NodeJS 7.9.0] or above is **required**. We recommend installing `nvm` if you're on a Mac so you can
 easily switch between Node versions on a per-project basis.
 
 See [Dependencies Documentation](#dependencies-documentation) below for more information
 on the dependencies we use.
 
-Clone.
+* Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
+* Run `npm install` to install the dependencies.
+* Run `npm run seed-server` to generate sample data.
 
-Run `npm install` to install the dependencies.
-
-Run `npm run seeds` to generate sample data.
-
-Then run `npm start` to start the front end in development mode. Access
+Then run `npm start-client` to start the front-end in development mode. Access
 the application on http://localhost:3000.
 
-In a separate terminal, run `npm run server-nodemon` to start the back
+In a separate terminal, run `npm run nodemon-server` to start the back
 end in development mode. The back end will run on port 3001 and the
 development mode front end server will act as a reverse proxy for it.
 
@@ -37,8 +35,8 @@ To access the PHP version of the project from 2016 you can run `git checkout 1.3
 ### Resetting your database
 
 When you pull changes to the database schema or sample data the application may stop working. When this occurs you need
-to delete the SQLite database in `/server/run` and restart your server instance. After restarting the server be sure to
-seed the database using `npm run seeds`. You should now be good to keep going!
+to delete the SQLite database in `run/` and restart your server instance. After restarting the server be sure to
+seed the database using `npm run seed-server`. You should now be good to keep going!
 
 # Build for Production
 
@@ -48,29 +46,33 @@ Optionally run `npm prune --production`.
 
 Start the production-mode server with `NODE_ENV=production npm run start-server`
 
-# Front end development
+# Front-end development
 
 Static assets are in `public/`. The react app is in `src/`.
 
 All front-end dependencies should be added using `npm install
 --save-dev`. They will be bundled into `build/` in production mode.
 
+## Front-end configuration
+
+To test features that require Google Maps:
+
+* Acquire an API key from https://developers.google.com/maps/documentation/javascript/get-api-key
+* Add `REACT_APP_GOOGLE_MAPS_API_KEY=your-api-key` to `.env.local`
+
 # Back end development
 
-The entire backend is in `server/`, except for the dependencies and
-scripts which are in `package.json`.
-
-Most commands in this section assume the working directory is `server/`.
+The entire backend source is in `server/`. The dependencies and
+scripts are in `package.json`. The logs, database and temporary test
+files are placed in `run/`.
 
 Optionally, set up a [mailtrap.io] account if you are working on
 emails. Put your account info in `env.js` (see `env.example.js` for an
 example).
 
-Seed database: `node seeds`
+Seed database: `node seed-server`
 
-Run tests: `npm test` <-- Not working yet
-
-Check and fix code style: `npm run lint`
+Run tests: `npm test-server`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
@@ -93,6 +95,16 @@ The `private: true` property prevents a field from being output as JSON in API r
 ### Encrypted Fields
 
 The `encrypt: true` property causes the field to be encrypted before storing it into the database.
+
+# Tests, types and lint
+
+Before pushing your code or sending a pull request, make sure the
+tests pass and let [ESLint] clean up your code.
+
+* To test the front-end: `npm run test-client`
+* To test the back-end: `npm run test-server`
+* To run eslint: `npm run lint`. 
+* To run the [flow] type-checker: `npm run flow`
 
 # Dependencies Documentation
 
@@ -147,3 +159,5 @@ Coding style is enforced by [eslint].
 [eslint]: http://eslint.org/docs/user-guide/getting-started
 [NodeJS 7]: https://nodejs.org/en/download/current/
 [Mustache]: https://www.npmjs.com/package/mustache
+[ESLint]: https://eslint.org/docs/user-guide/getting-started
+[flow]: https://flow.org/en/docs/

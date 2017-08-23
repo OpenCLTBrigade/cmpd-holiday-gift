@@ -1,23 +1,28 @@
+// @flow
 /*eslint no-console: "off"*/
 
-var bodyParser = require('body-parser');
-var fs = require('fs');
-var morgan = require('morgan');
-var compression = require('compression');
-var { join } = require('path');
-var express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const morgan = require('morgan');
+const compression = require('compression');
+const { join } = require('path');
+const express = require('express');
 
-var config = require('../config');
+const config = require('../config');
 
-var models = require('../models');
-var nominations = require('./nominations');
-var authApp = require('./auth');
+const models = require('../models');
+const nominations = require('./nominations');
+const authApp = require('./auth');
 
-var app = express();
+const app = express();
 
 // Log to file
 if (config.enableAccessLog) {
-  app.use(morgan('combined', { stream: fs.createWriteStream(join(config.run, 'access.log'), { flags: 'a' }) }));
+  app.use(morgan('combined', {
+    stream: (fs.createWriteStream(
+      join(config.run, 'access.log'),
+      { flags: 'a' }): any)
+  }));
 }
 
 // Log to stdout for development
@@ -40,12 +45,12 @@ app.use('/api/auth', authApp);
 
 // Expose compiled assets
 app.use(express.static(join(__dirname, '../../build'), { index: false }));
-app.get('*', (req, res) => {
+app.get((_req: *, res: *, _next: *): * => {
   res.sendFile(join(__dirname, '../../build/index.html'));
 });
 
 // Array of promises that must complete before starting the server
-var initialize = [];
+const initialize = [];
 
 // Sync the database
 initialize.push(models.sync().then(function () {

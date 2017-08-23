@@ -1,12 +1,12 @@
 /* eslint-env jasmine */
 
-var request = require('request');
+const request = require('request');
 
-var { testServer } = require('./helpers/testServer');
+const { testServer } = require('./helpers/testServer');
 
 describe('All seeds', () => {
 
-  var { url } = testServer({ seed: true });
+  const { url } = testServer({ seed: true });
 
   it('allows logging in as developer@condeforcharlotte.org', (done) => {
     request.post({

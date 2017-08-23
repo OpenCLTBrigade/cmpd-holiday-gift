@@ -3,7 +3,7 @@
 // It tells WebPack what resources to load (css / fonts / etc) and creates the base routes for
 // our main modules such as the Dashboard and the Authentication-related screens.
 // Load core stuffs
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
@@ -33,8 +33,8 @@ import Auth from 'app/auth';
 import PrivateRoute from 'app/components/privateRoute';
 import NotFound from 'notFound';
 
-class Routes extends React.Component {
-  render(): React.Element<any> {
+class Routes extends React.Component<{}> {
+  render(): React.Node {
     return <Router>
       <Switch>
         <Route exact path="/" render={() => (

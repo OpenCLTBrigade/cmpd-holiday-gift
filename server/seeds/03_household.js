@@ -1,11 +1,11 @@
 /* eslint no-console: "off" */
 
-var faker = require('faker');
+const faker = require('faker');
 
-var config = require('../config');
+const config = require('../config');
 
 module.exports = async (db, verbose) => {
-  for (var i = 1; i < 50; i++) {
+  for (let i = 1; i < 50; i++) {
     if (verbose) {
       console.log(`Seeding household ${i}`);
     }

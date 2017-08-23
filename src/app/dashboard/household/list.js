@@ -1,17 +1,17 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
 import { getHouseholdList } from 'api/household';
 import type { HouseholdType } from 'api/household';
 
-export default class List extends Component {
-  uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Element<any> {
+export default class List extends React.Component<{}> {
+  uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Node {
     return <i className="fa fa-check" />;
   }
 
-  actionCellFormatter(_cell: any, _row: HouseholdType): React.Element<any> {
+  actionCellFormatter(_cell: any, _row: HouseholdType): React.Node {
     return (
       <div>
         <button className="btn btn-sm btn-primary">Show</button>
@@ -23,13 +23,13 @@ export default class List extends Component {
 
   async fetch(
     page: number,
-    search: string = ''
+    search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
-    let response: Object = await getHouseholdList(page, search);
+    const response: Object = await getHouseholdList(page, search);
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     return (
       <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name">
         <TableHeaderColumn dataField="id" hidden isKey>

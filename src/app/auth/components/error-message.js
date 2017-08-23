@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
+import type { Node } from 'react';
 
 const ErrorMessage = ({
   errorMessage,
@@ -7,8 +8,8 @@ const ErrorMessage = ({
 }: {
   errorMessage: ?string,
   onDismissError: Function
-}): React.Element<any> | null =>
-  !errorMessage
+}): Node =>
+  errorMessage == null
     ? null
     : <div className="alert alert-danger validation">
         <button

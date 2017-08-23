@@ -1,12 +1,14 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
-export default function Box(
-  props: {title: string, children: React.Element<any>[]}
-): React.Element<any> {
+export default function Box(props: {
+  title?: string,
+  children: React.Node,
+  bsStyle?: string
+}): React.Element<any> {
   return (
-    <div className="box">
-      {props.title &&
+    <div className={`box ${props.bsStyle != null ? 'box-' + props.bsStyle : ''}`}>
+      {props.title != null &&
         <div className="box-header with-border">
           <h1 className="box-title">
             {props.title}

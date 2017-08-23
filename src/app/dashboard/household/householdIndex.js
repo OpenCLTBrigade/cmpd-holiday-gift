@@ -1,12 +1,12 @@
 // @flow
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import List from './list';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 
-export default class HouseholdIndex extends Component {
-  render(): React.Element<any> {
+export default class HouseholdIndex extends React.Component<{}> {
+  render(): React.Node {
     return (
       <div>
         <Row>

@@ -1,9 +1,9 @@
-var faker = require('faker');
+const faker = require('faker');
 
-var auth = require('../apps/lib/auth');
+const auth = require('../apps/lib/auth');
 
 module.exports = async db => {
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     await db.user.create({
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
@@ -11,9 +11,9 @@ module.exports = async db => {
       email: faker.internet.email(),
       password: auth.hashPassword('admin'),
       nomination_limit: 5,
-      active: 'N',
-      confirmed_email: 'Y',
-      approved: 'Y',
+      active: true,
+      confirmed_email: true,
+      approved: true,
       role: 'nominator'
     });
   }
@@ -25,8 +25,8 @@ module.exports = async db => {
     email: 'developer@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 1000000,
-    active: 'Y',
-    approved: 'Y',
+    active: true,
+    approved: true,
     role: 'admin'
   });
 
@@ -37,8 +37,8 @@ module.exports = async db => {
     email: 'nominator@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
-    active: 'Y',
-    approved: 'Y'
+    active: true,
+    approved: true
   });
 
   await db.user.create({
@@ -48,8 +48,8 @@ module.exports = async db => {
     email: 'notyetapproved@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
-    active: 'Y',
-    approved: 'N'
+    active: true,
+    approved: false
   });
 
   await db.user.create({
@@ -59,8 +59,8 @@ module.exports = async db => {
     email: 'unapproved@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
-    active: 'N',
-    approved: 'N'
+    active: false,
+    approved: false
   });
 
   await db.user.create({
@@ -70,7 +70,7 @@ module.exports = async db => {
     email: 'deactivated@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
-    active: 'N',
-    approved: 'Y'
+    active: false,
+    approved: true
   });
 };
