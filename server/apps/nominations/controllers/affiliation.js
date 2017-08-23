@@ -21,10 +21,15 @@ module.exports = {
       // Limit fields shown to guests
       const whiteList = req.user != null ? null : guestWhiteList;
       // Filter by name
-      let whereClause = {};
+      const whereClause = {};
       if (query.search) {
-        whereClause = { name: { $like: `${query.search}%` } };
+        whereClause.name = { $like: `${query.search}%` };
       }
+
+      if (query.type) {
+        whereClause.type = query.type;
+      }
+
       const result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
       res.json(result);
     } catch (err) {
@@ -32,7 +37,7 @@ module.exports = {
     }
   },
 
-  getAffiliation: async (req: UserRequest<AnyRole, {id: string}>, res: Response): Promise<void> => {
+  getAffiliation: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
     const id: number = parseInt(req.params.id);
     const affiliation = await db.affiliation.findFirst(id);
 
