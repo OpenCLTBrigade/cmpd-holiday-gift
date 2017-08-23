@@ -146,9 +146,10 @@ export const AppToken = (() => {
       tokens[app] = getToken(app);
     }
     let token = await tokens[app];
-    if (!token || jwt_decode(token).exp > Date.now() / 1000 - appTokenMinRemainingTime) {
+    if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];
+
     }
     return `Bearer ${token}`;
   }

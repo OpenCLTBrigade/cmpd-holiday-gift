@@ -28,6 +28,7 @@
   ],
   "main": "server/apps/serve.js",
   "devDependencies": {
+    "@google/maps": "^0.4.3",
     "admin-lte": "^2.3.11",
     "babel": "^6.23.0",
     "babel-eslint": "https://registry.npmjs.org/babel-eslint/-/babel-eslint-7.2.3.tgz",

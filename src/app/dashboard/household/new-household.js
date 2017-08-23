@@ -41,8 +41,6 @@ export default class NewHousehold extends React.Component<any, any> {
   }
 
   render(): React.Node {
-    console.log(this.state);
-
     return (
       <div>
         <HouseholdForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
