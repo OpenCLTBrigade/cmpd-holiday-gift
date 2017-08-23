@@ -26,17 +26,6 @@ export default class Dashboard extends React.Component<{location: mixed}> {
         <div className="content-wrapper">
           <ContentTitle />
           <section className="content">
-<<<<<<< HEAD
-            <Route exact path="/dashboard" component={Home} />
-            {/* TODO: Finish routes */}
-            <Route exact path="/dashboard/household" component={HouseholdIndex} />
-            <Route exact path="/dashboard/household/create" component={NewHousehold} />
-            {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
-            <Route exact path="/dashboard/affiliation" component={AffiliationList} />
-            <Route exact path="/dashboard/user" component={UsersList} />
-            <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
-            <Route exact path="/dashboard/user/create" component={NewUser} />
-=======
             <Switch location={this.props.location}>
               <Route exact path="/dashboard" component={Home} />
               {/* TODO: Finish routes */}
@@ -47,7 +36,6 @@ export default class Dashboard extends React.Component<{location: mixed}> {
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
             </Switch>
->>>>>>> 2ceebbf00f56cd0799ade4dff7e9afeabbb2c20c
           </section>
         </div>
       </div>
