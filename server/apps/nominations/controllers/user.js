@@ -15,7 +15,7 @@ const criteria = {
   LIVE: { active: true, approved: true }
 };
 
-const scope = { FILTERED_BY_USER: user => ['filteredByUser', user] };
+const scope = { FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] }) };
 
 // TODO: move user endpoints to auth app
 
@@ -32,7 +32,10 @@ module.exports = {
       let whereClause = {};
       if (query.search != null) {
         // TODO: why search only live users?
-        whereClause = Object.assign({}, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
+        whereClause = Object.assign(whereClause, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
+      }
+      if (query.affiliation_id != null) {
+        whereClause = Object.assign(whereClause, { affiliation_id: query.affiliation_id });
       }
       const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
@@ -57,7 +60,7 @@ module.exports = {
     }
   },
 
-  getUser: async (req: UserRequest<AdminRole, {id: string}>, res: Response): Promise<void> => {
+  getUser: async (req: UserRequest<AdminRole, { id: string }>, res: Response): Promise<void> => {
     let user = null;
     try {
       if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
