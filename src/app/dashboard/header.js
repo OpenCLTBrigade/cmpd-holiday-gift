@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import './header.css';
 
 export default class Header extends React.Component<{}> {
   componentWillMount() {}
@@ -27,9 +28,7 @@ export default class Header extends React.Component<{}> {
             <ul className="nav navbar-nav">
               <li className="user">
                 <a>
-                  <span className="hidden-xs">
-                    TODO: Name
-                  </span>
+                  <span className="hidden-xs">TODO: Name</span>
                 </a>
               </li>
               <li className="dropdown user user-menu">
