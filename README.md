@@ -53,6 +53,13 @@ Static assets are in `public/`. The react app is in `src/`.
 All front-end dependencies should be added using `npm install
 --save-dev`. They will be bundled into `build/` in production mode.
 
+## Front-end configuration
+
+To test features that require Google Maps:
+
+* Acquire an API key from https://developers.google.com/maps/documentation/javascript/get-api-key
+* Add `REACT_APP_GOOGLE_MAPS_API_KEY=your-api-key` to `.env.local`
+
 # Back end development
 
 The entire backend source is in `server/`. The dependencies and
