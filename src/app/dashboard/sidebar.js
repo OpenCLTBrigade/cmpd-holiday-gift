@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 type SubMenuItemType = {
   url: string,
@@ -79,14 +80,14 @@ export default class Sidebar extends React.Component<{}> {
               </a>
               <ul className="treeview-menu">
                 <li className="">
-                  <a href="/dashboard/household/create">
+                  <Link to="/dashboard/household/create">
                     <i className="fa fa-circle-o fa-fw" /> Nominate new Household
-                  </a>
+                  </Link>
                 </li>
                 <li className="">
-                  <a href="/dashboard/household">
+                  <Link to="/dashboard/household">
                     <i className="fa fa-circle-o fa-fw" /> List nominations
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -98,24 +99,24 @@ export default class Sidebar extends React.Component<{}> {
               </a>
               <ul className="treeview-menu">
                 <li className="">
-                  <a href="/dashboard/user/create">
+                  <Link to="/dashboard/user/create">
                     <i className="fa fa-circle-o fa-fw" /> Add a User
-                  </a>
+                  </Link>
                 </li>
                 <li className="">
-                  <a href="/dashboard/user">
+                  <Link to="/dashboard/user">
                     <i className="fa fa-circle-o fa-fw" /> Active Users
-                  </a>
+                  </Link>
                 </li>
                 <li className="">
-                  <a href="/dashboard/user/pending">
+                  <Link to="/dashboard/user/pending">
                     <i className="fa fa-circle-o fa-fw" /> Pending Registrations
-                  </a>
+                  </Link>
                 </li>
                 <li className="">
-                  <a href="/dashboard/affiliation">
+                  <Link to="/dashboard/affiliation">
                     <i className="fa fa-circle-o fa-fw" /> List Affiliations
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>

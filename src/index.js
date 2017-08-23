@@ -30,7 +30,7 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 // Our React Components that this component uses
 import Dashboard from 'app/dashboard';
 import Auth from 'app/auth';
-import PrivateRoute from 'app/components/privateRoute';
+import Restricted from 'app/components/restricted';
 import NotFound from 'notFound';
 
 class Routes extends React.Component<{}> {
@@ -38,11 +38,11 @@ class Routes extends React.Component<{}> {
     return <Router>
       <Switch>
         <Route exact path="/" render={() => (
-            <Redirect to="/dashboard"/>
+          <Redirect to="/dashboard"/>
         )}/>
-      <PrivateRoute path="/dashboard" component={Dashboard} />
-      <Route path="/auth" component={Auth} />
-      <Route path='*' component={NotFound} />
+        <Route path="/dashboard" component={Restricted(Dashboard)} />
+        <Route path="/auth" component={Auth} />
+        <Route path='*' component={NotFound} />
       </Switch>
     </Router>;
   }

@@ -93,10 +93,6 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       defaultValue: null
     },
-    school_id: {
-      type: Sequelize.INTEGER,
-      defaultValue: null
-    },
     gender: {
       type: Sequelize.ENUM,
       values: config.genders,
