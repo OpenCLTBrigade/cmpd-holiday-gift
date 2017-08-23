@@ -45,19 +45,20 @@ async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{
 // Step 2
 async function sendVerification(rootUrl: string, user: $TODO): Promise<void> {
   const confirmation_code = auth.generateConfirmationCode();
-  user.confirmation_code = confirmation_code;
+  user.set('confirmation_code', confirmation_code);
   await user.save();
   await sendMail('verify-email', {
     to: user.dataValues.email,
     user,
     confirmation_code,
-    // TODO: proper froent-end path for confirmation
-    confirm_email_url: `${rootUrl}/register/confirm_email`
+    // TODO: proper front-end path for confirmation
+    confirm_email_url: `${rootUrl}/auth/confirm_email`
   });
   user.set('confirmation_email', true);
   await user.save();
 }
 
+// Step 3
 async function confirmEmail(
   rootUrl: string,
   { user_id, confirmation_code }: {| user_id: number, confirmation_code: string |}
@@ -70,6 +71,7 @@ async function confirmEmail(
     return { error: 'confirmation code does not match' };
   } else {
     user.set('email_verified', true);
+    user.set('confirmation_code', null);
     await user.save();
   }
   asyncDo(() => sendApproval(rootUrl, user));

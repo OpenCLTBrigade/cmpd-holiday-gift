@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const db = require('../../models');
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 import type { AuthRequest, Response, Next } from '../lib/typed-express';
 
@@ -123,6 +124,11 @@ function userCanUseApp(user: UserType, app: AppName): boolean {
   return false;
 }
 
+async function newAuthSession(user_id: number): Promise<string> {
+  const session = await db.session.create({ user_id });
+  return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
+}
+
 module.exports = {
   hashPassword,
   validHashOfPassword,
@@ -133,5 +139,6 @@ module.exports = {
   ensureLoggedIn,
   isInvalidPassword,
   userCanUseApp,
-  ensureAdmin
+  ensureAdmin,
+  newAuthSession
 };
