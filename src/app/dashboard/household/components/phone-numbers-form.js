@@ -2,10 +2,10 @@
 import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
-import Input from './form/input';
+import Input from 'app/components/input';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
-import requiredValidator from '../validators/required.validator';
+import requiredValidator from 'lib/validators/required.validator';
 
 type PhoneNumber = {
   // TODO

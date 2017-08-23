@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { getAuthorization } from 'lib/auth';
 
-export type DataTableResponse = {
+export type DataTableResponse<Item: Object> = {
   totalSize: number,
   per_page: number,
   page: number,
@@ -12,7 +12,7 @@ export type DataTableResponse = {
   prev_page_url?: string,
   from: number,
   to: number,
-  items: Array<Object>
+  items: Array<Item>
 };
 
 // Axios config object
