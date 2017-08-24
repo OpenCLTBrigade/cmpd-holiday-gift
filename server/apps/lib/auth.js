@@ -90,7 +90,7 @@ function ensureLoggedIn<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: Logg
       if (req.user && req.user.active && req.user.approved) {
         next();
       } else {
-        res.send(403);
+        res.sendStatus(403);
       }
     }
   ];
@@ -103,7 +103,7 @@ function ensureAdmin<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: UserTyp
       if (req.user && req.user.role === 'admin') {
         next();
       } else {
-        res.send(403);
+        res.sendStatus(403);
       }
     }
   ];
