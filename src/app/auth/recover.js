@@ -6,18 +6,17 @@ import styled from 'styled-components';
 import FooterLink from './components/footer-link';
 
 import LoginBox from './components/login-box';
-
 import { AuthToken } from 'lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
 
+import { sendRecoverEmail } from 'api/recover';
+
 const Icon = styled.i`top: 20px !important;`;
 
-export default class Login extends React.Component<{
-  history: *,
-  location: *,
-  returnTo: ?string
+export default class Recover extends React.Component<{
+  history: Object
 }> {
   box: ?LoginBox;
   render(): React.Node {
@@ -26,10 +25,10 @@ export default class Login extends React.Component<{
     }
     return (
       <LoginBox
-        title="Log in"
-        submitText="Login"
+        title="Recover Account"
+        submitText="Recover"
         onSubmit={this.onSubmit.bind(this)}
-        ref={ref => (this.box = ref)}
+        ref={box => this.box = box}
         body={
           <div>
             <FormGroup className="form-group has-feedback">
@@ -39,21 +38,14 @@ export default class Login extends React.Component<{
               </Label>
               <Icon className="fa fa-envelope form-control-feedback" />
             </FormGroup>
-            <FormGroup className="form-group has-feedback">
-              <Label>
-                Password
-                <input className="form-control" name="password" type="password" />
-              </Label>
-              <Icon className="fa fa-lock form-control-feedback" />
-            </FormGroup>
           </div>
         }
         footer={
           <Footer>
             <div className="col-xs-6">
-              <FooterLink className="btn btn-link" to="/auth/recover">
-                <i className="fa fa-lock" />
-                <span> Forgot Password</span>
+              <FooterLink className="btn btn-link" to="/auth/login">
+                <i className="fa fa-sign-in" />
+                <span> Login</span>
               </FooterLink>
             </div>
             <div className="col-xs-6">
@@ -68,18 +60,19 @@ export default class Login extends React.Component<{
     );
   }
 
-  async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
+  async onSubmit({ email }: {email: string}): Promise<void> {
     try {
-      const success = await AuthToken.login(email, password);
+      const success = await sendRecoverEmail(email);
       if (success) {
-        // TODO: return to the correct page after logging in
-        this.props.history.replace(
-          this.props.location.state.from != null ? this.props.location.state.from : '/dashboard');
+        // TODO: flash message: "An email has been sent to ... with further instructions"
+        this.props.history.replace('/auth/login');
       } else {
-        (this.box: any).flashErrorMessage('Login failed: wrong email or password');
+        (this.box: any).flashErrorMessage(
+          'Could not initiate account recovery. Did you enter the correct email address?'
+        );
       }
     } catch (exc) {
-      (this.box: any).flashErrorMessage('Login failed: unknown error');
+      (this.box: any).flashErrorMessage('Account recovery failed: unknown error');
     }
   }
 }
