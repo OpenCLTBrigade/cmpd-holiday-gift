@@ -11,8 +11,6 @@ const appTokenMinRemainingTime = 15; // seconds
 
 const localStorage = window.localStorage;
 
-
-
 // A wrapper around the auth token
 // The token is automatically refreshed and expired
 // The token is stored in the localStorage under 'authToken'
@@ -21,6 +19,8 @@ export const AuthToken = (() => {
   let token; // Cached JWT string
   let expirationTime; // Cached exp
   let refreshing = false; // Flag to avoid concurrent refresh
+  const handlers: (('login' | 'logout') => void)[] = [];
+  let status = 'logout';
 
   // Load token from localStorage
   // Should be called only on page load and by getAuthorization
@@ -37,6 +37,7 @@ export const AuthToken = (() => {
         expirationTime = 0;
       }
     }
+    triggerHandlers();
   }
 
   function setToken(t) {
@@ -51,6 +52,7 @@ export const AuthToken = (() => {
     } else {
       expirationTime = 0;
     }
+    triggerHandlers();
   }
 
   async function getToken(): Promise<?string> {
@@ -126,8 +128,28 @@ export const AuthToken = (() => {
     setToken(null);
   }
 
+  function addHandler(cb: *): () => void {
+    handlers.push(cb);
+    return () => {
+      const i = handlers.indexOf(cb);
+      if (i !== -1) {
+        handlers.splice(i, 1);
+      }
+    };
+  }
+
+  function triggerHandlers() {
+    const newStatus = token ? 'login' : 'logout';
+    if (status !== newStatus) {
+      status = newStatus;
+      for (const handler of handlers) {
+        handler(status);
+      }
+    }
+  }
+
   load();
-  return { login, logout, expired, getToken, getAuthorization };
+  return { login, logout, expired, getToken, getAuthorization, addHandler };
 })();
 
 export const AppToken = (() => {
@@ -139,6 +161,7 @@ export const AppToken = (() => {
       const res = await post('auth', 'access', { app });
       return res.token;
     } catch (exc) {
+      AuthToken.logout();
       console.log(`Error retrieving app token: ${exc}`);
       throw exc;
     }
@@ -149,7 +172,6 @@ export const AppToken = (() => {
       return '';
     }
     if (!tokens[app]) {
-      // TODO: handle 403 exception
       tokens[app] = getToken(app);
     }
     let token = await tokens[app];

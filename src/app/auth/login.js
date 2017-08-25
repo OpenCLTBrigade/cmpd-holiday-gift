@@ -72,14 +72,16 @@ export default class Login extends React.Component<{
     try {
       const success = await AuthToken.login(email, password);
       if (success) {
-        // TODO: return to the correct page after logging in
         this.props.history.replace(
-          this.props.location.state.from != null ? this.props.location.state.from : '/dashboard');
+          this.props.location.state != null && this.props.location.state.from != null
+            ? this.props.location.state.from
+            : '/dashboard');
       } else {
         (this.box: any).flashErrorMessage('Login failed: wrong email or password');
       }
     } catch (exc) {
       (this.box: any).flashErrorMessage('Login failed: unknown error');
+      console.log('Error logging in:', exc);
     }
   }
 }

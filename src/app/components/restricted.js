@@ -8,10 +8,24 @@ export default function Restricted<Props: {location: mixed}>(
   Wrapped: Class<React.Component<Props>>
 ): Class<React.Component<Props, {authenticated: boolean}>> {
   return class Restricted extends React.Component<Props, {authenticated: boolean}> {
+    dropHandler: ?() => void;
     constructor() {
       super();
       this.state = { authenticated: !AuthToken.expired() };
-      // TODO: listen for login/logout events
+    }
+
+    componentWillMount() {
+      // TODO: this will not catch events while the component is unmounted
+      this.dropHandler = AuthToken.addHandler(event => {
+        this.setState({ authenticated: event === 'login' });
+      });
+    }
+
+    componentWillUnmount() {
+      if (this.dropHandler) {
+        this.dropHandler();
+        this.dropHandler = null;
+      }
     }
 
     render(): React.Node {
