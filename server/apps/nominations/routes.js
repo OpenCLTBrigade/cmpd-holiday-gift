@@ -1,7 +1,7 @@
 // @flow
 
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports } = require('./controllers');
 const auth = require('../lib/auth');
 
 import type { UserRequest } from '../lib/auth';
@@ -23,5 +23,8 @@ router.get('/users/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsyn
 // Affiliations
 router.get('/affiliations').handleAsync(Affiliation.list);
 router.get('/affiliations/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Affiliation.getAffiliation);
+
+// Reports
+router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data_excel);
 
 module.exports = router;

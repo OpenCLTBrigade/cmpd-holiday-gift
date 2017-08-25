@@ -44,11 +44,20 @@ function generateConfirmationCode(): string {
 
 // This middleware will set req.user to the token payload
 // if the token is valid has has not expired.
-// The token is retrieved from the Authorization header
+// The token is retrieved from the Authorization header or
+// from the __authorization field of a posted form
 function authMiddleware(secret: string): $TODO {
   return jwtMiddleware({
     secret: secret,
-    credentialsRequired: false
+    credentialsRequired: false,
+    getToken: req => {
+      if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        return req.headers.authorization.split(' ')[1];
+      } else if (req.body && req.body.__authorization) {
+        return req.body.__authorization;
+      }
+      return null;
+    }
   });
 }
 
