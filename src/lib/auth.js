@@ -174,8 +174,8 @@ export function getAuthorization(app: string): Promise<string> {
 
 export async function redirectPostWithAuth(app: string, path: string): Promise<void> {
   const authorization = await getAuthorization(app);
-  const div: any = document.createElement('div');
-  document.body.appendChild(div);
+  const div = document.createElement('div');
+  (document.body: any).appendChild(div);
   const form = render(
     <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
       <input type="hidden" name="__authorization" value={authorization} />
