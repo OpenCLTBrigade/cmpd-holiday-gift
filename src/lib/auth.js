@@ -2,6 +2,8 @@
 
 import { post } from 'lib/apiService';
 import jwt_decode from 'jwt-decode';
+import { render } from 'react-dom';
+import * as React from 'react';
 
 const authTokenRefreshWhenSecondsLeft = 6 * 60 * 60; // 6 hours
 const minRefreshInterval = 1 * 60; // 1 minutes
@@ -51,10 +53,15 @@ export const AuthToken = (() => {
     }
   }
 
-  // Returns an up-to-date authorization header, or the empty string
-  async function getAuthorization(): Promise<string> {
+  async function getToken(): Promise<?string> {
     load();
     maybeRefreshOrExpire();
+    return token;
+  }
+
+  // Returns an up-to-date authorization header, or the empty string
+  async function getAuthorization(): Promise<string> {
+    await getToken();
     if (token) {
       return `Bearer ${token}`;
     } else {
@@ -120,7 +127,7 @@ export const AuthToken = (() => {
   }
 
   load();
-  return { login, logout, expired, getAuthorization };
+  return { login, logout, expired, getToken, getAuthorization };
 })();
 
 export const AppToken = (() => {
@@ -165,3 +172,14 @@ export function getAuthorization(app: string): Promise<string> {
   }
 }
 
+export async function redirectPostWithAuth(app: string, path: string): Promise<void> {
+  const authorization = await getAuthorization(app);
+  const div: any = document.createElement('div');
+  document.body.appendChild(div);
+  const form = render(
+    <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
+      <input type="hidden" name="__authorization" value={authorization} />
+    </form>,
+    div);
+  form.submit();
+}

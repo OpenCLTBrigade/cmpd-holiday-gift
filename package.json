@@ -87,5 +87,10 @@
     "sqlite3": "^3.1.8",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001",
+      "ws": true
+    }
+  }
 }

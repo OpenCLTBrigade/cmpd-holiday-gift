@@ -38,7 +38,7 @@ if (config.useCompression) {
 // TODO: handle and log errors
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Mount the apps
 app.use('/api/nominations', nominations);

@@ -51,10 +51,14 @@ function authMiddleware(secret: string): $TODO {
     secret: secret,
     credentialsRequired: false,
     getToken: req => {
-      if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-        return req.headers.authorization.split(' ')[1];
+      let authorization;
+      if (req.headers.authorization) {
+        authorization = req.headers.authorization;
       } else if (req.body && req.body.__authorization) {
-        return req.body.__authorization;
+        authorization = req.body.__authorization;
+      }
+      if (authorization && authorization.split(' ')[0] === 'Bearer') {
+        return authorization.split(' ')[1];
       }
       return null;
     }
