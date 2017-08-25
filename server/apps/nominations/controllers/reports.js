@@ -6,13 +6,25 @@ const db = require('../../../models');
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AdminRole } from '../../lib/auth';
 
+function headersForExcelFile(name: string): * {
+  return {
+    'Content-type': 'application/vnd.ms-excel',
+    'Content-Disposition': `attachment; filename="${name}.xlsx"`,
+    'Cache-Control': 'max-age=0'
+  };
+}
+
+function flatten(field: string, object: Object): Object {
+  const ret = Object.assign({}, object);
+  for (const k in object[field]) {
+    ret[`${field}_${k}`] = object[field][k];
+  }
+  return ret;
+}
+
 async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Promise<void> {
   const now = new Date().toISOString();
-  res.set({
-    'Content-type': 'application/vnd.ms-excel',
-    'Content-Disposition': `attachment; filename="GiftProjectDump_${now}.xlsx"`,
-    'Cache-Control': 'max-age=0'
-  });
+  res.set(headersForExcelFile(`GiftProjectDump_${now}`));
 
   const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
 
@@ -46,87 +58,59 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
   await workbook.commit();
 }
 
+async function link_report(req: UserRequest<AdminRole>, res: Response) {
+  const now = new Date().toISOString();
+  res.set(headersForExcelFile(`GiftProjectTheLinkReport_${now}`));
+
+  const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
+
+  let worksheet = workbook.addWorksheet('Heads of Household');
+  worksheet.columns = [
+    { key: 'id', header: 'Family Number', width: 10 },
+    { key: 'name_last', header: 'Last Name', width: 15 },
+    { key: 'name_first', header: 'First Name', width: 15 },
+  ];
+
+  const households = await db.household.findAll({ where: { approved: true } });
+  households.forEach(household => worksheet.addRow(household).commit());
+  worksheet.commit();
+
+
+  worksheet = workbook.addWorksheet('Children');
+  worksheet.columns = [
+    { key: 'household_id', header: 'Family Number', width: 10 },
+    { key: 'household_name_full', header: 'Head of Household', width: 10 },
+    { key: 'id', header: 'Child Number', width: 10 },
+    { key: 'name_first', header: 'Child First Name', width: 10 },
+    { key: 'age', header: 'Age', width: 10 },
+    { key: 'additional_ideas', header: 'Wish List', width: 10 },
+    { key: 'bike_want', header: 'Bike?', width: 10 },
+    { key: 'bike_style', header: 'Bike Style', width: 10 },
+    { key: 'bike_size', header: 'Bike Size', width: 10 },
+    { key: 'clothes_want', header: 'Clothes?', width: 10 },
+    { key: 'clothes_size_shirt', header: 'Shirt Size', width: 10 },
+    { key: 'clothes_size_pants', header: 'Pants Size', width: 10 },
+    { key: 'show_size', header: 'Shoe Size', width: 10 }
+  ];
+
+  const children = await db.child.findAll({
+    include: [{
+      model: db.household,
+      as: 'household',
+      where: { approved: true },
+      required: true
+    }]
+  });
+
+  children.forEach(child => {
+    worksheet.addRow(flatten('household', child.toJSON())).commit();
+  });
+  worksheet.commit();
+
+  await workbook.commit();
+}
+
 /*
-    static function AutoSizeSheet(&$sheet) {
-        $cells = $sheet->getRowIterator()->current()->getCellIterator();
-        $cells->setIterateOnlyExistingCells(true);
-        foreach ($cells as $cell) {
-            $sheet->getColumnDimension($cell->getColumn())->setAutoSize(true);
-        }
-    }
-
-    public function link_report() {
-      $excel = new PHPExcel();
-
-      $sheet = new PHPExcel_Worksheet($excel, "Heads of Household");
-      $sheet->fromArray(["Family Number", "Last Name", "First Name"], NULL, 'A1');
-      $households = Household::all(); // TODO ATN ::where('approved', 1);
-      $i=2;
-      foreach($households as $h) {
-          $sheet->fromArray([$h->id, $h->name_last, $h->name_first], NULL, 'A' . $i++);
-      }
-      Export::AutoSizeSheet($sheet);
-      $excel->addSheet($sheet);
-
-      $sheet = new PHPExcel_Worksheet($excel, "Children");
-      $sheet->fromArray([
-        "Family Number",
-        "Head of Household",
-        "Child Number",
-        "Child First Name",
-        "Age",
-        "Wish List",
-        "Bike?",
-        "Bike Style",
-        "Bike Size",
-        "Clothes?",
-        "Shirt Size",
-        "Pants Size",
-        "Shoe Size",
-
-      ], NULL, 'A1');
-      $children = Child::join('household', 'household.id', '=', 'child.household_id')
-          ->where('household.deleted_at')
-          ->select('child.*')
-          ->get();
-      $i=2;
-      foreach($children as $c) {
-          if (!$c->household)
-            continue;
-
-          $sheet->fromArray([
-            $c->household_id,
-            $c->household->name_last . ", " . $c->household->name_first,
-            $c->id,
-            $c->name_first,
-            $c->age,
-            $c->additional_ideas,
-            ($c->bike_want == "Y") ? "Yes" : "",
-            ($c->bike_want == "Y") ? $c->bike_style : "",
-            ($c->bike_want == "Y") ? $c->bike_size : "",
-            ($c->clothes_want == "Y") ? "Yes" : "",
-            $c->clothes_size_shirt,
-            $c->clothes_size_pants,
-            $c->shoe_size,
-          ], NULL, 'A' . $i++);
-      }
-      Export::AutoSizeSheet($sheet);
-      $excel->addSheet($sheet);
-
-      $excel->removeSheetByIndex(0);
-
-      header('Content-type: application/vnd.ms-excel');
-      header('Content-Disposition: attachment; filename="GiftProjectTheLinkReport_' . date("YmdHis") . '.xlsx"');
-      header('Cache-Control: max-age=0');
-
-      $writer = new PHPExcel_Writer_Excel2007($excel);
-      $writer->setOffice2003Compatibility(true);
-      $writer->save('php://output');
-
-      flush();
-      exit(0);
-    }
-
     static function newCSV($headers) {
         $csv = Writer::createFromFileObject(new \SplTempFileObject());
         $csv->insertOne($headers);
@@ -140,7 +124,9 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
             ->where('approved', 1)
             ->get();
         foreach($children as $child) {
-            $csv->insertOne([$child->household_id, $child->name_last . ", " . $child->name_first, $child->age, $child->bike_style, $child->bike_size]);
+            $csv->insertOne([$child->household_id, $child->name_last . ", "
+            . $child->name_first, $child->age, $child->bike_style,
+            $child->bike_size]);
         }
         $csv->output('GiftProjectBikeReport_' . date("YmdHis") . '.csv');
 
@@ -149,7 +135,9 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
     }
 
     public function division_report() {
-        $csv = Export::newCSV(["family number", "head of household", "street", "street2", "city", "state", "zip", "phone numbers", "email", "division", "response area"]);
+        $csv = Export::newCSV(["family number", "head of household",
+        "street", "street2", "city", "state", "zip", "phone numbers",
+        "email", "division", "response area"]);
         $households = Household::where('approved', 1)->get();
 
         foreach($households as $h) {
@@ -179,4 +167,4 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
 }
 */
 
-module.exports = { export_data_excel };
+module.exports = { export_data_excel, link_report };

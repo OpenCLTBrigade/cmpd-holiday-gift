@@ -30,6 +30,7 @@ export default class Home extends React.Component<{}> {
             <Box title="Reports">
               {/* TODO: only show restricted reports if user is admin */}
               <button onClick={getReport('all')}>Export all data in Excel format</button>
+              <button onClick={getReport('link')}>Generate Link Report</button>
             </Box>
           </Col>
         </Row>

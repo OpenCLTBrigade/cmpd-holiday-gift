@@ -161,7 +161,6 @@ export const AppToken = (() => {
       const res = await post('auth', 'access', { app });
       return res.token;
     } catch (exc) {
-      AuthToken.logout();
       console.log(`Error retrieving app token: ${exc}`);
       throw exc;
     }
@@ -174,7 +173,14 @@ export const AppToken = (() => {
     if (!tokens[app]) {
       tokens[app] = getToken(app);
     }
-    let token = await tokens[app];
+    let token;
+    try {
+      token = await tokens[app];
+    } catch (exc) {
+      AuthToken.logout();
+      tokens[app] = null;
+      throw exc;
+    }
     if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];

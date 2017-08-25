@@ -77,6 +77,7 @@
     "express-jwt": "^5.3.0",
     "flow-remove-types": "^1.2.1",
     "jsonwebtoken": "^7.4.1",
+    "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
     "morgan": "^1.8.1",
     "mustache": "^2.3.0",
     "mysql": "^2.5.5",

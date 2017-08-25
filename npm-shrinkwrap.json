@@ -4499,7 +4499,7 @@
     },
     "moment": {
       "version": "2.18.1",
-      "from": "moment@>=2.0.0 <3.0.0",
+      "from": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
       "resolved": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz"
     },
     "moment-timezone": {

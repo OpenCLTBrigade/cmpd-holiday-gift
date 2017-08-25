@@ -84,6 +84,12 @@ module.exports = Sequelize => ({
     deleted_at: {
       type: Sequelize.DATE,
       defaultValue: null
+    },
+    name_full: {
+      type: Sequelize.VIRTUAL,
+      get: function () {
+        return `${this.name_first} ${this.name_last}`;
+      }
     }
   },
   scopes: {
