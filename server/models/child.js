@@ -105,6 +105,12 @@ module.exports = Sequelize => ({
       get: function () {
         return moment().diff(this.dob, 'years');
       }
+    },
+    name_full: {
+      type: Sequelize.VIRTUAL,
+      get: function () {
+        return `${this.name_first} ${this.name_last}`;
+      }
     }
   },
   associate: function (child, db) {

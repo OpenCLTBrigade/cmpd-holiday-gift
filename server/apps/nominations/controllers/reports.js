@@ -110,30 +110,35 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
   await workbook.commit();
 }
 
+async function bike_report(req: UserRequest<AdminRole>, res: Response) {
+  const now = new Date().toISOString();
+  res.set(headersForExcelFile(`GiftProjectBikeReport_${now}`));
+
+  const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
+
+  const worksheet = workbook.addWorksheet('Bicycles');
+  worksheet.columns = [
+    { key: 'household_id', header: 'Family Number', width: 10 },
+    { key: 'name_full', header: 'Child Name', width: 15 },
+    { key: 'age', header: 'Age', width: 15 },
+    { key: 'bike_style', header: 'Bike Style', width: 15 },
+    { key: 'bike_size', header: 'Bike Size', width: 15 }
+  ];
+
+  const children = await db.child.findAll({
+    include: [{
+      model: db.household,
+      as: 'household',
+      where: { approved: true },
+      required: true
+    }]
+  });
+  children.forEach(child => worksheet.addRow(flatten('household', child.toJSON())).commit());
+  worksheet.commit();
+  workbook.commit();
+}
+
 /*
-    static function newCSV($headers) {
-        $csv = Writer::createFromFileObject(new \SplTempFileObject());
-        $csv->insertOne($headers);
-        return $csv;
-    }
-
-    public function bike_report() {
-        $csv = Export::newCSV(["family id", "child name", "age", "bike style", "bike size"]);
-        $children = Child::where('bike_want', 'Y')
-            ->join('household', 'household.id', '=', 'child.household_id')
-            ->where('approved', 1)
-            ->get();
-        foreach($children as $child) {
-            $csv->insertOne([$child->household_id, $child->name_last . ", "
-            . $child->name_first, $child->age, $child->bike_style,
-            $child->bike_size]);
-        }
-        $csv->output('GiftProjectBikeReport_' . date("YmdHis") . '.csv');
-
-        flush();
-        exit(0);
-    }
-
     public function division_report() {
         $csv = Export::newCSV(["family number", "head of household",
         "street", "street2", "city", "state", "zip", "phone numbers",
@@ -167,4 +172,4 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
 }
 */
 
-module.exports = { export_data_excel, link_report };
+module.exports = { export_data_excel, link_report, bike_report };

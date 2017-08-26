@@ -27,5 +27,6 @@ router.get('/affiliations/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).
 // Reports
 router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data_excel);
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
+router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
 
 module.exports = router;
