@@ -72,10 +72,12 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
+    "exceljs": "^0.5.1",
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
     "flow-remove-types": "^1.2.1",
     "jsonwebtoken": "^7.4.1",
+    "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
     "morgan": "^1.8.1",
     "mustache": "^2.3.0",
     "mysql": "^2.5.5",
@@ -86,5 +88,10 @@
     "sqlite3": "^3.1.8",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001",
+      "ws": true
+    }
+  }
 }

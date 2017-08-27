@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const config = require('../config');
 
 module.exports = Sequelize => ({
@@ -21,7 +23,7 @@ module.exports = Sequelize => ({
       allowNull: false
     },
     dob: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
       allowNull: false,
       encrypt: true
     },
@@ -97,6 +99,18 @@ module.exports = Sequelize => ({
       type: Sequelize.ENUM,
       values: config.genders,
       defaultValue: null
+    },
+    age: {
+      type: Sequelize.VIRTUAL,
+      get: function () {
+        return moment().diff(this.dob, 'years');
+      }
+    },
+    name_full: {
+      type: Sequelize.VIRTUAL,
+      get: function () {
+        return `${this.name_first} ${this.name_last}`;
+      }
     }
   },
   associate: function (child, db) {

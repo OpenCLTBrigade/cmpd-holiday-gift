@@ -52,7 +52,7 @@ config.useCompression = true;
 // Verbosity
 config.enableAccessLog = true;
 config.verboseAccessLog = true;
-config.verboseSeed = false;
+config.verboseSeed = true;
 config.verbose = true;
 
 // Default local sqlite detabase

@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const db = require('../../models');
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 import type { AuthRequest, Response, Next } from '../lib/typed-express';
 
@@ -43,11 +44,24 @@ function generateConfirmationCode(): string {
 
 // This middleware will set req.user to the token payload
 // if the token is valid has has not expired.
-// The token is retrieved from the Authorization header
+// The token is retrieved from the Authorization header or
+// from the __authorization field of a posted form
 function authMiddleware(secret: string): $TODO {
   return jwtMiddleware({
     secret: secret,
-    credentialsRequired: false
+    credentialsRequired: false,
+    getToken: req => {
+      let authorization;
+      if (req.headers.authorization) {
+        authorization = req.headers.authorization;
+      } else if (req.body && req.body.__authorization) {
+        authorization = req.body.__authorization;
+      }
+      if (authorization && authorization.split(' ')[0] === 'Bearer') {
+        return authorization.split(' ')[1];
+      }
+      return null;
+    }
   });
 }
 
@@ -89,7 +103,7 @@ function ensureLoggedIn<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: Logg
       if (req.user && req.user.active && req.user.approved) {
         next();
       } else {
-        res.send(403);
+        res.sendStatus(403);
       }
     }
   ];
@@ -102,7 +116,7 @@ function ensureAdmin<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: UserTyp
       if (req.user && req.user.role === 'admin') {
         next();
       } else {
-        res.send(403);
+        res.sendStatus(403);
       }
     }
   ];
@@ -123,6 +137,11 @@ function userCanUseApp(user: UserType, app: AppName): boolean {
   return false;
 }
 
+async function newAuthSession(user_id: number): Promise<string> {
+  const session = await db.session.create({ user_id });
+  return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
+}
+
 module.exports = {
   hashPassword,
   validHashOfPassword,
@@ -133,5 +152,6 @@ module.exports = {
   ensureLoggedIn,
   isInvalidPassword,
   userCanUseApp,
-  ensureAdmin
+  ensureAdmin,
+  newAuthSession
 };
