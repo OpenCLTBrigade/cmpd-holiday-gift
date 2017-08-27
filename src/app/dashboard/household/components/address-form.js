@@ -5,8 +5,8 @@ import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
 
 import Box from '../../components/box';
-import Input from './form/input';
-import requiredValidator from '../validators/required.validator';
+import Input from 'app/components/input';
+import requiredValidator from 'lib/validators/required.validator';
 
 import { createClient } from '@google/maps';
 
