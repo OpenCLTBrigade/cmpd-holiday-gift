@@ -1,39 +1,32 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { Form } from 'neoform';
-import Input from './form/input';
+import Input from 'app/components/input';
 import Box from '../../components/box';
 import SelectList from './select-list';
 import { Row, Col, Button } from 'react-bootstrap';
 import { FormValidation } from 'neoform-validation';
 import { getAffiliationList } from 'api/affiliation';
-import requiredValidator from '../validators/required.validator';
+import requiredValidator from 'lib/validators/required.validator';
 
-class SelectOption extends React.Component {
-  
-  async fetch(
-    page: number,
-    search: string = ''
-  ): Promise<{ items: AffiliationType[] }> {
-    let response: Object = await getAffiliationList(page, search);
-    return { items: response.items };
-  }
+import type { AffiliationType } from 'api/affiliation';
 
-  render(): React.Element<any> {
-
-    return (
-      <SelectList fetch={this.fetch} />
-    );
-  }
+async function fetchAffiliations(): Promise<AffiliationType[]> {
+  const { items } = await getAffiliationList(0, null);
+  return items;
 }
 
-class UserForm extends React.Component {
+class UserForm extends React.Component<{
+  onSubmit: *,
+  validate: *,
+  onInvalid: *
+}> {
 
   onReset = () => {
     console.log('reset');
   }
 
-  render() {
+  render(): React.Node {
 
     const { onSubmit, validate, onInvalid } = this.props;
 
@@ -81,7 +74,7 @@ class UserForm extends React.Component {
               </Row>
               <Row>
                 <Col md={12}>
-                  <SelectOption></SelectOption>
+                  <SelectList fetchAll={fetchAffiliations}/>
                 </Col>
               </Row>
               <Row>
@@ -196,7 +189,7 @@ class UserForm extends React.Component {
               <Row>
                 <Col xs={12}>
                   <Button bsStyle="info">Save</Button>
-                  <span>  </span>
+                  <span></span>
                   <Button
                     bsStyle="warning"
                     onClick={this.onReset}

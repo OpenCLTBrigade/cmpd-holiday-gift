@@ -1,13 +1,21 @@
 // @flow
-import React, { Component } from 'react';
-import Input from './form/input';
-import requiredValidator from '../validators/required.validator';
+import * as React from 'react';
+import Input from 'app/components/input';
+import requiredValidator from 'lib/validators/required.validator';
 
-export default class SelectList extends Component<*> {
-  state: { items: [] };
-  
+type Item = {
+  id: number,
+  type: string,
+  name: string
+};
+
+export type SelectListItem = Item;
+
+export default class SelectList extends React.Component<*, *> {
+  state: { items: Item[] };
+
   props: {
-    fetch: (number, ?string) => Promise < { items: []} > };
+    fetchAll: () => Promise<Item[]> };
 
   constructor() {
     super();
@@ -18,36 +26,26 @@ export default class SelectList extends Component<*> {
     this.fetchData();
   }
 
-  fetchData(page: number = this.state.page, searchText: string = '') {
-    console.log('fetchData', page, searchText);
-    this.props.fetch(page, searchText).then(data => {
-      console.log('In Fetch:', data.items);
-      this.setState({ items: data.items });
+  fetchData() {
+    console.log('fetchData');
+    this.props.fetchAll().then(data => {
+      console.log('In Fetch:', data);
+      this.setState({ items: data });
     });
   }
 
-  handlePageChange = (page: number) => {
-    this.fetchData(page);
-  };
-
-  handleSearchChange = (searchText?: string) => {
-    console.log('searching for', searchText);
-    this.fetchData(this.state.page, searchText);
-  };
-
-  render(): React.Element<*> {
-    return(
+  render(): React.Node {
+    return (
       <Input
         label="Affilation"
         name="user.affilaiton"
         componentClass="select"
         validator={requiredValidator}
       >
-        {this.state.items.map(function (item) {
-          return (
-            <option key={item.id} value={item.id}>{item.type.toUpperCase()} - {item.name}</option>
-          );
-        })}
+        {this.state.items.length === 0 ?
+         <option disabled>Loading...</option> :
+         this.state.items.map(item =>
+            <option key={item.id} value={item.id}>{item.type.toUpperCase()} - {item.name}</option>)}
       </Input>
     );
   }
