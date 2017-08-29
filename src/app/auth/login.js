@@ -5,9 +5,9 @@ import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import FooterLink from './components/footer-link';
 
-import LoginBox from './components/login-box';
+import FormBox from './components/form-box';
 
-import { AuthToken } from 'lib/auth';
+import { AuthToken } from '../../lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
@@ -19,15 +19,16 @@ export default class Login extends React.Component<{
   location: *,
   returnTo: ?string
 }> {
-  box: ?LoginBox;
+  box: ?FormBox;
   render(): React.Node {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
     return (
-      <LoginBox
+      <FormBox
         title="Log in"
         submitText="Login"
+        headerImageClass="fa fa-sign-in"
         onSubmit={this.onSubmit.bind(this)}
         ref={ref => (this.box = ref)}
         body={
