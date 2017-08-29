@@ -14,6 +14,7 @@ export default class NewUser extends React.Component<{}, *> {
     this.setState(prevState => {
       const newState = setValue(prevState, name, value);
 
+      console.log('onChange: ' + JSON.stringify(newState));
       return newState;
     });
   }
@@ -24,12 +25,12 @@ export default class NewUser extends React.Component<{}, *> {
 
   onSubmit(e: Event) {
     // TODO
-    e.preventDefault();
+    //e.preventDefault();
+    console.log('onSubmit: ');
     console.log(this.state);
   }
 
   render(): React.Node {
-    console.log(this.state);
 
     return (
       <div>
