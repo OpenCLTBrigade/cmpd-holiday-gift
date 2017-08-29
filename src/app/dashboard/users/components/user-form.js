@@ -35,6 +35,7 @@ class UserForm extends React.Component<{
       <form id='create-new-user'
         onSubmit={e => {
           e.preventDefault();
+          console.log('Submit');
           validate(onSubmit, onInvalid);
         }}
       >
@@ -188,7 +189,11 @@ class UserForm extends React.Component<{
               </Row>
               <Row>
                 <Col xs={12}>
-                  <Button bsStyle="info">Save</Button>
+                  <Button 
+                    bsStyle="info"
+                    onClick={this.onSubmit}
+                    >Save
+                  </Button>
                   <span></span>
                   <Button
                     bsStyle="warning"
@@ -206,3 +211,5 @@ class UserForm extends React.Component<{
 }
 
 export default Form(FormValidation(UserForm));
+
+// ToDo implement onSubmit here

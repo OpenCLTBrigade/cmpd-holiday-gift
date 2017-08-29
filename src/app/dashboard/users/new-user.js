@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
+import { createUser } from 'api/user';
 
 export default class NewUser extends React.Component<{}, *> {
 
@@ -25,7 +26,8 @@ export default class NewUser extends React.Component<{}, *> {
   onSubmit(e: Event) {
     // TODO
     e.preventDefault();
-    console.log(this.state);
+
+    console.log("Submit: " + this.state);
   }
 
   render(): React.Node {
