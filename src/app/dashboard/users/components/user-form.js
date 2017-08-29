@@ -8,8 +8,8 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { FormValidation } from 'neoform-validation';
 import { getAffiliationList } from 'api/affiliation';
 import requiredValidator from 'lib/validators/required.validator';
-
 import type { AffiliationType } from 'api/affiliation';
+
 
 async function fetchAffiliations(): Promise<AffiliationType[]> {
   const { items } = await getAffiliationList(0, null);
@@ -36,11 +36,7 @@ class UserForm extends React.Component<{
       <form id='create-new-user'
         onSubmit={e => {
           e.preventDefault();
-<<<<<<< HEAD
-          console.log('Submit');
-=======
           this.onSubmit;
->>>>>>> cab3d7065da30cf6b5d21ccdd04129342d1b8c47
           validate(onSubmit, onInvalid);
           onSubmit(this.state);
         }}
@@ -195,15 +191,7 @@ class UserForm extends React.Component<{
               </Row>
               <Row>
                 <Col xs={12}>
-<<<<<<< HEAD
-                  <Button 
-                    bsStyle="info"
-                    onClick={this.onSubmit}
-                    >Save
-                  </Button>
-=======
                   <Button bsStyle="info" type="submit">Save</Button>
->>>>>>> cab3d7065da30cf6b5d21ccdd04129342d1b8c47
                   <span></span>
                   <Button
                     bsStyle="warning"

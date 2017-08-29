@@ -40,8 +40,8 @@ export function getPendingUserList(
   return get('nominations', 'users/pending', { page: pageNumber, search: search });
 }
 
-export function createUser(user: UserType): Promise<{success: true} | {error: string}> {
-  return post('auth', 'users/create', { user });
+export function createUser(user: UserType): Promise<{user: UserType}> {
+  return post('auth', 'users/create', { user: user });
 }
 
 

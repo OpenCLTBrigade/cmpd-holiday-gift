@@ -3,9 +3,13 @@ import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
 import { createUser } from 'api/user';
+import type { UserType } from 'api/user';
+
 
 export default class NewUser extends React.Component<{}, *> {
-
+  state: {
+    user: UserType
+  };
   constructor() {
     super();
     this.state = { user: {} };
@@ -26,15 +30,10 @@ export default class NewUser extends React.Component<{}, *> {
 
   onSubmit(e: Event) {
     // TODO
-<<<<<<< HEAD
-    e.preventDefault();
-
-    console.log("Submit: " + this.state);
-=======
     //e.preventDefault();
     console.log('onSubmit: ');
     console.log(this.state);
->>>>>>> cab3d7065da30cf6b5d21ccdd04129342d1b8c47
+    createUser(this.state);
   }
 
   render(): React.Node {
