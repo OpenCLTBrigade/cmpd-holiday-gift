@@ -26,6 +26,7 @@ class UserForm extends React.Component<{
     console.log('reset');
   }
 
+
   render(): React.Node {
 
     const { onSubmit, validate, onInvalid } = this.props;
@@ -35,8 +36,13 @@ class UserForm extends React.Component<{
       <form id='create-new-user'
         onSubmit={e => {
           e.preventDefault();
+<<<<<<< HEAD
           console.log('Submit');
+=======
+          this.onSubmit;
+>>>>>>> cab3d7065da30cf6b5d21ccdd04129342d1b8c47
           validate(onSubmit, onInvalid);
+          onSubmit(this.state);
         }}
       >
         <Row>
@@ -55,7 +61,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="First Name"
-                    name="user.firstName"
+                    name="user.name_first"
                     id="firstName"
                     type="text"
                     validator={requiredValidator}
@@ -66,7 +72,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Last Name"
-                    name="user.lastName"
+                    name="user.name_last"
                     id="lastName"
                     type="text"
                     validator={requiredValidator}
@@ -93,7 +99,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Access Level"
-                    name="user.accessLevel"
+                    name="user.role"
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -110,7 +116,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Nomiation Limit(Yearly)"
-                    name="user.nominationLimit"
+                    name="user.nomination_limit"
                     id="nominationLimit"
                     type="text"
                     validator={requiredValidator}
@@ -121,7 +127,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Phone Number"
-                    name="user.phoneNumber"
+                    name="user.phone"
                     id="phoneNumber"
                     type="text"
                     validator={requiredValidator}
@@ -143,7 +149,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Confirmed Email Address"
-                    name="user.emailConformation"
+                    name="user.email_verifed"
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -156,7 +162,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Account Enabled"
-                    name="user.enabled"
+                    name="user.active"
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -181,7 +187,7 @@ class UserForm extends React.Component<{
                   <Input
                     label="Password Confirmation"
                     name="user.passwordConfirmation"
-                    id="passwordConfirmation"
+                    id="password_confirmation"
                     type="text"
                     validator={requiredValidator}
                   />
@@ -189,11 +195,15 @@ class UserForm extends React.Component<{
               </Row>
               <Row>
                 <Col xs={12}>
+<<<<<<< HEAD
                   <Button 
                     bsStyle="info"
                     onClick={this.onSubmit}
                     >Save
                   </Button>
+=======
+                  <Button bsStyle="info" type="submit">Save</Button>
+>>>>>>> cab3d7065da30cf6b5d21ccdd04129342d1b8c47
                   <span></span>
                   <Button
                     bsStyle="warning"

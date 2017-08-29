@@ -27,9 +27,9 @@ export default class SelectList extends React.Component<*, *> {
   }
 
   fetchData() {
-    console.log('fetchData');
+//console.log('fetchData');
     this.props.fetchAll().then(data => {
-      console.log('In Fetch:', data);
+//console.log('In Fetch:', data);
       this.setState({ items: data });
     });
   }
@@ -38,7 +38,7 @@ export default class SelectList extends React.Component<*, *> {
     return (
       <Input
         label="Affilation"
-        name="user.affilaiton"
+        name="user.affilaiton_id"
         componentClass="select"
         validator={requiredValidator}
       >
