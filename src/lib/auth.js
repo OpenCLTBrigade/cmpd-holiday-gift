@@ -211,3 +211,29 @@ export async function redirectPostWithAuth(app: string, path: string): Promise<v
     div);
   form.submit();
 }
+
+// Registers user after user submits information for new user in registration form
+export async function register(
+    name_first: string,
+    name_last: string,
+    rank: string = '',
+    affiliation_id: number,
+    email: string,
+    password: string
+  ): Promise<{}> {
+  const res = await post('auth', 'register', {
+    firstname: name_first,
+    lastname: name_last,
+    rank: rank,
+    affiliation: affiliation_id,
+    email: email,
+    password: password
+  });
+  if (!res.success) {
+    return res.error;
+  } else {
+    return { success: true };
+  }
+}
+
+
