@@ -38,7 +38,7 @@ export default class SelectList extends React.Component<*, *> {
     return (
       <Input
         label="Affilation"
-        name="user.affilaiton_id"
+        name={'user.affiliation_id'}
         componentClass="select"
         validator={requiredValidator}
       >

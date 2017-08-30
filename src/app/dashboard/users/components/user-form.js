@@ -9,14 +9,17 @@ import { FormValidation } from 'neoform-validation';
 import { getAffiliationList } from 'api/affiliation';
 import requiredValidator from 'lib/validators/required.validator';
 import type { AffiliationType } from 'api/affiliation';
+import type { UserType } from 'api/user';
 
 
 async function fetchAffiliations(): Promise<AffiliationType[]> {
-  const { items } = await getAffiliationList(0, null);
-  return items;
+  const response: Object = await getAffiliationList(0, null);
+  console.log(response.items);
+  return response.items;
 }
 
 class UserForm extends React.Component<{
+  data: {user: UserType},
   onSubmit: *,
   validate: *,
   onInvalid: *
@@ -36,9 +39,8 @@ class UserForm extends React.Component<{
       <form id='create-new-user'
         onSubmit={e => {
           e.preventDefault();
-          this.onSubmit;
           validate(onSubmit, onInvalid);
-          onSubmit(this.state);
+          onSubmit(this.props.data);
         }}
       >
         <Row>
@@ -57,7 +59,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="First Name"
-                    name="user.name_first"
+                    name={'user.name_first'}
                     id="firstName"
                     type="text"
                     validator={requiredValidator}
@@ -68,7 +70,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Last Name"
-                    name="user.name_last"
+                    name={'user.name_last'}
                     id="lastName"
                     type="text"
                     validator={requiredValidator}
@@ -84,7 +86,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Rank / Position"
-                    name="user.rank"
+                    name={'user.rank'}
                     id="rank"
                     type="text"
                     validator={requiredValidator}
@@ -95,7 +97,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Access Level"
-                    name="user.role"
+                    name={'user.role'}
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -112,7 +114,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Nomiation Limit(Yearly)"
-                    name="user.nomination_limit"
+                    name={'user.nomination_limit'}
                     id="nominationLimit"
                     type="text"
                     validator={requiredValidator}
@@ -123,7 +125,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Phone Number"
-                    name="user.phone"
+                    name={'user.phone'}
                     id="phoneNumber"
                     type="text"
                     validator={requiredValidator}
@@ -134,7 +136,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Email"
-                    name="user.email"
+                    name={'user.email'}
                     id="email"
                     type="text"
                     validator={requiredValidator}
@@ -145,7 +147,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Confirmed Email Address"
-                    name="user.email_verifed"
+                    name={'user.email_verifed'}
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -158,7 +160,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Account Enabled"
-                    name="user.active"
+                    name={'user.active'}
                     componentClass="select"
                     validator={requiredValidator}
                   >
@@ -171,7 +173,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Password"
-                    name="user.password"
+                    name={'user.password'}
                     id="password"
                     type="text"
                     validator={requiredValidator}
@@ -182,7 +184,7 @@ class UserForm extends React.Component<{
                 <Col md={12}>
                   <Input
                     label="Password Confirmation"
-                    name="user.passwordConfirmation"
+                    name={'user.password_confirmation'}
                     id="password_confirmation"
                     type="text"
                     validator={requiredValidator}
