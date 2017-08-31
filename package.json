@@ -22,10 +22,7 @@
   "bin": {
     "cmpd-explorers": "server-notypes/apps/serve.js"
   },
-  "files": [
-    "build",
-    "server-notypes"
-  ],
+  "files": ["build", "server-notypes"],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "@google/maps": "^0.4.3",
