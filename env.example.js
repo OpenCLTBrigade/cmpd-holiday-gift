@@ -3,7 +3,7 @@
 
 // @flow
 
-module.exports = (config: *) => { // eslint-disable-line
+module.exports = (config /*: * */) => { // eslint-disable-line
 
 // **** Sample Email Settings (SMTP) ****
 

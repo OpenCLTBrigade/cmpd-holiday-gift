@@ -1,5 +1,7 @@
 // @flow
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+
 import './header.css';
 
 export default class Header extends React.Component<{}> {
@@ -17,9 +19,9 @@ export default class Header extends React.Component<{}> {
   render(): React.Node {
     return (
       <header className="main-header">
-        <a href="/" className="logo">
+        <Link to="/" className="logo">
           Home
-        </a>
+        </Link>
         <nav className="navbar navbar-static-top" onClick={this.toggleNavCollapsed}>
           <a className="sidebar-toggle">
             <span className="sr-only">Toggle</span>
@@ -32,9 +34,9 @@ export default class Header extends React.Component<{}> {
                 </a>
               </li>
               <li className="dropdown user user-menu">
-                <a href="/auth/logout">
+                <Link to="/auth/logout">
                   <i className="fa fa-sign-out" />Logout
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

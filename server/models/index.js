@@ -19,7 +19,8 @@ function connect(dbConfig) {
           max: 5,
           min: 0,
           idle: 10000
-        }
+        },
+        define: { underscored: true }
       },
       dbConfig
     )

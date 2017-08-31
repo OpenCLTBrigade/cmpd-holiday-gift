@@ -2,14 +2,14 @@
 
 import { post } from 'lib/apiService';
 import jwt_decode from 'jwt-decode';
+import { render } from 'react-dom';
+import * as React from 'react';
 
 const authTokenRefreshWhenSecondsLeft = 6 * 60 * 60; // 6 hours
 const minRefreshInterval = 1 * 60; // 1 minutes
 const appTokenMinRemainingTime = 15; // seconds
 
 const localStorage = window.localStorage;
-
-
 
 // A wrapper around the auth token
 // The token is automatically refreshed and expired
@@ -19,6 +19,8 @@ export const AuthToken = (() => {
   let token; // Cached JWT string
   let expirationTime; // Cached exp
   let refreshing = false; // Flag to avoid concurrent refresh
+  const handlers: (('login' | 'logout') => void)[] = [];
+  let status = 'logout';
 
   // Load token from localStorage
   // Should be called only on page load and by getAuthorization
@@ -35,6 +37,7 @@ export const AuthToken = (() => {
         expirationTime = 0;
       }
     }
+    triggerHandlers();
   }
 
   function setToken(t) {
@@ -49,12 +52,18 @@ export const AuthToken = (() => {
     } else {
       expirationTime = 0;
     }
+    triggerHandlers();
+  }
+
+  async function getToken(): Promise<?string> {
+    load();
+    maybeRefreshOrExpire();
+    return token;
   }
 
   // Returns an up-to-date authorization header, or the empty string
   async function getAuthorization(): Promise<string> {
-    load();
-    maybeRefreshOrExpire();
+    await getToken();
     if (token) {
       return `Bearer ${token}`;
     } else {
@@ -119,8 +128,28 @@ export const AuthToken = (() => {
     setToken(null);
   }
 
+  function addHandler(cb: *): () => void {
+    handlers.push(cb);
+    return () => {
+      const i = handlers.indexOf(cb);
+      if (i !== -1) {
+        handlers.splice(i, 1);
+      }
+    };
+  }
+
+  function triggerHandlers() {
+    const newStatus = token ? 'login' : 'logout';
+    if (status !== newStatus) {
+      status = newStatus;
+      for (const handler of handlers) {
+        handler(status);
+      }
+    }
+  }
+
   load();
-  return { login, logout, expired, getAuthorization };
+  return { login, logout, expired, getToken, getAuthorization, addHandler };
 })();
 
 export const AppToken = (() => {
@@ -142,13 +171,20 @@ export const AppToken = (() => {
       return '';
     }
     if (!tokens[app]) {
-      // TODO: handle 403 exception
       tokens[app] = getToken(app);
     }
-    let token = await tokens[app];
-    if (!token || jwt_decode(token).exp > Date.now() / 1000 - appTokenMinRemainingTime) {
+    let token;
+    try {
+      token = await tokens[app];
+    } catch (exc) {
+      AuthToken.logout();
+      tokens[app] = null;
+      throw exc;
+    }
+    if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];
+
     }
     return `Bearer ${token}`;
   }
@@ -164,3 +200,14 @@ export function getAuthorization(app: string): Promise<string> {
   }
 }
 
+export async function redirectPostWithAuth(app: string, path: string): Promise<void> {
+  const authorization = await getAuthorization(app);
+  const div = document.createElement('div');
+  (document.body: any).appendChild(div);
+  const form = render(
+    <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
+      <input type="hidden" name="__authorization" value={authorization} />
+    </form>,
+    div);
+  form.submit();
+}

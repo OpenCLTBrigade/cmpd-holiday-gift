@@ -6,6 +6,7 @@ const request = require('request');
 const quoted_printable = require('quoted-printable');
 
 const { testServer } = require('./helpers/testServer');
+const { asyncTest } = require('./helpers/asyncTest');
 
 const sampleUser = {
   email: 'test.user@example.com',
@@ -14,11 +15,16 @@ const sampleUser = {
   password: 'testuser123'
 };
 
+const adminUser = {
+  email: 'developer@codeforcharlotte.org',
+  password: 'admin'
+};
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Authentication tests', () => {
 
-  const { url, nextEvent, openDB } = testServer({ mode: 'all' });
+  const { url, nextEvent, openDB } = testServer({ mode: 'all', seed: true });
   let db;
   let user;
   let confirmation_code;
@@ -75,21 +81,35 @@ describe('Authentication tests', () => {
       });
     });
 
-    it('should allow approving the user', done => {
+    it('should forbid approving if not logged in', done => {
       request.post({
         url: url('/api/auth/approve'),
         json: { user_id: user.id }
-      }, async function (error, response, body) {
-        expect(error).toBeNull();
-        expect(body.error).toBe(undefined);
-        expect(response.statusCode).toBe(200);
-        expect(body.success).toBe(true);
+      }, async function (_error, response, _body) {
+        expect(response.statusCode).toBe(403);
         await user.reload();
-        expect(user.approved).toBe(true);
-        expect(user.active).toBe(true);
+        expect(user.approved).toBe(false);
         done();
       });
     });
+
+    it('should allow approving the user as admin', asyncTest(async () => {
+      const authToken = await new Promise((ok, fail) => request.post({
+        url: url('/api/auth/login'),
+        json: adminUser
+      }, (error, _result, body) => error ? fail(error) : ok(body.token)));
+      const { response, body } = await new Promise((ok, fail) => request.post({
+        url: url('/api/auth/approve'),
+        json: { user_id: user.id },
+        headers: { authorization: `Bearer ${authToken}` }
+      }, (error, response, body) => error ? fail(error) : ok({ response, body })));
+      expect(body.error).toBe(undefined);
+      expect(response.statusCode).toBe(200);
+      expect(body.success).toBe(true);
+      await user.reload();
+      expect(user.approved).toBe(true);
+      expect(user.active).toBe(true);
+    }));
   });
 
   describe('Requesting tokens:', function () {

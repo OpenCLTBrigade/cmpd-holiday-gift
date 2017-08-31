@@ -3,14 +3,14 @@ const faker = require('faker');
 const config = require('../config');
 
 module.exports = async db => {
-    // Add ten children to the DB
+  // Add ten children to the DB
   for (let i = 0; i < 55; i++) {
     await db.child.create({
       'household_id': faker.random.number(48) + 1,
       'name_first': faker.name.firstName(),
       'name_middle': faker.name.firstName(),
       'name_last': faker.name.lastName(),
-      'dob': faker.date.past().toString(),
+      'dob': faker.date.past(18),
       'race': faker.random.arrayElement(config.raceOptions),
       'last4ssn': ('000' + faker.random.number(9999)).slice(-4),
       'free_or_reduced_lunch': faker.random.boolean(),
