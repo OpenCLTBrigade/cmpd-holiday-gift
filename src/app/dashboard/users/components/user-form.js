@@ -27,6 +27,9 @@ class UserForm extends React.Component<{
 
   onReset = () => {
     console.log('reset');
+    console.log(this.state);
+    console.log(this.props);
+    this.props.data.user = {};
   }
 
 
