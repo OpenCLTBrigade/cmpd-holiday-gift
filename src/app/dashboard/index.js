@@ -6,12 +6,8 @@ import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
 import NewHousehold from './household/new-household';
-<<<<<<< HEAD
 import NewUser from './users/new-user';
-import AffiliationList from './affiliations/AffiliationList';
-=======
 import { AffiliationList, Affiliation } from './affiliations';
->>>>>>> c13bfbda3a58756f060509df39b08049ae4e7eef
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
 

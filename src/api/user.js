@@ -27,18 +27,6 @@ export function getUser(id: number): Promise<{ user: UserType }> {
 }
 
 export function getUserList(
-<<<<<<< HEAD
-  pageNumber: number = 0,
-  search: ?string
-): Promise<{ response: DataTableResponse<UserType> }> {
-  return get('nominations', 'users', { page: pageNumber, search: search });
-}
-
-export function getPendingUserList(
-  pageNumber: number = 0,
-  search: ?string
-): Promise<DataTableResponse<UserType>> {
-=======
   pageNumber: number = 1,
   search: ?string,
   affiliation_id: ?number
@@ -48,7 +36,6 @@ export function getPendingUserList(
 }
 
 export function getPendingUserList(pageNumber: number = 1, search: ?string): Promise<{ response: DataTableResponse }> {
->>>>>>> c13bfbda3a58756f060509df39b08049ae4e7eef
   return get('nominations', 'users/pending', { page: pageNumber, search: search });
 }
 

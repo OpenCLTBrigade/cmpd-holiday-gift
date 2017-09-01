@@ -4,14 +4,11 @@ import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 import { FormValidation } from 'neoform-validation';
 import { Form } from 'neoform';
-<<<<<<< HEAD
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
-=======
-import Input from './form/input';
-import requiredValidator from '../validators/required.validator';
+// import Input from './form/input';
+// import requiredValidator from '../validators/required.validator';
 import Checkbox from './form/checkbox';
->>>>>>> c13bfbda3a58756f060509df39b08049ae4e7eef
 
 type NominationType = {
   // TODO
