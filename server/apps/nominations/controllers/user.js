@@ -30,7 +30,7 @@ module.exports = {
     const api = new TableApi(req, query);
     try {
       const whereClause = {};
-      if (query.search != null) {
+      if (query.search != null && query.search.length > 0) {
         // TODO: why search only live users?
         Object.assign(whereClause, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
       }
