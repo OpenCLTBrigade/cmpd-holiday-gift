@@ -58,11 +58,11 @@ export default class Sidebar extends React.Component<{}> {
                 <i v-if="item.icon" :className="item.icon"></i>
                 {{item.title}}
                 <i v-if="item.children" className="fa fa-angle-left pull-right"></i>
-              </a>
+              </Link>
               <ul v-if="item.children" className="treeview-menu">
                 <li v-for="child in item.children" :className="child.name == current_section ? 'active' : ''">
                   <i :className="`${child.icon ? child.icon : 'fa fa-circle-o'}`"></i>
-                  <a :href="child.url">{{child.title}}</a>
+                  <a :href="child.url">{{child.title}}</Link>
                 </li>
               </ul>
             </li>
