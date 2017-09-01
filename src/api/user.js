@@ -26,13 +26,14 @@ export function getUser(id: number): Promise<{ user: UserType }> {
 }
 
 export function getUserList(
-  pageNumber: number = 0,
+  pageNumber: number = 1,
   search: ?string,
   affiliation_id: ?number
 ): Promise<{ response: DataTableResponse }> {
+  pageNumber = pageNumber < 1 ? 1 : pageNumber;
   return get('nominations', 'users', { page: pageNumber, search, affiliation_id });
 }
 
-export function getPendingUserList(pageNumber: number = 0, search: ?string): Promise<{ response: DataTableResponse }> {
+export function getPendingUserList(pageNumber: number = 1, search: ?string): Promise<{ response: DataTableResponse }> {
   return get('nominations', 'users/pending', { page: pageNumber, search: search });
 }

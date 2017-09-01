@@ -32,6 +32,7 @@ export default class Dashboard extends React.Component<{location: mixed}> {
               <Route exact path="/dashboard/household/create" component={NewHousehold} />
               {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
               <Route exact path="/dashboard/affiliation" component={AffiliationList} />
+              <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
             </Switch>

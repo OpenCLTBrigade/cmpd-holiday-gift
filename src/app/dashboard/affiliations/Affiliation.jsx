@@ -4,10 +4,10 @@ import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Box from '../components/box';
 import { getUserList } from 'api/user';
 import { getAffiliation } from 'api/affiliation';
+import { UserList } from './components';
 
 type stateType = {
-  affiliation: Object,
-  users: []
+  affiliation: Object
 };
 
 type propsType = {
@@ -17,6 +17,7 @@ type propsType = {
 export default class Affiliation extends React.Component<propsType, stateType> {
   constructor(props: Object) {
     super(props);
+    this.affiliation_id = null;
     this.state = {
       affiliation: {
         name: '',
@@ -27,13 +28,13 @@ export default class Affiliation extends React.Component<propsType, stateType> {
         address_state: '',
         address_zip: '',
         phone: null
-      },
-      users: []
+      }
     };
   }
 
   componentDidMount() {
     const { affiliation_id } = this.props.match.params;
+    this.affiliation_id = affiliation_id;
     getAffiliation(affiliation_id)
       .then(affiliation => {
         this.setState({ affiliation });
@@ -78,7 +79,9 @@ export default class Affiliation extends React.Component<propsType, stateType> {
         </Row>
         <Row>
           <Col xs={12}>
-            <Box title={`Users in ${affiliation.name}`}>Test</Box>
+            <Box title={`Users in ${affiliation.name}`}>
+              <UserList affiliation_id={this.affiliation_id} />
+            </Box>
           </Col>
         </Row>
       </div>
