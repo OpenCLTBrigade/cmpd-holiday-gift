@@ -3,15 +3,18 @@ import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 import DataTable from '../components/dataTable';
+import { Link } from 'react-router-dom';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getAffiliationList } from 'api/affiliation';
 import type { AffiliationType } from 'api/affiliation';
 
 export default class AffiliationList extends React.Component<{}> {
-  actionCellFormatter(_cell: any, _row: AffiliationType): React.Node {
+  actionCellFormatter(_cell: any, row: AffiliationType): React.Node {
     return (
       <div>
+        <Link to={`/dashboard/affiliation/${row.id}`}>
         <button className="btn btn-sm btn-primary">Show</button>
+        </Link>
       </div>
     );
   }

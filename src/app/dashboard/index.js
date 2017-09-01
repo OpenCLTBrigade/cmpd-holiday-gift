@@ -6,14 +6,14 @@ import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
 import NewHousehold from './household/new-household';
-import AffiliationList from './affiliations/AffiliationList';
+import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
 
-const ContentTitle = (): React.Node => (
+const ContentTitle = (): React.Node =>
   <section className="content-header">
     <h1>Header</h1>
-  </section>);
+  </section>;
 
 export default class Dashboard extends React.Component<{location: mixed}> {
   // TODO: Return AdminLTE base template and register sub-routes here
@@ -32,6 +32,7 @@ export default class Dashboard extends React.Component<{location: mixed}> {
               <Route exact path="/dashboard/household/create" component={NewHousehold} />
               {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
               <Route exact path="/dashboard/affiliation" component={AffiliationList} />
+              <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
             </Switch>

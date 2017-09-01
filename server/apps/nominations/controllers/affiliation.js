@@ -39,7 +39,7 @@ module.exports = {
 
   getAffiliation: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
     const id: number = parseInt(req.params.id);
-    const affiliation = await db.affiliation.findFirst(id);
+    const affiliation = await db.affiliation.findById(id);
 
     if (!affiliation) {
       res.status(404);
