@@ -177,8 +177,8 @@ export const AppToken = (() => {
     try {
       token = await tokens[app];
     } catch (exc) {
-      AuthToken.logout();
       tokens[app] = null;
+      AuthToken.logout();
       throw exc;
     }
     if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {

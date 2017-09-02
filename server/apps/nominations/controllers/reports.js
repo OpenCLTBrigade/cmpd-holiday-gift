@@ -138,38 +138,39 @@ async function bike_report(req: UserRequest<AdminRole>, res: Response) {
   workbook.commit();
 }
 
-/*
-    public function division_report() {
-        $csv = Export::newCSV(["family number", "head of household",
-        "street", "street2", "city", "state", "zip", "phone numbers",
-        "email", "division", "response area"]);
-        $households = Household::where('approved', 1)->get();
+async function division_report(req: UserRequest<AdminRole>, res: Response) {
+  const now = new Date().toISOString();
+  res.set(headersForExcelFile(`GiftProjectDivisionReport_${now}`));
 
-        foreach($households as $h) {
-            $a = $h->address->count() ? $h->address[0] : new HouseholdAddress();
-            $phones = implode(", ", array_map(function($p){
-                        return $p['phone_number'] . " (" . $p['phone_type'] . ")";
-                    }, $h->phone->toArray()));
-            $csv->insertOne([
-                             $h->id,
-                             $h->name_last . ", " . $h->name_first,
-                             $a->address_street,
-                             $a->address_street2,
-                             $a->address_city,
-                             $a->address_state,
-                             $a->address_zip,
-                             $phones,
-                             $h->email,
-                             $a->cmpd_division,
-                             $a->cmpd_response_area]);
-        }
+  const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
 
-        $csv->output('GiftProjectDivisionReport_' . date("YmdHis") . '.csv');
+  const worksheet = workbook.addWorksheet('Households');
+  worksheet.columns = [
+    { key: 'id', header: 'Family Number', width: 10 },
+    { key: 'name_full', header: 'Head of Household', width: 15 },
+    { key: 'address_street', header: 'Address', width: 15 },
+    { key: 'address_street2', header: 'Address line 2', width: 15 },
+    { key: 'address_city', header: 'City', width: 15 },
+    { key: 'address_state', header: 'State', width: 15 },
+    { key: 'address_zip', header: 'Zip', width: 15 },
+    { key: 'phone_numbers', header: 'Phone Numbers', width: 15 },
+    { key: 'email', header: 'Email', width: 15 },
+    { key: 'address_cmpd_division', header: 'Division', width: 15 },
+    { key: 'address_cmpd_response_area', header: 'Response Area', width: 15 }
+  ];
 
-        flush();
-        exit(0);
-    }
+  const households = await db.household.findAll({
+    where: { approved: true },
+    include: [
+      { model: db.household_address, as: 'address' },
+      { model: db.household_phone, as: 'phones' }
+    ]
+  });
+  households.forEach(household => {
+    worksheet.addRow(flatten('address', household.toJSON())).commit();
+  });
+  worksheet.commit();
+  workbook.commit();
 }
-*/
 
-module.exports = { export_data_excel, link_report, bike_report };
+module.exports = { export_data_excel, link_report, bike_report, division_report };
