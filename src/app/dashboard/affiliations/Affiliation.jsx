@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Box from '../components/box';
-import { getUserList } from 'api/user';
 import { getAffiliation } from 'api/affiliation';
 import { UserList } from './components';
 
@@ -15,6 +14,7 @@ type propsType = {
 };
 
 export default class Affiliation extends React.Component<propsType, stateType> {
+  affiliation_id: ?number;
   constructor(props: Object) {
     super(props);
     this.affiliation_id = null;
