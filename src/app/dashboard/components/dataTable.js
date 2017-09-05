@@ -3,12 +3,12 @@ import * as React from 'react';
 import { BootstrapTable } from 'react-bootstrap-table';
 
 type PropType<Row> = {|
-    // TODO: is sizePerPage actually returned by the server?
-    fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
-    children: React.Node,
-    search: boolean,
-    pagination: boolean,
-    searchPlaceholder: string
+  // TODO: is sizePerPage actually returned by the server?
+  fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
+  children: React.Node,
+  search: boolean,
+  pagination: boolean,
+  searchPlaceholder: string
 |};
 
 export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
@@ -18,7 +18,11 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     page: number,
     sizePerPage: number
   |};
-  static defaultProps = { pagination: true };
+  static defaultProps = {
+    pagination: true,
+    search: false,
+    searchPlaceholder: 'Search'
+  };
   constructor() {
     super();
     this.state = {
@@ -74,9 +78,9 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
         striped
         hover
         remote
-        pagination={this.props.pagination !== undefined ? this.props.pagination : true}
-        search={this.props.search ? true : false}
-        searchPlaceholder={this.props.searchPlaceholder != null ? this.props.searchPlaceholder : 'Search'}
+        pagination={this.props.pagination}
+        search={this.props.search}
+        searchPlaceholder={this.props.searchPlaceholder}
       >
         {this.props.children}
       </BootstrapTable>

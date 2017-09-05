@@ -8,10 +8,6 @@ import Input from './form/input';
 import requiredValidator from '../validators/required.validator';
 import Checkbox from './form/checkbox';
 
-type NominationType = {
-  // TODO
-};
-
 const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild }) => {
   const { nominations } = data;
 
@@ -145,11 +141,11 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                         validator={requiredValidator}>
                         <option value="select">Select...</option>
                         <option value="Trycicle">Tricycle</option>
-                        <option value="12&quot; bicycle">12" bicycle</option>
-                        <option value="16&quot; bicycle">16" bicycle</option>
-                        <option value="20&quot; coaster brake bicycle">20" coaster brake bicycle</option>
-                        <option value="20&quot; geared bicycle">20" geared bicycle</option>
-                        <option value="24&quot; geared bicycle">24" geared bicycle</option>
+                        <option value='12" bicycle'>{'12" bicycle'}</option>
+                        <option value='16" bicycle'>{'16" bicycle'}</option>
+                        <option value='20" coaster brake bicycle'>{'20" coaster brake bicycle'}</option>
+                        <option value='20" geared bicycle'>{'20" geared bicycle'}</option>
+                        <option value='24" geared bicycle'>{'24" geared bicycle'}</option>
                       </Input>
                     </Col>
                   </Row>}

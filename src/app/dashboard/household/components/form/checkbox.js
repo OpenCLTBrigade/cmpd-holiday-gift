@@ -1,3 +1,4 @@
+// @flow
 import * as React from 'react';
 import { Checkbox as FieldCheckbox } from 'react-bootstrap';
 

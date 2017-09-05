@@ -71,7 +71,7 @@
         "flowtype/valid-syntax": "warn",
         "dependencies/case-sensitive": ["error"],
         "dependencies/no-cycles": ["error"],
-        "dependencies/no-unresolved": ["error", {"paths": ["src"]}],
+        // "dependencies/no-unresolved": ["error", {"paths": ["src"]}], TODO: does not support jsx
         "flowtype-errors/show-errors": 2,
         "flowtype-errors/enforce-min-coverage": [2, 25],
         "no-var": "error",
