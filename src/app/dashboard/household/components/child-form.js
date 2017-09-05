@@ -6,8 +6,6 @@ import { FormValidation } from 'neoform-validation';
 import { Form } from 'neoform';
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
-// import Input from './form/input';
-// import requiredValidator from '../validators/required.validator';
 import Checkbox from './form/checkbox';
 
 type NominationType = {
