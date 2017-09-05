@@ -3,6 +3,7 @@ import { get } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type AffiliationType = {
+  id: number,
   type: string,
   name: string,
   address_street: string,

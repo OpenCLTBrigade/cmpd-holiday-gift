@@ -14,6 +14,8 @@ const models = require('../models');
 const nominations = require('./nominations');
 const authApp = require('./auth');
 
+import type { $Application } from 'express';
+
 const app = express();
 
 // Log to file
@@ -64,4 +66,4 @@ initialize.push(models.sync().then(function () {
 
 // Prepare to compile the views and web assets
 
-module.exports = Promise.all(initialize).then(() => app);
+module.exports = (Promise.all(initialize).then(() => app): Promise<$Application>);
