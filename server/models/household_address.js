@@ -10,27 +10,27 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       allowNull: false
     },
-    address_street: {
+    street: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
     },
-    address_street2: {
+    street2: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
     },
-    address_city: {
+    city: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
     },
-    address_state: {
+    state: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
     },
-    address_zip: {
+    zip: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
@@ -44,7 +44,4 @@ module.exports = Sequelize => ({
       defaultValue: null
     },
   },
-  associate: function (address, db) {
-    address.belongsTo(db.household);
-  }
 });

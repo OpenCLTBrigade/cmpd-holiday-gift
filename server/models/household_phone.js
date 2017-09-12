@@ -6,17 +6,14 @@ module.exports = Sequelize => ({
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    phone_type: {
+    type: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    phone_number: {
+    number: {
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
     }
   },
-  associate: function (phone, db) {
-    phone.belongsTo(db.household);
-  }
 });
