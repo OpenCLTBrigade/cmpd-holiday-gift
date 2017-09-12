@@ -1,5 +1,5 @@
 // @flow
-
+const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
 const { Household, User, Me, Affiliation, Reports } = require('./controllers');
 const auth = require('../lib/auth');
@@ -28,5 +28,18 @@ router.get('/affiliations/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).
 router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data_excel);
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
 router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
+
+router.get('/test').handleAsync(async function (req, res) {
+  const households = await db.household.findAll({
+    where: { approved: true },
+    include: [
+      { model: db.household_address, as: 'address' },
+      { model: db.household_phone, as: 'phones' }
+    ]
+  });
+
+  console.log("NOPE.");
+  return (res.json(households));
+});
 
 module.exports = router;
