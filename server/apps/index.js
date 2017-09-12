@@ -14,6 +14,8 @@ const models = require('../models');
 const nominations = require('./nominations');
 const authApp = require('./auth');
 
+import type { $Application } from 'express';
+
 const app = express();
 
 // Log to file
@@ -38,6 +40,7 @@ if (config.useCompression) {
 // TODO: handle and log errors
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Mount the apps
 app.use('/api/nominations', nominations);
@@ -63,4 +66,4 @@ initialize.push(models.sync().then(function () {
 
 // Prepare to compile the views and web assets
 
-module.exports = Promise.all(initialize).then(() => app);
+module.exports = (Promise.all(initialize).then(() => app): Promise<$Application>);

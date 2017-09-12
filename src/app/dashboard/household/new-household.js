@@ -23,6 +23,20 @@ export default class NewHousehold extends React.Component<any, any> {
     (this: any).onSubmit = this.onSubmit.bind(this);
   }
 
+  addChild() {
+    this.setState(() => {
+      return { nominations: this.state.nominations.concat({}) };
+    });
+  }
+
+  removeChild() {
+    const nominations = this.state.nominations.slice();
+    nominations.pop();
+    this.setState(() => {
+      return { nominations };
+    });
+  }
+
   onChange(name: string, value: any) {
     this.setState(prevState => {
       const newState = setValue(prevState, name, value);
@@ -46,7 +60,14 @@ export default class NewHousehold extends React.Component<any, any> {
         <HouseholdForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
         <AddressForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
         <PhoneNumbers data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
-        <ChildForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
+        <ChildForm
+          data={this.state}
+          getValue={getValue}
+          onChange={this.onChange}
+          onSubmit={this.onSubmit}
+          addChild={this.addChild.bind(this)}
+          removeChild={this.removeChild.bind(this)}
+        />
         <Row>
           <Col xs={12}>
             <Button>Save Draft</Button>

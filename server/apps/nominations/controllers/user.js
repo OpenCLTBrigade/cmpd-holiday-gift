@@ -29,13 +29,13 @@ module.exports = {
     const query: ListRequest = (req.query: any);
     const api = new TableApi(req, query);
     try {
-      let whereClause = {};
-      if (query.search != null) {
+      const whereClause = {};
+      if (query.search != null && query.search.length > 0) {
         // TODO: why search only live users?
-        whereClause = Object.assign(whereClause, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
+        Object.assign(whereClause, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
       }
       if (query.affiliation_id != null) {
-        whereClause = Object.assign(whereClause, { affiliation_id: query.affiliation_id });
+        Object.assign(whereClause, { affiliation_id: query.affiliation_id });
       }
       const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);

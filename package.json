@@ -12,7 +12,7 @@
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
-    "lint": "eslint -f unix --fix --ext js server src env.js env.example.js",
+    "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "flow": "flow",
     "test": "npm run test-client && npm run test-server",
     "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false",
@@ -22,10 +22,7 @@
   "bin": {
     "cmpd-explorers": "server-notypes/apps/serve.js"
   },
-  "files": [
-    "build",
-    "server-notypes"
-  ],
+  "files": ["build", "server-notypes"],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "@google/maps": "^0.4.3",
@@ -42,7 +39,7 @@
     "eslint-plugin-flowtype-errors": "^3.3.1",
     "eslint-plugin-html": "^2.0.1",
     "faker": "^4.1.0",
-    "flow-bin": "^0.53.1",
+    "flow-bin": "^0.54.0",
     "flow-typed": "^2.1.5",
     "font-awesome": "^4.7.0",
     "jasmine": "^2.6.0",
@@ -72,10 +69,12 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
+    "exceljs": "^0.5.1",
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
     "flow-remove-types": "^1.2.1",
     "jsonwebtoken": "^7.4.1",
+    "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
     "morgan": "^1.8.1",
     "mustache": "^2.3.0",
     "mysql": "^2.5.5",
@@ -86,5 +85,10 @@
     "sqlite3": "^3.1.8",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001",
+      "ws": true
+    }
+  }
 }

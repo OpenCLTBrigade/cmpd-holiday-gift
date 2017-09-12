@@ -64,7 +64,8 @@ module.exports = Sequelize => ({
     },
     approved: {
       type: Sequelize.BOOLEAN,
-      defaultValue: null,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   scopes: {
