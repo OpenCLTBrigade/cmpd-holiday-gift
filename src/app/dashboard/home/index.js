@@ -33,6 +33,7 @@ export default class Home extends React.Component<{}> {
                 <li><button onClick={getReport('all')}>Export data in Excel format</button></li>
                 <li><button onClick={getReport('link')}>Generate Link Report</button></li>
                 <li><button onClick={getReport('bikes')}>Generate Bicycle Report</button></li>
+                <li><button onClick={getReport('division')}>Generate Division Report</button></li>
               </ul>
             </Box>
           </Col>

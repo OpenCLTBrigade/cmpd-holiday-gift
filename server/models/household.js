@@ -77,10 +77,6 @@ module.exports = Sequelize => ({
       allowNull: false,
       defaultValue: ''
     },
-    nominator_user_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
     deleted_at: {
       type: Sequelize.DATE,
       defaultValue: null
@@ -90,12 +86,18 @@ module.exports = Sequelize => ({
       get: function () {
         return `${this.name_first} ${this.name_last}`;
       }
+    },
+    phone_numbers: {
+      type: Sequelize.VIRTUAL,
+      get: function () {
+        return this.phones.map(phone => phone.number).join(', ');
+      }
     }
   },
   scopes: {
     filteredByUser: function (user) {
       if (user.role !== 'admin') {
-        return { where: { nominator_user_id: user.id } };
+        return { where: { nominator_id: user.id } };
       }
       return {};
     }
@@ -103,6 +105,7 @@ module.exports = Sequelize => ({
   associate: function (household, db) {
     household.belongsTo(db.user, { as: 'nominator' });
     household.hasMany(db.child, { as: 'children' });
-    household.hasOne(db.household_address, { as: 'address' });
+    household.hasOne(db.household_address, { as: 'address', foreignKey: 'household_id' });
+    household.hasMany(db.household_phone, { as: 'phones' });
   }
 });
