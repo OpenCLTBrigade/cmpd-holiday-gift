@@ -4,7 +4,6 @@ import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 import { FormValidation } from 'neoform-validation';
 import { Form } from 'neoform';
-<<<<<<< HEAD
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
 import Checkbox from './form/checkbox';
@@ -12,11 +11,6 @@ import Checkbox from './form/checkbox';
 type NominationType = {
   // TODO
 };
-=======
-import Input from './form/input';
-import requiredValidator from '../validators/required.validator';
-import Checkbox from './form/checkbox';
->>>>>>> develop
 
 const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild }) => {
   const { nominations } = data;
