@@ -19,11 +19,26 @@ async function fetchAffiliations(): Promise<AffiliationType[]> {
 }
 
 class UserForm extends React.Component<{
-  data: {user: UserType},
+  data: {user: UserType
+    },
   onSubmit: *,
   validate: *,
   onInvalid: *
 }> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      user: this.props.data.user
+    }
+  }
+
+  componentDidMount() {
+    console.log("mounted");
+    this.setState({foo: "works"});
+    console.log(this.state);
+}
 
   onReset = () => {
     console.log('reset');
@@ -61,6 +76,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.name_first'}
                     label="First Name"
                     name={'user.name_first'}
                     id="firstName"
@@ -72,6 +88,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.name_last'}
                     label="Last Name"
                     name={'user.name_last'}
                     id="lastName"
@@ -88,7 +105,8 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
-                    label="Rank / Position"
+                    value={'user.rank'}
+                    label="Rank"
                     name={'user.rank'}
                     id="rank"
                     type="text"
@@ -99,6 +117,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.role'}
                     label="Access Level"
                     name={'user.role'}
                     componentClass="select"
@@ -116,6 +135,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.nomination_limit'}
                     label="Nomiation Limit(Yearly)"
                     name={'user.nomination_limit'}
                     id="nominationLimit"
@@ -127,6 +147,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.phone'}
                     label="Phone Number"
                     name={'user.phone'}
                     id="phoneNumber"
@@ -138,6 +159,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.email'}
                     label="Email"
                     name={'user.email'}
                     id="email"
@@ -149,6 +171,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.email_verified'}
                     label="Confirmed Email Address"
                     name={'user.email_verifed'}
                     componentClass="select"
@@ -162,6 +185,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.active'}
                     label="Account Enabled"
                     name={'user.active'}
                     componentClass="select"
@@ -175,6 +199,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.password'}
                     label="Password"
                     name={'user.password'}
                     id="password"
@@ -186,6 +211,7 @@ class UserForm extends React.Component<{
               <Row>
                 <Col md={12}>
                   <Input
+                    value={'user.password_confirmation'}
                     label="Password Confirmation"
                     name={'user.password_confirmation'}
                     id="password_confirmation"

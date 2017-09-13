@@ -2,13 +2,33 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
+import { getUserList } from 'api/user';
+import type { UserType } from 'api/user';
 
 
 
 export default class NewUser extends React.Component<{}, *> {
   constructor() {
     super();
-    this.state = { user: {} };
+    this.state = { user: {
+      id: "",
+      name_first: "test",
+      name_last: "",
+      role: "",
+      rank: "",
+      phone: "",
+      email: "",
+      active: "",
+      nomination_limit: "",
+      confirmation_email: "",
+      confirmation_code: "",
+      email_verified: "",
+      approved: "",
+      createdAt: "",
+      updatedAt: "",
+      affiliation_id: ""
+
+    } };
   }
 
   onChange(name: string, value: any) {

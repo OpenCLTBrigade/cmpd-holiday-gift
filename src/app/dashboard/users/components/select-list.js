@@ -42,6 +42,7 @@ export default class SelectList extends React.Component<*, *> {
         componentClass="select"
         validator={requiredValidator}
       >
+        <option></option>
         {this.state.items.length === 0 ?
          <option disabled>Loading...</option> :
          this.state.items.map(item =>
