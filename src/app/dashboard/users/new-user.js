@@ -12,7 +12,7 @@ export default class NewUser extends React.Component<{}, *> {
     super();
     this.state = { user: {
       id: "",
-      name_first: "test",
+      name_first: "",
       name_last: "",
       role: "",
       rank: "",

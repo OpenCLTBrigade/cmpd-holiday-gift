@@ -8,11 +8,7 @@ import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
 import Checkbox from './form/checkbox';
 
-type NominationType = {
-  // TODO
-};
-
-const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild }) => {
+const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild, affiliations }) => {
   const { nominations } = data;
 
   return (
@@ -20,7 +16,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
       onSubmit={e => {
         e.preventDefault();
         validate(onSubmit, onInvalid);
-      }}>
+      }}
+    >
       {nominations.map((row, idx) => {
         return (
           <Row key={`nominations${idx}`}>
@@ -53,7 +50,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                       name={`nominations[${idx}].gender`}
                       componentClass="select"
                       placeholder="select"
-                      validator={requiredValidator}>
+                      validator={requiredValidator}
+                    >
                       <option value="select">Select...</option>
                       <option value="M">Male</option>
                       <option value="F">Female</option>
@@ -65,7 +63,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                       name={`nominations[${idx}].ethnicity`}
                       componentClass="select"
                       placeholder="select"
-                      validator={requiredValidator}>
+                      validator={requiredValidator}
+                    >
                       <option value="">Select...</option>
                       <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
                       <option value="Asian">Asian</option> <option value="African American">African American</option>
@@ -90,7 +89,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                       name={`nominations[${idx}].receivesLunch`}
                       componentClass="select"
                       placeholder="select"
-                      validator={requiredValidator}>
+                      validator={requiredValidator}
+                    >
                       <option value="">Select...</option>
                       <option value="true">Yes</option>
                       <option value="false">No</option>
@@ -110,9 +110,17 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                     <Input
                       label="School Name"
                       name={`nominations[${idx}].schoolName`}
-                      type="text"
+                      componentClass="select"
                       validator={requiredValidator}
-                    />
+                    >
+                      <option value="">Select...</option>
+                      {affiliations &&
+                        affiliations.map((affiliation, idx) => (
+                          <option key={`affiliation-${idx}`} value={affiliation.id}>
+                            {affiliation.name}
+                          </option>
+                        ))}
+                    </Input>
                   </Col>
                 </Row>
                 <Row>
@@ -121,7 +129,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                   </Col>
                 </Row>
                 {nominations[idx] &&
-                  nominations[idx].wantsBike &&
+                nominations[idx].wantsBike && (
                   <Row>
                     <Col xs={12}>
                       <Input
@@ -129,7 +137,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                         name={`nominations[${idx}].bikeStyle`}
                         componentClass="select"
                         placeholder="select"
-                        validator={requiredValidator}>
+                        validator={requiredValidator}
+                      >
                         <option value="select">Select...</option>
                         <option value="Trycicle">Tricycle</option>
                         <option value="Mountain">Mountain bike</option>
@@ -142,24 +151,26 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                         name={`nominations[${idx}].bikeSize`}
                         componentClass="select"
                         placeholder="select"
-                        validator={requiredValidator}>
+                        validator={requiredValidator}
+                      >
                         <option value="select">Select...</option>
                         <option value="Trycicle">Tricycle</option>
-                        <option value='12" bicycle'>{'12" bicycle'}</option>
-                        <option value='16" bicycle'>{'16" bicycle'}</option>
-                        <option value='20" coaster brake bicycle'>{'20" coaster brake bicycle'}</option>
-                        <option value='20" geared bicycle'>{'20" geared bicycle'}</option>
-                        <option value='24" geared bicycle'>{'24" geared bicycle'}</option>
+                        <option value="12&quot; bicycle">{'12" bicycle'}</option>
+                        <option value="16&quot; bicycle">{'16" bicycle'}</option>
+                        <option value="20&quot; coaster brake bicycle">{'20" coaster brake bicycle'}</option>
+                        <option value="20&quot; geared bicycle">{'20" geared bicycle'}</option>
+                        <option value="24&quot; geared bicycle">{'24" geared bicycle'}</option>
                       </Input>
                     </Col>
-                  </Row>}
+                  </Row>
+                )}
                 <Row>
                   <Col xs={12}>
                     <Checkbox name={`nominations[${idx}].wantsClothes`} label="Child wants clothes?" />
                   </Col>
                 </Row>
                 {nominations[idx] &&
-                  nominations[idx].wantsClothes &&
+                nominations[idx].wantsClothes && (
                   <Row>
                     <Col xs={12}>
                       <Input label="Shirt size" name={`nominations[${idx}].shirtSize`} />
@@ -170,7 +181,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild 
                     <Col xs={12}>
                       <Input label="Shoe size" name={`nominations[${idx}].shoeSize`} />
                     </Col>
-                  </Row>}
+                  </Row>
+                )}
                 <Row>
                   <Col xs={12}>
                     <Input

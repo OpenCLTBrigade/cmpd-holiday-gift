@@ -34,17 +34,14 @@ class UserForm extends React.Component<{
     }
   }
 
-  componentDidMount() {
-    console.log("mounted");
-    this.setState({foo: "works"});
-    console.log(this.state);
-}
-
   onReset = () => {
+    //TODO
+    this.setState({
+      user: this.props.data.user
+    })
     console.log('reset');
     console.log(this.state);
     console.log(this.props);
-    this.props.data.user = {};
   }
 
 
