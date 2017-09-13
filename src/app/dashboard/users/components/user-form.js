@@ -120,6 +120,7 @@ class UserForm extends React.Component<{
                     componentClass="select"
                     validator={requiredValidator}
                   >
+                    <option></option>
                     <option value="admin">admin</option>
                     <option value="nominator">nominator</option>
                     <option value="nominee">nominee</option>
@@ -174,6 +175,7 @@ class UserForm extends React.Component<{
                     componentClass="select"
                     validator={requiredValidator}
                   >
+                    <option></option>
                     <option value="unconfirmedEmail">No</option>
                     <option value="confirmedEmail">Yes-Confirmed</option>
                   </Input>
@@ -188,6 +190,7 @@ class UserForm extends React.Component<{
                     componentClass="select"
                     validator={requiredValidator}
                   >
+                    <option></option>
                     <option value="deactivated">No-Deactivated</option>
                     <option value="active">Yes-Active</option>
                   </Input>
