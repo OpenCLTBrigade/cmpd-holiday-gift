@@ -7,6 +7,7 @@ import PhoneNumbers from './components/phone-numbers-form';
 import ChildForm from './components/child-form';
 import { Row, Col, Button } from 'react-bootstrap';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
+import { getSchools } from 'api/affiliation';
 
 export default class NewHousehold extends React.Component<any, any> {
   static defaultProps: any;
@@ -16,7 +17,8 @@ export default class NewHousehold extends React.Component<any, any> {
     this.state = {
       household: {},
       address: {},
-      nominations: []
+      nominations: [],
+      schools: []
     };
 
     (this: any).onChange = this.onChange.bind(this);
@@ -35,6 +37,18 @@ export default class NewHousehold extends React.Component<any, any> {
     this.setState(() => {
       return { nominations };
     });
+  }
+
+  componentDidMount() {
+    const { affiliation_id } = this.props.match.params;
+    this.affiliation_id = affiliation_id;
+    getSchools()
+      .then(response => {
+        this.setState(() => ({ schools: response.items }));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   onChange(name: string, value: any) {
@@ -67,6 +81,7 @@ export default class NewHousehold extends React.Component<any, any> {
           onSubmit={this.onSubmit}
           addChild={this.addChild.bind(this)}
           removeChild={this.removeChild.bind(this)}
+          affiliations={this.state.schools}
         />
         <Row>
           <Col xs={12}>
