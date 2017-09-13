@@ -30,18 +30,14 @@ class UserForm extends React.Component<{
     super(props)
 
     this.state = {
-      user: this.props.data.user
+      user: this.props.data.user,
+      initial: this.props.data.user
     }
   }
 
   onReset = () => {
-    //TODO
-    this.setState({
-      user: this.props.data.user
-    })
-    console.log('reset');
-    console.log(this.state);
-    console.log(this.props);
+    this.props.data.user = this.state.initial;
+    this.props.validate();
   }
 
 
