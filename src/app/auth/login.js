@@ -5,9 +5,9 @@ import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import FooterLink from './components/footer-link';
 
-import LoginBox from './components/login-box';
+import FormBox from './components/form-box';
 
-import { AuthToken } from 'lib/auth';
+import { AuthToken } from '../../lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
@@ -19,15 +19,19 @@ export default class Login extends React.Component<{
   location: *,
   returnTo: ?string
 }> {
-  box: ?LoginBox;
+  box: ?FormBox;
+  justRegistered: boolean;
   render(): React.Node {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
+    const params = new URLSearchParams(this.props.location.search);
+    this.justRegistered = params.get('justRegistered') === 'true';
     return (
-      <LoginBox
+      <FormBox
         title="Log in"
         submitText="Login"
+        headerImageClass="fa fa-sign-in"
         onSubmit={this.onSubmit.bind(this)}
         ref={ref => (this.box = ref)}
         body={
@@ -66,6 +70,11 @@ export default class Login extends React.Component<{
         }
       />
     );
+  }
+  componentDidMount() {
+    if (this.justRegistered === true) {
+      (this.box: $TODO).flashErrorMessage('Check your email to continue the registration process.');
+    }
   }
 
   async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
