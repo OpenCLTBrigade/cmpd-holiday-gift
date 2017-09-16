@@ -38,9 +38,9 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   }
 
   fetchData(page: number = this.state.page, searchText: string = '') {
-    // console.log('fetchData', page, searchText);
+    console.log('fetchData', page, searchText);
     this.props.fetch(page, searchText).then(data => {
-      // console.log('results', data.items);
+      console.log('results', data.items);
       this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage });
     });
   }

@@ -1,5 +1,6 @@
 // @flow
 import { get } from 'lib/apiService';
+import { post } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type UserType = {
@@ -16,8 +17,8 @@ export type UserType = {
   confirmation_code?: string,
   email_verified: boolean,
   approved: string,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: string,
+  updatedAt: string,
   affiliation_id: number
 };
 
@@ -37,3 +38,9 @@ export function getUserList(
 export function getPendingUserList(pageNumber: number = 1, search: ?string): Promise<{ response: DataTableResponse }> {
   return get('nominations', 'users/pending', { page: pageNumber, search: search });
 }
+
+export function createUser(user: UserType): Promise<{user: UserType}> {
+  return post('auth', 'users/create', { user: user });
+}
+
+

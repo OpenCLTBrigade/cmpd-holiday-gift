@@ -4,8 +4,8 @@ import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../components/box';
 import { FormValidation } from 'neoform-validation';
 import { Form } from 'neoform';
-import Input from './form/input';
-import requiredValidator from '../validators/required.validator';
+import Input from 'app/components/input';
+import requiredValidator from 'lib/validators/required.validator';
 import Checkbox from './form/checkbox';
 
 const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild, affiliations }) => {
