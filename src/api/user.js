@@ -30,12 +30,14 @@ export function getUserList(
   pageNumber: number = 1,
   search: ?string,
   affiliation_id: ?number
-): Promise<{ response: DataTableResponse }> {
+): Promise<{ response: DataTableResponse<UserType> }> {
   pageNumber = pageNumber < 1 ? 1 : pageNumber;
   return get('nominations', 'users', { page: pageNumber, search, affiliation_id });
 }
 
-export function getPendingUserList(pageNumber: number = 1, search: ?string): Promise<{ response: DataTableResponse }> {
+export function getPendingUserList(
+  pageNumber: number = 1, search: ?string
+): Promise<{ response: DataTableResponse<UserType> }> {
   return get('nominations', 'users/pending', { page: pageNumber, search: search });
 }
 

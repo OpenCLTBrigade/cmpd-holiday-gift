@@ -9,8 +9,12 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
 
-export default class NewHousehold extends React.Component<any, any> {
-  static defaultProps: any;
+export default class NewHousehold extends React.Component<{}, {
+  household: {},
+  address: {},
+  nominations: Array<{}>,
+  schools: Array<mixed>
+}> {
   constructor() {
     super();
 
@@ -40,8 +44,6 @@ export default class NewHousehold extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    const { affiliation_id } = this.props.match.params;
-    this.affiliation_id = affiliation_id;
     getSchools()
       .then(response => {
         this.setState(() => ({ schools: response.items }));

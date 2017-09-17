@@ -19,27 +19,28 @@ async function fetchAffiliations(): Promise<AffiliationType[]> {
 }
 
 class UserForm extends React.Component<{
-  data: {user: UserType
-    },
+  data: {user: UserType},
   onSubmit: *,
   validate: *,
   onInvalid: *
+}, {
+  user: UserType
 }> {
 
-  constructor(props) {
-    super(props)
+  initial: UserType;
 
-    this.state = {
-      user: this.props.data.user,
-      initial: this.props.data.user
-    }
+  constructor(props) {
+    super(props);
+
+    this.initial = this.props.data.user;
+
+    this.state = { user: this.props.data.user };
   }
 
   onReset = () => {
-    this.props.data.user = this.state.initial;
+    this.setState({ user: this.initial });
     this.props.validate();
   }
-
 
   render(): React.Node {
 
@@ -222,7 +223,7 @@ class UserForm extends React.Component<{
                   <span></span>
                   <Button
                     bsStyle="warning"
-                    onClick={this.onReset}
+                    onClick={() => this.onReset()}
                   >Reset
                   </Button>
                 </Col>

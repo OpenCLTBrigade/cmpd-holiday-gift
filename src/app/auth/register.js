@@ -18,12 +18,16 @@ const Icon = styled.i`top: 20px !important;`;
 export default class Register extends React.Component <{
   history: *
 }, *> {
+
   box: ?FormBox;
+
   AFFILIATION_PLACEHOLDER: string;
+
   state: {
-    affiliationItems: Array<Object>,
-    affiliationList: Array<Object> // UI option elements
+    affiliationItems: Array<{}>,
+    affiliationList: Array<React.Node>
   };
+
   constructor() {
     super();
     this.AFFILIATION_PLACEHOLDER = '=== Select affiliation ===';
@@ -32,6 +36,7 @@ export default class Register extends React.Component <{
       affiliationList: []
     };
   }
+
   async fetch(): Promise<void> {
     const response: Object = await getAffiliationList();
     if (response.items == null || response.items === '' || response.items === undefined) {
@@ -40,6 +45,7 @@ export default class Register extends React.Component <{
     this.setState({ affiliationItems: response.items });
     return Promise.resolve();
   }
+
   async setAffiliationList(): Promise<void> {
     let affiliationList;
     try {
@@ -50,17 +56,19 @@ export default class Register extends React.Component <{
       );
     } catch (err) {
       console.error(err);
-      (this.box: $TODO).flashErrorMessage('Error: could not get affiliation list from server');
+      this.flashErrorMessage('Error: could not get affiliation list from server');
       return;
     }
 
     this.setState({ affiliationList: affiliationList });
     return Promise.resolve();
   }
+
   componentDidMount() {
     this.setAffiliationList();
   }
-  render(): React.Element<$TODO> {
+
+  render(): React.Node {
     return (
       <FormBox
         title="Register"
@@ -160,45 +168,47 @@ export default class Register extends React.Component <{
     password: string,
     password_confirm: string
   }): Promise<void> {
-    if (name_first == null || name_first === '' || !name_first.match('[a-zA-Z.-]{2,}')) {
-      const ERROR_MESSAGE = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
-      (this.box: $TODO).flashErrorMessage(ERROR_MESSAGE);
-      return;
-    } else if (name_last == null || name_last === '' || !name_last.match('[a-zA-Z.-]{2,}')) {
-      const ERROR_MESSAGE = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
-      (this.box: $TODO).flashErrorMessage(ERROR_MESSAGE);
-      return;
+    const validName = name => name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
+    let error = null;
+    if (!validName(name_first)) {
+      error = 'First Name must be at least two characters and only contain letters, dashes, or periods';
+    } else if (!validName(name_last)) {
+      error = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
-      (this.box: $TODO).flashErrorMessage('Affiliation is required');
-      return;
+      error = 'Affiliation is required';
     } else if (phone == null || phone === '') {
-      (this.box: $TODO).flashErrorMessage('Phone number is required');
-      return;
+      error = 'Phone number is required';
     } else if (email == null || email === '' || !email.match('[a-zA-Z.-]{2,}')) {
-      (this.box: $TODO).flashErrorMessage('Email is required, and must be in email address format (text@text.domain)');
-      return;
+      error = 'Email is required, and must be in email address format (text@text.domain)';
     } else if (password == null || password === '') {
-      (this.box: $TODO).flashErrorMessage('Password is required');
-      return;
+      error = 'Password is required';
     } else if (password_confirm == null || password_confirm === '') {
-      (this.box: $TODO).flashErrorMessage('Password confirmation is required');
-      return;
+      error = 'Password confirmation is required';
     } else if (password !== password_confirm) {
-      (this.box: $TODO).flashErrorMessage('Passwords do not match');
+      error = 'Passwords do not match';
+    }
+
+    if (error != null) {
+      this.flashErrorMessage(error);
       return;
     }
 
     try {
       const result = await register(name_first, name_last, rank, affiliation_id, email, password);
-      if (result.success === true) {
-        this.props.history.replace((this.props: $TODO).returnTo || '/auth/login?justRegistered=true');
+      if (result.success) {
+        this.props.history.replace('/auth/login?justRegistered=true');
       } else {
-        (this.box: $TODO).flashErrorMessage(result);
+        this.flashErrorMessage(result.error);
       }
     } catch (exc) {
       console.error(exc);
-      (this.box: $TODO).flashErrorMessage('Registration failed: unknown error');
+      this.flashErrorMessage('Registration failed: unknown error');
     }
   }
 
+  flashErrorMessage(msg: string) {
+    if (this.box != null) {
+      this.box.flashErrorMessage(msg);
+    }
+  }
 }

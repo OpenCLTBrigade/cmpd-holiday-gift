@@ -212,6 +212,8 @@ export async function redirectPostWithAuth(app: string, path: string): Promise<v
   form.submit();
 }
 
+type RegisterResult = {| error: string |} | {| success: true |};
+
 // Registers user after user submits information for new user in registration form
 export async function register(
     name_first: string,
@@ -220,8 +222,8 @@ export async function register(
     affiliation_id: number,
     email: string,
     password: string
-  ): Promise<{}> {
-  const res = await post('auth', 'register', {
+  ): Promise<RegisterResult> {
+  return await post('auth', 'register', {
     firstname: name_first,
     lastname: name_last,
     rank: rank,
@@ -229,11 +231,4 @@ export async function register(
     email: email,
     password: password
   });
-  if (!res.success) {
-    return res.error;
-  } else {
-    return { success: true };
-  }
 }
-
-
