@@ -1,8 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import Box from '../components/box';
 import { Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
+import Box from '../components/box';
 import { redirectPostWithAuth } from 'lib/auth';
 
 function getReport(name: string): (Event) => boolean {
@@ -43,6 +45,11 @@ export default class Home extends React.Component<{}> {
           <Col md={6}>
             <Box title="Packing Slips">
               Packing Slips
+              <ul>
+                <li>
+                  <Link to="/slips/packing" target="_blank">All packing slips</Link>
+                </li>
+              </ul>
             </Box>
           </Col>
         </Row>

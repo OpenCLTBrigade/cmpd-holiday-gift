@@ -32,6 +32,9 @@ import Dashboard from 'app/dashboard';
 import Auth from 'app/auth';
 import Restricted from 'app/components/restricted';
 import NotFound from 'notFound';
+import * as slips from 'app/slips';
+
+import { AuthToken } from 'lib/auth';
 
 class Routes extends React.Component<{}> {
   render(): React.Node {
@@ -42,6 +45,8 @@ class Routes extends React.Component<{}> {
         )}/>
         <Route path="/dashboard" component={Restricted(Dashboard)} />
         <Route path="/auth" component={Auth} />
+        { AuthToken.expired() ? null :
+          <Route path='/slips/packing' component={slips.packing} /> }
         <Route path='*' component={NotFound} />
       </Switch>
     </Router>;

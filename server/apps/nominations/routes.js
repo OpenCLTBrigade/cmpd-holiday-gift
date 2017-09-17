@@ -1,7 +1,7 @@
 // @flow
 
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation, Reports } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
 const auth = require('../lib/auth');
 
 import type { UserRequest } from '../lib/auth';
@@ -29,5 +29,8 @@ router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
 router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
 router.post('/report/division').use(auth.ensureAdmin).handleAsync(Reports.division_report);
+
+// Slips
+router.get('/slips/packing').use(auth.ensureAdmin).handleAsync(Slips.packing);
 
 module.exports = router;
