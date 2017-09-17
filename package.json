@@ -22,7 +22,10 @@
   "bin": {
     "cmpd-explorers": "server-notypes/apps/serve.js"
   },
-  "files": ["build", "server-notypes"],
+  "files": [
+    "build",
+    "server-notypes"
+  ],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "@google/maps": "^0.4.3",
@@ -80,6 +83,7 @@
     "mysql": "^2.5.5",
     "nodemailer": "^4.0.1",
     "nodemailer-ses-transport": "^1.5.1",
+    "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
     "sequelize": "^4.4.2",
     "sequelize-encrypted": "^1.0.0",
     "sqlite3": "^3.1.8",

@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import * as querystring from '../../../lib/queryString';
 import { BootstrapTable } from 'react-bootstrap-table';
 
 type PropType<Row> = {|
@@ -16,46 +17,31 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     items: Row[],
     totalSize: number,
     page: number,
-    sizePerPage: number
+    sizePerPage: number,
+    defaultPage: number
   |};
   static defaultProps = {
     pagination: true,
     search: false,
     searchPlaceholder: 'Search'
   };
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    // Looking for ?page and ?search
+    const qs: Object = querystring.parse();
+    const defaultPage: number = qs.page ? parseInt(qs.page, 10) : 1;
+    const defaultSearch: string = qs.search || '';
+
     this.state = {
       items: [],
       totalSize: 1,
       sizePerPage: 25,
-      page: 1
+      page: defaultPage,
+      defaultPage: defaultPage
     };
-  }
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData(page: number = this.state.page, searchText: string = '') {
-    console.log('fetchData', page, searchText);
-    this.props.fetch(page, searchText).then(data => {
-      console.log('results', data.items);
-      this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage });
-    });
-  }
-
-  handlePageChange = (page: number) => {
-    this.fetchData(page);
-  };
-
-  handleSearchChange = (searchText?: string) => {
-    console.log('searching for', searchText);
-    this.fetchData(this.state.page, searchText);
-  };
-
-  render(): React.Node {
-    const options = {
+    this.options = {
       sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
       pageStartIndex: 1, // where to start counting the pages
       paginationSize: 5, // the pagination bar size.
@@ -67,14 +53,44 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
       hideSizePerPage: true,
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
-      onSearchChange: this.props.search ? this.handleSearchChange.bind(this) : undefined
+      onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
+      page: defaultPage,
+      defaultSearch
     };
+  }
 
+  componentDidMount() {
+    this.fetchData().then();
+  }
+
+  fetchData(page: number = this.state.page, searchText: string = '') {
+    console.log('page', page, 'search', searchText)
+    querystring.update({ page, search: searchText });
+    return new Promise((resolve, _reject) => {
+      // console.log('fetchData', page, searchText);
+      this.props.fetch(page, searchText).then(data => {
+        // console.log('results', data.items);
+        this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage }, () => {
+          resolve();
+        });
+      });
+    });
+  }
+
+  handlePageChange = (page: number) => {
+    this.fetchData(page);
+  };
+
+  handleSearchChange = (searchText?: string) => {
+    this.fetchData(1, searchText);
+  };
+
+  render(): React.Node {
     return (
       <BootstrapTable
         data={(this.state.items: Array<any>)}
         fetchInfo={{ dataTotalSize: this.state.totalSize }}
-        options={options}
+        options={this.options}
         striped
         hover
         remote
