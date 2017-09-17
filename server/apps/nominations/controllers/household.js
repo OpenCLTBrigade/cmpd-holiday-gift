@@ -2,6 +2,7 @@
 
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
+const sequelize = require('sequelize');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
@@ -50,5 +51,42 @@ module.exports = {
     //   where: { type: 'cms' }
     // });
     res.json(household);
+  },
+
+  createHousehold: async (req: any, res: any): Promise<void> => {
+    // TODO: Check if user has reached nomination limit and reject if so
+    // TODO: Validation?
+    return sequelize.transaction((t) => {
+      db.household.create({
+        
+      });
+      // Create household record
+      // Create address record (from address{})
+      // Create phone numbers (from phoneNumbers[])
+      // Create child records (from nominations[])
+    }).then((result) => {
+      // Success. Committed.
+    }).catch((error) => {
+      // Error. Rolled back.
+    });;
   }
+
+
+  // async function register(req: Request<>, res: Response): Promise<void> {
+  //   const body: RegisterRequest = (req.body: any);
+  //   const error = await registration.steps.register(rootUrl(req), {
+  //     name_first: body.firstname,
+  //     name_last: body.lastname,
+  //     rank: body.rank,
+  //     phone: body.phone,
+  //     affiliation_id: body.affiliation,
+  //     email: body.email,
+  //     raw_password: body.password
+  //   });
+  //   if (error) {
+  //     res.json(error);
+  //   } else {
+  //     res.json({ success: true });
+  //   }
+  // }
 };
