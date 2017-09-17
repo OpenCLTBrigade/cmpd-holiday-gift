@@ -10,11 +10,10 @@ module.exports = async (db, verbose) => {
       console.log(`Seeding household ${i}`);
     }
     await db.household.create({
-      nominator_id: 1,
+      nominator_user_id: 1,
       name_first: faker.name.firstName(),
       name_middle: faker.name.firstName(),
       name_last: faker.name.lastName(),
-      nominator_user_id: 1,
       dob: faker.date.past().toString(),
       race: faker.random.arrayElement(config.raceOptions),
       gender: faker.random.arrayElement(config.genders),
