@@ -13,7 +13,8 @@ export default class NewHousehold extends React.Component<{}, {
   household: {},
   address: {},
   nominations: Array<{}>,
-  schools: Array<mixed>
+  schools: Array<mixed>,
+  phoneNumbers: Array<{}>
 }> {
   constructor() {
     super();
@@ -22,7 +23,8 @@ export default class NewHousehold extends React.Component<{}, {
       household: {},
       address: {},
       nominations: [],
-      schools: []
+      schools: [],
+      phoneNumbers: []
     };
 
     (this: any).onChange = this.onChange.bind(this);
