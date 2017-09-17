@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import * as querystring from 'querystring';
+import * as querystring from '../../../lib/queryString';
 import { BootstrapTable } from 'react-bootstrap-table';
 
 type PropType<Row> = {|
@@ -25,17 +25,20 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     search: false,
     searchPlaceholder: 'Search'
   };
-  constructor() {
-    let qs: Object = querystring.parse(window.location.search.substr(1));
-    let defaultPage: number = qs.page ? parseInt(qs.page, 10) : 1;
+  constructor(props) {
+    super(props);
 
-    super();
+    // Looking for ?page and ?search
+    const qs: Object = querystring.parse();
+    const defaultPage: number = qs.page ? parseInt(qs.page, 10) : 1;
+    const defaultSearch: string = qs.search || '';
+
     this.state = {
       items: [],
       totalSize: 1,
       sizePerPage: 25,
-      page: 1,
-      defaultPage: 1
+      page: defaultPage,
+      defaultPage: defaultPage
     };
 
     this.options = {
@@ -51,7 +54,8 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
       onPageChange: this.handlePageChange,
       searchDelayTime: 500,
       onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
-      page: defaultPage
+      page: defaultPage,
+      defaultSearch
     };
   }
 
@@ -60,6 +64,8 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   }
 
   fetchData(page: number = this.state.page, searchText: string = '') {
+    console.log('page', page, 'search', searchText)
+    querystring.update({ page, search: searchText });
     return new Promise((resolve, _reject) => {
       // console.log('fetchData', page, searchText);
       this.props.fetch(page, searchText).then(data => {
@@ -76,8 +82,7 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   };
 
   handleSearchChange = (searchText?: string) => {
-    console.log('searching for', searchText);
-    this.fetchData(this.state.page, searchText);
+    this.fetchData(1, searchText);
   };
 
   render(): React.Node {

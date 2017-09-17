@@ -1,17 +1,24 @@
-import * as queystring from 'querystring';
+// @flow
+import * as querystring from 'querystring';
 
-function parse (): Object {
+/**
+ * @return {Object}
+ */
+function parse(): Object {
   return querystring.parse(window.location.search.substr(1));
 }
 
-function update (queryParams: Object) {
-  let newUrl = `${window.location.protocol}//${window.location.hostname}?`;
+function update(queryParams: Object) {
+  let newUrl = `${window.location.pathname}?`;
 
-  let keys = Object.keys(queryParams);
-  
-  for (let key: string of keys) {
-    newUrl += `${key}=${keys[key]}&`;
+  console.log('qs');
+  const keys = Object.keys(queryParams);
+
+  for (const key: string of keys) {
+    newUrl += `${key}=${queryParams[key]}&`;
   }
 
-  window.location.replaceState({}, '', newUrl);
+  window.history.replaceState({}, '', newUrl);
 }
+
+export { parse, update };
