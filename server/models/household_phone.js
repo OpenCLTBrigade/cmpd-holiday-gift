@@ -14,6 +14,10 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       allowNull: false,
       encrypt: true
+    },
+    household_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
   },
 });

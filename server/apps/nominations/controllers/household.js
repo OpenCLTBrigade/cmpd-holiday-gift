@@ -57,18 +57,78 @@ module.exports = {
     // TODO: Check if user has reached nomination limit and reject if so
     // TODO: Validation?
     return sequelize.transaction((t) => {
-      db.household.create({
-        
-      });
+      const { household, address, phoneNumbers, nominations } = req.body;
+      const nominator = Object.assign({}, req.user);
+
       // Create household record
+      const newHousehold = db.household.create({
+        name_first: household.firstName,
+        name_last: household.lastName,
+        dob: household.dob,
+        race: household.ethnicity,
+        gender: household.gender,
+        email: household.email,
+        last4ssn: household.ssn,
+        preferred_contact_method: household.contactMethod,
+        draft: true,
+        nomination_email_sent: false,
+        reviewed: false,
+        approved: false,
+        nominator_user_id: nominator.id
+      });
+
       // Create address record (from address{})
+      db.household_address.create({
+        street: address.addressLine1,
+        street2: address.addressLine2 || '',
+        city: address.city,
+        state: address.state,
+        zip: address.zip,
+        cmpd_division: address.cmpd_division,
+        cmpd_response_area: address.cmpd_response_area,
+        type: address.deliveryAddressType,
+        household_id: newHousehold.id
+      });
+      
       // Create phone numbers (from phoneNumbers[])
+      for (const phone of phoneNumbers) {
+        db.household_phone.create({
+          number: phone.number,
+          type: phone.type,
+          household_id: newHousehold.id
+        });
+      }
+
       // Create child records (from nominations[])
+      for (const child of nominations) {
+        db.child.create({
+          name_first: child.firstName,
+          name_last: child.lastName,
+          dob: child.dob,
+          additional_ideas: child.additionalIdeas || '',
+          bike_want: child.wantsBike || false,
+          bike_size: child.bikeSize || null,
+          bike_style: child.bikeStyle || null,
+          clothes_want: child.wantsClothes || false,
+          clothes_size_shirt: child.shirtSize || null,
+          clothes_size_pants: child.pantSize || null,
+          shoe_size: child.shoeSize || null,
+          race: child.ethnicity,
+          favourite_colour: child.favoriteColor || null,
+          gender: child.gender,
+          interests: child.interests || '',
+          reason_for_nomination: child.nominationReason || '',
+          free_or_reduced_lunch: child.receivesLunch,
+          school_id: child.schoolName,
+          last4ssn: child.ssn,
+          household_id: newHousehold.id
+        });
+      }
     }).then((result) => {
       // Success. Committed.
     }).catch((error) => {
       // Error. Rolled back.
-    });;
+    });
   }
 
 
