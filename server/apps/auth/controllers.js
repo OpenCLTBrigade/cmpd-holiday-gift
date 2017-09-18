@@ -68,7 +68,15 @@ type AccessRequest = {|
 async function getToken(req: AuthRequest<UserType>, res: $Response): Promise<void> {
   const body: AccessRequest = (req.body: any);
   if (req.user && auth.userCanUseApp(req.user, body.app)) {
-    res.json({ token: auth.makeToken({ id: req.user.id }, config.jwtSecrets[body.app], config.appTokenLifetime) });
+    res.json({
+      token: auth.makeToken({
+        id: req.user.id,
+        role: req.user.role,
+        name_first: req.user.name_first,
+        name_last: req.user.name_last
+      },
+      config.jwtSecrets[body.app], config.appTokenLifetime) 
+    });
   } else {
     res.status(403).send();
   }
