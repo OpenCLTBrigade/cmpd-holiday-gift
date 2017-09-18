@@ -134,7 +134,7 @@ class UserForm extends React.Component<{
                     label="Nomiation Limit(Yearly)"
                     name={'user.nomination_limit'}
                     id="nominationLimit"
-                    type="text"
+                    type="number"
                     validator={requiredValidator}
                   />
                 </Col>
@@ -173,8 +173,8 @@ class UserForm extends React.Component<{
                     validator={requiredValidator}
                   >
                     <option></option>
-                    <option value="unconfirmedEmail">No</option>
-                    <option value="confirmedEmail">Yes-Confirmed</option>
+                    <option value="false">No</option>
+                    <option value="true">Yes-Confirmed</option>
                   </Input>
                 </Col>
               </Row>
@@ -188,8 +188,8 @@ class UserForm extends React.Component<{
                     validator={requiredValidator}
                   >
                     <option></option>
-                    <option value="deactivated">No-Deactivated</option>
-                    <option value="active">Yes-Active</option>
+                    <option value="false">No-Deactivated</option>
+                    <option value="true">Yes-Active</option>
                   </Input>
                 </Col>
               </Row>

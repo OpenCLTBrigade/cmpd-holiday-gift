@@ -82,5 +82,53 @@ module.exports = {
       res.status(404);
     }
     res.json({ data: user });
+  },
+
+  createUser: async (req: any, res: any): Promise<void> => {
+    // Must be an administrator
+    if (req.user.role !== 'admin') {
+      res.status(401);
+      res.json({ data: null });
+    }
+
+    const { user } = req.body;
+
+    if (user.password !== user.password_confirmation) {
+      res.status(401);
+      res.json({ data: null });
+    }
+
+    // Find existing user with that email address
+    const existingUser = await db.user.findOne({ where: { email: user.email } });
+    if (existingUser) {
+      res.status(400);
+      res.json({
+        data: null,
+        message: 'User already exists'
+      });
+    }
+
+    const newUser = db.user.create({
+      active: user.active,
+      affiliation_id: user.affiliation_id,
+      approved: user.approved,
+      email: user.email,
+      email_verifed: user.email_verifed,
+      name_first: user.name_first,
+      name_last: user.name_last,
+      nomination_limit: user.nomination_limit,
+      password: user.password,
+      phone: user.phone,
+      rank: user.rank,
+      role: user.role
+    }).then((createdUser: any) => {
+      res.json({ data: { user: { id: createdUser.id } } });
+    }).catch(() => {
+      res.status(500);
+      res.json({
+        data: null,
+        message: 'Could not create user. Unknown error.'
+      });
+    });
   }
 };
