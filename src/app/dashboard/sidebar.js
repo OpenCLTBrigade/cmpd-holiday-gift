@@ -69,9 +69,9 @@ export default class Sidebar extends React.Component<{}> {
           </ul> */}
           <ul className="sidebar-menu">
             <li>
-              <a>
+              <Link to="/dashboard">
                 <i className="fa fa-dashboard fa-fw" /> Dashboard
-              </a>
+              </Link>
             </li>
             <li className="treeview">
               <a onClick={this.toggleMenu}>
