@@ -10,6 +10,7 @@ import NewUser from './users/new-user';
 import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
+import ViewUser from './users/ViewUser';
 
 const ContentTitle = (): React.Node =>
   <section className="content-header">
@@ -37,6 +38,7 @@ export default class Dashboard extends React.Component<{location: mixed}> {
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
               <Route exact path="/dashboard/user/create" component={NewUser} />
+              <Route exact path="/dashboard/user/:user_id" component={ViewUser} />
             </Switch>
           </section>
         </div>
