@@ -1,4 +1,5 @@
 // @flow
+
 import { get } from 'lib/apiService';
 import { post } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
@@ -22,7 +23,13 @@ export type UserType = {
   affiliation_id: number
 };
 
-export function getUser(id: number): Promise<{ user: UserType }> {
+// TODO add missing fields
+export type AffiliationType = {
+  id: number,
+  name: string
+};
+
+export function getUser(id: number): Promise<{ user: UserType & {affiliation: AffiliationType} }> {
   return get('nominations', `/users/${id}`);
 }
 

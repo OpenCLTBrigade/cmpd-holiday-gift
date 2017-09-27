@@ -43,7 +43,7 @@ router.get('/test').handleAsync(async function (req, res) {
     ]
   });
 
-  console.log("NOPE.");
+  console.error('TODO');
   return (res.json(households));
 });
 

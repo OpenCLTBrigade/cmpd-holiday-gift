@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
-import type { UserType } from 'api/user';
 
 
 export default class NewUser extends React.Component<{}, { user: * }> {

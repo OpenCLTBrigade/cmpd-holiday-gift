@@ -1,13 +1,19 @@
+// @flow
+
 import * as React from 'react';
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Box from '../components/box';
 import { getUser } from '../../../api/user';
+import type {UserType, AffiliationType} from 'api/user';
 
+export default class ViewUser extends React.Component<{
+  match: { params: { user_id: number } }
+}, {
+  user: ?(UserType & { affiliation: AffiliationType })
+}> {
 
-export default class ViewUser extends React.Component {
-
-  constructor (props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { user: null };
   }
 
@@ -20,7 +26,7 @@ export default class ViewUser extends React.Component {
   render(): React.Node {
     const { user } = this.state;
 
-    if (user === null) {
+    if (user == null) {
       return null;
     }
 

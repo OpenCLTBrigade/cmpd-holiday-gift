@@ -108,7 +108,7 @@ module.exports = {
       });
     }
 
-    const newUser = db.user.create({
+    db.user.create({
       active: user.active,
       affiliation_id: user.affiliation_id,
       approved: user.approved,
@@ -121,11 +121,12 @@ module.exports = {
       phone: user.phone,
       rank: user.rank,
       role: user.role
-    }).then((createdUser: any) => {
+    }).then((createdUser: $TODO) => {
       res.json({ data: { user: { id: createdUser.id } } });
     }).catch(() => {
       res.status(500);
       res.json({
+        // TODO: log error
         data: null,
         message: 'Could not create user. Unknown error.'
       });

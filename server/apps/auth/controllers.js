@@ -75,7 +75,7 @@ async function getToken(req: AuthRequest<UserType>, res: $Response): Promise<voi
         name_first: req.user.name_first,
         name_last: req.user.name_last
       },
-      config.jwtSecrets[body.app], config.appTokenLifetime) 
+      config.jwtSecrets[body.app], config.appTokenLifetime)
     });
   } else {
     res.status(403).send();
