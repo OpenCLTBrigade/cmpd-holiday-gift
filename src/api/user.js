@@ -26,6 +26,10 @@ export function getUser(id: number): Promise<{ user: UserType }> {
   return get('nominations', `/users/${id}`);
 }
 
+export function getMe(): Promise<{user: userType}> {
+  return get('nominations', 'me');
+}
+
 export function getUserList(
   pageNumber: number = 1,
   search: ?string,

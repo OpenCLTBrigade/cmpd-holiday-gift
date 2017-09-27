@@ -48,6 +48,9 @@ export default class Sidebar extends React.Component<{}> {
   render(): React.Node {
     // TODO: Finish this
     // const navItems = this.menu.map(item => )
+    const { user } = this.props;
+    const isAdmin = user && user.role.toLowerCase() === 'admin';
+
     return (
       <aside className="main-sidebar">
         <section className="sidebar">
@@ -92,7 +95,7 @@ export default class Sidebar extends React.Component<{}> {
               </ul>
             </li>
 
-            <li className="treeview">
+            {isAdmin && <li className="treeview">
               <a onClick={this.toggleMenu}>
                 <i className="fa fa-users fa-fw" /> Users
                 <i className="fa fa-angle-left pull-right" />{' '}
@@ -119,7 +122,7 @@ export default class Sidebar extends React.Component<{}> {
                   </Link>
                 </li>
               </ul>
-            </li>
+            </li>}
           </ul>
         </section>
       </aside>
