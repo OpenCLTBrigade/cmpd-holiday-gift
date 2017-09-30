@@ -36,7 +36,9 @@ export default class List extends React.Component<{}> {
 
   render(): React.Node {
     return (
-      <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name">
+      <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name" ref={(table) => {
+        this.table = table;
+      }}>
         <TableHeaderColumn dataField="id" hidden isKey>
           Id
         </TableHeaderColumn>

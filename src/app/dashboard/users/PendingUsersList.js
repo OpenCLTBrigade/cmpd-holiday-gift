@@ -5,16 +5,17 @@ import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getPendingUserList as getUserList } from 'api/user';
+import { approveUser, declineUser } from '../../../api/user';
 import type { UserType } from 'api/user';
 
 const PAGE_TITLE = 'Pending Users';
 
 export default class UsersList extends React.Component<{}> {
-  actionCellFormatter(cell: any, row: UserType): React.Node {
+  actionCellFormatter = (cell: any, row: UserType): React.Node => {
     return (
       <div>
-        <button className="btn btn-sm btn-success">Approve</button>
-        <button className="btn btn-sm btn-danger">Decline</button>
+        <button className="btn btn-sm btn-success" onClick={() => this.onClickApprove(row)} >Approve</button>
+        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDecline(row)}>Decline</button>
       </div>
     );
   }
@@ -27,12 +28,40 @@ export default class UsersList extends React.Component<{}> {
     return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
   }
 
+  onClickApprove = (user) => {
+    approveUser(user.id).then((response) => {
+      if (response.data === true) {
+        this.table.handlePageChange(1);
+      } else {
+        alert('An error occured while approving the user. Please try again.');
+      }
+    }).catch((err) => {
+      alert('An error occured while approving the user. Please try again.');
+      console.log(err);
+    });
+  }
+
+  onClickDecline = (user) => {
+    declineUser(user.id).then((response) => {
+      if (response.data === true) {
+        this.table.handlePageChange(1);
+      } else {
+        alert('An error occured while declining the user. Please try again.');
+      }
+    }).catch((err) => {
+      alert('An error occured while declining the user. Please try again.');
+      console.log(err);
+    });
+  }
+
   render(): React.Node {
     return (
       <Row>
         <Col xs={12}>
           <Box title={PAGE_TITLE}>
-            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name">
+            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name" ref={(table) => {
+              this.table = table;
+            }}>
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
