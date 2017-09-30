@@ -30,9 +30,7 @@ export default class List extends React.Component<{}> {
   
   constructor(props) {
     super(props);
-    this.state = {
-      currentPage: 1
-    };
+    this.currentPage = 1;
   }
 
   uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Node {
@@ -55,7 +53,7 @@ export default class List extends React.Component<{}> {
   }
 
   reviewCellFormatter = (cell, row: HouseholdType): React.Node => {
-    const { currentPage } = this.state;
+    const { currentPage } = this;
     return (
       <div>
         <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
@@ -69,7 +67,7 @@ export default class List extends React.Component<{}> {
     page: number,
     search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
-    this.setState({ currentPage: page }); // Used for refreshing list when submitting feedback
+    this.currentPage = page; // Used for refreshing list when submitting feedback
     const response: Object = await getHouseholdList(page, search);
     return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
