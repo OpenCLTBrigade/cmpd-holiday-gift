@@ -49,6 +49,11 @@ export default class Sidebar extends React.Component<{}> {
     // TODO: Finish this
     // const navItems = this.menu.map(item => )
     const { user } = this.props;
+    
+    if (!user) { 
+      return null;
+    }
+    console.log('user', user);
     const isAdmin = user && user.role.toLowerCase() === 'admin';
 
     return (
