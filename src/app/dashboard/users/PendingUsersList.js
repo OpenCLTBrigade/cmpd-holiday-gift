@@ -6,16 +6,32 @@ import Box from '../components/box';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getPendingUserList as getUserList } from 'api/user';
 import { approveUser, declineUser } from '../../../api/user';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import type { UserType } from 'api/user';
 
 const PAGE_TITLE = 'Pending Users';
+
+const StyledButton = styled.button`
+margin-right: 5px;
+`;
+
+const StyledLink = styled(Link)`
+margin-right: 5px;
+`;
+
+const TD_STYLE_LG = {
+  'min-width': '200px',
+  'width': '200px'
+};
 
 export default class UsersList extends React.Component<{}> {
   actionCellFormatter = (cell: any, row: UserType): React.Node => {
     return (
       <div>
-        <button className="btn btn-sm btn-success" onClick={() => this.onClickApprove(row)} >Approve</button>
-        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDecline(row)}>Decline</button>
+        <StyledLink className="btn btn-sm btn-default" to={`/dashboard/user/${row.id}`}>Show</StyledLink>
+        <StyledButton className="btn btn-sm btn-success" onClick={() => this.onClickApprove(row)} >Approve</StyledButton>
+        <StyledButton className="btn btn-sm btn-danger" onClick={() => this.onClickDecline(row)}>Decline</StyledButton>
       </div>
     );
   }
@@ -75,7 +91,7 @@ export default class UsersList extends React.Component<{}> {
               <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.name}>
                 Location
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
+              <TableHeaderColumn tdStyle={TD_STYLE_LG} thStyle={TD_STYLE_LG} dataField="id" dataFormat={this.actionCellFormatter}>
                 Actions
               </TableHeaderColumn>
             </DataTable>
