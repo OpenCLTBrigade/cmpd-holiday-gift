@@ -12,8 +12,21 @@ const TD_STYLE = {
  };
 
 export default class List extends React.Component<{}> {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 1
+    };
+  }
+
   uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Node {
     return <i className="fa fa-check" />;
+  }
+
+  // Called by householdIndex when FeedbackModal is closed
+  handlePageChange(pageNumber) {
+    this.table.handlePageChange(pageNumber);
   }
 
   actionCellFormatter(_cell: any, _row: HouseholdType): React.Node {
@@ -26,10 +39,22 @@ export default class List extends React.Component<{}> {
     );
   }
 
+  reviewCellFormatter = (cell, row: HouseholdType): React.Node => {
+    const { currentPage } = this.state;
+    return (
+      <div>
+        <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
+          Review
+        </button>
+      </div>
+    );
+  }
+
   async fetch(
     page: number,
     search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
+    this.setState({ currentPage: page }); // Used for refreshing list when submitting feedback
     const response: Object = await getHouseholdList(page, search);
     return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
@@ -55,7 +80,9 @@ export default class List extends React.Component<{}> {
         <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
           Actions
         </TableHeaderColumn>
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="surname">Review</TableHeaderColumn>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="surname" dataFormat={this.reviewCellFormatter}>
+          Review
+        </TableHeaderColumn>
       </DataTable>
     );
   }
