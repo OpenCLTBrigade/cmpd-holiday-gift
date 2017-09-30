@@ -2,20 +2,22 @@
 import * as React from 'react';
 
 import HouseholdForm from './components/household-form';
-import AddressForm from './components/address-form';
-import PhoneNumbers from './components/phone-numbers-form';
-import ChildForm from './components/child-form';
-import { Row, Col, Button } from 'react-bootstrap';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
+import { createHousehold } from 'api/household';
 
-export default class NewHousehold extends React.Component<{}, {
-  household: {},
-  address: {},
-  nominations: Array<{}>,
-  schools: Array<mixed>,
-  phoneNumbers: Array<{}>
-}> {
+export default class NewHousehold
+    extends React.Component<
+        {},
+        {
+            household: {},
+            address: {},
+            nominations: Array<{}>,
+            schools: Array<mixed>,
+            phoneNumbers: Array<{}>,
+            saved: false
+        }
+    > {
   constructor() {
     super();
 
@@ -24,11 +26,12 @@ export default class NewHousehold extends React.Component<{}, {
       address: {},
       nominations: [],
       schools: [],
-      phoneNumbers: []
-    };
+      phoneNumbers: [],
+      saved: false
+    }
 
-    (this: any).onChange = this.onChange.bind(this);
-    (this: any).onSubmit = this.onSubmit.bind(this);
+        ;(this: any).onChange = this.onChange.bind(this)
+        ;(this: any).onSubmit = this.onSubmit.bind(this);
   }
 
   addChild() {
@@ -47,12 +50,12 @@ export default class NewHousehold extends React.Component<{}, {
 
   componentDidMount() {
     getSchools()
-      .then(response => {
-        this.setState(() => ({ schools: response.items }));
-      })
-      .catch(err => {
-        console.log(err);
-      });
+            .then(response => {
+              this.setState(() => ({ schools: response.items }));
+            })
+            .catch(err => {
+              console.log(err);
+            });
   }
 
   onChange(name: string, value: any) {
@@ -67,32 +70,24 @@ export default class NewHousehold extends React.Component<{}, {
     console.log('onInvalid');
   }
 
-  onSubmit(e: Event) {
-    e.preventDefault();
-    console.log(this.state);
+  onSubmit() {
+    createHousehold(this.state).then(() => this.setState({ saved: true }));
   }
 
   render(): React.Node {
     return (
-      <div>
-        <HouseholdForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
-        <AddressForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
-        <PhoneNumbers data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
-        <ChildForm
-          data={this.state}
-          getValue={getValue}
-          onChange={this.onChange}
-          onSubmit={this.onSubmit}
-          addChild={this.addChild.bind(this)}
-          removeChild={this.removeChild.bind(this)}
-          affiliations={this.state.schools}
-        />
-        <Row>
-          <Col xs={12}>
-            <Button>Save Draft</Button>
-          </Col>
-        </Row>
-      </div>
+            <div>
+                <HouseholdForm
+                    data={this.state}
+                    getValue={getValue}
+                    onChange={this.onChange}
+                    onSubmit={this.onSubmit}
+                    addChild={this.addChild.bind(this)}
+                    removeChild={this.removeChild.bind(this)}
+                    affiliations={this.state.schools}
+                    saved={this.state.saved}
+                />
+            </div>
     );
   }
 }

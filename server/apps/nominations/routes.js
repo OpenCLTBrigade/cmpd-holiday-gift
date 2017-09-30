@@ -13,6 +13,7 @@ const router: Router<UserRequest<>> = new Router();
 // Households
 router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
 router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
+router.post('/households').use(auth.ensureAdmin).handleAsync(Household.createHousehold);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);

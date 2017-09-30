@@ -1,24 +1,17 @@
 // @flow
 import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-import Box from '../../components/box';
-import { FormValidation } from 'neoform-validation';
-import { Form } from 'neoform';
+import Box from '../../../components/box';
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
-import Checkbox from './form/checkbox';
+import Checkbox from './checkbox';
 
-const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild, affiliations }) => {
-  const { nominations } = data;
+const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
+  console.log(affiliations);
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        validate(onSubmit, onInvalid);
-      }}
-    >
-      {nominations.map((row, idx) => {
+    <div>
+      {nominations && nominations.map((row, idx) => {
         return (
           <Row key={`nominations${idx}`}>
             <Col xs={12}>
@@ -237,8 +230,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
           </Box>
         </Col>
       </Row>
-    </form>
+    </div>
   );
 };
 
-export default Form(FormValidation(ChildForm));
+export default ChildForm;

@@ -1,10 +1,8 @@
 // @flow
 import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form } from 'neoform';
-import { FormValidation } from 'neoform-validation';
 
-import Box from '../../components/box';
+import Box from '../../../components/box';
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
 
@@ -13,9 +11,8 @@ import { createClient } from '@google/maps';
 declare var process: {env: {REACT_APP_GOOGLE_MAPS_API_KEY?: string}};
 
 const googleMaps = createClient({ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
-//const googleMaps = createClient({ key: 'AIzaSyDWh6KPo-ZLszznFlFRzce_XsIv2nZ2YXY' });
 
-class AddressForm extends React.Component<{| onSubmit: *, validate: *, onInvalid: * |}> {
+class AddressForm extends React.Component<{}> {
   addressRefs: {
     city?: ?HTMLInputElement,
     state?: ?HTMLInputElement,
@@ -69,12 +66,7 @@ class AddressForm extends React.Component<{| onSubmit: *, validate: *, onInvalid
 
   render(): React.Node {
     return (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          this.props.validate(this.props.onSubmit, this.props.onInvalid);
-        }}
-      >
+      <div>
         <Row>
           <Col xs={12}>
             <Box title="Delivery Address" bsStyle="danger">
@@ -154,9 +146,9 @@ class AddressForm extends React.Component<{| onSubmit: *, validate: *, onInvalid
             </Box>
           </Col>
         </Row>
-      </form>
+      </div>
     );
   }
 }
 
-export default Form(FormValidation(AddressForm));
+export default AddressForm;

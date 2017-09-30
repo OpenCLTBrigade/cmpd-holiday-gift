@@ -56,12 +56,14 @@ module.exports = {
   createHousehold: async (req: any, res: any): Promise<void> => {
     // TODO: Check if user has reached nomination limit and reject if so
     // TODO: Validation?
-    return sequelize.transaction((t) => {
+
+    return db.sequelize.transaction(async (t) => {
       const { household, address, phoneNumbers, nominations } = req.body;
       const nominator = Object.assign({}, req.user);
 
+      console.log('creating household');
       // Create household record
-      const newHousehold = db.household.create({
+      const newHousehold = await db.household.create({
         name_first: household.firstName,
         name_last: household.lastName,
         dob: household.dob,
@@ -77,6 +79,8 @@ module.exports = {
         nominator_user_id: nominator.id
       });
 
+      console.log('creating household_address');
+
       // Create address record (from address{})
       db.household_address.create({
         street: address.addressLine1,
@@ -86,12 +90,12 @@ module.exports = {
         zip: address.zip,
         cmpd_division: address.cmpd_division,
         cmpd_response_area: address.cmpd_response_area,
-        type: address.deliveryAddressType,
+        type: address.deliveryAddressType || '',
         household_id: newHousehold.id
       });
-      
-      // Create phone numbers (from phoneNumbers[])
+
       for (const phone of phoneNumbers) {
+        console.log('creating household_phone');
         db.household_phone.create({
           number: phone.number,
           type: phone.type,
@@ -99,8 +103,11 @@ module.exports = {
         });
       }
 
+
       // Create child records (from nominations[])
       for (const child of nominations) {
+        console.log('creating child');
+
         db.child.create({
           name_first: child.firstName,
           name_last: child.lastName,
@@ -125,9 +132,12 @@ module.exports = {
         });
       }
     }).then((result) => {
+      res.sendStatus(200);
       // Success. Committed.
     }).catch((error) => {
       // Error. Rolled back.
+      console.log(error)
+      res.sendStatus(500);
     });
   }
 
