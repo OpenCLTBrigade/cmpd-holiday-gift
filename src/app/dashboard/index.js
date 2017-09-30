@@ -11,19 +11,37 @@ import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
 import ViewUser from './users/ViewUser';
+import { getMe } from '../../api/user';
 
 const ContentTitle = (): React.Node =>
   <section className="content-header">
     <h1>Header</h1>
   </section>;
 
-export default class Dashboard extends React.Component<{location: mixed}> {
+export default class Dashboard extends React.Component<{location: mixed}, {user: any}> {
   // TODO: Return AdminLTE base template and register sub-routes here
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+  }
+
+  componentDidMount() {
+    getMe().then(response => {
+      let s = { ...this.state };
+      s.user = response.data;
+      this.setState(s);
+    });
+  }
+
   render(): React.Node {
+    const { user } = this.state;
+
     return (
       <div className="wrapper">
-        <Header />
-        <Sidebar />
+        <Header user={ user } />
+        <Sidebar user={ user }/>
         <div className="content-wrapper">
           <ContentTitle />
           <section className="content">
