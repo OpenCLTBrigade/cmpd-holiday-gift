@@ -46,7 +46,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
           <ContentTitle />
           <section className="content">
             <Switch location={this.props.location}>
-              <Route exact path="/dashboard" component={Home} />
+              <Route exact path="/dashboard" component={() => <Home user={user}/>} />
               {/* TODO: Finish routes */}
               <Route exact path="/dashboard/household" component={HouseholdIndex} />
               <Route exact path="/dashboard/household/create" component={NewHousehold} />

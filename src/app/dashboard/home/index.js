@@ -16,6 +16,12 @@ function getReport(name: string): (Event) => boolean {
 
 export default class Home extends React.Component<{}> {
   render(): React.Node {
+    const { user } = this.props;
+    
+    if (!user || user.role !== 'admin') {
+      return null;
+    }
+
     return (
       <div>
         {/* Quick Overview */}
