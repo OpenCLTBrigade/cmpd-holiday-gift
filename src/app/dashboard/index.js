@@ -6,11 +6,10 @@ import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
 import NewHousehold from './household/new-household';
-import NewUser from './users/new-user';
 import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
-import ViewUser from './users/ViewUser';
+import { NewUser, ViewUser, EditUser } from './users';
 import { getMe } from '../../api/user';
 
 const ContentTitle = (): React.Node =>
@@ -56,6 +55,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
               <Route exact path="/dashboard/user/create" component={NewUser} />
+              <Route exact path="/dashboard/user/:user_id/edit" component={EditUser} />
               <Route exact path="/dashboard/user/:user_id" component={ViewUser} />
             </Switch>
           </section>

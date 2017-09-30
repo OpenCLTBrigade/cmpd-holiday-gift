@@ -2,10 +2,12 @@
 
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
+const auth = require('../../lib/auth');
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AdminRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
+
 
 const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
@@ -125,7 +127,7 @@ module.exports = {
       nomination_limit: user.nomination_limit,
       email_verifed: user.email_verifed,
       approved: user.approved,
-      password: user.password,
+      password: auth.hashPassword(user.password),
       affiliation_id: user.affiliation_id,
     }).then((createdUser) => {
       console.log('made a user!', createdUser);
@@ -156,7 +158,7 @@ module.exports = {
       res.status(401);
       res.json({ data: null, message: 'Passwords do not match' });
     }
-    
+
     // Find existing user with that id
     const existingUser = await db.user.findOne({ where: { id: req.params.id } });
     if (!existingUser) {
@@ -167,7 +169,7 @@ module.exports = {
       });
     }
 
-    existingUser.update({
+    let newData = {
       name_first: user.name_first,
       name_last: user.name_last,
       role: user.role,
@@ -178,15 +180,21 @@ module.exports = {
       nomination_limit: user.nomination_limit,
       email_verifed: user.email_verifed,
       approved: user.approved,
-      password: user.password,
-      affiliation_id: user.affiliation_id,
-    }).then(() => {
+      affiliation_id: user.affiliation_id
+    };
+
+    if (user.password && user.password != null) {
+      newData.password = auth.hashPassword(user.password);
+    }
+
+    existingUser.update(newData).then(() => {
       res.json({ data: true });
-    }).catch(() => {
+    }).catch((err) => {
       res.status(500);
       res.json({
         data: null,
-        message: 'Could not update user. Unknown error.'
+        message: 'Could not update user. Unknown error.',
+        error: err
       });
     });
   }

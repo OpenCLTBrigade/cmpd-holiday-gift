@@ -18,6 +18,9 @@ export default class UsersList extends React.Component<{}> {
         <Link to={`/dashboard/user/${row.id}`}>
           <button className="btn btn-sm btn-primary">Show</button>
         </Link>
+        <Link to={`/dashboard/user/${row.id}/edit`}>
+          <button className="btn btn-sm btn-default">Edit</button>
+        </Link>
       </div>
     );
   }

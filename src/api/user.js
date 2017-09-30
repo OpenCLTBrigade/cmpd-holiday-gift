@@ -1,7 +1,6 @@
 // @flow
 
-import { get } from 'lib/apiService';
-import { post } from 'lib/apiService';
+import { get, post, put } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type UserType = {
@@ -56,4 +55,6 @@ export function createUser(user: UserType): Promise<{user: UserType}> {
   return post('nominations', 'users', { user: user });
 }
 
-
+export function updateUser(user: UserType): Promise<{user: UserType}> {
+  return put('nominations', `users/${user.id}`, { user: user });
+}
