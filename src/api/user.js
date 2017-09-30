@@ -53,7 +53,7 @@ export function getPendingUserList(
 }
 
 export function createUser(user: UserType): Promise<{user: UserType}> {
-  return post('auth', 'users/create', { user: user });
+  return post('nominations', 'users', { user: user });
 }
 
 

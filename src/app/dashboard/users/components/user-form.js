@@ -14,7 +14,7 @@ import type { UserType } from 'api/user';
 
 async function fetchAffiliations(): Promise<AffiliationType[]> {
   const response: Object = await getAffiliationList(0, null);
-  console.log(response.items);
+  // console.log(response.items);
   return response.items;
 }
 
@@ -168,7 +168,7 @@ class UserForm extends React.Component<{
                   <Input
                     value={'user.email_verified'}
                     label="Confirmed Email Address"
-                    name={'user.email_verifed'}
+                    name={'user.email_verified'}
                     componentClass="select"
                     validator={requiredValidator}
                   >

@@ -103,7 +103,7 @@ module.exports = {
       res.status(401);
       res.json({ data: null });
     }
-
+    console.log('start');
     // Find existing user with that email address
     const existingUser = await db.user.findOne({ where: { email: user.email } });
     if (existingUser) {
@@ -115,19 +115,20 @@ module.exports = {
     }
 
     db.user.create({
-      active: user.active,
-      affiliation_id: user.affiliation_id,
-      approved: user.approved,
-      email: user.email,
-      email_verifed: user.email_verifed,
       name_first: user.name_first,
       name_last: user.name_last,
-      nomination_limit: user.nomination_limit,
-      password: user.password,
-      phone: user.phone,
+      role: user.role,
       rank: user.rank,
-      role: user.role
-    }).then((createdUser: $TODO) => {
+      phone: user.phone,
+      email: user.email,
+      active: user.active,
+      nomination_limit: user.nomination_limit,
+      email_verifed: user.email_verifed,
+      approved: user.approved,
+      password: user.password,
+      affiliation_id: user.affiliation_id,
+    }).then((createdUser) => {
+      console.log('made a user!', createdUser);
       res.json({ data: { user: { id: createdUser.id } } });
     }).catch(() => {
       res.status(500);

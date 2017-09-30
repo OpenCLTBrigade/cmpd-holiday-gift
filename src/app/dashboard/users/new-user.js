@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
+import {createUser} from '../../../api/user'
 
 
 export default class NewUser extends React.Component<{}, { user: * }> {
@@ -18,22 +19,23 @@ export default class NewUser extends React.Component<{}, { user: * }> {
         email: '',
         active: '',
         nomination_limit: '',
-        confirmation_email: '',
-        confirmation_code: '',
         email_verified: '',
         approved: '',
         createdAt: '',
         updatedAt: '',
-        affiliation_id: ''
-      }
+        password: '',
+        affiliation_id: '',
+        password_confirmation: ''
+      },
+      saving: false
     };
   }
 
-  onChange(name: string, value: any) {
+  onChange = (name: string, value: any) => {
     this.setState(prevState => {
       const newState = setValue(prevState, name, value);
 
-      console.log('onChange: ' + JSON.stringify(newState));
+      // console.log('onChange: ' + JSON.stringify(newState));
       return newState;
     });
   }
@@ -42,22 +44,41 @@ export default class NewUser extends React.Component<{}, { user: * }> {
     console.log('onInvalid');
   }
 
-  onSubmit() {
+  onSubmit = () => {
     // TODO
     // e.preventDefault();
-    console.log('onSubmit: ');
-    console.log(this.state);
+    if (this.state.saving === true) {
+      return;
+    }
+
+    this.setState({ saving: true }, () => {
+      createUser(this.state.user).then((response) => {
+        if (response.data == null) {
+          alert(response.message);
+        } else {
+          alert('User has been created');
+        }
+        this.setState({ saving: false }, () => {
+          window.location = '/dashboard/user';
+        });
+      }).catch(() => {
+        alert('Could not save user. An unknown error has occured.');
+      });
+    })
   }
 
   render(): React.Node {
+    if (this.state.saving) {
+      return <div>Saving...</div>;
+    }
 
     return (
       <div>
         <UserForm
             data={this.state}
             getValue={getValue}
-            onChange={this.onChange.bind(this)}
-            onSubmit={this.onSubmit.bind(this)}
+            onChange={this.onChange}
+            onSubmit={this.onSubmit}
         />
       </div>
     );
