@@ -6,6 +6,11 @@ import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getHouseholdList } from 'api/household';
 import type { HouseholdType } from 'api/household';
 
+const TD_STYLE = { 
+  'min-width': '150px',
+  'width': '150px'
+ };
+
 export default class List extends React.Component<{}> {
   uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Node {
     return <i className="fa fa-check" />;
@@ -26,7 +31,7 @@ export default class List extends React.Component<{}> {
     search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
     const response: Object = await getHouseholdList(page, search);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
 
   render(): React.Node {
@@ -35,20 +40,20 @@ export default class List extends React.Component<{}> {
         <TableHeaderColumn dataField="id" hidden isKey>
           Id
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
         {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}
-        <TableHeaderColumn dataField="nominator" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Nominated by
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
           Uploaded Form
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
           Actions
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="surname">Review</TableHeaderColumn>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="surname">Review</TableHeaderColumn>
       </DataTable>
     );
   }

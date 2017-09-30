@@ -8,6 +8,10 @@ import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getAffiliationList } from 'api/affiliation';
 import type { AffiliationType } from 'api/affiliation';
 
+const TD_STYLE = { 
+  'min-width': '150px',
+  'width': '150px'
+ };
 export default class AffiliationList extends React.Component<{}> {
   actionCellFormatter(_cell: any, row: AffiliationType): React.Node {
     return (
@@ -37,9 +41,9 @@ export default class AffiliationList extends React.Component<{}> {
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="phone">Phone</TableHeaderColumn>
-              <TableHeaderColumn
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="name">Name</TableHeaderColumn>
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="phone">Phone</TableHeaderColumn>
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE}
                 dataField="address_street"
                 dataFormat={(cell, row) =>
                   `${row.address_street} ${row.address_street2 != null
@@ -48,7 +52,7 @@ export default class AffiliationList extends React.Component<{}> {
               >
                 Address
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
                 Actions
               </TableHeaderColumn>
             </DataTable>

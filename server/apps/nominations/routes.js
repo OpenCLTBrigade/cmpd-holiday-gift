@@ -18,7 +18,9 @@ router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).ha
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
 router.get('/users/pending').use(auth.ensureAdmin).handleAsync(User.listPendingUsers);
 router.get('/users').use(auth.ensureAdmin).handleAsync(User.list);
-router.get('/users/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsync(User.getUser);
+router.post('/users').use(auth.ensureAdmin).handleAsync(User.createUser);
+router.put('/users/:id').use(auth.ensureAdmin).handleAsync(User.updateUser);
+router.get('/users/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(User.getUser);
 
 // Affiliations
 router.get('/affiliations').handleAsync(Affiliation.list);
@@ -42,7 +44,7 @@ router.get('/test').handleAsync(async function (req, res) {
     ]
   });
 
-  console.log("NOPE.");
+  console.error('TODO');
   return (res.json(households));
 });
 

@@ -18,7 +18,9 @@ export type UserType = {
   id: number,
   approved: boolean,
   active: boolean,
-  role: RoleType
+  role: RoleType,
+  name_first: string,
+  name_last: string
 };
 
 export type LoggedInUser = UserType & { approved: true, active: true };

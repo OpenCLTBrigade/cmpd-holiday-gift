@@ -90,7 +90,7 @@ module.exports = Sequelize => ({
     phone_numbers: {
       type: Sequelize.VIRTUAL,
       get: function () {
-        return this.phones.map(phone => phone.number).join(', ');
+        return this.phones && this.phones.map(phone => phone.number).join(', ');
       }
     }
   },
