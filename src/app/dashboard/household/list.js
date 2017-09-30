@@ -3,13 +3,28 @@ import * as React from 'react';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
+import styled from 'styled-components';
 import { getHouseholdList } from 'api/household';
 import type { HouseholdType } from 'api/household';
 
-const TD_STYLE = { 
+const TD_STYLE_LARGE = { 
+  'min-width': '175px',
+  'width': '175px'
+ };
+
+ const TD_STYLE = { 
   'min-width': '150px',
   'width': '150px'
  };
+
+ const TD_STYLE_SMALL = { 
+  'min-width': '75px',
+  'width': '75px'
+ };
+
+ const StyledButton = styled.button`
+  margin-right: 5px;
+ `;
 
 export default class List extends React.Component<{}> {
   
@@ -32,9 +47,9 @@ export default class List extends React.Component<{}> {
   actionCellFormatter(_cell: any, _row: HouseholdType): React.Node {
     return (
       <div>
-        <button className="btn btn-sm btn-primary">Show</button>
-        <button className="btn btn-sm btn-info">Edit</button>
-        <button className="btn btn-sm btn-danger">Delete</button>
+        <StyledButton className="btn btn-sm btn-primary">Show</StyledButton>
+        <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
+        <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton>
       </div>
     );
   }
@@ -74,13 +89,13 @@ export default class List extends React.Component<{}> {
         <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Nominated by
         </TableHeaderColumn>
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
-          Uploaded Form
+        <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
+          Form
         </TableHeaderColumn>
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
+        <TableHeaderColumn tdStyle={TD_STYLE_LARGE} thStyle={TD_STYLE_LARGE} dataField="id" dataFormat={this.actionCellFormatter}>
           Actions
         </TableHeaderColumn>
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="surname" dataFormat={this.reviewCellFormatter}>
+        <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="surname" dataFormat={this.reviewCellFormatter}>
           Review
         </TableHeaderColumn>
       </DataTable>
