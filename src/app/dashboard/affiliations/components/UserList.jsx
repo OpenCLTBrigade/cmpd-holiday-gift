@@ -10,6 +10,10 @@ type PropsType = {
   affiliation_id: ?number
 };
 
+const TD_STYLE = { 
+  'min-width': '150px',
+  'width': '150px'
+ };
 export default class UserList extends React.Component<PropsType> {
 
 
@@ -42,10 +46,10 @@ export default class UserList extends React.Component<PropsType> {
         <TableHeaderColumn dataField="id" hidden isKey>
           Id
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="name_last">Last Name</TableHeaderColumn>
-        <TableHeaderColumn dataField="name_first">First Name</TableHeaderColumn>
-        <TableHeaderColumn dataField="email">Email</TableHeaderColumn>
-        <TableHeaderColumn dataField="phone">Phone</TableHeaderColumn>
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_last">Last Name</TableHeaderColumn>
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_first">First Name</TableHeaderColumn>
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="email">Email</TableHeaderColumn>
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="phone">Phone</TableHeaderColumn>
         <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>
           Actions
         </TableHeaderColumn>

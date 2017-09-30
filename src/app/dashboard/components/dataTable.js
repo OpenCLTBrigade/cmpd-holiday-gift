@@ -107,6 +107,8 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
         pagination={this.props.pagination}
         search={this.props.search}
         searchPlaceholder={this.props.searchPlaceholder}
+        containerClass='table-responsive'
+        tableContainerClass='table-responsive'
       >
         {this.props.children}
       </BootstrapTable>
