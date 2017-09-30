@@ -28,7 +28,7 @@ export default class UserList extends React.Component<PropsType> {
     search: ?string
   ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
     const response: Object = await getUserList(page, search, this.props.affiliation_id);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
 
   render(): React.Node {

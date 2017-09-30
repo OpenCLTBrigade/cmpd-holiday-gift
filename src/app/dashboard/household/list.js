@@ -26,7 +26,7 @@ export default class List extends React.Component<{}> {
     search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
     const response: Object = await getHouseholdList(page, search);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
 
   render(): React.Node {

@@ -52,7 +52,7 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     this.state = {
       items: [],
       totalSize: 1,
-      sizePerPage: 25,
+      sizePerPage: 10,
       page: defaultPage,
       defaultPage: defaultPage
     };
@@ -79,7 +79,8 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
       // console.log('fetchData', page, searchText);
       this.props.fetch(page, searchText).then(data => {
         // console.log('results', data.items);
-        this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.sizePerPage }, () => {
+        this.options.sizePerPage = data.per_page;
+        this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.per_page }, () => {
           resolve();
         });
       });

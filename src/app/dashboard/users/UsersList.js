@@ -22,12 +22,9 @@ export default class UsersList extends React.Component<{}> {
     );
   }
 
-  async fetch(
-    page: number,
-    search: ?string
-  ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
-    const response: Object = await getUserList(page, search);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+  async fetch(page: number, search: ?string) {
+    const response = await getUserList(page, search);
+    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
 
   render(): React.Node {
@@ -35,7 +32,7 @@ export default class UsersList extends React.Component<{}> {
       <Row>
         <Col xs={12}>
           <Box title={PAGE_TITLE}>
-            <DataTable search={true} fetch={this.fetch} searchPlaceholder="Filter by last name">
+            <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Filter by last name">
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
