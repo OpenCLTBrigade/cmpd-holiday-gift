@@ -10,10 +10,11 @@ import type { UserType } from 'api/user';
 const PAGE_TITLE = 'Pending Users';
 
 export default class UsersList extends React.Component<{}> {
-  actionCellFormatter(_cell: any, _row: UserType): React.Node {
+  actionCellFormatter(cell: any, row: UserType): React.Node {
     return (
       <div>
-        <button className="btn btn-sm btn-primary">Show</button>
+        <button className="btn btn-sm btn-success">Approve</button>
+        <button className="btn btn-sm btn-danger">Decline</button>
       </div>
     );
   }

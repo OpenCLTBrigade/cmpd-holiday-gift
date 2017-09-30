@@ -197,5 +197,75 @@ module.exports = {
         error: err
       });
     });
+  },
+
+  approveUser: async (req: any, res: any): Promise<void> => {
+    // Must be an administrator
+    if (req.user.role !== 'admin') {
+      res.status(401);
+      res.json({ data: null });
+    }
+
+    // Find existing user with that id
+    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    if (!existingUser) {
+      res.status(404);
+      res.json({
+        data: null,
+        message: 'User not found'
+      });
+    }
+
+    existingUser.update({
+      active: true,
+      approved: true
+    }).then(() => {
+      res.json({
+        data: true,
+        message: '',
+        error: null
+      });
+    }).catch((err) => {
+      res.json({
+        data: false,
+        message: 'Could not update user.',
+        error: err
+      });
+    });
+  },
+
+  declineUser: async (req: any, res: any): Promise<void> => {
+    // Must be an administrator
+    if (req.user.role !== 'admin') {
+      res.status(401);
+      res.json({ data: null });
+    }
+
+    // Find existing user with that id
+    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    if (!existingUser) {
+      res.status(404);
+      res.json({
+        data: false,
+        message: 'User not found'
+      });
+    }
+
+    existingUser.update({
+      active: false,
+      approved: false
+    }).then(() => {
+      res.json({
+        data: true,
+        message: '',
+        error: null
+      });
+    }).catch((err) => {
+      res.json({
+        data: false,
+        message: 'Could not update user.',
+        error: err
+      });
+    });
   }
 };
