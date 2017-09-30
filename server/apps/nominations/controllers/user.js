@@ -138,5 +138,56 @@ module.exports = {
         message: 'Could not create user. Unknown error.'
       });
     });
+  },
+
+  /**
+   * Edit / Update user
+   */
+  updateUser: async (req: any, res: any): Promise<void> => {
+    // Must be an administrator OR the current logged in user (editing themselves)
+    if (req.user.role !== 'admin' && req.user.id !== req.params.id) {
+      res.status(401);
+      res.json({ data: null });
+    }
+
+    const { user } = req.body;
+
+    if (user.password && user.password !== user.password_confirmation) {
+      res.status(401);
+      res.json({ data: null, message: 'Passwords do not match' });
+    }
+    
+    // Find existing user with that id
+    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    if (!existingUser) {
+      res.status(404);
+      res.json({
+        data: null,
+        message: 'User not found'
+      });
+    }
+
+    existingUser.update({
+      name_first: user.name_first,
+      name_last: user.name_last,
+      role: user.role,
+      rank: user.rank,
+      phone: user.phone,
+      email: user.email,
+      active: user.active,
+      nomination_limit: user.nomination_limit,
+      email_verifed: user.email_verifed,
+      approved: user.approved,
+      password: user.password,
+      affiliation_id: user.affiliation_id,
+    }).then(() => {
+      res.json({ data: true });
+    }).catch(() => {
+      res.status(500);
+      res.json({
+        data: null,
+        message: 'Could not update user. Unknown error.'
+      });
+    });
   }
 };

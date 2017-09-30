@@ -19,6 +19,7 @@ router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
 router.get('/users/pending').use(auth.ensureAdmin).handleAsync(User.listPendingUsers);
 router.get('/users').use(auth.ensureAdmin).handleAsync(User.list);
 router.post('/users').use(auth.ensureAdmin).handleAsync(User.createUser);
+router.put('/users/:id').use(auth.ensureAdmin).handleAsync(User.updateUser);
 router.get('/users/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(User.getUser);
 
 // Affiliations
