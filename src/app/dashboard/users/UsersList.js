@@ -6,14 +6,18 @@ import Box from '../components/box';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 import { getUserList } from 'api/user';
 import type { UserType } from 'api/user';
+import { Link } from 'react-router-dom';
 
 const PAGE_TITLE = 'Active Users';
 
 export default class UsersList extends React.Component<{}> {
-  actionCellFormatter(_cell: any, _row: UserType): React.Node {
+
+  actionCellFormatter(cell: any, row: UserType): React.Node {
     return (
       <div>
-        <button className="btn btn-sm btn-primary">Show</button>
+        <Link to={`/dashboard/user/${row.id}`}>
+          <button className="btn btn-sm btn-primary">Show</button>
+        </Link>
       </div>
     );
   }
