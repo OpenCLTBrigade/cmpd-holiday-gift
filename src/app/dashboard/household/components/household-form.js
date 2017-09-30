@@ -29,7 +29,7 @@ const Household = ({ onSubmit, onInvalid, validate, data, addChild, removeChild,
             <Row>
                 <Col xs={12}>
                     <Button type="submit">Save Draft</Button>
-                    {saved && <Button type="submit">Publish</Button>}
+                    {saved && <Button type="submit">Submit Nomination</Button>}
                 </Col>
             </Row>
         </form>
