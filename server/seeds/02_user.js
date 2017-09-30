@@ -38,7 +38,8 @@ module.exports = async db => {
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
     active: true,
-    approved: true
+    approved: true,
+    role: 'nominator'
   });
 
   await db.user.create({
@@ -49,7 +50,8 @@ module.exports = async db => {
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
     active: true,
-    approved: false
+    approved: false,
+    role: 'nominator'
   });
 
   await db.user.create({
@@ -60,7 +62,8 @@ module.exports = async db => {
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
     active: false,
-    approved: false
+    approved: false,
+    role: 'nominator'
   });
 
   await db.user.create({
@@ -71,6 +74,7 @@ module.exports = async db => {
     password: auth.hashPassword('admin'),
     nomination_limit: 5,
     active: false,
-    approved: true
+    approved: true,
+    role: 'nominator'
   });
 };

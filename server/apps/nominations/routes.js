@@ -1,7 +1,7 @@
 // @flow
-
+const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation, Reports } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
 const auth = require('../lib/auth');
 
 import type { UserRequest } from '../lib/auth';
@@ -18,7 +18,9 @@ router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).ha
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
 router.get('/users/pending').use(auth.ensureAdmin).handleAsync(User.listPendingUsers);
 router.get('/users').use(auth.ensureAdmin).handleAsync(User.list);
-router.get('/users/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsync(User.getUser);
+router.post('/users').use(auth.ensureAdmin).handleAsync(User.createUser);
+router.put('/users/:id').use(auth.ensureAdmin).handleAsync(User.updateUser);
+router.get('/users/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(User.getUser);
 
 // Affiliations
 router.get('/affiliations').handleAsync(Affiliation.list);
@@ -29,5 +31,21 @@ router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
 router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
 router.post('/report/division').use(auth.ensureAdmin).handleAsync(Reports.division_report);
+
+// Slips
+router.get('/slips/packing').use(auth.ensureAdmin).handleAsync(Slips.packing);
+
+router.get('/test').handleAsync(async function (req, res) {
+  const households = await db.household.findAll({
+    where: { approved: true },
+    include: [
+      { model: db.household_address, as: 'address' },
+      { model: db.household_phone, as: 'phones' }
+    ]
+  });
+
+  console.error('TODO');
+  return (res.json(households));
+});
 
 module.exports = router;

@@ -9,24 +9,43 @@ import NewHousehold from './household/new-household';
 import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
+import { NewUser, ViewUser, EditUser } from './users';
+import { getMe } from '../../api/user';
 
 const ContentTitle = (): React.Node =>
   <section className="content-header">
     <h1>Header</h1>
   </section>;
 
-export default class Dashboard extends React.Component<{location: mixed}> {
+export default class Dashboard extends React.Component<{location: mixed}, {user: any}> {
   // TODO: Return AdminLTE base template and register sub-routes here
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+  }
+
+  componentDidMount() {
+    getMe().then(response => {
+      let s = { ...this.state };
+      s.user = response.data;
+      this.setState(s);
+    });
+  }
+
   render(): React.Node {
+    const { user } = this.state;
+
     return (
       <div className="wrapper">
-        <Header />
-        <Sidebar />
+        <Header user={ user } />
+        <Sidebar user={ user }/>
         <div className="content-wrapper">
           <ContentTitle />
           <section className="content">
             <Switch location={this.props.location}>
-              <Route exact path="/dashboard" component={Home} />
+              <Route exact path="/dashboard" component={() => <Home user={user}/>} />
               {/* TODO: Finish routes */}
               <Route exact path="/dashboard/household" component={HouseholdIndex} />
               <Route exact path="/dashboard/household/create" component={NewHousehold} />
@@ -35,6 +54,9 @@ export default class Dashboard extends React.Component<{location: mixed}> {
               <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />
               <Route exact path="/dashboard/user" component={UsersList} />
               <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
+              <Route exact path="/dashboard/user/create" component={NewUser} />
+              <Route exact path="/dashboard/user/:user_id/edit" component={EditUser} />
+              <Route exact path="/dashboard/user/:user_id" component={ViewUser} />
             </Switch>
           </section>
         </div>

@@ -17,6 +17,8 @@ export default class Header extends React.Component<{}> {
   };
 
   render(): React.Node {
+    const { user } = this.props;
+
     return (
       <header className="main-header">
         <Link to="/" className="logo">
@@ -30,7 +32,11 @@ export default class Header extends React.Component<{}> {
             <ul className="nav navbar-nav">
               <li className="user">
                 <a>
-                  <span className="hidden-xs">TODO: Name</span>
+                  {user &&
+                    <span className="hidden-xs">
+                      {user.name_first} {user.name_last.substring(0, 1).toUpperCase()}.
+                    </span>
+                  }
                 </a>
               </li>
               <li className="dropdown user user-menu">

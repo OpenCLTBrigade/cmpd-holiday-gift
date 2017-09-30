@@ -4,5 +4,6 @@ module.exports = {
   Household: require('./household'),
   Me: require('./me'),
   Affiliation: require('./affiliation'),
-  Reports: require('./reports')
+  Reports: require('./reports'),
+  Slips: require('./slips')
 };

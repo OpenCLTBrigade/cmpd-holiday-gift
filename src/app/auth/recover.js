@@ -5,29 +5,30 @@ import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import FooterLink from './components/footer-link';
 
-import LoginBox from './components/login-box';
-import { AuthToken } from 'lib/auth';
+import FormBox from './components/form-box';
+import { AuthToken } from '../../lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
 
-import { sendRecoverEmail } from 'api/recover';
+import { sendRecoverEmail } from '../../api/recover';
 
 const Icon = styled.i`top: 20px !important;`;
 
 export default class Recover extends React.Component<{
   history: Object
 }> {
-  box: ?LoginBox;
+  box: ?FormBox;
   render(): React.Node {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
     return (
-      <LoginBox
+      <FormBox
         title="Recover Account"
         submitText="Recover"
         onSubmit={this.onSubmit.bind(this)}
+        headerImageClass="fa fa-lock"
         ref={box => this.box = box}
         body={
           <div>
