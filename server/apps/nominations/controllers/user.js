@@ -81,6 +81,12 @@ module.exports = {
     if (user == null) {
       res.status(404);
     }
+
+    const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
+    
+    user = user.toJSON();
+    delete user.password;
+    user.nomination_count = nomination_count;
     res.json({ data: user });
   },
 
