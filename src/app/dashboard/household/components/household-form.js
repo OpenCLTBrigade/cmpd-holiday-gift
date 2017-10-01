@@ -9,12 +9,12 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
 
-const Household = ({ onSubmit, onInvalid, validate, data, addChild, removeChild, affiliations, saved }) => {
+const Household = ({ onSubmit, onInvalid, onSaveDraft, validate, data, addChild, removeChild, affiliations, saved }) => {
   return (
         <form
             onSubmit={e => {
               e.preventDefault();
-              validate(onSubmit, onInvalid);
+              validate(onSaveDraft, onInvalid);
             }}
         >
             <HouseholdForm />
@@ -29,7 +29,7 @@ const Household = ({ onSubmit, onInvalid, validate, data, addChild, removeChild,
             <Row>
                 <Col xs={12}>
                     <Button type="submit">Save Draft</Button>
-                    {saved && <Button type="submit">Submit Nomination</Button>}
+                    {saved && <Button onClick={onSubmit}>Submit Nomination</Button>}
                 </Col>
             </Row>
         </form>

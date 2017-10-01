@@ -14,6 +14,7 @@ const router: Router<UserRequest<>> = new Router();
 router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
 router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
 router.post('/households').use(auth.ensureAdmin).handleAsync(Household.createHousehold);
+router.post('/households/submit').use(auth.ensureAdmin).handleAsync(Household.submitNomination);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);

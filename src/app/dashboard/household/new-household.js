@@ -4,7 +4,7 @@ import * as React from 'react';
 import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
-import { createHousehold } from 'api/household';
+import { createHousehold, submitNomination } from 'api/household';
 
 export default class NewHousehold
     extends React.Component<
@@ -28,10 +28,11 @@ export default class NewHousehold
       schools: [],
       phoneNumbers: [],
       saved: false
-    }
+    };
 
-        ;(this: any).onChange = this.onChange.bind(this)
-        ;(this: any).onSubmit = this.onSubmit.bind(this);
+    (this: any).onChange = this.onChange.bind(this);
+    (this: any).onSubmit = this.onSubmit.bind(this);
+    (this: any).onSaveDraft = this.onSaveDraft.bind(this);
   }
 
   addChild() {
@@ -70,8 +71,25 @@ export default class NewHousehold
     console.log('onInvalid');
   }
 
+  reset() {
+    this.setState(() => {
+      return {
+        household: {},
+        address: {},
+        nominations: [],
+        schools: [],
+        phoneNumbers: [],
+        saved: false
+      };
+    });
+  }
+
+  onSaveDraft() {
+    createHousehold(this.state).then(({ id }) => this.setState({ saved: true, id: id }));
+  }
+
   onSubmit() {
-    createHousehold(this.state).then(() => this.setState({ saved: true }));
+    submitNomination({ id: this.state.id }).then(() => this.reset());
   }
 
   render(): React.Node {
@@ -82,6 +100,7 @@ export default class NewHousehold
                     getValue={getValue}
                     onChange={this.onChange}
                     onSubmit={this.onSubmit}
+                    onSaveDraft={this.onSaveDraft}
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
                     affiliations={this.state.schools}

@@ -24,3 +24,7 @@ export function getHouseholdList(
 export function createHousehold(household) {
   return post('nominations', 'households', household);
 }
+
+export function submitNomination({ id }) {
+  return post('nominations', 'households/submit', { id });
+}
