@@ -83,7 +83,7 @@ module.exports = {
     const errors = validationResult(req);
     console.log(errors.isEmpty());
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.mapped() });
+      return res.status(400).json({ errors: errors.mapped() });
     }
 
     return db.sequelize
