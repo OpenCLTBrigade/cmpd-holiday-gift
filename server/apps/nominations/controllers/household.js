@@ -4,6 +4,7 @@ const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const sequelize = require('sequelize');
 const { validationResult } = require('express-validator/check');
+const { matchedData } = require('express-validator/filter');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
@@ -72,6 +73,48 @@ module.exports = {
     }
   },
 
+  async updateHousehold(req, res): Promise<void> {
+    console.log('updateHousehold');
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.mapped() });
+    }
+
+    const { id } = req.params;
+    // const { id: householdId } = req.params.household;
+    // const { id: addressId } = req.body.address;
+
+    return db.sequelize.transaction(async t => {
+      const payload = matchedData(req);
+
+      try {
+        console.log('finding household', id);
+        const household = await db.household.findById(id);
+        const address = await db.household_address.find({ where: { household_id: id } });
+
+        household.update({ ...payload.household });
+        address.update({ ...payload.address });
+
+        const numbers = await db.household_phone.findAll({ where: { household_id: id } });
+
+        const removedNumbers = numbers && numbers.filter(number => payload.phoneNumbers && payload.phoneNumbers.some(phoneNumber => phoneNumber.number === number.number));
+        const addedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(number => numbers && numbers.every(phoneNumber => phoneNumber.number !== number.number)) || [];
+
+        for (const removed of removedNumbers) {
+          removed.destroy();
+        }
+
+        for (const added of addedNumbers) {
+          db.household_phone.create(Object.assign({}, added, { household_id: id }));
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+
+    }).then(() => res.sendStatus(200));
+  },
+
   createHousehold: async (req: any, res: any): Promise<void> => {
         // TODO: Check if user has reached nomination limit and reject if so
         // TODO: Validation?
@@ -81,7 +124,6 @@ module.exports = {
     // console.log(user);
     let id = undefined;
     const errors = validationResult(req);
-    console.log(errors.isEmpty());
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
     }
