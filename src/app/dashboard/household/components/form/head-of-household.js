@@ -15,7 +15,7 @@ const HeadOfHousehold = () => {
                             <Col md={6} xs={12}>
                                 <Input
                                     label="First Name"
-                                    name="household.firstName"
+                                    name="household.name_first"
                                     id="firstName"
                                     type="text"
                                     validator={requiredValidator}
@@ -24,7 +24,7 @@ const HeadOfHousehold = () => {
                             <Col md={6} xs={12}>
                                 <Input
                                     label="Last Name"
-                                    name="household.lastName"
+                                    name="household.name_last"
                                     id="lastName"
                                     type="text"
                                     validator={requiredValidator}
@@ -58,7 +58,7 @@ const HeadOfHousehold = () => {
                                 <Input
                                     label="Last four digits of SSN"
                                     id="ssn"
-                                    name="household.ssn"
+                                    name="household.last4ssn"
                                     type="text"
                                     pattern="[0-9]{4}"
                                     validator={requiredValidator}
@@ -79,7 +79,7 @@ const HeadOfHousehold = () => {
                             <Col md={4} xs={12}>
                                 <Input
                                     label="Preferred Contact Method"
-                                    name="household.contactMethod"
+                                    name="household.preferred_contact_method"
                                     componentClass="select"
                                     placeholder="select"
                                     validator={requiredValidator}
@@ -93,7 +93,7 @@ const HeadOfHousehold = () => {
                             <Col md={4} xs={12}>
                                 <Input
                                     label="Ethnicity"
-                                    name="household.ethnicity"
+                                    name="household.race"
                                     componentClass="select"
                                     placeholder="select"
                                     validator={requiredValidator}

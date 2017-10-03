@@ -52,7 +52,7 @@ class PhoneNumbersForm extends React.Component<{
                       <Col md={6} xs={12}>
                         <Input
                           label="Type"
-                          name={`phoneNumbers[${idx}].phoneType`}
+                          name={`phoneNumbers[${idx}].type`}
                           componentClass="select"
                           placeholder="select"
                           validator={requiredValidator}
@@ -67,7 +67,7 @@ class PhoneNumbersForm extends React.Component<{
                         <Input
                           label="Phone"
                           id="phone"
-                          name={`phoneNumbers[${idx}].phone`}
+                          name={`phoneNumbers[${idx}].number`}
                           type="tel"
                           required
                           autoComplete="tel"

@@ -3,6 +3,7 @@
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const sequelize = require('sequelize');
+const { validationResult } = require('express-validator/check');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
@@ -79,6 +80,11 @@ module.exports = {
     // const nomination_count = await db.household.count({ where: { 'nominator_id': id } });
     // console.log(user);
     let id = undefined;
+    const errors = validationResult(req);
+    console.log(errors.isEmpty());
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.mapped() });
+    }
 
     return db.sequelize
             .transaction(async t => {
@@ -88,14 +94,14 @@ module.exports = {
               console.log('creating household');
                 // Create household record
               const newHousehold = await db.household.create({
-                name_first: household.firstName,
-                name_last: household.lastName,
+                name_first: household.name_first,
+                name_last: household.name_last,
                 dob: household.dob,
-                race: household.ethnicity,
+                race: household.race,
                 gender: household.gender,
                 email: household.email,
-                last4ssn: household.ssn,
-                preferred_contact_method: household.contactMethod,
+                last4ssn: household.last4ssn,
+                preferred_contact_method: household.preferred_contact_method,
                 draft: true,
                 nomination_email_sent: false,
                 reviewed: false,
@@ -107,14 +113,14 @@ module.exports = {
 
                 // Create address record (from address{})
               db.household_address.create({
-                street: address.addressLine1,
-                street2: address.addressLine2 || '',
+                street: address.street,
+                street2: address.street2 || '',
                 city: address.city,
                 state: address.state,
                 zip: address.zip,
                 cmpd_division: address.cmpd_division,
                 cmpd_response_area: address.cmpd_response_area,
-                type: address.deliveryAddressType || '',
+                type: address.type || '',
                 household_id: newHousehold.id
               });
 
@@ -132,25 +138,25 @@ module.exports = {
                 console.log('creating child');
 
                 db.child.create({
-                  name_first: child.firstName,
-                  name_last: child.lastName,
+                  name_first: child.name_first,
+                  name_last: child.name_last,
                   dob: child.dob,
-                  additional_ideas: child.additionalIdeas || '',
-                  bike_want: child.wantsBike || false,
-                  bike_size: child.bikeSize || null,
-                  bike_style: child.bikeStyle || null,
-                  clothes_want: child.wantsClothes || false,
-                  clothes_size_shirt: child.shirtSize || null,
-                  clothes_size_pants: child.pantSize || null,
-                  shoe_size: child.shoeSize || null,
-                  race: child.ethnicity,
-                  favourite_colour: child.favoriteColor || null,
+                  additional_ideas: child.additional_ideas || '',
+                  bike_want: child.bike_want || false,
+                  bike_size: child.bike_size || null,
+                  bike_style: child.bike_style || null,
+                  clothes_want: child.clothes_want || false,
+                  clothes_size_shirt: child.clothes_size_shirt || null,
+                  clothes_size_pants: child.clothes_size_pants || null,
+                  shoe_size: child.shoe_size || null,
+                  race: child.race,
+                  favourite_colour: child.favourite_colour || null,
                   gender: child.gender,
                   interests: child.interests || '',
-                  reason_for_nomination: child.nominationReason || '',
-                  free_or_reduced_lunch: child.receivesLunch,
-                  school_id: child.schoolName,
-                  last4ssn: child.ssn,
+                  reason_for_nomination: child.reason_for_nomination || '',
+                  free_or_reduced_lunch: child.free_or_reduced_lunch,
+                  school_id: child.school_id,
+                  last4ssn: child.last4ssn,
                   household_id: newHousehold.id
                 });
 

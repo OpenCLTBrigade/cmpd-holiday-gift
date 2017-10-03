@@ -21,14 +21,12 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
   // TODO: Return AdminLTE base template and register sub-routes here
   constructor(props) {
     super(props);
-    this.state = {
-      user: null
-    };
+    this.state = {user: null};
   }
 
   componentDidMount() {
     getMe().then(response => {
-      let s = { ...this.state };
+      const s = { ...this.state };
       s.user = response.data;
       this.setState(s);
     });
@@ -49,7 +47,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
               {/* TODO: Finish routes */}
               <Route exact path="/dashboard/household" component={HouseholdIndex} />
               <Route exact path="/dashboard/household/create" component={NewHousehold} />
-              {/* <Route exact path="/dashboard/household/edit/:id" component={Home} /> */}
+              <Route exact path="/dashboard/household/edit/:id" component={NewHousehold} />
               <Route exact path="/dashboard/affiliation" component={AffiliationList} />
               <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />
               <Route exact path="/dashboard/user" component={UsersList} />

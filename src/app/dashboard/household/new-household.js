@@ -4,7 +4,7 @@ import * as React from 'react';
 import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
-import { createHousehold, submitNomination } from 'api/household';
+import { createHousehold, submitNomination, getHousehold } from 'api/household';
 
 export default class NewHousehold
     extends React.Component<
@@ -49,14 +49,20 @@ export default class NewHousehold
     });
   }
 
-  componentDidMount() {
-    getSchools()
-            .then(response => {
-              this.setState(() => ({ schools: response.items }));
-            })
-            .catch(err => {
-              console.log(err);
-            });
+  async componentDidMount() {
+    try {
+      const { id = undefined } = this.props.match && this.props.match.params;
+
+      if (id) {
+        const household = await getHousehold(id);
+        console.log(household);
+      }
+      const { items: schools } = await getSchools();
+
+      this.setState(() => ({ schools }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   onChange(name: string, value: any) {
