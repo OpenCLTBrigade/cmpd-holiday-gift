@@ -5,7 +5,7 @@ const TableApi = require('../../lib/tableApi');
 const sequelize = require('sequelize');
 const { validationResult } = require('express-validator/check');
 const { matchedData } = require('express-validator/filter');
-
+const logger = require('../../lib/logger');
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 
 import type { Response } from '../../lib/typed-express';
@@ -52,19 +52,19 @@ module.exports = {
   },
 
   async submitNomination(req: any, res: any): Promise<void> {
-    console.log('submitting nominations');
+    logger.info('submitting nominations');
     const { id } = req.body;
 
     let household = undefined;
 
     try {
-      console.log('searching for nomination');
+      logger.info('searching for nomination');
       household = await db.household.findById(id);
       if (!household) {
         throw new Error('Household not found');
       }
 
-      console.log(household);
+      logger.info(household);
 
       household.draft = false;
       household.save().then(() => res.sendStatus(200));
@@ -74,7 +74,7 @@ module.exports = {
   },
 
   async updateHousehold(req, res): Promise<void> {
-    console.log('updateHousehold');
+    logger.info('updateHousehold');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
@@ -88,7 +88,7 @@ module.exports = {
       const payload = matchedData(req);
 
       try {
-        console.log('finding household', id);
+        logger.info('finding household', id);
         const household = await db.household.findById(id);
         const address = await db.household_address.find({ where: { household_id: id } });
 
@@ -109,7 +109,7 @@ module.exports = {
         }
 
       } catch (error) {
-        console.log(error);
+        logger.info(error);
       }
 
     }).then(() => res.sendStatus(200));
@@ -121,7 +121,7 @@ module.exports = {
 
     // const { id } = req.user;
     // const nomination_count = await db.household.count({ where: { 'nominator_id': id } });
-    // console.log(user);
+    // logger.info(user);
     let id = undefined;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -133,7 +133,7 @@ module.exports = {
               const { household, address, phoneNumbers, nominations } = req.body;
               const nominator = Object.assign({}, req.user);
 
-              console.log('creating household');
+              logger.info('creating household');
                 // Create household record
               const newHousehold = await db.household.create({
                 name_first: household.name_first,
@@ -151,7 +151,7 @@ module.exports = {
                 nominator_user_id: nominator.id
               });
 
-              console.log('creating household_address');
+              logger.info('creating household_address');
 
                 // Create address record (from address{})
               db.household_address.create({
@@ -167,7 +167,7 @@ module.exports = {
               });
 
               for (const phone of phoneNumbers) {
-                console.log('creating household_phone');
+                logger.info('creating household_phone');
                 db.household_phone.create({
                   number: phone.number,
                   type: phone.type,
@@ -177,7 +177,7 @@ module.exports = {
 
                 // Create child records (from nominations[])
               for (const child of nominations) {
-                console.log('creating child');
+                logger.info('creating child');
 
                 db.child.create({
                   name_first: child.name_first,
@@ -211,7 +211,7 @@ module.exports = {
             })
             .catch(error => {
                 // Error. Rolled back.
-              console.log(error);
+              logger.error(error);
               res.sendStatus(500);
             });
   }
