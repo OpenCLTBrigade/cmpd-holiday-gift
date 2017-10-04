@@ -6,7 +6,7 @@
       },
       "scripts": {
         "postinstall": "echo 'postinstall'",
-        "test": "npm run test-client && npm run test-server"
+        "test": "bin/ci"
       }
     }
   }
