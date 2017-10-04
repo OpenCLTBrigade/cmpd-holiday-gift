@@ -39,6 +39,7 @@
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",
+    "sqlite3": "^3.1.8",
     "styled-components": "^2.1.0",
     "webpack-create-file-plugin": "^0.1.0",
     "webpack-dev-middleware": "^1.10.2",
@@ -73,7 +74,7 @@
     "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
     "morgan": "^1.8.1",
     "mustache": "^2.3.0",
-    "mysql": "^2.5.5",
+    "mysql2": "^1.4.2",
     "neoform": "^0.2.0",
     "neoform-plain-object-helpers": "^0.1.0",
     "neoform-validation": "^0.3.0",
@@ -92,7 +93,6 @@
     "react-router-dom": "^4.1.1",
     "sequelize": "^4.4.2",
     "sequelize-encrypted": "^1.0.0",
-    "sqlite3": "^3.1.8",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
   },
   "proxy": {
