@@ -1,1 +1,1 @@
-web: npm run start-client
+web: node_modules/.bin/react-scripts start
