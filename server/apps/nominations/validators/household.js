@@ -29,6 +29,8 @@ const nominationEthnicity = check('nominations.*.race').exists();
 const nominationGender = check('nominations.*.gender').exists();
 const nominationSchool = check('nominations.*.school_id').exists();
 const nominationSsn = check('nominations.*.last4ssn').exists();
+const nominationHasLunch = check('nominations.*.free_or_reduced_lunch').exists();
+const nominationFavoriteColor = check('nominations.*.favourite_colour').exists();
 
 module.exports = [
   firstName,
@@ -54,6 +56,8 @@ module.exports = [
   nominationEthnicity,
   nominationGender,
   nominationSchool,
-  nominationSsn
+  nominationSsn,
+  nominationHasLunch,
+  nominationFavoriteColor
 ];
 

@@ -16,6 +16,28 @@ type ListRequest = {
     ...TableRequest,
     search: string
 }
+
+const childDefaults = {
+  additional_ideas: '',
+  bike_want: false,
+  bike_size: null,
+  bike_style: null,
+  clothes_want: false,
+  clothes_size_shirt: null,
+  clothes_size_pants: null,
+  shoe_size: null,
+  favourite_colour: null,
+  interests: '',
+  reason_for_nomination: ''
+};
+
+const householdDefaults = {
+  draft: true,
+  nomination_email_sent: false,
+  reviewed: false,
+  approved: false
+};
+
 module.exports = {
   list: async (req: UserRequest<>, res: Response): Promise<void> => {
     const query: ListRequest = (req.query: any);
@@ -81,8 +103,6 @@ module.exports = {
     }
 
     const { id } = req.params;
-    // const { id: householdId } = req.params.household;
-    // const { id: addressId } = req.body.address;
 
     return db.sequelize.transaction(async t => {
       const payload = matchedData(req);
@@ -97,16 +117,54 @@ module.exports = {
 
         const numbers = await db.household_phone.findAll({ where: { household_id: id } });
 
-        const removedNumbers = numbers && numbers.filter(number => payload.phoneNumbers && payload.phoneNumbers.some(phoneNumber => phoneNumber.number === number.number));
-        const addedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(number => numbers && numbers.every(phoneNumber => phoneNumber.number !== number.number)) || [];
+        const removedNumbers = numbers && numbers.filter(entity => payload.phoneNumbers && payload.phoneNumbers.every(json => json.number !== entity.dataValues.number));
+        const addedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)) || [];
+        const updatedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(json => numbers && numbers.some(entity => json.number === entity.dataValues.number)) || [];
 
         for (const removed of removedNumbers) {
+          logger.info('removing number');
+
           removed.destroy();
         }
 
         for (const added of addedNumbers) {
+          logger.info('adding number');
+
           db.household_phone.create(Object.assign({}, added, { household_id: id }));
         }
+
+        for (const updated of updatedNumbers) {
+          logger.info('updating number');
+
+          const toUpdate = numbers.find(number => updated.number === number.number);
+          toUpdate.update(updated);
+        }
+
+        const nominations = await db.child.findAll({ where: { household_id: id } });
+
+        const removedNominations = nominations && nominations.filter(entity => payload.nominations && payload.nominations.every(json => json.last4ssn !== entity.last4ssn));
+        const addedNominations = payload.nominations && payload.nominations.filter(json => nominations && nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)) || [];
+        const updatedNominations = payload.nominations && payload.nominations.filter(json => nominations && nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)) || [];
+
+        for (const removed of removedNominations) {
+          logger.info('removing nomination');
+
+          removed.destroy();
+        }
+
+        for (const added of addedNominations) {
+          logger.info('adding nomination');
+
+          db.child.create(Object.assign({}, added, childDefaults, { household_id: id }));
+        }
+
+        for (const updated of updatedNominations) {
+          logger.info('updating nomination');
+
+          const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
+          toUpdate.update(updated);
+        }
+
 
       } catch (error) {
         logger.info(error);
@@ -117,11 +175,10 @@ module.exports = {
 
   createHousehold: async (req: any, res: any): Promise<void> => {
         // TODO: Check if user has reached nomination limit and reject if so
-        // TODO: Validation?
 
-    // const { id } = req.user;
-    // const nomination_count = await db.household.count({ where: { 'nominator_id': id } });
-    // logger.info(user);
+    const nominator = Object.assign({}, req.user);
+    const count = await db.household.count({ where: { 'nominator_id': nominator.id } });
+
     let id = undefined;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -131,25 +188,10 @@ module.exports = {
     return db.sequelize
             .transaction(async t => {
               const { household, address, phoneNumbers, nominations } = req.body;
-              const nominator = Object.assign({}, req.user);
 
               logger.info('creating household');
                 // Create household record
-              const newHousehold = await db.household.create({
-                name_first: household.name_first,
-                name_last: household.name_last,
-                dob: household.dob,
-                race: household.race,
-                gender: household.gender,
-                email: household.email,
-                last4ssn: household.last4ssn,
-                preferred_contact_method: household.preferred_contact_method,
-                draft: true,
-                nomination_email_sent: false,
-                reviewed: false,
-                approved: false,
-                nominator_user_id: nominator.id
-              });
+              const newHousehold = await db.household.create(Object.assign({}, householdDefaults, household, { nominator_user_id: nominator.id }));
 
               logger.info('creating household_address');
 
@@ -179,28 +221,7 @@ module.exports = {
               for (const child of nominations) {
                 logger.info('creating child');
 
-                db.child.create({
-                  name_first: child.name_first,
-                  name_last: child.name_last,
-                  dob: child.dob,
-                  additional_ideas: child.additional_ideas || '',
-                  bike_want: child.bike_want || false,
-                  bike_size: child.bike_size || null,
-                  bike_style: child.bike_style || null,
-                  clothes_want: child.clothes_want || false,
-                  clothes_size_shirt: child.clothes_size_shirt || null,
-                  clothes_size_pants: child.clothes_size_pants || null,
-                  shoe_size: child.shoe_size || null,
-                  race: child.race,
-                  favourite_colour: child.favourite_colour || null,
-                  gender: child.gender,
-                  interests: child.interests || '',
-                  reason_for_nomination: child.reason_for_nomination || '',
-                  free_or_reduced_lunch: child.free_or_reduced_lunch,
-                  school_id: child.school_id,
-                  last4ssn: child.last4ssn,
-                  household_id: newHousehold.id
-                });
+                db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
 
                 id = newHousehold.id;
               }
