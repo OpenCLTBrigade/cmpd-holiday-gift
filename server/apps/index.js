@@ -13,6 +13,7 @@ const config = require('../config');
 const models = require('../models');
 const nominations = require('./nominations');
 const authApp = require('./auth');
+const logger = require('./lib/logger');
 
 import type { $Application } from 'express';
 
@@ -58,10 +59,10 @@ const initialize = [];
 // Sync the database
 initialize.push(models.sync().then(function () {
   if (config.verbose) {
-    console.log('Nice! Database sync succeeded.');
+    logger.info('Nice! Database sync succeeded.');
   }
 }).catch(function (err) {
-  console.log('Database sync failed:', err);
+  logger.info('Database sync failed:', err);
 }));
 
 // Prepare to compile the views and web assets

@@ -57,8 +57,11 @@ class Chain<Req: Request<>> {
   }
 
   use<ReqOut: Request<>>(middleware: Middleware<Req, ReqOut>): Chain<ReqOut> {
-    const pair = middleware((undefined: any));
-    return new Chain(this.router, this.action, this.path, [...this.middleware, pair[1]]);
+    let pair = undefined;
+    if (typeof middleware === 'function') {
+      pair = middleware((undefined: any))[1];
+    }
+    return new Chain(this.router, this.action, this.path, [...this.middleware, pair || middleware]);
   }
 
   handle(handler: Handler<Req>) {
@@ -86,11 +89,11 @@ class Router<Req: Request<>> {
   post<Params: Parameters>(path: string, _: Params = ({}: any)): Chain<Req & {params: Params}> {
     return new Chain(this.router, 'post', (path: string));
   }
-  
+
   put<Params: Parameters>(path: string, _: Params = ({}: any)): Chain<Req & {params: Params}> {
     return new Chain(this.router, 'put', (path: string));
   }
-  
+
 }
 
 module.exports = { Router, proxy };

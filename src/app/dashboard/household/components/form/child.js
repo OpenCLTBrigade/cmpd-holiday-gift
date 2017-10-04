@@ -1,24 +1,17 @@
 // @flow
 import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-import Box from '../../components/box';
-import { FormValidation } from 'neoform-validation';
-import { Form } from 'neoform';
+import Box from '../../../components/box';
 import Input from 'app/components/input';
 import requiredValidator from 'lib/validators/required.validator';
-import Checkbox from './form/checkbox';
+import Checkbox from './checkbox';
 
-const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild, affiliations }) => {
-  const { nominations } = data;
+const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
+  console.log(affiliations);
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        validate(onSubmit, onInvalid);
-      }}
-    >
-      {nominations.map((row, idx) => {
+    <div>
+      {nominations && nominations.map((row, idx) => {
         return (
           <Row key={`nominations${idx}`}>
             <Col xs={12}>
@@ -27,7 +20,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={6} xs={12}>
                     <Input
                       label="First Name"
-                      name={`nominations[${idx}].firstName`}
+                      name={`nominations[${idx}].name_first`}
                       id="firstName"
                       type="text"
                       validator={requiredValidator}
@@ -36,7 +29,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={6} xs={12}>
                     <Input
                       label="Last Name"
-                      name={`nominations[${idx}].lastName`}
+                      name={`nominations[${idx}].name_last`}
                       id="lastName"
                       type="text"
                       validator={requiredValidator}
@@ -60,7 +53,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={3} xs={12}>
                     <Input
                       label="Ethnicity"
-                      name={`nominations[${idx}].ethnicity`}
+                      name={`nominations[${idx}].race`}
                       componentClass="select"
                       placeholder="select"
                       validator={requiredValidator}
@@ -76,7 +69,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={3} xs={12}>
                     <Input
                       label="Last four digits of SSN"
-                      name={`nominations[${idx}].ssn`}
+                      name={`nominations[${idx}].last4ssn`}
                       type="text"
                       pattern="[0-9]{4}"
                       validator={requiredValidator}
@@ -86,7 +79,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={3} xs={12}>
                     <Input
                       label="Child receives free or reduced lunch?"
-                      name={`nominations[${idx}].receivesLunch`}
+                      name={`nominations[${idx}].free_or_reduced_lunch`}
                       componentClass="select"
                       placeholder="select"
                       validator={requiredValidator}
@@ -109,7 +102,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={6} xs={12}>
                     <Input
                       label="School Name"
-                      name={`nominations[${idx}].schoolName`}
+                      name={`nominations[${idx}].school_id`}
                       componentClass="select"
                       validator={requiredValidator}
                     >
@@ -125,16 +118,16 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                 </Row>
                 <Row>
                   <Col xs={12}>
-                    <Checkbox name={`nominations[${idx}].wantsBike`} label="Child wants bike?" />
+                    <Checkbox name={`nominations[${idx}].bike_want`} label="Child wants bike?" />
                   </Col>
                 </Row>
                 {nominations[idx] &&
-                nominations[idx].wantsBike && (
+                nominations[idx].bike_want && (
                   <Row>
                     <Col xs={12}>
                       <Input
                         label="Bike style"
-                        name={`nominations[${idx}].bikeStyle`}
+                        name={`nominations[${idx}].bike_style`}
                         componentClass="select"
                         placeholder="select"
                         validator={requiredValidator}
@@ -148,7 +141,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                     <Col xs={12}>
                       <Input
                         label="Bike size"
-                        name={`nominations[${idx}].bikeSize`}
+                        name={`nominations[${idx}].bike_size`}
                         componentClass="select"
                         placeholder="select"
                         validator={requiredValidator}
@@ -166,20 +159,20 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                 )}
                 <Row>
                   <Col xs={12}>
-                    <Checkbox name={`nominations[${idx}].wantsClothes`} label="Child wants clothes?" />
+                    <Checkbox name={`nominations[${idx}].clothes_want`} label="Child wants clothes?" />
                   </Col>
                 </Row>
                 {nominations[idx] &&
-                nominations[idx].wantsClothes && (
+                nominations[idx].clothes_want && (
                   <Row>
                     <Col xs={12}>
-                      <Input label="Shirt size" name={`nominations[${idx}].shirtSize`} />
+                      <Input label="Shirt size" name={`nominations[${idx}].clothes_size_shirt`} />
                     </Col>
                     <Col xs={12}>
-                      <Input label="Pant size" name={`nominations[${idx}].pantSize`} />
+                      <Input label="Pant size" name={`nominations[${idx}].clothes_size_pants`} />
                     </Col>
                     <Col xs={12}>
-                      <Input label="Shoe size" name={`nominations[${idx}].shoeSize`} />
+                      <Input label="Shoe size" name={`nominations[${idx}].shoe_size`} />
                     </Col>
                   </Row>
                 )}
@@ -187,7 +180,7 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col xs={12}>
                     <Input
                       label="Favorite Color"
-                      name={`nominations[${idx}].favoriteColor`}
+                      name={`nominations[${idx}].favourite_colour`}
                       type="text"
                       validator={requiredValidator}
                     />
@@ -205,14 +198,14 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
                   <Col md={4} xs={12}>
                     <Input
                       label="Additional Ideas"
-                      name={`nominations[${idx}].additionalIdeas`}
+                      name={`nominations[${idx}].additional_ideas`}
                       componentClass="textarea"
                     />
                   </Col>
                   <Col md={4} xs={12}>
                     <Input
                       label="Reason for nomination"
-                      name={`nominations[${idx}].nominationReason`}
+                      name={`nominations[${idx}].reason_for_nomination`}
                       componentClass="textarea"
                     />
                   </Col>
@@ -237,8 +230,8 @@ const ChildForm = ({ onSubmit, validate, onInvalid, data, addChild, removeChild,
           </Box>
         </Col>
       </Row>
-    </form>
+    </div>
   );
 };
 
-export default Form(FormValidation(ChildForm));
+export default ChildForm;

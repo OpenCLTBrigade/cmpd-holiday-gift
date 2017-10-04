@@ -1,5 +1,5 @@
 // @flow
-import { get } from 'lib/apiService';
+import { get, post } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type HouseholdType = {
@@ -19,4 +19,12 @@ export function getHouseholdList(
   search: ?string
 ): Promise<{response: DataTableResponse<HouseholdType>}> {
   return get('nominations', 'households', { page: pageNumber, search: search });
+}
+
+export function createHousehold(household) {
+  return post('nominations', 'households', household);
+}
+
+export function submitNomination({ id }) {
+  return post('nominations', 'households/submit', { id });
 }

@@ -1,10 +1,8 @@
 // @flow
 import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-import Box from '../../components/box';
+import Box from '../../../components/box';
 import Input from 'app/components/input';
-import { Form } from 'neoform';
-import { FormValidation } from 'neoform-validation';
 import requiredValidator from 'lib/validators/required.validator';
 
 type PhoneNumber = {
@@ -12,10 +10,7 @@ type PhoneNumber = {
 };
 
 class PhoneNumbersForm extends React.Component<{
-  phoneNumbers: PhoneNumber[],
-  onSubmit: *,
-  validate: *,
-  onInvalid: *
+  phoneNumbers: PhoneNumber[]
 }, {
   phoneNumbers: PhoneNumber[]
 }> {
@@ -45,15 +40,8 @@ class PhoneNumbersForm extends React.Component<{
   }
 
   render(): React.Node {
-    const { onSubmit, validate, onInvalid } = this.props;
-
     return (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          validate(onSubmit, onInvalid);
-        }}
-      >
+      <div>
         <Row>
           <Col xs={12}>
             <Box title="Phone Numbers" bsStyle="danger">
@@ -64,7 +52,7 @@ class PhoneNumbersForm extends React.Component<{
                       <Col md={6} xs={12}>
                         <Input
                           label="Type"
-                          name={`phoneNumbers[${idx}].phoneType`}
+                          name={`phoneNumbers[${idx}].type`}
                           componentClass="select"
                           placeholder="select"
                           validator={requiredValidator}
@@ -79,7 +67,7 @@ class PhoneNumbersForm extends React.Component<{
                         <Input
                           label="Phone"
                           id="phone"
-                          name={`phoneNumbers[${idx}].phone`}
+                          name={`phoneNumbers[${idx}].number`}
                           type="tel"
                           required
                           autoComplete="tel"
@@ -102,9 +90,9 @@ class PhoneNumbersForm extends React.Component<{
             </Box>
           </Col>
         </Row>
-      </form>
+      </div>
     );
   }
 }
 
-export default Form(FormValidation(PhoneNumbersForm));
+export default PhoneNumbersForm;
