@@ -85,7 +85,7 @@
     "mysql": "^2.5.5",
     "nodemailer": "^4.0.1",
     "nodemailer-ses-transport": "^1.5.1",
-    "pino": "^4.7.1",
+    "pino": "^4.7.2",
     "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
     "sequelize": "^4.4.2",
     "sequelize-encrypted": "^1.0.0",

@@ -112,8 +112,8 @@ module.exports = {
         const household = await db.household.findById(id);
         const address = await db.household_address.find({ where: { household_id: id } });
 
-        household.update({ ...payload.household });
-        address.update({ ...payload.address });
+        household.update(Object.assign({}, payload.household));
+        address.update(Object.assign({}, payload.address));
 
         const numbers = await db.household_phone.findAll({ where: { household_id: id } });
 
