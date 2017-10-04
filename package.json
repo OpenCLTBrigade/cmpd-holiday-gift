@@ -31,8 +31,6 @@
   ],
   "main": "server/apps/serve.js",
   "devDependencies": {
-    "@google/maps": "^0.4.3",
-    "admin-lte": "^2.3.11",
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
     "faker": "^4.1.0",
@@ -40,12 +38,13 @@
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",
     "sqlite3": "^3.1.8",
-    "styled-components": "^2.1.0",
     "webpack-create-file-plugin": "^0.1.0",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
+    "@google/maps": "^0.4.3",
+    "admin-lte": "^2.3.11",
     "axios": "^0.16.2",
     "babel": "^6.23.0",
     "babel-eslint": "https://registry.npmjs.org/babel-eslint/-/babel-eslint-7.2.3.tgz",
@@ -93,6 +92,7 @@
     "react-router-dom": "^4.1.1",
     "sequelize": "^4.4.2",
     "sequelize-encrypted": "^1.0.0",
+    "styled-components": "^2.1.0",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
   },
   "proxy": {
