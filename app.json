@@ -1,0 +1,16 @@
+{
+  "environments": {
+    "test": {
+      "addons": [
+        "jawsdb-maria",
+        "papertrail"
+      ],
+      "env": {
+        "PHOTON_TORPEDOES": "online"
+      },
+      "scripts": {
+        "test": "npm run test-client"
+      }
+    }
+  }
+}
