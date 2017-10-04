@@ -11,6 +11,7 @@ import { AuthToken } from '../../lib/auth';
 import Footer from './components/footer';
 import FormGroup from './components/form-group';
 import Label from './components/form-label';
+import querystring from 'querystring';
 
 const Icon = styled.i`top: 20px !important;`;
 
@@ -21,12 +22,21 @@ export default class Login extends React.Component<{
 }> {
   box: ?FormBox;
   justRegistered: boolean;
+
+  componentDidMount() {
+    const params = querystring.parse(this.props.location.search);
+    console.log('ohey', params);
+    if (params['?justRegistered'] && (params['?justRegistered'] === 'true' || params['?justRegistered'] === true)) {
+      console.log('oh hey');
+      (this.box).flashErrorMessage('Check your email to continue the registration process.');
+    }
+  }
+
   render(): React.Node {
+
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
-    const params = new URLSearchParams(this.props.location.search);
-    this.justRegistered = params.get('justRegistered') === 'true';
     return (
       <FormBox
         title="Log in"
@@ -70,11 +80,6 @@ export default class Login extends React.Component<{
         }
       />
     );
-  }
-  componentDidMount() {
-    if (this.justRegistered === true) {
-      (this.box: $TODO).flashErrorMessage('Check your email to continue the registration process.');
-    }
   }
 
   async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
