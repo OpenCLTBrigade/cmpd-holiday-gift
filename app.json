@@ -1,10 +1,6 @@
 {
   "environments": {
     "test": {
-      "addons": [
-        "jawsdb-maria",
-        "papertrail"
-      ],
       "env": {
         "PHOTON_TORPEDOES": "online"
       },
