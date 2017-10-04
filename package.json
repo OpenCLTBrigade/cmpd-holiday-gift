@@ -11,7 +11,7 @@
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
-    "postinstall": "react-scripts build"
+    "postinstall": "NODE_PATH=./src react-scripts build",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "flow": "flow",
