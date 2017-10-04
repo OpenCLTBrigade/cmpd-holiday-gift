@@ -9,7 +9,7 @@
         "PHOTON_TORPEDOES": "online"
       },
       "scripts": {
-        "postinstall": "echo 'postinstall'"
+        "postinstall": "echo 'postinstall'",
         "test": "npm run test-client"
       }
     }
