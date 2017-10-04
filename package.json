@@ -24,7 +24,7 @@
     "cmpd-explorers": "server-notypes/apps/serve.js"
   },
   "engines": {
-    "node": ">= 7.6.0"
+    "node": "7.9.x"
   },
   "files": [
     "build",
