@@ -22,6 +22,9 @@
   "bin": {
     "cmpd-explorers": "server-notypes/apps/serve.js"
   },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "files": [
     "build",
     "server-notypes"
@@ -33,9 +36,6 @@
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
     "faker": "^4.1.0",
-    "flow-bin": "^0.54.0",
-    "flow-typed": "^2.1.5",
-    "font-awesome": "^4.7.0",
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",
@@ -64,7 +64,10 @@
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
     "express-validator": "^4.2.1",
+    "flow-bin": "^0.54.0",
     "flow-remove-types": "^1.2.1",
+    "flow-typed": "^2.1.5",
+    "font-awesome": "^4.7.0",
     "jsonwebtoken": "^7.4.1",
     "jwt-decode": "^2.2.0",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
