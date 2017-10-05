@@ -100,6 +100,8 @@ function loadModels(sequelize) {
 const sequelize = connect(config.db);
 const db = loadModels(sequelize);
 
+db.sequelize = sequelize;
+
 db.test = {
   open: path => loadModels(connect({
     storage: path,

@@ -3,6 +3,7 @@ const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
 const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
 const auth = require('../lib/auth');
+const validators = require('./validators/household');
 
 import type { UserRequest } from '../lib/auth';
 
@@ -13,12 +14,17 @@ const router: Router<UserRequest<>> = new Router();
 // Households
 router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
 router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
+router.post('/households/:id').use(auth.ensureAdmin).use(validators).handleAsync(Household.updateHousehold);
+router.post('/households').use(auth.ensureAdmin).use(validators).handleAsync(Household.createHousehold);
+router.post('/households/submit').use(auth.ensureAdmin).handleAsync(Household.submitNomination);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
 router.get('/users/pending').use(auth.ensureAdmin).handleAsync(User.listPendingUsers);
 router.get('/users').use(auth.ensureAdmin).handleAsync(User.list);
 router.post('/users').use(auth.ensureAdmin).handleAsync(User.createUser);
+router.post('/users/:id/approve').use(auth.ensureAdmin).handleAsync(User.approveUser);
+router.post('/users/:id/decline').use(auth.ensureAdmin).handleAsync(User.declineUser);
 router.put('/users/:id').use(auth.ensureAdmin).handleAsync(User.updateUser);
 router.get('/users/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(User.getUser);
 
