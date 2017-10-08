@@ -5,6 +5,8 @@ import HouseholdForm from './components/household-form'
 import { setValue, getValue } from 'neoform-plain-object-helpers'
 import { getSchools } from 'api/affiliation'
 import { createHousehold, submitNomination, getHousehold, updateHousehold } from 'api/household'
+import ErrorModal from './components/error-modal';
+
 
 export default class NewHousehold extends React.Component<
     {},
@@ -26,7 +28,8 @@ export default class NewHousehold extends React.Component<
             nominations: [],
             schools: [],
             phoneNumbers: [],
-            saved: false
+            saved: false,
+            show: false
         }
         ;(this: any).onChange = this.onChange.bind(this)
         ;(this: any).onSubmit = this.onSubmit.bind(this)
@@ -91,13 +94,20 @@ export default class NewHousehold extends React.Component<
         })
     }
 
-    onSaveDraft() {
-      const {id = undefined} = this.state
-      if(id) {
-        updateHousehold(id, this.state).then(() => console.log('updated hosehold')) 
-      } else {
-        createHousehold(this.state).then(({ id }) => this.setState({ saved: true, id: id }))
-      }
+    async onSaveDraft() {
+        try {
+            const {id = undefined} = this.state
+            if(id) {
+                await updateHousehold(id, this.state);
+            } else {
+                const { id } = await createHousehold(this.state);
+
+                this.setState({ saved: true, id: id });
+            }
+        } catch (error) {
+            this.setState(() => ({show: true}));
+            console.error(error);
+        }
     }
 
     onUpdate() {
@@ -110,6 +120,8 @@ export default class NewHousehold extends React.Component<
     }
 
     render(): React.Node {
+        let handleClose = () => this.setState({ show: false });
+        
         return (
             <div>
                 <HouseholdForm
@@ -124,6 +136,7 @@ export default class NewHousehold extends React.Component<
                     affiliations={this.state.schools}
                     saved={this.state.saved}
                 />
+                <ErrorModal show={this.state.show} handleClose={handleClose}></ErrorModal>
             </div>
         )
     }
