@@ -19,7 +19,8 @@ const Household = ({
     addChild,
     removeChild,
     affiliations,
-    saved
+    saved,
+    onAddressChange
 }) => {
     return (
         <form
@@ -28,7 +29,7 @@ const Household = ({
                 validate(data.household && data.household.id ? onUpdate : onSaveDraft, onInvalid)
             }}>
             <HouseholdForm />
-            <AddressForm />
+            <AddressForm onChange={onAddressChange}/>
             <PhoneNumbers />
             <ChildForm
                 nominations={data.nominations}

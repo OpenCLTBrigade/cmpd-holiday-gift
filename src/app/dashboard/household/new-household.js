@@ -134,6 +134,7 @@ export default class NewHousehold extends React.Component<
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
                     affiliations={this.state.schools}
+                    onAddressChange={address => this.onChange('address', address)}
                     saved={this.state.saved}
                 />
                 <ErrorModal show={this.state.show} handleClose={handleClose}></ErrorModal>
