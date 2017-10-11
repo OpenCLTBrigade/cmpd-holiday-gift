@@ -49,7 +49,7 @@ export default class List extends React.Component<{}> {
   actionCellFormatter(cell: any, row: HouseholdType): React.Node {
     return (
       <div>
-        <Link to={`/dashboard/household/${row.id}`}>
+        <Link to={`/dashboard/household/show/${row.id}`}>
           <StyledButton className="btn btn-sm btn-primary">Show</StyledButton>
         </Link>
         <Link to={`/dashboard/household/edit/${row.id}`}>
