@@ -7,6 +7,9 @@ const { validationResult } = require('express-validator/check');
 const { matchedData } = require('express-validator/filter');
 const logger = require('../../lib/logger');
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
+const formidable = require('formidable');
+const path = require('path');
+const fs = require('fs-extra');
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
@@ -71,6 +74,39 @@ module.exports = {
         //   where: { type: 'cms' }
         // });
     res.json(household);
+  },
+
+  async upload(req: any, res: any) {
+
+    const uploadDir = path.join(process.cwd(), 'uploads');
+    const nomDir = path.join(process.cwd(), 'uploads', req.params.id);
+    // create an incoming form object
+    const form = new formidable.IncomingForm();
+
+   // specify that we want to allow the user to upload multiple files in a single request
+    form.multiples = true;
+
+   // store all uploads in the /uploads directory
+    form.uploadDir = uploadDir;
+
+   // every time a file has been uploaded successfully,
+   // rename it to it's orignal name
+    form.on('file', function (field, file) {
+      fs.ensureDir(nomDir).then(() => fs.copy(file.path, path.join(nomDir, file.name)));
+    });
+
+   // log any errors that occur
+    form.on('error', function (err) {
+      console.log('An error has occured: \n' + err);
+    });
+
+   // once all the files have been uploaded, send a response to the client
+    form.on('end', function () {
+      res.sendStatus(200);
+    });
+
+   // parse the incoming request containing the form data
+    form.parse(req);
   },
 
   async submitNomination(req: any, res: any): Promise<void> {
