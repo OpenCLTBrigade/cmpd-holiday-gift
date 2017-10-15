@@ -2,7 +2,6 @@
 
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
-const sequelize = require('sequelize');
 const { validationResult } = require('express-validator/check');
 const { matchedData } = require('express-validator/filter');
 const logger = require('../../lib/logger');
@@ -10,6 +9,7 @@ const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nom
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
+const { createItemObject, createMainBucket } = require('../../lib/upload');
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
@@ -77,22 +77,33 @@ module.exports = {
   },
 
   async upload(req: any, res: any) {
-
+    const nominator = Object.assign({}, req.user.dataValues);
+    const bucketName = 'cfc-cmpd-explorers-qa';
+    const userBucket = `user-${nominator.id}`;
+    const { id } = req.params;
+    const files = [];
     const uploadDir = path.join(process.cwd(), 'uploads');
-    const nomDir = path.join(process.cwd(), 'uploads', req.params.id);
+
+    logger.info('uploading document for user', nominator.id);
+
+    try {
+      await createMainBucket(bucketName);
+
+    } catch (error) {
+      logger.error(error);
+      res.sendStatus(500);
+    }
+
     // create an incoming form object
     const form = new formidable.IncomingForm();
 
-   // specify that we want to allow the user to upload multiple files in a single request
     form.multiples = true;
-
-   // store all uploads in the /uploads directory
     form.uploadDir = uploadDir;
 
-   // every time a file has been uploaded successfully,
-   // rename it to it's orignal name
     form.on('file', function (field, file) {
-      fs.ensureDir(nomDir).then(() => fs.copy(file.path, path.join(nomDir, file.name)));
+      const filename = `${userBucket}/${file.name}`;
+      files.push({ filename, path: file.path });
+      logger.info('uploading to s3', { filename });
     });
 
    // log any errors that occur
@@ -101,8 +112,23 @@ module.exports = {
     });
 
    // once all the files have been uploaded, send a response to the client
-    form.on('end', function () {
-      res.sendStatus(200);
+    form.on('end', async function () {
+      try {
+        for (const file of files) {
+          const { filename } = file;
+          const fileBuffer = await fs.readFile(file.path);
+          const data = await createItemObject({ name: bucketName, filename, fileBuffer });
+          logger.info('uploaded to s3', { data });
+
+          await db.household_attachment.create({ household_id: id, path: filename });
+          await fs.remove(file.path);
+
+          res.json(files.map(file => file.filename));
+        }
+      } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+      }
     });
 
    // parse the incoming request containing the form data
