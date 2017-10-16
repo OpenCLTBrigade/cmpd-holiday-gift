@@ -1,10 +1,10 @@
 // @flow
 import * as React from 'react'
 
-import HouseholdForm from './components/household-form'
-import { setValue, getValue } from 'neoform-plain-object-helpers'
-import { getSchools } from 'api/affiliation'
-import { createHousehold, submitNomination, getHousehold, updateHousehold } from 'api/household'
+import HouseholdForm from './components/household-form';
+import { setValue, getValue } from 'neoform-plain-object-helpers';
+import { getSchools } from 'api/affiliation';
+import { createHousehold, submitNomination, getHousehold, uploadAttachment } from 'api/household';
 import ErrorModal from './components/error-modal';
 
 
@@ -31,25 +31,75 @@ export default class NewHousehold extends React.Component<
             saved: false,
             show: false
         }
-        ;(this: any).onChange = this.onChange.bind(this)
-        ;(this: any).onSubmit = this.onSubmit.bind(this)
-        ;(this: any).onUpdate = this.onUpdate.bind(this)
-        ;(this: any).onSaveDraft = this.onSaveDraft.bind(this)
+
+    > {
+  constructor() {
+    super();
+
+    this.state = {
+      household: {},
+      address: {},
+      nominations: [],
+      schools: [],
+      phoneNumbers: [],
+      saved: false,
+      files: []
+    };
+
+    (this: any).onChange = this.onChange.bind(this);
+    (this: any).onSubmit = this.onSubmit.bind(this);
+    (this: any).onSaveDraft = this.onSaveDraft.bind(this);
+    (this: any).onFileChange = this.onFileChange.bind(this);
+  }
+
+  addChild() {
+    this.setState(() => {
+      return { nominations: this.state.nominations.concat({}) };
+    });
+  }
+
+  removeChild() {
+    const nominations = this.state.nominations.slice();
+    nominations.pop();
+    this.setState(() => {
+      return { nominations };
+    });
+  }
+
+  async componentDidMount() {
+    try {
+      const { id = undefined } = this.props.match && this.props.match.params;
+
+      if (id) {
+        const household = await getHousehold(id);
+        console.log(household);
+
+        this.setState(() => ({ files: household.household_attachments }));
+      }
+      const { items: schools } = await getSchools();
+
+      this.setState(() => ({ schools }));
+    } catch (error) {
+      console.log(error);
     }
 
-    addChild() {
-        this.setState(() => {
-            return { nominations: this.state.nominations.concat({}) }
-        })
-    }
+  async onFileChange(file) {
+    const { id = undefined } = this.state;
 
-    removeChild() {
-        const nominations = this.state.nominations.slice()
-        nominations.pop()
-        this.setState(() => {
-            return { nominations }
-        })
+    if (id) {
+      const saved = await uploadAttachment({ id, file });
+
+      this.setState(() => {
+        const { files } = this.state;
+
+        return { files: files.concat(saved) };
+      });
     }
+  }
+
+  onChange(name: string, value: any) {
+    this.setState(prevState => {
+      const newState = setValue(prevState, name, value);
 
     async componentDidMount() {
         try {
@@ -133,6 +183,7 @@ export default class NewHousehold extends React.Component<
                     onSaveDraft={this.onSaveDraft}
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
+                    onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
                     onAddressChange={address => this.onChange('address', address)}
                     saved={this.state.saved}
