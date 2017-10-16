@@ -16,9 +16,13 @@ class FeedbackModal extends React.Component {
     };
   }
 
+  handleFormSubmit = () => {
+    console.log('Form submission placeholder', this.state.data);
+  }
+
   handleFormChange = (field, value) => {
     const s = { ...this.state };
-    s[field] = value;
+    s.data[field] = value;
     this.setState(s);
   }
 
@@ -35,7 +39,7 @@ class FeedbackModal extends React.Component {
           <Modal.Title>Review Household</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form data={this.state.data} handleChange={this.hanleFormChange}/>
+          <Form data={this.state.data} handleFormSubmit={this.handleFormSubmit} handleFormChange={this.handleFormChange}/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.doClose} bsStyle="default">
