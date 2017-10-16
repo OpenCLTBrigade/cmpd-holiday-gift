@@ -51,7 +51,6 @@ const HeadOfHousehold = () => {
                                     id="dob"
                                     name="household.dob"
                                     type="date"
-                                    autoComplete="dob"
                                     validator={requiredValidator}
                                 />
                             </Col>
