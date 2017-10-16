@@ -7,8 +7,6 @@ import requiredValidator from 'lib/validators/required.validator';
 import Checkbox from './checkbox';
 
 const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
-  console.log(affiliations);
-
   return (
     <div>
       {nominations && nominations.map((row, idx) => {

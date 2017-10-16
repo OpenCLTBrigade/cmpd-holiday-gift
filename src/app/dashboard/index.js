@@ -6,6 +6,7 @@ import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
 import NewHousehold from './household/new-household';
+import ShowHousehold from './household/ShowHousehold';
 import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
 import PendingUsersList from './users/PendingUsersList';
@@ -47,6 +48,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
               {/* TODO: Finish routes */}
               <Route exact path="/dashboard/household" component={HouseholdIndex} />
               <Route exact path="/dashboard/household/create" component={NewHousehold} />
+              <Route exact path="/dashboard/household/show/:id" component={ShowHousehold} />
               <Route exact path="/dashboard/household/edit/:id" component={NewHousehold} />
               <Route exact path="/dashboard/affiliation" component={AffiliationList} />
               <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />

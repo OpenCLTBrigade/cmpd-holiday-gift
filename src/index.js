@@ -27,6 +27,8 @@ import './index.css';
 // react-bootstrap-table
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 
+import 'babel-polyfill';
+
 // Our React Components that this component uses
 import Dashboard from 'app/dashboard';
 import Auth from 'app/auth';
