@@ -15,9 +15,9 @@ class Files extends React.PureComponent<any, any> {
             <div>
                 <Box title="Scanned Forms" bsStyle="primary">
                     {files &&
-                        files.map(filename => (
-                            <div key={`file-${filename}`}>
-                                <a href={`/api/nominations/households/download/${filename}`} download>{filename}</a>
+                        files.map(file => (
+                            <div key={`file-${file.filename}`}>
+                                <a href={file.url} download>{file.filename}</a>
                             </div>
                         ))}
 

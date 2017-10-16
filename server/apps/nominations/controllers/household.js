@@ -9,7 +9,7 @@ const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nom
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
-const { createItemObject, createMainBucket } = require('../../lib/upload');
+const { createItemObject, createMainBucket, getItemObject, getItemUrl } = require('../../lib/upload');
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
@@ -76,6 +76,28 @@ module.exports = {
     res.json(household);
   },
 
+  async download(req: any, res: any) {
+    const bucketName = 'cfc-cmpd-explorers-qa';
+    const filename = req.params.filename;
+    const nominator = Object.assign({}, req.user.dataValues);
+    const userBucket = `user-${nominator.id}`;
+
+    try {
+      const fileStream = await getItemObject({ name: bucketName, filename: `${userBucket}/${filename}` });
+
+      logger.info('downloading file', { filename });
+
+      res.attachment(filename);
+
+      fileStream.createReadStream().pipe(res);
+
+    } catch (error) {
+
+      logger.error(error);
+      res.sendStatus(500);
+    }
+  },
+
   async upload(req: any, res: any) {
     const nominator = Object.assign({}, req.user.dataValues);
     const bucketName = 'cfc-cmpd-explorers-qa';
@@ -101,9 +123,8 @@ module.exports = {
     form.uploadDir = uploadDir;
 
     form.on('file', function (field, file) {
-      const filename = `${userBucket}/${file.name}`;
-      files.push({ filename, path: file.path });
-      logger.info('uploading to s3', { filename });
+      files.push({ filename: file.name, path: file.path });
+      logger.info('uploading to s3', { filename: file.name });
     });
 
    // log any errors that occur
@@ -114,17 +135,22 @@ module.exports = {
    // once all the files have been uploaded, send a response to the client
     form.on('end', async function () {
       try {
+        const fileResults = [];
         for (const file of files) {
           const { filename } = file;
           const fileBuffer = await fs.readFile(file.path);
-          const data = await createItemObject({ name: bucketName, filename, fileBuffer });
-          logger.info('uploaded to s3', { data });
+          await createItemObject({ name: bucketName, filename: `${userBucket}/${filename}`, fileBuffer });
+
+          logger.info('uploaded to s3', { filename });
 
           await db.household_attachment.create({ household_id: id, path: filename });
           await fs.remove(file.path);
-
-          res.json(files.map(file => file.filename));
+          const url = await getItemUrl({ name: bucketName, filename: `${userBucket}/${filename}` });
+          fileResults.push({ url, filename });
         }
+
+        res.json(fileResults);
+
       } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -241,7 +267,6 @@ module.exports = {
     const nominator = Object.assign({}, req.user);
     const count = await db.household.count({ where: { 'nominator_id': nominator.id } });
 
-    let id = undefined;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
@@ -254,6 +279,9 @@ module.exports = {
               logger.info('creating household');
                 // Create household record
               const newHousehold = await db.household.create(Object.assign({}, householdDefaults, household, { nominator_user_id: nominator.id }));
+              const { id } = newHousehold;
+
+              logger.info('created household', { id });
 
               logger.info('creating household_address');
 
@@ -284,11 +312,11 @@ module.exports = {
                 logger.info('creating child');
 
                 db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
-
-                id = newHousehold.id;
               }
+
+              return id;
             })
-            .then(() => {
+            .then((id) => {
               res.json({ id });
                 // Success. Committed.
             })

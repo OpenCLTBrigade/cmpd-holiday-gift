@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3({ region: 'us-west-1' });
+const s3 = new AWS.S3({ region: 'us-west-1', signatureVersion: 'v4' });
 
 const logger = require('./logger');
 
@@ -33,11 +33,14 @@ const createItemObject = async ({ name, filename, fileBuffer }) => {
   };
 
   try {
-    logger.info('createItemObject');
+    logger.info('createItemObject - uploading file');
     const data = await s3.putObject(params).promise();
+
+    logger.info('createItemObject - uploaded file');
+
     return data;
   } catch (error) {
-    logger.error(error);
+    logger.error('something bad happened', error);
 
     throw error;
   }
@@ -52,13 +55,13 @@ const getItemObject = async ({ name, filename }) => {
   try {
     logger.info('getItemObject');
 
-    const data = await s3.getObject(params).promise();
+    const data = await s3.getObject(params);
 
     return data;
 
   } catch (error) {
 
-    logger.error(error);
+    logger.error('something bad happened', error);
 
     throw error;
   }
@@ -70,7 +73,7 @@ const getItemUrl = async ({ name, filename }) => {
     Key: `${filename}`
   };
 
-  return await s3.getSignedUrl('getObject', params).promise();
+  return await s3.getSignedUrl('getObject', params);
 };
 
 module.exports = {
