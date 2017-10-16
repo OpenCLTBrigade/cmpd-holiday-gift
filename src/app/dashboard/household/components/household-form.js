@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import * as React from 'react'
 
 import HouseholdForm from './form/head-of-household';
 import AddressForm from './form/address';
@@ -14,6 +14,7 @@ const Household = ({
     onSubmit,
     onInvalid,
     onSaveDraft,
+    onUpdate,
     validate,
     data,
     addChild,
@@ -27,9 +28,10 @@ const Household = ({
             onSubmit={e => {
               e.preventDefault();
               validate(onSaveDraft, onInvalid);
+
             }}>
             <HouseholdForm />
-            <AddressForm />
+            <AddressForm onChange={onAddressChange}/>
             <PhoneNumbers />
             <ChildForm
                 nominations={data.nominations}
@@ -40,12 +42,12 @@ const Household = ({
             {saved && <Files files={data.files} onChange={onFileChange} />}
             <Row>
                 <Col xs={12}>
-                    <Button type="submit">Save Draft</Button>
+                    <Button type="submit">{data.household && data.household.id ? 'Update' : 'Save Draft'}</Button>
                     {saved && <Button onClick={onSubmit}>Submit Nomination</Button>}
                 </Col>
             </Row>
         </form>
-  );
-};
+    )
+}
 
-export default Form(FormValidation(Household));
+export default Form(FormValidation(Household))

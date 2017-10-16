@@ -5,11 +5,15 @@ const TableApi = require('../../lib/tableApi');
 const { validationResult } = require('express-validator/check');
 const { matchedData } = require('express-validator/filter');
 const logger = require('../../lib/logger');
+
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const { createItemObject, createMainBucket, getItemObject, getItemUrl } = require('../../lib/upload');
+
+// const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
+
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
@@ -62,6 +66,7 @@ module.exports = {
     let household = null;
     try {
       household = await db.household.findById(req.params.id, { include: related });
+
       if (!household) {
         throw new Error('Household not found');
       }
@@ -192,80 +197,120 @@ module.exports = {
 
     const { id } = req.params;
 
-    return db.sequelize.transaction(async t => {
-      const payload = matchedData(req);
+    return db.sequelize
+            .transaction(async t => {
+              const payload = matchedData(req);
 
-      try {
-        logger.info('finding household', id);
-        const household = await db.household.findById(id);
-        const address = await db.household_address.find({ where: { household_id: id } });
+              try {
+                logger.info('finding household', id);
+                const household = await db.household.findById(id);
+                const address = await db.household_address.find({ where: { household_id: id } });
 
-        household.update(Object.assign({}, payload.household));
-        address.update(Object.assign({}, payload.address));
+                logger.info('updating household', id);
 
-        const numbers = await db.household_phone.findAll({ where: { household_id: id } });
+                household.update(Object.assign({}, payload.household));
 
-        const removedNumbers = numbers && numbers.filter(entity => payload.phoneNumbers && payload.phoneNumbers.every(json => json.number !== entity.dataValues.number));
-        const addedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)) || [];
-        const updatedNumbers = payload.phoneNumbers && payload.phoneNumbers.filter(json => numbers && numbers.some(entity => json.number === entity.dataValues.number)) || [];
+                logger.info('updating address', id);
 
-        for (const removed of removedNumbers) {
-          logger.info('removing number');
+                address.update(Object.assign({}, payload.address));
 
-          removed.destroy();
-        }
+                const numbers = await db.household_phone.findAll({ where: { household_id: id } });
 
-        for (const added of addedNumbers) {
-          logger.info('adding number');
+                const removedNumbers =
+                        numbers &&
+                        numbers.filter(
+                            entity =>
+                                payload.phoneNumbers &&
+                                payload.phoneNumbers.every(json => json.number !== entity.dataValues.number)
+                        );
+                const addedNumbers =
+                        (payload.phoneNumbers &&
+                            payload.phoneNumbers.filter(
+                                json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)
+                            )) ||
+                        [];
+                const updatedNumbers =
+                        (payload.phoneNumbers &&
+                            payload.phoneNumbers.filter(
+                                json => numbers && numbers.some(entity => json.number === entity.dataValues.number)
+                            )) ||
+                        [];
 
-          db.household_phone.create(Object.assign({}, added, { household_id: id }));
-        }
+                for (const removed of removedNumbers) {
+                  logger.info('removing number');
 
-        for (const updated of updatedNumbers) {
-          logger.info('updating number');
+                  removed.destroy();
+                }
 
-          const toUpdate = numbers.find(number => updated.number === number.number);
-          toUpdate.update(updated);
-        }
+                for (const added of addedNumbers) {
+                  logger.info('adding number');
 
-        const nominations = await db.child.findAll({ where: { household_id: id } });
+                  db.household_phone.create(Object.assign({}, added, { household_id: id }));
+                }
 
-        const removedNominations = nominations && nominations.filter(entity => payload.nominations && payload.nominations.every(json => json.last4ssn !== entity.last4ssn));
-        const addedNominations = payload.nominations && payload.nominations.filter(json => nominations && nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)) || [];
-        const updatedNominations = payload.nominations && payload.nominations.filter(json => nominations && nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)) || [];
+                for (const updated of updatedNumbers) {
+                  logger.info('updating number');
 
-        for (const removed of removedNominations) {
-          logger.info('removing nomination');
+                  const toUpdate = numbers.find(number => updated.number === number.number);
+                  toUpdate.update(updated);
+                }
 
-          removed.destroy();
-        }
+                const nominations = await db.child.findAll({ where: { household_id: id } });
 
-        for (const added of addedNominations) {
-          logger.info('adding nomination');
+                const removedNominations =
+                        nominations &&
+                        nominations.filter(
+                            entity =>
+                                payload.nominations &&
+                                payload.nominations.every(json => json.last4ssn !== entity.last4ssn)
+                        );
+                const addedNominations =
+                        (payload.nominations &&
+                            payload.nominations.filter(
+                                json =>
+                                    nominations &&
+                                    nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)
+                            )) ||
+                        [];
+                const updatedNominations =
+                        (payload.nominations &&
+                            payload.nominations.filter(
+                                json =>
+                                    nominations &&
+                                    nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)
+                            )) ||
+                        [];
 
-          db.child.create(Object.assign({}, added, childDefaults, { household_id: id }));
-        }
+                for (const removed of removedNominations) {
+                  logger.info('removing nomination');
 
-        for (const updated of updatedNominations) {
-          logger.info('updating nomination');
+                  removed.destroy();
+                }
 
-          const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
-          toUpdate.update(updated);
-        }
+                for (const added of addedNominations) {
+                  logger.info('adding nomination');
 
+                  db.child.create(Object.assign({}, added, childDefaults, { household_id: id }));
+                }
 
-      } catch (error) {
-        logger.info(error);
-      }
+                for (const updated of updatedNominations) {
+                  logger.info('updating nomination');
 
-    }).then(() => res.sendStatus(200));
+                  const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
+                  toUpdate.update(updated);
+                }
+              } catch (error) {
+                logger.info(error);
+              }
+            })
+            .then(() => res.sendStatus(200));
   },
 
   createHousehold: async (req: any, res: any): Promise<void> => {
         // TODO: Check if user has reached nomination limit and reject if so
 
     const nominator = Object.assign({}, req.user);
-    const count = await db.household.count({ where: { 'nominator_id': nominator.id } });
+    const count = await db.household.count({ where: { nominator_id: nominator.id } });
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -282,7 +327,6 @@ module.exports = {
               const { id } = newHousehold;
 
               logger.info('created household', { id });
-
               logger.info('creating household_address');
 
                 // Create address record (from address{})

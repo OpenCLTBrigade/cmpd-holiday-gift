@@ -3,9 +3,13 @@ import * as React from 'react';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
+import { Link } from 'react-router-dom';
+
 import styled from 'styled-components';
 import { getHouseholdList } from 'api/household';
+
 import type { HouseholdType } from 'api/household';
+
 
 const TD_STYLE_LARGE = { 
   'min-width': '175px',
@@ -42,11 +46,15 @@ export default class List extends React.Component<{}> {
     this.table.handlePageChange(pageNumber);
   }
 
-  actionCellFormatter(_cell: any, _row: HouseholdType): React.Node {
+  actionCellFormatter(cell: any, row: HouseholdType): React.Node {
     return (
       <div>
-        <StyledButton className="btn btn-sm btn-primary">Show</StyledButton>
-        <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
+        <Link to={`/dashboard/household/show/${row.id}`}>
+          <StyledButton className="btn btn-sm btn-primary">Show</StyledButton>
+        </Link>
+        <Link to={`/dashboard/household/edit/${row.id}`}>
+          <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
+        </Link>
         <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton>
       </div>
     );

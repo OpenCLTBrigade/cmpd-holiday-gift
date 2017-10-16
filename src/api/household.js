@@ -22,8 +22,12 @@ export function getHouseholdList(
   return get('nominations', 'households', { page: pageNumber, search: search });
 }
 
-export function createHousehold(household) {
-  return post('nominations', 'households', household);
+export function createHousehold(json) {
+  return post('nominations', 'households', json);
+}
+
+export function updateHousehold(id, json) {
+  return post('nominations', `households/${id}`, json);
 }
 
 export function submitNomination({ id }) {
