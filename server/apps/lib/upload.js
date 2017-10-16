@@ -43,7 +43,39 @@ const createItemObject = async ({ name, filename, fileBuffer }) => {
   }
 };
 
+const getItemObject = async ({ name, filename }) => {
+  const params = {
+    Bucket: name,
+    Key: `${filename}`
+  };
+
+  try {
+    logger.info('getItemObject');
+
+    const data = await s3.getObject(params).promise();
+
+    return data;
+
+  } catch (error) {
+
+    logger.error(error);
+
+    throw error;
+  }
+};
+
+const getItemUrl = async ({ name, filename }) => {
+  const params = {
+    Bucket: name,
+    Key: `${filename}`
+  };
+
+  return await s3.getSignedUrl('getObject', params).promise();
+};
+
 module.exports = {
   createItemObject,
-  createMainBucket
+  createMainBucket,
+  getItemObject,
+  getItemUrl
 };
