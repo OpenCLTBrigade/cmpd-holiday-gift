@@ -8,15 +8,26 @@ import ChildForm from './form/child';
 import { Row, Col, Button } from 'react-bootstrap';
 import { Form } from 'neoform';
 import { FormValidation } from 'neoform-validation';
+import Files from './form/files';
 
-const Household = ({ onSubmit, onInvalid, onSaveDraft, validate, data, addChild, removeChild, affiliations, saved }) => {
+const Household = ({
+    onSubmit,
+    onInvalid,
+    onSaveDraft,
+    validate,
+    data,
+    addChild,
+    removeChild,
+    affiliations,
+    onFileChange,
+    saved
+}) => {
   return (
         <form
             onSubmit={e => {
               e.preventDefault();
               validate(onSaveDraft, onInvalid);
-            }}
-        >
+            }}>
             <HouseholdForm />
             <AddressForm />
             <PhoneNumbers />
@@ -26,6 +37,7 @@ const Household = ({ onSubmit, onInvalid, onSaveDraft, validate, data, addChild,
                 removeChild={removeChild}
                 affiliations={affiliations}
             />
+            {saved && <Files files={data.files} onChange={onFileChange} />}
             <Row>
                 <Col xs={12}>
                     <Button type="submit">Save Draft</Button>

@@ -4,7 +4,7 @@ import * as React from 'react';
 import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
-import { createHousehold, submitNomination, getHousehold } from 'api/household';
+import { createHousehold, submitNomination, getHousehold, uploadAttachment } from 'api/household';
 
 export default class NewHousehold
     extends React.Component<
@@ -27,12 +27,14 @@ export default class NewHousehold
       nominations: [],
       schools: [],
       phoneNumbers: [],
-      saved: false
+      saved: false,
+      files: []
     };
 
     (this: any).onChange = this.onChange.bind(this);
     (this: any).onSubmit = this.onSubmit.bind(this);
     (this: any).onSaveDraft = this.onSaveDraft.bind(this);
+    (this: any).onFileChange = this.onFileChange.bind(this);
   }
 
   addChild() {
@@ -56,12 +58,28 @@ export default class NewHousehold
       if (id) {
         const household = await getHousehold(id);
         console.log(household);
+
+        this.setState(() => ({ files: household.household_attachments }));
       }
       const { items: schools } = await getSchools();
 
       this.setState(() => ({ schools }));
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async onFileChange(file) {
+    const { id = undefined } = this.state;
+
+    if (id) {
+      const saved = await uploadAttachment({ id, file });
+
+      this.setState(() => {
+        const { files } = this.state;
+
+        return { files: files.concat(saved) };
+      });
     }
   }
 
@@ -109,6 +127,7 @@ export default class NewHousehold
                     onSaveDraft={this.onSaveDraft}
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
+                    onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
                     saved={this.state.saved}
                 />

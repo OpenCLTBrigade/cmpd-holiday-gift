@@ -7,7 +7,8 @@ export type HouseholdType = {
   children: Object[],
   name_first: string,
   nominator: Object,
-  surname: string
+  surname: string,
+  household_attachments: Object[]
 };
 
 export function getHousehold(householdId: number): Promise<{household: HouseholdType}> {
@@ -27,4 +28,10 @@ export function createHousehold(household) {
 
 export function submitNomination({ id }) {
   return post('nominations', 'households/submit', { id });
+}
+
+export function uploadAttachment({ id, file }) {
+  const formData = new FormData();
+  formData.append('file', file[0]);
+  return post('nominations', `households/${id}/upload`, formData);
 }
