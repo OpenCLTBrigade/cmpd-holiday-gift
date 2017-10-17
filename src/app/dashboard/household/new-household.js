@@ -58,7 +58,7 @@ export default class NewHousehold extends React.Component<
                 const household = await getHousehold(id)
                 const { children: nominations = [], phoneNumbers = [], address = {} } = household
 
-                this.setState(() => ({ household, nominations, phoneNumbers, address }))
+                this.setState(() => ({ household, nominations, phoneNumbers, address, id }))
             }
 
             const { items: schools } = await getSchools()
@@ -111,17 +111,18 @@ export default class NewHousehold extends React.Component<
     }
 
     onUpdate() {
-      let {id} = this.state.household && this.state.household.id
-      updateHousehold(id, this.state).then(() => console.log('updated hosehold'))
+        const {history} = this.props;
+        
+      let { id } = this.state.household && this.state.household;
+      updateHousehold(id, this.state).then(() => history.push('/dashboard/household'))
     }
 
-    onSubmit() {
+    onSubmit() {        
         submitNomination({ id: this.state.id }).then(() => this.reset())
     }
 
     render(): React.Node {
         let handleClose = () => this.setState({ show: false });
-        
         return (
             <div>
                 <HouseholdForm

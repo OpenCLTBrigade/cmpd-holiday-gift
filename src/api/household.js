@@ -1,5 +1,5 @@
 // @flow
-import { get, post } from 'lib/apiService';
+import { get, post, put } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type HouseholdType = {
@@ -26,7 +26,7 @@ export function createHousehold(json) {
 }
 
 export function updateHousehold(id, json) {
-  return post('nominations', `households/${id}`, json);
+  return put('nominations', `households/${id}`, json);
 }
 
 export function submitNomination({ id }) {
