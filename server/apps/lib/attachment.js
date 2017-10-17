@@ -69,7 +69,7 @@ const getAttachments = async ({ name, owner }) => {
     const filename = contents[i].Key;
     const url = await getAttachmentUrl({ name, filename });
 
-    uploads.push({ filename: filename, url });
+    uploads.push({ filename: filename.replace(`${owner}/`, ''), url });
   }
 
   return uploads;
