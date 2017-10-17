@@ -8,7 +8,7 @@ export type HouseholdType = {
   name_first: string,
   nominator: Object,
   surname: string,
-  household_attachments: Object[]
+  attachments: Object[]
 };
 
 export function getHousehold(householdId: number): Promise<{household: HouseholdType}> {

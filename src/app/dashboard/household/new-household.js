@@ -59,7 +59,7 @@ export default class NewHousehold
         const household = await getHousehold(id);
         console.log(household);
 
-        this.setState(() => ({ files: household.household_attachments }));
+        this.setState(() => ({ files: household.attachments }));
       }
       const { items: schools } = await getSchools();
 
@@ -103,6 +103,7 @@ export default class NewHousehold
         nominations: [],
         schools: [],
         phoneNumbers: [],
+        attachments: [],
         saved: false
       };
     });

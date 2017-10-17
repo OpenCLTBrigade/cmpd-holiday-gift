@@ -9,7 +9,8 @@ const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nom
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
-const { createItemObject, createMainBucket, getItemObject, getItemUrl } = require('../../lib/upload');
+const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
+const bucketName = 'chimon-test-bucket';
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
@@ -60,8 +61,12 @@ module.exports = {
   },
   getHousehold: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
     let household = null;
+    const nominator = Object.assign({}, req.user.dataValues);
+
     try {
-      household = await db.household.findById(req.params.id, { include: related });
+      const entity = await db.household.findById(req.params.id, { include: related });
+      household = entity.dataValues;
+
       if (!household) {
         throw new Error('Household not found');
       }
@@ -69,28 +74,31 @@ module.exports = {
       household = null;
       res.status(404);
     }
-        // var schools = await db.affiliation.findAll({
-        //   attributes: ['id', 'name'],
-        //   where: { type: 'cms' }
-        // });
+
+    try {
+      if (household != null) {
+        const owner = `household-${household.id}`;
+        const attachments = await getAttachments({ name: bucketName, owner });
+
+        household.attachments = attachments;
+      }
+    } catch (error) {
+
+      logger.error(error);
+    }
+
     res.json(household);
   },
 
-  async download(req: any, res: any) {
-    const bucketName = 'cfc-cmpd-explorers-qa';
-    const filename = req.params.filename;
-    const nominator = Object.assign({}, req.user.dataValues);
-    const userBucket = `user-${nominator.id}`;
+  async getAttachments(req: any, res: any) {
+    logger.info('getting attachments');
+    const { id } = req.params;
+    const owner = `household-${id}`;
 
     try {
-      const fileStream = await getItemObject({ name: bucketName, filename: `${userBucket}/${filename}` });
+      const attachments = await getAttachments({ name: bucketName, owner });
 
-      logger.info('downloading file', { filename });
-
-      res.attachment(filename);
-
-      fileStream.createReadStream().pipe(res);
-
+      res.json(attachments);
     } catch (error) {
 
       logger.error(error);
@@ -98,12 +106,12 @@ module.exports = {
     }
   },
 
-  async upload(req: any, res: any) {
+  async createAttachments(req: any, res: any) {
     const nominator = Object.assign({}, req.user.dataValues);
-    const bucketName = 'cfc-cmpd-explorers-qa';
-    const userBucket = `user-${nominator.id}`;
     const { id } = req.params;
     const files = [];
+    const owner = `household-${id}`;
+
     const uploadDir = path.join(process.cwd(), 'uploads');
 
     logger.info('uploading document for user', nominator.id);
@@ -139,13 +147,13 @@ module.exports = {
         for (const file of files) {
           const { filename } = file;
           const fileBuffer = await fs.readFile(file.path);
-          await createItemObject({ name: bucketName, filename: `${userBucket}/${filename}`, fileBuffer });
+          await createAttachment({ name: bucketName, filename: `${owner}/${filename}`, fileBuffer });
 
           logger.info('uploaded to s3', { filename });
 
           await db.household_attachment.create({ household_id: id, path: filename });
           await fs.remove(file.path);
-          const url = await getItemUrl({ name: bucketName, filename: `${userBucket}/${filename}` });
+          const url = await getAttachmentUrl({ name: bucketName, filename: `${owner}/${filename}` });
           fileResults.push({ url, filename });
         }
 
