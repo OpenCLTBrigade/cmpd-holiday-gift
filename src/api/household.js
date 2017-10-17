@@ -8,6 +8,8 @@ export type HouseholdType = {
   name_first: string,
   nominator: Object,
   surname: string,
+  phoneNumbers: Object[],
+  address: Object,
   attachments: Object[]
 };
 
