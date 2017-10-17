@@ -11,7 +11,7 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
-const bucketName = 'chimon-test-bucket';
+const bucketName = 'cfc-cmpd-explorers-qa';
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
 
