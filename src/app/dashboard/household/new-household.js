@@ -39,6 +39,20 @@ export default class NewHousehold extends React.Component<
     (this: any).onUpdate = this.onUpdate.bind(this);
   }
 
+  addPhoneNumber() {
+    this.setState(() => {
+      return { phoneNumbers: this.state.phoneNumbers.concat({}) };
+    });
+  }
+
+  removePhoneNumber() {
+    const phoneNumbers = this.state.phoneNumbers.slice();
+    phoneNumbers.pop();
+    this.setState(() => {
+      return { phoneNumbers };
+    });
+  }
+
   addChild() {
     this.setState(() => {
       return { nominations: this.state.nominations.concat({}) };
@@ -155,6 +169,8 @@ export default class NewHousehold extends React.Component<
                     onSaveDraft={this.onSaveDraft}
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
+                    removePhoneNumber={this.removePhoneNumber.bind(this)}
+                    addPhoneNumber={this.addPhoneNumber.bind(this)}
                     onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
                     onAddressChange={address => this.onChange('address', address)}

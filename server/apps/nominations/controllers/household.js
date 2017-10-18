@@ -316,7 +316,7 @@ module.exports = {
     const { nomination_limit } = nominator.dataValues;
     const count = await db.household.count({ where: { nominator_id: nominator.id } });
 
-    if (true) {
+    if (nomination_limit === count) {
       return res.sendStatus(403);
     }
 

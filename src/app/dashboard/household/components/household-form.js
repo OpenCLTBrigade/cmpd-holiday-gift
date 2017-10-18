@@ -21,6 +21,8 @@ const Household = ({
     removeChild,
     affiliations,
     onFileChange,
+    removePhoneNumber,
+    addPhoneNumber,
     onAddressChange,
     saved
 }) => {
@@ -34,7 +36,7 @@ const Household = ({
             }}>
             <HouseholdForm />
             <AddressForm onChange={onAddressChange}/>
-            <PhoneNumbers phoneNumbers={data.phoneNumbers}/>
+            <PhoneNumbers removePhoneNumber={removePhoneNumber} addPhoneNumber={addPhoneNumber} phoneNumbers={data.phoneNumbers}/>
             <ChildForm
                 nominations={data.nominations}
                 addChild={addChild}
