@@ -5,5 +5,6 @@ module.exports = {
   Me: require('./me'),
   Affiliation: require('./affiliation'),
   Reports: require('./reports'),
-  Slips: require('./slips')
+  Slips: require('./slips'),
+  Cmpd: require('./cmpd')
 };

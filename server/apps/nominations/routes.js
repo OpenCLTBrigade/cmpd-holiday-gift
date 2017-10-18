@@ -1,7 +1,7 @@
 // @flow
 const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports, Slips, Cmpd } = require('./controllers');
 const auth = require('../lib/auth');
 const validators = require('./validators/household');
 
