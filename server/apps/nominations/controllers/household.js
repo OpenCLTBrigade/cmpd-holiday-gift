@@ -57,6 +57,10 @@ module.exports = {
   },
   getHousehold: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
     let household = null;
+    
+    const nominator = Object.assign({}, req.user);
+    const { nomination_limit } = nominator.dataValues;
+
     try {
       household = await db.household.findById(req.params.id, { include: related });
 
@@ -103,7 +107,7 @@ module.exports = {
       return res.status(400).json({ errors: errors.mapped() });
     }
 
-    const { id } = req.params;
+    const { id } = req.params;    
 
     return db.sequelize
             .transaction(async t => {
@@ -219,6 +223,7 @@ module.exports = {
 
     const nominator = Object.assign({}, req.user);
     const count = await db.household.count({ where: { nominator_id: nominator.id } });
+
 
     let id = undefined;
     const errors = validationResult(req);
