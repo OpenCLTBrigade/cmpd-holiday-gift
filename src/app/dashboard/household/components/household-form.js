@@ -34,7 +34,7 @@ const Household = ({
             }}>
             <HouseholdForm />
             <AddressForm onChange={onAddressChange}/>
-            <PhoneNumbers />
+            <PhoneNumbers phoneNumbers={data.phoneNumbers}/>
             <ChildForm
                 nominations={data.nominations}
                 addChild={addChild}

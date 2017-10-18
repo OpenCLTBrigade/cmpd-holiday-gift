@@ -22,7 +22,6 @@ class PhoneNumbersForm extends React.Component<{
 
     this.state = { phoneNumbers: props.phoneNumbers };
 
-    console.log(props);
   }
 
   addPhoneNumber() {
@@ -40,13 +39,15 @@ class PhoneNumbersForm extends React.Component<{
   }
 
   render(): React.Node {
+    const { phoneNumbers } = this.props;
+
     return (
       <div>
         <Row>
           <Col xs={12}>
             <Box title="Phone Numbers" bsStyle="danger">
-              {this.state.phoneNumbers &&
-                this.state.phoneNumbers.map((phoneNumber, idx) => {
+              {phoneNumbers &&
+                phoneNumbers.map((phoneNumber, idx) => {
                   return (
                     <Row key={`phoneNumber-${idx}`}>
                       <Col md={6} xs={12}>
