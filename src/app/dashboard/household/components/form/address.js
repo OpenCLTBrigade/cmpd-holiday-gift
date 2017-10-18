@@ -35,8 +35,9 @@ class AddressForm extends React.Component<{onChange?: any}> {
       });
 
       placesAutocomplete.on('change', (e) => {
-          const {name: street, administrative: state, city} = e.suggestion;
-          onChange({street, state, city});
+          console.log('Selected address', e.suggestion);
+          const { name: street, administrative: state, city, postcode: zip, latlng } = e.suggestion;
+          onChange({ street, state, city, zip, latlng });
       })
   }
 
@@ -121,10 +122,10 @@ class AddressForm extends React.Component<{onChange?: any}> {
                             </Row>
                             <Row>
                                 <Col md={6} xs={12}>
-                                    <Input label="CMPD Division" name="address.cmpd_division" type="text" />
+                                    <Input label="CMPD Division" name="address.cmpd_division" type="text" disabled/>
                                 </Col>
                                 <Col md={6} xs={12}>
-                                    <Input label="CMPD Response Area" name="address.cmpd_response_area" type="text" />
+                                    <Input label="CMPD Response Area" name="address.cmpd_response_area" type="text" disabled />
                                 </Col>
                             </Row>
                         </Box>

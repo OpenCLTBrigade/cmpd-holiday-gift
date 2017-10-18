@@ -5,6 +5,7 @@ import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
 import { createHousehold, submitNomination, getHousehold, uploadAttachment, updateHousehold } from 'api/household';
+import { getAddressInfo } from 'api/cmpd';
 import ErrorModal from './components/error-modal';
 
 export default class NewHousehold extends React.Component<
@@ -62,6 +63,25 @@ export default class NewHousehold extends React.Component<
         return { files: files.concat(saved) };
       });
     }
+  }
+
+  onAddressChange(name: string, value: any) {
+    const latlng = { ...value.latlng };
+    delete value.latlng;
+    // console.log('latlng', latlng);
+    // console.log('oooooo', value);
+    // TODO: Get CMPD Address Info
+    getAddressInfo(latlng.lat, latlng.lng).then(response => {
+      if (!response || response.data === null) {
+        console.log('CMPD Division / Address not found');
+        value.cmpd_division = '';
+        value.cmpd_response_area = '';
+      } else {
+        value.cmpd_division = response.data.properties.DIVISION;
+        value.cmpd_response_area = response.data.properties.RA;
+      }
+      this.onChange(name, value);
+    });
   }
 
   onChange(name: string, value: any) {
@@ -151,7 +171,7 @@ export default class NewHousehold extends React.Component<
                     removeChild={this.removeChild.bind(this)}
                     onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
-                    onAddressChange={address => this.onChange('address', address)}
+                    onAddressChange={address => this.onAddressChange('address', address)}
                     saved={this.state.saved}
                 />
                 <ErrorModal title="Oops" messsage="Something went wrong" show={this.state.show} handleClose={handleClose} />
