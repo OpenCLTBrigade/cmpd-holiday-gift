@@ -41,3 +41,8 @@ export function uploadAttachment({ id, file }) {
   formData.append('file', file[0]);
   return post('nominations', `households/${id}/upload`, formData);
 }
+
+export function reviewHousehold(id, payload: Object<{approved: boolean, reason: string, message: string}>) {
+  const { approved, reason, message } = payload;
+  return post('nominations', `households/${id}/feedback`, { approved, reason, message });
+}

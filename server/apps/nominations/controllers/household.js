@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
 const bucketName = 'cfc-cmpd-explorers-qa';
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
 
@@ -192,6 +193,34 @@ module.exports = {
       household.save().then(() => res.sendStatus(200));
     } catch (err) {
       res.sendStatus(404);
+    }
+  },
+
+  async submitFeedback(req: any, res: any){
+    const { approved, reason, message } = req.body;
+    try {
+      logger.info(`Submitting feedback for ${req.params.id}`);
+      const household = await db.household.findById(req.params.id, { include: [{ model: db.user, as: 'nominator' }] });
+      if (!household) {
+        throw new Error('Household not found');
+      }
+  
+      // Message is not stored; it gets emailed
+      household.approved = approved;
+      household.reason = reason || null;
+  
+      await household.save();
+  
+      if (approved) {
+        await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.name_last });
+      } else {
+        await sendMail('feedback-declined', { to: household.nominator.email, feedbackText: message, reason, name_last: household.name_last });
+      }
+  
+      res.json({ data: true });
+    } catch (err) {
+      logger.info('feedback submission failed.', 'approved', approved, 'reason', reason, 'message', message, 'error', err);
+      res.json({ data: false });
     }
   },
 
