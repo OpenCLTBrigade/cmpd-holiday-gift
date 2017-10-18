@@ -5,7 +5,7 @@ the [CMPD Explorers Christmas Project].
 
 # Getting Started
 
-[NodeJS 7.9.0] or above is **required**. We recommend installing `nvm` if you're on a Mac so you can
+[NodeJS 8.4.0] or above is **required**. We recommend installing `nvm` if you're on a Mac so you can
 easily switch between Node versions on a per-project basis.
 
 See [Dependencies Documentation](#dependencies-documentation) below for more information
