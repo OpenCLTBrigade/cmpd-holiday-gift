@@ -40,6 +40,20 @@ export default class NewHousehold extends React.Component<
     (this: any).onUpdate = this.onUpdate.bind(this);
   }
 
+  addPhoneNumber() {
+    this.setState(() => {
+      return { phoneNumbers: this.state.phoneNumbers.concat({}) };
+    });
+  }
+
+  removePhoneNumber() {
+    const phoneNumbers = this.state.phoneNumbers.slice();
+    phoneNumbers.pop();
+    this.setState(() => {
+      return { phoneNumbers };
+    });
+  }
+
   addChild() {
     this.setState(() => {
       return { nominations: this.state.nominations.concat({}) };
@@ -101,8 +115,9 @@ export default class NewHousehold extends React.Component<
       if (id) {
         const household = await getHousehold(id);
         const { children: nominations = [], phoneNumbers = [], address = {}, attachments: files = [] } = household;
+        const newState = { household, nominations, phoneNumbers, address, id, files };
 
-        this.setState(() => ({ household, nominations, phoneNumbers, address, id, files }));
+        this.setState(() => (newState));
       }
 
       const { items: schools } = await getSchools();
@@ -174,6 +189,8 @@ export default class NewHousehold extends React.Component<
                     onSaveDraft={this.onSaveDraft}
                     addChild={this.addChild.bind(this)}
                     removeChild={this.removeChild.bind(this)}
+                    removePhoneNumber={this.removePhoneNumber.bind(this)}
+                    addPhoneNumber={this.addPhoneNumber.bind(this)}
                     onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
                     onAddressChange={address => this.onAddressChange('address', address)}

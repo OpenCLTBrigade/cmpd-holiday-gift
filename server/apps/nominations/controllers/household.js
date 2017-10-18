@@ -72,11 +72,9 @@ module.exports = {
     try {
       const entity = await db.household.findById(req.params.id, { include: related });
       const addressEntity = await db.household_address.find({ where: { household_id: req.params.id } });
-      const phoneNumberEntities = await db.household_phone.find({ where: { household_id: req.params.id } });
-
+      phoneNumbers = await db.household_phone.findAll({ where: { household_id: req.params.id } });
       household = entity.dataValues;
       address = addressEntity.dataValues;
-      phoneNumbers = phoneNumberEntities.dataValues;
 
       if (!household) {
         throw new Error('Household not found');
