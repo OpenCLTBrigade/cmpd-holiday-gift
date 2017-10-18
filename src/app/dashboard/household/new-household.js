@@ -34,6 +34,7 @@ export default class NewHousehold extends React.Component<
         ;(this: any).onSubmit = this.onSubmit.bind(this)
         ;(this: any).onSaveDraft = this.onSaveDraft.bind(this)
         ;(this: any).onFileChange = this.onFileChange.bind(this);
+        (this: any).onUpdate = this.onUpdate.bind(this);
   }
 
   addChild() {
@@ -124,16 +125,16 @@ export default class NewHousehold extends React.Component<
     }
   }
 
-    onUpdate() {
-        const {history} = this.props;
-        
-      let { id } = this.state.household && this.state.household;
-      updateHousehold(id, this.state).then(() => history.push('/dashboard/household'))
-    }
+  onUpdate() {
+    const { history } = this.props;
 
-    onSubmit() {        
-        submitNomination({ id: this.state.id }).then(() => this.reset())
-    }
+    const { id } = this.state.household && this.state.household;
+    updateHousehold(id, this.state).then(() => history.push('/dashboard/household'));
+  }
+
+  onSubmit() {
+    submitNomination({ id: this.state.id }).then(() => this.reset());
+  }
 
   render(): React.Node {
     const handleClose = () => this.setState({ show: false });
