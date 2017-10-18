@@ -28,7 +28,8 @@ const Household = ({
         <form
             onSubmit={e => {
               e.preventDefault();
-              validate(onSaveDraft, onInvalid);
+
+              validate(data.household && data.household.id ? onUpdate : onSaveDraft, onInvalid);
 
             }}>
             <HouseholdForm />

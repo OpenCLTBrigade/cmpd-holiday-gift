@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const config = require('../config');
 
 module.exports = Sequelize => ({
@@ -23,7 +25,12 @@ module.exports = Sequelize => ({
     dob: {
       type: Sequelize.STRING,
       allowNull: false,
-      encrypt: true
+      encrypt: true,
+      get() {
+        const dob = this.getDataValue('dob');
+
+        return moment(dob).format('YYYY-MM-DD');
+      }
     },
     race: {
       type: Sequelize.ENUM,
@@ -103,9 +110,9 @@ module.exports = Sequelize => ({
     }
   },
   associate: function (household, db) {
-    household.belongsTo(db.user, { as: 'nominator' });
-    household.hasMany(db.child, { as: 'children' });
     household.hasOne(db.household_address, { as: 'address', foreignKey: 'household_id' });
     household.hasMany(db.household_phone, { as: 'phones' });
+    household.belongsTo(db.user, { as: 'nominator' });
+    household.hasMany(db.child, { as: 'children' });
   }
 });
