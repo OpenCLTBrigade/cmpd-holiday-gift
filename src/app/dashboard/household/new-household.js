@@ -15,7 +15,8 @@ export default class NewHousehold extends React.Component<
         nominations: Array<{}>,
         schools: Array<mixed>,
         phoneNumbers: Array<{}>,
-        saved: false
+        saved: false,
+        errorMessage: ""
     }
 > {
   constructor() {
@@ -28,13 +29,14 @@ export default class NewHousehold extends React.Component<
       schools: [],
       phoneNumbers: [],
       saved: false,
-      files: []
+      files: [],
+      errorMessage: ''
     }
         ;(this: any).onChange = this.onChange.bind(this)
         ;(this: any).onSubmit = this.onSubmit.bind(this)
         ;(this: any).onSaveDraft = this.onSaveDraft.bind(this)
         ;(this: any).onFileChange = this.onFileChange.bind(this);
-        (this: any).onUpdate = this.onUpdate.bind(this);
+    (this: any).onUpdate = this.onUpdate.bind(this);
   }
 
   addChild() {
@@ -120,7 +122,9 @@ export default class NewHousehold extends React.Component<
         this.setState({ saved: true, id: id });
       }
     } catch (error) {
-      this.setState(() => ({ show: true }));
+      console.log(error.response.status);
+      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+      this.setState(() => ({ show: true, errorMessage }));
       console.error(error);
     }
   }
@@ -137,7 +141,7 @@ export default class NewHousehold extends React.Component<
   }
 
   render(): React.Node {
-    const handleClose = () => this.setState({ show: false });
+    const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
 
     return (
             <div>
@@ -155,7 +159,7 @@ export default class NewHousehold extends React.Component<
                     onAddressChange={address => this.onChange('address', address)}
                     saved={this.state.saved}
                 />
-                <ErrorModal title="Oops" messsage="Something went wrong" show={this.state.show} handleClose={handleClose} />
+                <ErrorModal title="Oops - there's an error" message={this.state.errorMessage} show={this.state.show} handleClose={handleClose} />
             </div>
     );
   }
