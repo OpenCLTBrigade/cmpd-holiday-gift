@@ -1,21 +1,21 @@
 // @flow
 
-const addressTool = require('../../lib/cmpdAddress'); 
+const addressTool = require('../../lib/cmpdAddress');
 const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas.json');
 const logger = require('../../lib/logger');
 
 
 module.exports = {
   getAddressInfo: async (req: any, res: any): Promise<void> => {
-    const { lat, lng } = req.body;
+    const { lat, long } = req.query;
 
     try {
-      if (!lat || !lng) {
+      if (!lat || !long) {
         throw new Error('Missing information.');
       }
 
-
-      const result = addressTool.findFeature(geoData, [lng, lat]);
+      const result = addressTool(geoData, [long, lat]);
+      res.json({ data: result });
 
     } catch (err) {
       logger.info('cmpd getAddressInfo failed', err);
