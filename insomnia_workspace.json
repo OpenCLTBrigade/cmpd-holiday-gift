@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2017-09-30T18:57:41.574Z",
+	"__export_date": "2017-10-18T03:52:41.141Z",
 	"__export_source": "insomnia.desktop.app:v5.8.4",
 	"resources": [
 		{
@@ -434,7 +434,7 @@
 		{
 			"_id": "req_830bc2ab6c344263a815106705cbf350",
 			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
-			"modified": 1502641998967,
+			"modified": 1508288400178,
 			"created": 1502641961697,
 			"url": "{{ base_url }}/nominations/households/1",
 			"name": "Household Show",
@@ -782,6 +782,70 @@
 				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
 			},
 			"metaSortKey": -1501436878221.0742,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_739216c70f164d5aa478496014938f23",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1508290735127,
+			"created": 1508288404302,
+			"url": "{{ base_url }}/nominations/households/1/feedback",
+			"name": "Household Submit Feedback",
+			"description": "",
+			"method": "POST",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"approved\": true,\n\t\"reason\": \"test\",\n\t\"message\": \"test\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1500409672857.3438,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_cb0d41c87b81410abde3f9a5cade93cf",
+			"parentId": "wrk_615d5c4d3c7e46d4adc7a28a1cf6ea85",
+			"modified": 1508298375942,
+			"created": 1508297984367,
+			"url": "{{ base_url }}/nominations/cmpd/address_info?long=-80.84&lat=35.227",
+			"name": "CMPD Address Info",
+			"description": "",
+			"method": "GET",
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_a360b8ee95d541399a231fed717c25e7"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_8e4307ad8e754592aa01cea3d2037f58', '$.token' %}"
+			},
+			"metaSortKey": -1496517212615.25,
 			"settingStoreCookies": true,
 			"settingSendCookies": true,
 			"settingDisableRenderRequestBody": false,
