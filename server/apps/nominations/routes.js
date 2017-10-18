@@ -1,7 +1,7 @@
 // @flow
 const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports, Slips, Cmpd } = require('./controllers');
 const auth = require('../lib/auth');
 const validators = require('./validators/household');
 
@@ -41,6 +41,9 @@ router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
 router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
 router.post('/report/division').use(auth.ensureAdmin).handleAsync(Reports.division_report);
+
+// CMPD Address Info
+router.get('/cmpd/address_info').use(auth.ensureLoggedIn).handleAsync(Cmpd.getAddressInfo);
 
 // Slips
 router.get('/slips/packing').use(auth.ensureAdmin).handleAsync(Slips.packing);
