@@ -1,7 +1,7 @@
 // @flow
 const db = require('../../models');
 const { Router, proxy } = require('../lib/typed-express');
-const { Household, User, Me, Affiliation, Reports, Slips } = require('./controllers');
+const { Household, User, Me, Affiliation, Reports, Slips, Cmpd } = require('./controllers');
 const auth = require('../lib/auth');
 const validators = require('./validators/household');
 
@@ -14,9 +14,13 @@ const router: Router<UserRequest<>> = new Router();
 // Households
 router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
 router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
-router.post('/households/:id').use(auth.ensureAdmin).use(validators).handleAsync(Household.updateHousehold);
+router.put('/households/:id', (proxy: {id: string})).use(auth.ensureAdmin).use(validators).handleAsync(Household.updateHousehold);
 router.post('/households').use(auth.ensureAdmin).use(validators).handleAsync(Household.createHousehold);
 router.post('/households/submit').use(auth.ensureAdmin).handleAsync(Household.submitNomination);
+router.post('/households/:id/upload').use(auth.ensureAdmin).handleAsync(Household.createAttachments);
+router.post('/households/:id/feedback').use(auth.ensureAdmin).handleAsync(Household.submitFeedback);
+router.post('/households/:id/attachments').use(auth.ensureAdmin).handleAsync(Household.createAttachments);
+router.get('/households/:id/attachments').use(auth.ensureAdmin).handleAsync(Household.getAttachments);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
@@ -37,6 +41,9 @@ router.post('/report/all').use(auth.ensureAdmin).handleAsync(Reports.export_data
 router.post('/report/link').use(auth.ensureAdmin).handleAsync(Reports.link_report);
 router.post('/report/bikes').use(auth.ensureAdmin).handleAsync(Reports.bike_report);
 router.post('/report/division').use(auth.ensureAdmin).handleAsync(Reports.division_report);
+
+// CMPD Address Info
+router.get('/cmpd/address_info').use(auth.ensureLoggedIn).handleAsync(Cmpd.getAddressInfo);
 
 // Slips
 router.get('/slips/packing').use(auth.ensureAdmin).handleAsync(Slips.packing);

@@ -1,0 +1,13 @@
+Subject: An update regarding your nomination of {{name_last}}
+
+Feedback on your nomination:
+
+Thank you for nominating {{name_last}} family.
+Unfortunately, their nomination was not approved.
+
+Reason: {{reason}}
+
+Message: {{feedbackText}}
+
+If you have any questions or feel that we should
+reconsider, please email us at christmasproject@cmpd.org.

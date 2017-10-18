@@ -14,6 +14,7 @@ export default class HouseholdIndex extends React.Component<{}> {
   }
 
   openHouseholdReview = (householdInReview, listPageNumber) => {
+    console.log('hm', householdInReview, 'd', listPageNumber);
     this.setState({ householdInReview, listPageNumber });
   }
 
@@ -33,7 +34,7 @@ export default class HouseholdIndex extends React.Component<{}> {
             </Box>
           </Col>
         </Row>
-        <FeedbackModal user={this.state.householdInReview} doClose={this.closeHouseholdReview} />
+        <FeedbackModal household={this.state.householdInReview} doClose={this.closeHouseholdReview} />
       </div>
     );
   }

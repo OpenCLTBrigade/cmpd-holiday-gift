@@ -2,46 +2,70 @@
 import * as React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Form from './Form';
+import {reviewHousehold} from '../../../../../api/household'
+
+const DEFAULT_STATE = {
+  data: {
+    approved: true,
+    reason: '',
+    message: ''
+  }
+};
 
 class FeedbackModal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      data: {
-        approved: true,
-        reason: '',
-        message: ''
+    this.state = DEFAULT_STATE;
+  }
+
+  handleFormSubmit = () => {
+    const { approved, reason, message } = this.state.data;
+
+    reviewHousehold(this.props.household.id, {
+        approved,
+        reason,
+        message
+    }).then(response => {
+      if (response.data === true) {
+        this.handleClose();
+      } else {
+        alert('Could not review household. Please try again later.');
       }
-    };
+    });
+  }
+
+  handleClose = () => {
+    this.setState(DEFAULT_STATE);
+    this.props.doClose();
   }
 
   handleFormChange = (field, value) => {
     const s = { ...this.state };
-    s[field] = value;
+    s.data[field] = value;
     this.setState(s);
   }
 
   render(): React.Node {
-    const { user, handleClose } = this.props;
+    const { household, handleClose } = this.props;
 
-    if (user == null) {
+    if (household == null) {
       return null;
     }
 
     return (
-      <Modal show={user != null}>
+      <Modal show={household != null}>
         <Modal.Header>
           <Modal.Title>Review Household</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form data={this.state.data} handleChange={this.hanleFormChange}/>
+          <Form data={this.state.data} handleFormSubmit={this.handleFormSubmit} handleFormChange={this.handleFormChange}/>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.doClose} bsStyle="default">
+          <Button onClick={this.handleClose} bsStyle="default">
             Cancel
           </Button>
-          <Button onClick={this.submitForm} bsStyle="primary">
+          <Button onClick={this.handleFormSubmit} bsStyle="primary">
             Submit
           </Button>
         </Modal.Footer>
