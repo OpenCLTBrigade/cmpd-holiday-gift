@@ -14,6 +14,7 @@ export default class HouseholdIndex extends React.Component<{}> {
   }
 
   openHouseholdReview = (householdInReview, listPageNumber) => {
+    console.log('hm', householdInReview, 'd', listPageNumber);
     this.setState({ householdInReview, listPageNumber });
   }
 

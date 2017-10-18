@@ -206,8 +206,9 @@ module.exports = {
       }
   
       // Message is not stored; it gets emailed
+      household.reviewed = true;
       household.approved = approved;
-      household.reason = reason || null;
+      household.reason = reason || '';
   
       await household.save();
   

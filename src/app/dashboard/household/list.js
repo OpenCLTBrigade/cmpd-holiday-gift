@@ -64,9 +64,12 @@ export default class List extends React.Component<{}> {
     const { currentPage } = this;
     return (
       <div>
-        <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
-          Review
-        </button>
+        {row.reviewed !== true &&
+          <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
+            Review
+          </button>
+        }
+        {row.reviewed && row.approved && <i className="fa fa-check"/>}
       </div>
     );
   }
