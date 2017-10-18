@@ -17,6 +17,9 @@ router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).ha
 router.put('/households/:id', (proxy: {id: string})).use(auth.ensureAdmin).use(validators).handleAsync(Household.updateHousehold);
 router.post('/households').use(auth.ensureAdmin).use(validators).handleAsync(Household.createHousehold);
 router.post('/households/submit').use(auth.ensureAdmin).handleAsync(Household.submitNomination);
+router.post('/households/:id/upload').use(auth.ensureAdmin).handleAsync(Household.createAttachments);
+router.post('/households/:id/attachments').use(auth.ensureAdmin).handleAsync(Household.createAttachments);
+router.get('/households/:id/attachments').use(auth.ensureAdmin).handleAsync(Household.getAttachments);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
