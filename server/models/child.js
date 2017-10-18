@@ -25,7 +25,12 @@ module.exports = Sequelize => ({
     dob: {
       type: Sequelize.DATE,
       allowNull: false,
-      encrypt: true
+      encrypt: true,
+      get() {
+        const dob = this.getDataValue('dob');
+
+        return moment(dob).format('YYYY-MM-DD');
+      }
     },
     race: {
       type: Sequelize.ENUM,

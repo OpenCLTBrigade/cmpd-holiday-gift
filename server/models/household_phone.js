@@ -20,4 +20,7 @@ module.exports = Sequelize => ({
       allowNull: false
     }
   },
+  associate: function (phone, db) {
+    phone.belongsTo(db.household);
+  }
 });
