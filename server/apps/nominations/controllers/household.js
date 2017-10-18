@@ -15,7 +15,6 @@ const bucketName = 'cfc-cmpd-explorers-qa';
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
 
-
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
@@ -63,15 +62,20 @@ module.exports = {
       res.json({ error: 'error fetching data' });
     }
   },
+
   getHousehold: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
     let household = null;
-    
-    const nominator = Object.assign({}, req.user);
-    const { nomination_limit } = nominator.dataValues;
+    let address = null;
+    let phoneNumbers = [];
 
     try {
       const entity = await db.household.findById(req.params.id, { include: related });
+      const addressEntity = await db.household_address.find({ where: { household_id: req.params.id } });
+      const phoneNumberEntities = await db.household_phone.find({ where: { household_id: req.params.id } });
+
       household = entity.dataValues;
+      address = addressEntity.dataValues;
+      phoneNumbers = phoneNumberEntities.dataValues;
 
       if (!household) {
         throw new Error('Household not found');
@@ -89,11 +93,10 @@ module.exports = {
         household.attachments = attachments;
       }
     } catch (error) {
-
       logger.error(error);
     }
 
-    res.json(household);
+    res.json(Object.assign({}, household, { address, phoneNumbers }));
   },
 
   async getAttachments(req: any, res: any) {
@@ -106,7 +109,6 @@ module.exports = {
 
       res.json(attachments);
     } catch (error) {
-
       logger.error(error);
       res.sendStatus(500);
     }
@@ -124,13 +126,12 @@ module.exports = {
 
     try {
       await createMainBucket(bucketName);
-
     } catch (error) {
       logger.error(error);
       res.sendStatus(500);
     }
 
-    // create an incoming form object
+        // create an incoming form object
     const form = new formidable.IncomingForm();
 
     form.multiples = true;
@@ -141,12 +142,12 @@ module.exports = {
       logger.info('uploading to s3', { filename: file.name });
     });
 
-   // log any errors that occur
+        // log any errors that occur
     form.on('error', function (err) {
       console.log('An error has occured: \n' + err);
     });
 
-   // once all the files have been uploaded, send a response to the client
+        // once all the files have been uploaded, send a response to the client
     form.on('end', async function () {
       try {
         const fileResults = [];
@@ -164,14 +165,13 @@ module.exports = {
         }
 
         res.json(fileResults);
-
       } catch (error) {
         logger.error(error);
         res.sendStatus(500);
       }
     });
 
-   // parse the incoming request containing the form data
+        // parse the incoming request containing the form data
     form.parse(req);
   },
 
@@ -188,8 +188,6 @@ module.exports = {
         throw new Error('Household not found');
       }
 
-      logger.info(household);
-
       household.draft = false;
       household.save().then(() => res.sendStatus(200));
     } catch (err) {
@@ -204,7 +202,7 @@ module.exports = {
       return res.status(400).json({ errors: errors.mapped() });
     }
 
-    const { id } = req.params;    
+    const { id } = req.params;
 
     return db.sequelize
             .transaction(async t => {
@@ -232,18 +230,14 @@ module.exports = {
                                 payload.phoneNumbers &&
                                 payload.phoneNumbers.every(json => json.number !== entity.dataValues.number)
                         );
-                const addedNumbers =
-                        (payload.phoneNumbers &&
-                            payload.phoneNumbers.filter(
-                                json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)
-                            )) ||
-                        [];
-                const updatedNumbers =
-                        (payload.phoneNumbers &&
-                            payload.phoneNumbers.filter(
-                                json => numbers && numbers.some(entity => json.number === entity.dataValues.number)
-                            )) ||
-                        [];
+                const addedNumbers = (payload.phoneNumbers &&
+                        payload.phoneNumbers.filter(
+                            json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)
+                        )) || [];
+                const updatedNumbers = (payload.phoneNumbers &&
+                        payload.phoneNumbers.filter(
+                            json => numbers && numbers.some(entity => json.number === entity.dataValues.number)
+                        )) || [];
 
                 for (const removed of removedNumbers) {
                   logger.info('removing number');
@@ -273,22 +267,16 @@ module.exports = {
                                 payload.nominations &&
                                 payload.nominations.every(json => json.last4ssn !== entity.last4ssn)
                         );
-                const addedNominations =
-                        (payload.nominations &&
-                            payload.nominations.filter(
-                                json =>
-                                    nominations &&
-                                    nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)
-                            )) ||
-                        [];
-                const updatedNominations =
-                        (payload.nominations &&
-                            payload.nominations.filter(
-                                json =>
-                                    nominations &&
-                                    nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)
-                            )) ||
-                        [];
+                const addedNominations = (payload.nominations &&
+                        payload.nominations.filter(
+                            json =>
+                                nominations && nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)
+                        )) || [];
+                const updatedNominations = (payload.nominations &&
+                        payload.nominations.filter(
+                            json =>
+                                nominations && nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)
+                        )) || [];
 
                 for (const removed of removedNominations) {
                   logger.info('removing nomination');
@@ -315,11 +303,24 @@ module.exports = {
             .then(() => res.sendStatus(200));
   },
 
+  async getLimitStatus(req: any, res: any) {
+    const nominator = Object.assign({}, req.user);
+    const { nomination_limit: limit } = nominator.dataValues;
+    const count = await db.household.count({ where: { nominator_id: nominator.id } });
+
+    return res.json({ count, limit });
+  },
+
   createHousehold: async (req: any, res: any): Promise<void> => {
         // TODO: Check if user has reached nomination limit and reject if so
 
     const nominator = Object.assign({}, req.user);
+    const { nomination_limit } = nominator.dataValues;
     const count = await db.household.count({ where: { nominator_id: nominator.id } });
+
+    if (nomination_limit === count) {
+      return res.sendStatus(403);
+    }
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -328,48 +329,63 @@ module.exports = {
 
     return db.sequelize
             .transaction(async t => {
-              const { household, address, phoneNumbers, nominations } = req.body;
+              try {
+                const { household, address, phoneNumbers, nominations } = req.body;
 
-              logger.info('creating household');
-                // Create household record
-              const newHousehold = await db.household.create(Object.assign({}, householdDefaults, household, { nominator_user_id: nominator.id }));
-              const { id } = newHousehold;
+                logger.info('creating household');
+                                // Create household record
+                const newHousehold = await db.household.create(
+                                    Object.assign({}, householdDefaults, household, { nominator_id: nominator.id })
+                                );
+                const { id } = newHousehold;
 
-              logger.info('created household', { id });
-              logger.info('creating household_address');
+                logger.info('created household', { id });
+                logger.info('creating household_address');
 
-                // Create address record (from address{})
-              db.household_address.create({
-                street: address.street,
-                street2: address.street2 || '',
-                city: address.city,
-                state: address.state,
-                zip: address.zip,
-                cmpd_division: address.cmpd_division,
-                cmpd_response_area: address.cmpd_response_area,
-                type: address.type || '',
-                household_id: newHousehold.id
-              });
-
-              for (const phone of phoneNumbers) {
-                logger.info('creating household_phone');
-                db.household_phone.create({
-                  number: phone.number,
-                  type: phone.type,
-                  household_id: newHousehold.id
+                                // Create address record (from address{})
+                const newAddress = await db.household_address.create({
+                  street: address.street,
+                  street2: address.street2 || '',
+                  city: address.city,
+                  state: address.state,
+                  zip: address.zip,
+                  cmpd_division: address.cmpd_division,
+                  cmpd_response_area: address.cmpd_response_area,
+                  type: address.type || '',
+                  household_id: id
                 });
+
+                logger.info('created household_address', { id: newAddress.id });
+
+
+                for (const phone of phoneNumbers) {
+                  logger.info('creating household_phone');
+                  const newPhone = await db.household_phone.create({
+                    number: phone.number,
+                    type: phone.type,
+                    household_id: id
+                  });
+
+                  logger.info('created household_phone', { id: newPhone.id });
+                }
+
+                                // Create child records (from nominations[])
+                for (const child of nominations) {
+                  logger.info('creating child');
+
+                  const newChild = await db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
+
+                  logger.info('created child', { id: newChild.id });
+
+                }
+
+                return id;
+              } catch (error) {
+                logger.error(error);
               }
 
-                // Create child records (from nominations[])
-              for (const child of nominations) {
-                logger.info('creating child');
-
-                db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
-              }
-
-              return id;
             })
-            .then((id) => {
+            .then(id => {
               res.json({ id });
                 // Success. Committed.
             })
