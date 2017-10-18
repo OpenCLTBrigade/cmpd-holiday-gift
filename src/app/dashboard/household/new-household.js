@@ -81,8 +81,9 @@ export default class NewHousehold extends React.Component<
       if (id) {
         const household = await getHousehold(id);
         const { children: nominations = [], phoneNumbers = [], address = {}, attachments: files = [] } = household;
+        const newState = { household, nominations, phoneNumbers, address, id, files };
 
-        this.setState(() => ({ household, nominations, phoneNumbers, address, id, files }));
+        this.setState(() => (newState));
       }
 
       const { items: schools } = await getSchools();
