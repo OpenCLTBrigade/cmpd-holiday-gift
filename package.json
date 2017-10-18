@@ -98,5 +98,11 @@
     "sequelize-encrypted": "^1.0.0",
     "styled-components": "^2.1.0",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001",
+      "ws": true
+    }
   }
 }
