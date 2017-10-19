@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run build-server && node server-notypes/apps/serve.js",
-    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && NODE_PATH=./src npm run build",
+    "heroku-postbuild": "cd react-ui/ && npm install && NODE_PATH=./src npm run build",
     "start-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts start",
     "build-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts build",
     "test-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
