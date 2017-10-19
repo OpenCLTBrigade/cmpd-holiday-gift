@@ -1,2 +1,1 @@
-web: react-scripts start
-explorer-api: cp env.heroku.js env.js && npm run build-server && npm run start-server
+web: npm install -g cross-env-shell && cp env.heroku.js env.js && npm start
