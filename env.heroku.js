@@ -41,8 +41,8 @@ config.db = {
 //config.verboseAccessLog = false;
 //config.useCompression = false;
 //config.verboseSeed = false;
-//config.email.fromAddress = 'noreply@codeforcharlotte.org';
-//config.email.fromName = 'noreply';
-//config.email.adminAddress = 'info@codeforcharlotte.org';
+config.email.fromAddress = 'info@codeforcharlotte.org';
+config.email.fromName = 'noreply';
+config.email.adminAddress = 'info@codeforcharlotte.org';
 
 };
