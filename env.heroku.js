@@ -26,7 +26,7 @@ config.email.ses = {
 // **** Sample MySQL Database ****
 
 config.db = {
- dialect: 'mariadb',
+ dialect: 'mysql',
  host: process.env.DB_HOST,
  user: process.env.DB_USER,
  password: process.env.DB_PASSWORD,
