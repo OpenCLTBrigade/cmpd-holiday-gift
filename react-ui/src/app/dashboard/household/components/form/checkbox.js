@@ -4,9 +4,11 @@ import { Checkbox as FieldCheckbox } from 'react-bootstrap';
 
 import { Field } from 'neoform';
 
-const Checkbox = ({ name, label, onChange, ...props }) =>
-  <FieldCheckbox name={name} onChange={e => onChange(e.target.checked)} {...props}>
+const Checkbox = ({ name, label, onChange, value, ...props }) => {
+
+  return <FieldCheckbox name={name} checked={value} onChange={e => onChange(e.target.checked)} {...props}>
     {label}
   </FieldCheckbox>;
+};
 
 export default Field(Checkbox);

@@ -17,10 +17,6 @@ class PhoneNumbersForm extends React.PureComponent<
 > {
   static defaultProps = { phoneNumbers: [] }
 
-  constructor(props: any) {
-    super(props);
-  }
-
   render(): React.Node {
     const { phoneNumbers, removePhoneNumber, addPhoneNumber } = this.props;
 

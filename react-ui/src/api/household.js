@@ -46,3 +46,7 @@ export function reviewHousehold(id, payload: Object<{approved: boolean, reason: 
   const { approved, reason, message } = payload;
   return post('nominations', `households/${id}/feedback`, { approved, reason, message });
 }
+
+export function getNominationStatus() {
+  return get('nominations', 'me/limit/status');
+}

@@ -24,6 +24,7 @@ const Household = ({
     removePhoneNumber,
     addPhoneNumber,
     onAddressChange,
+    disabled,
     saved
 }) => {
   return (
@@ -46,7 +47,7 @@ const Household = ({
             {(saved || data.household.id) && <Files files={data.files} onChange={onFileChange} />}
             <Row>
                 <Col xs={12}>
-                    <Button type="submit">{data.household && data.household.id ? 'Update' : 'Save Draft'}</Button>
+                    <Button type="submit" disabled={disabled}>{data.household && data.household.id ? 'Update' : 'Save Draft'}</Button>
                     {saved && <Button onClick={onSubmit}>Submit Nomination</Button>}
                 </Col>
             </Row>

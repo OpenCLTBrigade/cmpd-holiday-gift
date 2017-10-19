@@ -30,6 +30,16 @@ const nominationGender = check('nominations.*.gender').exists();
 const nominationSchool = check('nominations.*.school_id').exists();
 const nominationSsn = check('nominations.*.last4ssn').exists();
 const nominationHasLunch = check('nominations.*.free_or_reduced_lunch').exists();
+const clothes_size_pants = check('nominations.*.clothes_size_pants').optional();
+const clothes_size_shirt = check('nominations.*.clothes_size_shirt').optional();
+const clothes_want = check('nominations.*.clothes_want').optional();
+const favourite_colour = check('nominations.*.favourite_colour').optional();
+const additional_ideas = check('nominations.*.additional_ideas').optional();
+const bike_size = check('nominations.*.bike_size').optional();
+const bike_want = check('nominations.*.bike_want').optional();
+const bike_style = check('nominations.*.bike_style').optional();
+const reason_for_nomination = check('nominations.*.reason_for_nomination').optional();
+const interests = check('nominations.*.interests').optional();
 const nominationFavoriteColor = check('nominations.*.favourite_colour').exists();
 
 module.exports = [
@@ -50,6 +60,16 @@ module.exports = [
   deliveryAddressType,
   number,
   type,
+  clothes_size_pants,
+  clothes_size_shirt,
+  clothes_want,
+  favourite_colour,
+  additional_ideas,
+  bike_size,
+  bike_style,
+  bike_want,
+  reason_for_nomination,
+  interests,
   nominationDob,
   nominationFirsName,
   nominationLastName,
@@ -58,6 +78,7 @@ module.exports = [
   nominationSchool,
   nominationSsn,
   nominationHasLunch,
-  nominationFavoriteColor
+  nominationFavoriteColor,
+  clothes_size_pants
 ];
 
