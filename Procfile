@@ -1,1 +1,1 @@
-web: npm install -g cross-env-shell && cp env.heroku.js env.js && npm start
+web: cp env.heroku.js env.js && npm start
