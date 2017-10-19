@@ -1,7 +1,7 @@
 // @flow
 
 const addressTool = require('../../lib/cmpdAddress');
-const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas.json');
+const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas');
 const logger = require('../../lib/logger');
 
 

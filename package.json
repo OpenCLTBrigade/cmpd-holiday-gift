@@ -3,26 +3,26 @@
   "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start-client": "cross-env-shell NODE_PATH=./src react-scripts start",
-    "build-client": "cross-env-shell NODE_PATH=./src react-scripts build",
-    "test-client": "cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
+    "start": "npm run build-server && node server-notypes/apps/serve.js",
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && cross-env-shell NODE_PATH=./src npm run build",
+    "start-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts start",
+    "build-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts build",
+    "test-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
     "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
-    "start-server": "cd server-notypes && node apps/serve.js",
+    "start-server": "node server-notypes/apps/serve.js",
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
-    "postinstall": "if [ -z '$CI' ]; then NODE_PATH=./src react-scripts build; fi",
+    "postinstall": "if [ -z '$CI' ]; then NODE_PATH=./react-ui/src react-scripts build; fi",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "flow": "flow",
-    "test": "npm run test-client && npm run test-server",
-    "start": "echo 'Please use `npm run start-client` or `npm run start-server`.' && false",
-    "server-nodemon": "echo 'Please use `npm run nodemon-server` instead.' && false",
-    "seeds": "echo 'Please use `npm run seed-server` instead.' && false"
+    "test": "npm run test-client && npm run test-server"
   },
-  "bin": {
-    "cmpd-explorers": "server-notypes/apps/serve.js"
-  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
   "engines": {
     "node": "8.4.x"
   },
@@ -38,7 +38,7 @@
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",
-    "sqlite3": "^3.1.8",
+    "sqlite3": "^3.1.13",
     "webpack-create-file-plugin": "^0.1.0",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0"
@@ -87,13 +87,6 @@
     "passport-local": "^1.0.0",
     "pino": "^4.7.2",
     "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
-    "react-scripts": "1.0.7",
-    "react": "^15.5.4",
-    "react-bootstrap": "^0.31.0",
-    "react-bootstrap-table": "^3.4.6",
-    "react-dom": "^15.5.4",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
     "sequelize": "^4.4.2",
     "sequelize-encrypted": "^1.0.0",
     "styled-components": "^2.1.0",

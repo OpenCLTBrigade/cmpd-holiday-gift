@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const compression = require('compression');
 const { join } = require('path');
 const express = require('express');
+const path = require('path');
 
 const config = require('../config');
 
@@ -40,6 +41,9 @@ if (config.useCompression) {
 
 // TODO: handle and log errors
 
+// Priority serve any static files.
+app.use(express.static(path.resolve(__dirname, '../../react-ui/build')));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -47,10 +51,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/nominations', nominations);
 app.use('/api/auth', authApp);
 
-// Expose compiled assets
-app.use(express.static(join(__dirname, '../../build'), { index: false }));
 app.get((_req: *, res: *, _next: *): * => {
   res.sendFile(join(__dirname, '../../build/index.html'));
+});
+
+// All remaining requests return the React app, so it can handle routing.
+app.get('*', function (request, response) {
+  response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
 // Array of promises that must complete before starting the server
