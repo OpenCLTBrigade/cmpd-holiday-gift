@@ -4,9 +4,17 @@ import * as React from 'react';
 import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
-import { createHousehold, submitNomination, getHousehold, uploadAttachment, updateHousehold } from 'api/household';
+import {
+    createHousehold,
+    submitNomination,
+    getHousehold,
+    uploadAttachment,
+    updateHousehold,
+    getNominationStatus
+} from 'api/household';
 import { getAddressInfo } from 'api/cmpd';
 import ErrorModal from './components/error-modal';
+import { Alert } from 'react-bootstrap';
 
 export default class NewHousehold extends React.Component<
     {},
@@ -17,7 +25,7 @@ export default class NewHousehold extends React.Component<
         schools: Array<mixed>,
         phoneNumbers: Array<{}>,
         saved: false,
-        errorMessage: ""
+        errorMessage: ''
     }
 > {
   constructor() {
@@ -36,8 +44,8 @@ export default class NewHousehold extends React.Component<
         ;(this: any).onChange = this.onChange.bind(this)
         ;(this: any).onSubmit = this.onSubmit.bind(this)
         ;(this: any).onSaveDraft = this.onSaveDraft.bind(this)
-        ;(this: any).onFileChange = this.onFileChange.bind(this);
-    (this: any).onUpdate = this.onUpdate.bind(this);
+        ;(this: any).onFileChange = this.onFileChange.bind(this)
+        ;(this: any).onUpdate = this.onUpdate.bind(this);
   }
 
   addPhoneNumber() {
@@ -85,9 +93,9 @@ export default class NewHousehold extends React.Component<
   onAddressChange(name: string, value: any) {
     const latlng = { ...value.latlng };
     delete value.latlng;
-    // console.log('latlng', latlng);
-    // console.log('oooooo', value);
-    // TODO: Get CMPD Address Info
+        // console.log('latlng', latlng);
+        // console.log('oooooo', value);
+        // TODO: Get CMPD Address Info
     getAddressInfo(latlng.lat, latlng.lng).then(response => {
       if (!response || response.data === null) {
         console.log('CMPD Division / Address not found');
@@ -114,10 +122,18 @@ export default class NewHousehold extends React.Component<
       const { id = undefined } = this.props.match && this.props.match.params;
       if (id) {
         const household = await getHousehold(id);
-        const { children: nominations = [], phoneNumbers = [], address = {}, attachments: files = [] } = household;
+        const {
+                    children: nominations = [],
+                    phoneNumbers = [],
+                    address = {},
+                    attachments: files = []
+                } = household;
         const newState = { household, nominations, phoneNumbers, address, id, files };
 
-        this.setState(() => (newState));
+        this.setState(() => newState);
+      } else {
+        const status = await getNominationStatus();
+        this.setState(() => ({ disabled: status.count >= status.limit }));
       }
 
       const { items: schools } = await getSchools();
@@ -180,6 +196,11 @@ export default class NewHousehold extends React.Component<
 
     return (
             <div>
+                {this.state.disabled && (
+                    <Alert bsStyle="warning">
+                        <strong>Sorry!</strong> Your nomination limit has been reached.
+                    </Alert>
+                )}
                 <HouseholdForm
                     data={this.state}
                     getValue={getValue}
@@ -195,8 +216,14 @@ export default class NewHousehold extends React.Component<
                     affiliations={this.state.schools}
                     onAddressChange={address => this.onAddressChange('address', address)}
                     saved={this.state.saved}
+                    disabled={this.state.disabled}
                 />
-                <ErrorModal title="Oops - there's an error" message={this.state.errorMessage} show={this.state.show} handleClose={handleClose} />
+                <ErrorModal
+                    title="Oops - there's an error"
+                    message={this.state.errorMessage}
+                    show={this.state.show}
+                    handleClose={handleClose}
+                />
             </div>
     );
   }
