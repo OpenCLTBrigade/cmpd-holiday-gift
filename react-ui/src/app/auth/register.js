@@ -38,7 +38,7 @@ export default class Register extends React.Component <{
   }
 
   async fetch(): Promise<void> {
-    const response: Object = await getAffiliationList();
+    const response: Object = await getAffiliationList(1);
     if (response.items == null || response.items === '' || response.items === undefined) {
       throw new Error('items not defined');
     }

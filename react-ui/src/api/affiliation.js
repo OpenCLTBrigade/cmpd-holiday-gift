@@ -25,7 +25,7 @@ export function getAffiliationsByType(type: string): Promise<{ affiliation: Affi
 }
 
 export function getAffiliationList(
-  pageNumber: number = 0, search: ?string
+  pageNumber: number = 1, search: ?string
 ): Promise<{ response: DataTableResponse<AffiliationType> }> {
   return get('nominations', 'affiliations', { page: pageNumber, search: search });
 }
