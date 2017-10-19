@@ -121,6 +121,10 @@ module.exports = {
 
     const uploadDir = path.join(process.cwd(), 'uploads');
 
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
     logger.info('uploading document for user', nominator.id);
 
     try {
@@ -136,15 +140,20 @@ module.exports = {
     form.multiples = true;
     form.uploadDir = uploadDir;
 
-    form.on('file', function (field, file) {
-      files.push({ filename: file.name, path: file.path });
-      logger.info('uploading to s3', { filename: file.name });
-    });
+    try {
+      form.on('file', function (field, file) {
+        files.push({ filename: file.name, path: file.path });
+        logger.info('uploading to s3', { filename: file.name });
+      });
+  
+          // log any errors that occur
+      form.on('error', function (err) {
+        console.log('An error has occured: \n' + err);
+      });
+    } catch (err) {
+      logger.info('Error handling file upload', err);
+    }
 
-        // log any errors that occur
-    form.on('error', function (err) {
-      console.log('An error has occured: \n' + err);
-    });
 
         // once all the files have been uploaded, send a response to the client
     form.on('end', async function () {
