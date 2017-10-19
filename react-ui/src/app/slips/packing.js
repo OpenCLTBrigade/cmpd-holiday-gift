@@ -4,6 +4,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { getPackingSlipData } from 'api/slips';
+import { descFromValue } from 'lib/constants/bike-size';
 
 const Pages = styled.div`
   @page {
@@ -133,7 +134,7 @@ export default async () => {
           <td>{ child.gender }</td>
           <td>{ child.age }</td>
           <td>
-            { child.bike_want ? `${child.bike_size}\n${child.bike_style}` : 'no' }
+            { child.bike_want ? `${descFromValue(child.bike_size)}\n${child.bike_style}` : 'no' }
           </td>
           <td>
             <div style={{ maxHeight: '7.5em', overflow: 'hidden', fontSize: '0.9em' }}>

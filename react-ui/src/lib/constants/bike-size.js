@@ -17,5 +17,6 @@ const sizes = [
 ];
 
 export const bikeSizeMap = sizes.reduce((acc, { name, description }) => ({ ...acc, [name]: description }), {});
+export const descFromValue = (value) => bikeSizeMap[value] || value;
 
 export default BikeSize;
