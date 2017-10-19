@@ -24,6 +24,7 @@ router.get('/households/:id/attachments').use(auth.ensureAdmin).handleAsync(Hous
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
+router.get('/me/limit/status').use(auth.ensureLoggedIn).handleAsync(Me.getNominationsStatus);
 router.get('/users/pending').use(auth.ensureAdmin).handleAsync(User.listPendingUsers);
 router.get('/users').use(auth.ensureAdmin).handleAsync(User.list);
 router.post('/users').use(auth.ensureAdmin).handleAsync(User.createUser);

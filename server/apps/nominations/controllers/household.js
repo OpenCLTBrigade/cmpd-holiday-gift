@@ -340,21 +340,13 @@ module.exports = {
             .then(() => res.sendStatus(200));
   },
 
-  async getLimitStatus(req: any, res: any) {
-    const nominator = Object.assign({}, req.user);
-    const { nomination_limit: limit } = nominator.dataValues;
-    const count = await db.household.count({ where: { nominator_id: nominator.id } });
-
-    return res.json({ count, limit });
-  },
-
   createHousehold: async (req: any, res: any): Promise<void> => {
         // TODO: Check if user has reached nomination limit and reject if so
 
-    const nominator = Object.assign({}, req.user);
-    const { nomination_limit } = nominator.dataValues;
+    const nominator = Object.assign({}, req.user.dataValues);
+    const { nomination_limit } = nominator;
     const count = await db.household.count({ where: { nominator_id: nominator.id } });
-
+    logger.info({ nominator });
     if (nomination_limit === count) {
       return res.sendStatus(403);
     }
@@ -376,7 +368,7 @@ module.exports = {
                                 );
                 const { id } = newHousehold;
 
-                logger.info('created household', { id });
+                logger.info('created household', { id, nominator: nominator.id });
                 logger.info('creating household_address');
 
                                 // Create address record (from address{})
