@@ -11,7 +11,7 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
-const bucketName = 'cfc-cmpd-explorers-qa';
+const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
