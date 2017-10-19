@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3({ region: 'us-west-1', signatureVersion: 'v4' });
+const s3 = new AWS.S3({ region: 'us-west-2', signatureVersion: 'v4' });
 
 const logger = require('./logger');
 
