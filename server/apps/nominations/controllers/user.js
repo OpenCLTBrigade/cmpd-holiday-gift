@@ -254,7 +254,9 @@ module.exports = {
 
     existingUser.update({
       active: false,
-      approved: false
+      approved: false,
+      email_verifed: false,
+      confirmation_email: false
     }).then(() => {
       res.json({
         data: true,
