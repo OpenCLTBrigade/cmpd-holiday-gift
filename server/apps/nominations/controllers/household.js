@@ -31,10 +31,6 @@ const childDefaults = {
   bike_size: null,
   bike_style: null,
   clothes_want: false,
-  clothes_size_shirt: null,
-  clothes_size_pants: null,
-  shoe_size: null,
-  favourite_colour: null,
   interests: '',
   reason_for_nomination: ''
 };
@@ -148,7 +144,7 @@ module.exports = {
   
           // log any errors that occur
       form.on('error', function (err) {
-        console.log('An error has occured: \n' + err);
+        logger.info('An error has occured: \n' + err);
       });
     } catch (err) {
       logger.info('Error handling file upload', err);
