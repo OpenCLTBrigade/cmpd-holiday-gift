@@ -13,7 +13,7 @@ const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const criteria = {
-  PENDING: { email_verifed: true, approved: false },
+  PENDING: { email_verified: true, approved: false },
   LIVE: { active: true, approved: true }
 };
 
