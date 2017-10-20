@@ -236,10 +236,13 @@ module.exports = {
     }
 
     const { id } = req.params;
+    
+    logger.info('This is a test of the system', req.body);
 
     return db.sequelize
             .transaction(async t => {
-              const payload = matchedData(req);
+              // const payload = matchedData(req);
+              const payload = { ...req.body };
 
               try {
                 logger.info('finding household', id);
@@ -298,27 +301,26 @@ module.exports = {
                         nominations.filter(
                             entity =>
                                 payload.nominations &&
-                                payload.nominations.every(json => json.last4ssn !== entity.last4ssn)
+                                payload.nominations.every(json => json.id !== entity.id)
                         );
                 const addedNominations = (payload.nominations &&
                         payload.nominations.filter(
-                            json =>
-                                nominations && nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)
+                            json => typeof json.id === 'undefined'
                         )) || [];
                 const updatedNominations = (payload.nominations &&
                         payload.nominations.filter(
                             json =>
-                                nominations && nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)
+                                nominations && nominations.some(entity => json.id === entity.dataValues.id)
                         )) || [];
 
                 for (const removed of removedNominations) {
-                  logger.info('removing nomination');
+                  logger.info('removing nomination', removed);
 
                   removed.destroy();
                 }
 
                 for (const added of addedNominations) {
-                  logger.info('adding nomination');
+                  logger.info('adding nomination', added);
 
                   db.child.create(Object.assign({}, childDefaults, added, { household_id: id }));
                 }
