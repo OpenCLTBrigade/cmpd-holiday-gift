@@ -14,6 +14,11 @@ export default class Logout extends React.Component<{}> {
 
   render(): React.Node {
     // return <Redirect to="/auth/login"/>;
-    return null;
+    return (
+      <div style={{'text-align': 'center'}}>
+        <h3>Logging out</h3><br/>
+        <a href="/">Click here if you are not redirected.</a>
+      </div>
+      );
   }
 }
