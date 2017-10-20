@@ -5,6 +5,7 @@ import { getSchools } from '../../../api/affiliation';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { descFromValue } from 'lib/constants/bike-size';
 
 const LabelText = styled.span`font-weight:bold;`;
 const ValueText = styled.span`
@@ -27,11 +28,11 @@ class ShowHousehold extends React.Component {
   }
 
   componentDidMount() {
-    
+
     getHousehold(this.props.match.params.id).then(response => {
       this.setState({ household: response });
     });
-    
+
     getSchools().then(response => {
       this.setState({ schools: response.items });
     });
@@ -40,19 +41,19 @@ class ShowHousehold extends React.Component {
 
   render() {
     const { household, schools } = this.state;
-    
+
     if (household === null || schools.length === 0) {
       return null;
     }
-    
-    const {address} = household;
+
+    const { address } = household;
 
     return (
     <Grid>
       <Row>
         <Col xs={12}>
         <h1>Head of Household</h1>
-        </Col>  
+        </Col>
       </Row>
       <Row>
         <Col xs={12}>
@@ -159,7 +160,7 @@ class ShowHousehold extends React.Component {
         return (
         <Row key={`childRow${child.id}`}>
           <Col xs={12}>
-            <h2>Child {index+1}</h2>
+            <h2>Child {index + 1}</h2>
             <ListGroup>
             <ListGroupItem>
               <LabelText>
@@ -240,7 +241,7 @@ class ShowHousehold extends React.Component {
               <ValueText>
                 {child.bike_want ? 'Yes' : 'No'}<br/>
                 {child.bike_want && `Bike Style: ${child.bike_style}`}<br/>
-                {child.bike_want && `Bike Size: ${child.bike_size}`}<br/>
+                {child.bike_want && `Bike Size: ${descFromValue(child.bike_size)}`}<br/>
               </ValueText>
             </ListGroupItem>
             <ListGroupItem>
@@ -281,8 +282,8 @@ class ShowHousehold extends React.Component {
             </ListGroup>
           </Col>
         </Row>
-      ); 
-    }
+        );
+      }
   )}
       <Row>
         <Col xs={12}>
