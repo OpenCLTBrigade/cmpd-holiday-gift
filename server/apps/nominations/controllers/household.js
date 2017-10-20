@@ -324,11 +324,12 @@ module.exports = {
                 for (const added of addedNominations) {
                   logger.info('adding nomination');
 
-                  db.child.create(Object.assign({}, added, childDefaults, { household_id: id }));
+                  db.child.create(Object.assign({}, childDefaults, added, { household_id: id }));
                 }
 
                 for (const updated of updatedNominations) {
                   logger.info('updating nomination');
+                  logger.info('updated nomination:', updated);
 
                   const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
                   toUpdate.update(updated);
