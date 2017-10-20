@@ -33,6 +33,7 @@ async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{
       affiliation_id: userInfo.affiliation_id,
       email: userInfo.email,
       password: hashedPassword,
+      role: 'nominator'
     });
   } catch (error) {
     // TODO: generate better error message or log error
