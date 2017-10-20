@@ -80,7 +80,7 @@ async function confirmEmail(
 
 // Step 4
 async function sendApproval(rootUrl: string, user: $TODO): Promise<void> {
-  const url = `${rootUrl}/users/needing/approval`; // TODO: correct url
+  const url = `${rootUrl}/dashboard/user/pending`;
   await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
 }
 
