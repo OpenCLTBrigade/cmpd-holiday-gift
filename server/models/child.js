@@ -33,8 +33,7 @@ module.exports = Sequelize => ({
       }
     },
     race: {
-      type: Sequelize.ENUM,
-      values: config.raceOptions,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     last4ssn: {
@@ -60,13 +59,11 @@ module.exports = Sequelize => ({
       defaultValue: false
     },
     bike_size: {
-      type: Sequelize.ENUM,
-      values: config.bikeSizes,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     bike_style: {
-      type: Sequelize.ENUM,
-      values: config.bikeStyles,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     clothes_want: {
@@ -75,13 +72,11 @@ module.exports = Sequelize => ({
       defaultValue: false
     },
     clothes_size_shirt: {
-      type: Sequelize.ENUM,
-      values: config.clothesSizes,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     clothes_size_pants: {
-      type: Sequelize.ENUM,
-      values: config.clothesSizes,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     shoe_size: {
@@ -101,8 +96,7 @@ module.exports = Sequelize => ({
       defaultValue: null
     },
     gender: {
-      type: Sequelize.ENUM,
-      values: config.genders,
+      type: Sequelize.STRING,
       defaultValue: null
     },
     age: {
