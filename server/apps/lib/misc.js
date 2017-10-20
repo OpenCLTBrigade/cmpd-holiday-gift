@@ -2,9 +2,12 @@
 
 import type { Request } from '../lib/typed-express';
 
+// Quick and dirty fix for GIFT-206 / GIFT-205
+const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+
 module.exports = {
   rootUrl: (req: Request<>): string =>
-    `${req.protocol || 'http'}://${(req.get('host'): any)}`,
+    `${protocol}://${(req.get('host'): any)}`,
   baseUrl: (req: Request<>): string =>
-    `${req.protocol || 'http'}://${(req.get('host'): any)}${req.path || ''}`
+    `${protocol}://${(req.get('host'): any)}${req.path || ''}`
 };

@@ -36,14 +36,15 @@ config.db = {
 
 // **** Sample Production Mode Settings ****
 
-//config.databaseEncryptionKey = 'change me';
-//config.jwtSecrets.auth = 'changeme';
-//config.jwtSecrets.nominations = 'changeme';
+config.databaseEncryptionKey = process.env.DB_ENCRYPTION_KEY;
+config.jwtSecrets.auth = process.env.JWT_SECRETS_AUTH;
+config.jwtSecrets.nominations = process.env.JWT_SECRETS_NOMINATIONS;
 //config.verboseAccessLog = false;
 //config.useCompression = false;
 //config.verboseSeed = false;
-config.email.fromAddress = 'info@codeforcharlotte.org';
+
+config.email.fromAddress = process.env.EMAIL_FROM_ADDRESS;
 config.email.fromName = 'noreply';
-config.email.adminAddress = 'info@codeforcharlotte.org';
+config.email.adminAddress = process.env.EMAIL_ADMIN_ADDRESS;
 
 };

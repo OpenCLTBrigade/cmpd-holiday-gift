@@ -27,7 +27,6 @@ export default class Login extends React.Component<{
     const params = querystring.parse(this.props.location.search);
     console.log('ohey', params);
     if (params['?justRegistered'] && (params['?justRegistered'] === 'true' || params['?justRegistered'] === true)) {
-      console.log('oh hey');
       (this.box).flashErrorMessage('Check your email to continue the registration process.');
     }
   }
