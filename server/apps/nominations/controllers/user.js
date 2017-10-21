@@ -87,7 +87,7 @@ module.exports = {
     const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
     
     user = user.toJSON();
-    delete user.password;
+    // delete user.password; // No longer needed courtesy GIFT-210
     user.nomination_count = nomination_count;
     res.json({ data: user });
   },

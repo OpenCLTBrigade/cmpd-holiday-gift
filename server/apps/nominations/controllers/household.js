@@ -69,8 +69,14 @@ module.exports = {
       const entity = await db.household.findById(req.params.id, { include: related });
       const addressEntity = await db.household_address.find({ where: { household_id: req.params.id } });
       phoneNumbers = await db.household_phone.findAll({ where: { household_id: req.params.id } });
-      household = entity.dataValues;
-      address = addressEntity.dataValues;
+      household = Object.assign(entity.dataValues, entity.vault);
+
+      if (household.vault) {
+        delete household.vault;
+      }
+      
+      // Courtesy GIFT-210 (see models/index.js) we no longer need to use dataValues here
+      address = addressEntity;
 
       if (!household) {
         throw new Error('Household not found');
