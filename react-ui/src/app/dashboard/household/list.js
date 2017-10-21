@@ -95,7 +95,7 @@ export default class List extends React.Component<{}> {
           Head of Household
         </TableHeaderColumn>
         {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={(cell, row) => row.nominator ? `${row.nominator.name_first} ${row.nominator.name_last}` : ''}>
           Nominated by
         </TableHeaderColumn>
         <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
