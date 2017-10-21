@@ -23,6 +23,13 @@ const LoadingState = {
   Error: 3
 };
 
+const updateData = (oldData, newData) => {
+  return {
+    ...oldData,
+    ...newData
+  };
+};
+
 export default class NewHousehold extends React.Component<
     {},
     {
@@ -64,29 +71,40 @@ export default class NewHousehold extends React.Component<
 
   addPhoneNumber() {
     this.setState(() => {
-      return { data: { phoneNumbers: this.data.phoneNumbers.concat({}) } };
+      const phoneNumbers = this.data.phoneNumbers.concat({});
+      const data = updateData(this.data, { phoneNumbers });
+
+      return { data };
     });
   }
 
   removePhoneNumber() {
-    const phoneNumbers = this.data.phoneNumbers.slice();
-    phoneNumbers.pop();
     this.setState(() => {
-      return { data: { phoneNumbers } };
+      const phoneNumbers = this.data.phoneNumbers.slice();
+      phoneNumbers.pop();
+      const data = updateData(this.data, { phoneNumbers });
+
+      return { data };
     });
   }
 
   addChild() {
     this.setState(() => {
-      return { data: { nominations: this.data.nominations.concat({}) } };
+      const nominations = this.data.nominations.concat({});
+      const data = updateData(this.data, { nominations });
+
+      return { data };
     });
   }
 
   removeChild() {
-    const nominations = this.data.nominations.slice();
-    nominations.pop();
     this.setState(() => {
-      return { data: { nominations } };
+      const nominations = this.data.nominations.slice();
+      nominations.pop();
+
+      const data = updateData(this.data, { nominations });
+
+      return { data };
     });
   }
 
@@ -97,9 +115,10 @@ export default class NewHousehold extends React.Component<
       const saved = await uploadAttachment({ id, file });
 
       this.setState(() => {
-        const { files } = this.data;
+        const files = this.data.files.concat(saved);
+        const data = updateData(this.data, { files });
 
-        return { data: { files: files.concat(saved) } };
+        return { data };
       });
     }
   }
@@ -125,8 +144,6 @@ export default class NewHousehold extends React.Component<
 
   onChange(name: string, value: any) {
     this.setState(({ data }) => {
-      const newData = setValue(data, name, value);
-
       return { data: setValue(data, name, value) };
     });
   }
