@@ -118,8 +118,29 @@ export default class NewHousehold extends React.Component<
   }
 
   async componentDidMount() {
+    const { id = undefined } = this.props.match && this.props.match.params;
+    this.fetchHousehold(id);
+
     try {
-      const { id = undefined } = this.props.match && this.props.match.params;
+      const { items: schools } = await getSchools();
+
+      this.setState(() => ({ schools }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { id: oldId } = prevProps.match && prevProps.match.params;
+    const { id: newId } = this.props.match && this.props.match.params;
+
+    if (newId !== oldId) {
+      this.fetchHousehold(newId);
+    }
+  }
+
+  async fetchHousehold(id) {
+    try {
       if (id) {
         const household = await getHousehold(id);
         const {
@@ -133,12 +154,9 @@ export default class NewHousehold extends React.Component<
         this.setState(() => newState);
       } else {
         const status = await getNominationStatus();
+        this.reset();
         this.setState(() => ({ disabled: status.count >= status.limit }));
       }
-
-      const { items: schools } = await getSchools();
-
-      this.setState(() => ({ schools }));
     } catch (error) {
       console.log(error);
     }
