@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { descFromValue } from 'lib/constants/bike-size';
+import Files from './components/form/files';
 
 const LabelText = styled.span`font-weight:bold;`;
 const ValueText = styled.span`
@@ -285,11 +286,18 @@ class ShowHousehold extends React.Component {
         );
       }
   )}
+
+  {household && household.attachments &&
+  <Files files={household.attachments}/>}
+
       <Row>
         <Col xs={12}>
           <DoNotPrint>
             <Link to="/dashboard/household">
               <Button primary>Go back</Button>
+            </Link>
+            <Link to={`/dashboard/household/edit/${household.id}`}>
+              <Button success>Edit</Button>
             </Link>
           </DoNotPrint>
         </Col>

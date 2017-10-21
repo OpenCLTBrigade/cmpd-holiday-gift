@@ -21,17 +21,20 @@ class Files extends React.PureComponent<any, any> {
                             </div>
                         ))}
 
-                    <Row>
-                        <Col xs={12}>
-                            <input
-                                id="formControlsFile"
-                                onChange={() => onChange(this.fileUpload.files)}
-                                type="file"
-                                label="File"
-                                ref={ref => (this.fileUpload = ref)}
-                            />
-                        </Col>
-                    </Row>
+                    {/* Re-used this box in ShowHousehold */}
+                    {onChange &&
+                        <Row>
+                            <Col xs={12}>
+                                <input
+                                    id="formControlsFile"
+                                    onChange={() => onChange(this.fileUpload.files)}
+                                    type="file"
+                                    label="File"
+                                    ref={ref => (this.fileUpload = ref)}
+                                />
+                            </Col>
+                        </Row>
+                    }
                 </Box>
             </div>
     );
