@@ -32,6 +32,7 @@ const nominationSsn = check('nominations.*.last4ssn').exists();
 const nominationHasLunch = check('nominations.*.free_or_reduced_lunch').exists();
 const clothes_size_pants = check('nominations.*.clothes_size_pants').optional();
 const clothes_size_shirt = check('nominations.*.clothes_size_shirt').optional();
+const shoe_size = check('nominations.*.shoe_size').optional();
 const clothes_want = check('nominations.*.clothes_want').optional();
 const favourite_colour = check('nominations.*.favourite_colour').optional();
 const additional_ideas = check('nominations.*.additional_ideas').optional();
@@ -79,6 +80,7 @@ module.exports = [
   nominationSsn,
   nominationHasLunch,
   nominationFavoriteColor,
-  clothes_size_pants
+  clothes_size_pants,
+  shoe_size
 ];
 
