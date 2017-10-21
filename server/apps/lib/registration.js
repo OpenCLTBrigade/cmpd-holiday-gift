@@ -33,6 +33,7 @@ async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{
       affiliation_id: userInfo.affiliation_id,
       email: userInfo.email,
       password: hashedPassword,
+      role: 'nominator'
     });
   } catch (error) {
     // TODO: generate better error message or log error
@@ -80,7 +81,7 @@ async function confirmEmail(
 
 // Step 4
 async function sendApproval(rootUrl: string, user: $TODO): Promise<void> {
-  const url = `${rootUrl}/users/needing/approval`; // TODO: correct url
+  const url = `${rootUrl}/dashboard/user/pending`;
   await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
 }
 

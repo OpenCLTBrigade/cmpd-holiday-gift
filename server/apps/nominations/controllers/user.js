@@ -13,7 +13,7 @@ const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const criteria = {
-  PENDING: { active: true, approved: false },
+  PENDING: { email_verified: true, approved: false },
   LIVE: { active: true, approved: true }
 };
 
@@ -31,10 +31,10 @@ module.exports = {
     const query: ListRequest = (req.query: any);
     const api = new TableApi(req, query);
     try {
-      const whereClause = {};
+      const whereClause = criteria.LIVE;
       if (query.search != null && query.search.length > 0) {
         // TODO: why search only live users?
-        Object.assign(whereClause, { name_last: { $like: `${query.search}%` } }, criteria.LIVE);
+        Object.assign(whereClause, { name_last: { $like: `${query.search}%` } });
       }
       if (query.affiliation_id != null) {
         Object.assign(whereClause, { affiliation_id: query.affiliation_id });
@@ -218,7 +218,8 @@ module.exports = {
 
     existingUser.update({
       active: true,
-      approved: true
+      approved: true,
+      email_verifed: true
     }).then(() => {
       res.json({
         data: true,
@@ -253,7 +254,9 @@ module.exports = {
 
     existingUser.update({
       active: false,
-      approved: false
+      approved: false,
+      email_verified: false,
+      confirmation_email: false
     }).then(() => {
       res.json({
         data: true,

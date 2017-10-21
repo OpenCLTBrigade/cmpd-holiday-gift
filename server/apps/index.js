@@ -51,13 +51,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/nominations', nominations);
 app.use('/api/auth', authApp);
 
-app.get((_req: *, res: *, _next: *): * => {
-  res.sendFile(join(__dirname, '../../build/index.html'));
-});
+// app.get((_req: *, res: *, _next: *): * => {
+//   res.sendFile(join(__dirname, '../../build/index.html'));
+// });
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+  response.sendFile(path.resolve(__dirname, '../../react-ui/build', 'index.html'));
 });
 
 // Array of promises that must complete before starting the server

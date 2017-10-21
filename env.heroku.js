@@ -20,7 +20,8 @@ module.exports = (config /*: * */) => { // eslint-disable-line
 
 config.email.ses = {
  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
- secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+ secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+ region: process.env.AWS_REGION
 };
 
 // **** Sample MySQL Database ****
@@ -35,14 +36,15 @@ config.db = {
 
 // **** Sample Production Mode Settings ****
 
-//config.databaseEncryptionKey = 'change me';
-//config.jwtSecrets.auth = 'changeme';
-//config.jwtSecrets.nominations = 'changeme';
+config.databaseEncryptionKey = process.env.DB_ENCRYPTION_KEY;
+config.jwtSecrets.auth = process.env.JWT_SECRETS_AUTH;
+config.jwtSecrets.nominations = process.env.JWT_SECRETS_NOMINATIONS;
 //config.verboseAccessLog = false;
 //config.useCompression = false;
 //config.verboseSeed = false;
-//config.email.fromAddress = 'noreply@codeforcharlotte.org';
-//config.email.fromName = 'noreply';
-//config.email.adminAddress = 'info@codeforcharlotte.org';
+
+config.email.fromAddress = process.env.EMAIL_FROM_ADDRESS;
+config.email.fromName = 'noreply';
+config.email.adminAddress = process.env.EMAIL_ADMIN_ADDRESS;
 
 };

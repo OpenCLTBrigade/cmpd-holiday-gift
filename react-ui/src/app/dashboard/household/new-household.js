@@ -42,24 +42,17 @@ export default class NewHousehold extends React.Component<
         errorMessage: ''
     }
 > {
-  get data() {
-    return this.state.data;
-  }
-
   constructor() {
     super();
 
     this.state = {
-      data: {
-        household: {},
-        address: {},
-        nominations: [],
-        schools: [],
-        phoneNumbers: [],
-        files: []
-      },
-      loadingState: LoadingState.NotStarted,
+      household: {},
+      address: {},
+      nominations: [],
+      schools: [],
+      phoneNumbers: [],
       saved: false,
+      files: [],
       errorMessage: ''
     }
         ;(this: any).onChange = this.onChange.bind(this)
@@ -152,8 +145,6 @@ export default class NewHousehold extends React.Component<
     try {
       const { id = undefined } = this.props.match && this.props.match.params;
       if (id) {
-        this.setState(() => ({ loadingState: LoadingState.Loading }));
-
         const household = await getHousehold(id);
         const {
                     children: nominations = [],
@@ -161,10 +152,9 @@ export default class NewHousehold extends React.Component<
                     address = {},
                     attachments: files = []
                 } = household;
-        const newState = { data: { household, nominations, phoneNumbers, address, id, files } };
+        const newState = { household, nominations, phoneNumbers, address, id, files };
 
         this.setState(() => newState);
-        this.setState(() => ({ loadingState: LoadingState.Success }));
       } else {
         const status = await getNominationStatus();
         this.setState(() => ({ disabled: status.count >= status.limit }));
@@ -175,7 +165,6 @@ export default class NewHousehold extends React.Component<
       this.setState(() => ({ schools }));
     } catch (error) {
       console.log(error);
-      this.setState(() => ({ loadingState: LoadingState.Error }));
     }
   }
 
@@ -218,8 +207,8 @@ export default class NewHousehold extends React.Component<
   onUpdate() {
     const { history } = this.props;
 
-    const { id } = this.data.household && this.data.household;
-    updateHousehold(id, this.data).then(() => history.push('/dashboard/household'));
+    const { id } = this.state.household && this.state.household;
+    updateHousehold(id, this.state).then(() => history.push('/dashboard/household'));
   }
 
   onSubmit() {
@@ -229,18 +218,6 @@ export default class NewHousehold extends React.Component<
   render(): React.Node {
     const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
 
-    if (this.state.loadingState === LoadingState.Loading) {
-      return null;
-    }
-
-    if (this.state.loadingState === LoadingState.Error) {
-      return (
-                <Alert bsStyle="danger">
-                    <strong>Sorry!</strong> There was an error loading this form.
-                </Alert>
-      );
-    }
-
     return (
             <div>
                 {this.state.disabled && (
@@ -249,7 +226,7 @@ export default class NewHousehold extends React.Component<
                     </Alert>
                 )}
                 <HouseholdForm
-                    data={this.data}
+                    data={this.state}
                     getValue={getValue}
                     onChange={this.onChange}
                     onSubmit={this.onSubmit}

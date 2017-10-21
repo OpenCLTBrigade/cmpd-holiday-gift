@@ -11,7 +11,7 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
-const bucketName = 'cfc-cmpd-explorers-qa';
+const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
@@ -31,10 +31,6 @@ const childDefaults = {
   bike_size: null,
   bike_style: null,
   clothes_want: false,
-  clothes_size_shirt: null,
-  clothes_size_pants: null,
-  shoe_size: null,
-  favourite_colour: null,
   interests: '',
   reason_for_nomination: ''
 };
@@ -148,7 +144,7 @@ module.exports = {
   
           // log any errors that occur
       form.on('error', function (err) {
-        console.log('An error has occured: \n' + err);
+        logger.info('An error has occured: \n' + err);
       });
     } catch (err) {
       logger.info('Error handling file upload', err);
@@ -240,10 +236,13 @@ module.exports = {
     }
 
     const { id } = req.params;
+    
+    logger.info('This is a test of the system', req.body);
 
     return db.sequelize
             .transaction(async t => {
-              const payload = matchedData(req);
+              // const payload = matchedData(req);
+              const payload = { ...req.body };
 
               try {
                 logger.info('finding household', id);
@@ -302,33 +301,33 @@ module.exports = {
                         nominations.filter(
                             entity =>
                                 payload.nominations &&
-                                payload.nominations.every(json => json.last4ssn !== entity.last4ssn)
+                                payload.nominations.every(json => parseInt(json.id, 10) !== parseInt(entity.id, 10))
                         );
                 const addedNominations = (payload.nominations &&
                         payload.nominations.filter(
-                            json =>
-                                nominations && nominations.every(entity => json.last4ssn !== entity.dataValues.last4ssn)
+                            json => typeof json.id === 'undefined'
                         )) || [];
                 const updatedNominations = (payload.nominations &&
                         payload.nominations.filter(
                             json =>
-                                nominations && nominations.some(entity => json.last4ssn === entity.dataValues.last4ssn)
+                                nominations && nominations.some(entity => parseInt(json.id, 10) === parseInt(entity.dataValues.id, 10))
                         )) || [];
 
                 for (const removed of removedNominations) {
-                  logger.info('removing nomination');
+                  logger.info('removing nomination', removed);
 
                   removed.destroy();
                 }
 
                 for (const added of addedNominations) {
-                  logger.info('adding nomination');
+                  logger.info('adding nomination', added);
 
-                  db.child.create(Object.assign({}, added, childDefaults, { household_id: id }));
+                  db.child.create(Object.assign({}, childDefaults, added, { household_id: id }));
                 }
 
                 for (const updated of updatedNominations) {
                   logger.info('updating nomination');
+                  logger.info('updated nomination:', updated);
 
                   const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
                   toUpdate.update(updated);

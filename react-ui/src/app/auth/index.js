@@ -9,6 +9,7 @@ import Login from './login';
 import Logout from './logout';
 import Register from './register';
 import Recover from './recover';
+import ConfirmEmail from './ConfirmEmail';
 
 // Assets used by this component
 import logo from './assets/auth-logo.png';
@@ -40,6 +41,7 @@ export default class Auth extends React.Component<{}> {
         <Route exact path="/auth/logout" component={Logout} />
         <Route exact path="/auth/register" component={Register} />
         <Route exact path="/auth/recover" component={Recover} />
+        <Route exact path="/auth/confirm_email" component={ConfirmEmail} />
       </div>
     );
   }

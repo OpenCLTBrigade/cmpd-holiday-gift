@@ -106,7 +106,7 @@ export default class ViewUser extends React.Component<{
           </Box>
         </Col>
       </Row>
-      {user.active === true && user.approved === false && <Row>
+      {user.email_verified === true && user.approved === false && <Row>
         <Col xs={12}>
           <Box title='Review pending account'>
             <div style={{'text-align': 'center'}}>
