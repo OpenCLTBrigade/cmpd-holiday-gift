@@ -301,7 +301,7 @@ module.exports = {
                         nominations.filter(
                             entity =>
                                 payload.nominations &&
-                                payload.nominations.every(json => json.id !== entity.id)
+                                payload.nominations.every(json => parseInt(json.id, 10) !== parseInt(entity.id, 10))
                         );
                 const addedNominations = (payload.nominations &&
                         payload.nominations.filter(
@@ -310,7 +310,7 @@ module.exports = {
                 const updatedNominations = (payload.nominations &&
                         payload.nominations.filter(
                             json =>
-                                nominations && nominations.some(entity => json.id === entity.dataValues.id)
+                                nominations && nominations.some(entity => parseInt(json.id, 10) === parseInt(entity.dataValues.id, 10))
                         )) || [];
 
                 for (const removed of removedNominations) {
