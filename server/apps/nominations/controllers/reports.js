@@ -54,6 +54,10 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
     }
     worksheet.columns = cols;
     data.forEach(row => {
+      if (row.vault !== undefined) {
+        row = Object.assign(row, row.vault);
+        delete row.vault;
+      }
       worksheet.addRow(row).commit();
     });
     worksheet.commit();
