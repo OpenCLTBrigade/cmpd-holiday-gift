@@ -44,7 +44,7 @@ const Household = ({
                 removeChild={removeChild}
                 affiliations={affiliations}
             />
-            {status === 1 && <Files files={data.files} onChange={onFileChange} />}
+            {status >= 1 && <Files files={data.files} onChange={onFileChange} />}
             <Row>
                 <Col xs={12}>
                     <Button type="submit" disabled={disabled}>{data.household && data.household.id ? 'Update' : 'Save Draft'}</Button>
