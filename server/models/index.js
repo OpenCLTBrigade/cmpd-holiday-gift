@@ -37,39 +37,60 @@ function loadModels(sequelize) {
   function define_table(name, model, scopes, defaultScope) {
     let encrypt = null;
 
-    function encrypt_field(column) {
+    const encryptedFields = [];
+
+    function encrypt_field(field, schema) {
       if (!encrypt) {
         encrypt = encrypted(Sequelize, config.databaseEncryptionKey);
         model['vault'] = encrypt.vault('vault');
       }
-      return encrypt.field(column);
+      encryptedFields.push(field);
+      return encrypt.field(field);
     }
 
     // Note which fields are private and bind them to the model
     const privateFields = [];
 
     Object.keys(model).forEach(function (field) {
-      if (model[field].encrypted) {
-        model[field] = encrypt_field(model[field]);
+      if (model[field].encrypt) {
+        model[field] = encrypt_field(field, model[field]);
       }
       if (model[field].private) {
         privateFields.push(field);
       }
     });
 
-    return sequelize.define(name, model, {
-      instanceMethods: {
-        toJSON: function () {
-          const values = Object.assign({}, this.dataValues);
-          privateFields.forEach(field => {
-            delete values[field];
-          });
-          return values;
-        }
-      },
+    const newModel = sequelize.define(name, model, {
       defaultScope,
       scopes
     });
+
+    newModel.prototype.privateFields = privateFields;
+    newModel.prototype.encryptedFields = encryptedFields;
+
+    // GIFT-210 && GIFT-158
+    newModel.prototype.toJSON = function () {
+      // Encryption vault is NOT in dataValues
+
+      const values = Object.assign({}, this.dataValues, (this.vault) ? this.vault : {});
+      
+      this.privateFields.forEach(field => {
+        delete values[field];
+      });
+
+      if (values.vault) {
+        delete values.vault;
+      }
+
+      if (this.vault) {
+        delete this.vault;
+      }
+
+      return values;
+
+    };
+
+    return newModel;
   }
 
   // This model loader is different from the Sequelize sample project

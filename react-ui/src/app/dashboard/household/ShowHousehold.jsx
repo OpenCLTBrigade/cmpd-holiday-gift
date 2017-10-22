@@ -232,7 +232,8 @@ class ShowHousehold extends React.Component {
                 School
               </LabelText>
               <ValueText>
-                {school.name}
+                {/* Check to resolve mock data issues when working locally.... */}
+                {school && school.name}
               </ValueText>
             </ListGroupItem>
             <ListGroupItem>
