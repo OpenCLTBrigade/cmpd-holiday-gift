@@ -59,7 +59,7 @@ export default class List extends React.Component<{}> {
         <Link to={`/dashboard/household/edit/${row.id}`}>
           <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
         </Link>
-        <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton>
+        {/* <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton> */}
       </div>
     );
   }
