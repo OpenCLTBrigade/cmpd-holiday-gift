@@ -28,7 +28,7 @@ export default class Home extends React.Component<{}> {
         <Row>
           <Col md={6}>
             <Box title="Quick Overview">
-              Home
+              Reporting tools and stats are under construction...
             </Box>
           </Col>
         </Row>
