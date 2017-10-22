@@ -46,13 +46,16 @@ export default class NewHousehold extends React.Component<
     super();
 
     this.state = {
-      household: {},
-      address: {},
-      nominations: [],
-      schools: [],
-      phoneNumbers: [],
+      data: {
+        household: {},
+        address: {},
+        nominations: [],
+        schools: [],
+        phoneNumbers: [],
+        files: []
+      },
+      loadingState: LoadingState.NotStarted,
       saved: false,
-      files: [],
       errorMessage: ''
     }
         ;(this: any).onChange = this.onChange.bind(this)
@@ -64,8 +67,10 @@ export default class NewHousehold extends React.Component<
 
   addPhoneNumber() {
     this.setState(() => {
-      const phoneNumbers = this.data.phoneNumbers.concat({});
-      const data = updateData(this.data, { phoneNumbers });
+      console.log(this);
+      //TODO: Should really clean this up by using reselect
+      const phoneNumbers = this.state.data.phoneNumbers.concat({});
+      const data = updateData(this.state.data, { phoneNumbers });
 
       return { data };
     });
@@ -73,9 +78,9 @@ export default class NewHousehold extends React.Component<
 
   removePhoneNumber() {
     this.setState(() => {
-      const phoneNumbers = this.data.phoneNumbers.slice();
+      const phoneNumbers = this.state.data.phoneNumbers.slice();
       phoneNumbers.pop();
-      const data = updateData(this.data, { phoneNumbers });
+      const data = updateData(this.state.data, { phoneNumbers });
 
       return { data };
     });
@@ -83,8 +88,8 @@ export default class NewHousehold extends React.Component<
 
   addChild() {
     this.setState(() => {
-      const nominations = this.data.nominations.concat({});
-      const data = updateData(this.data, { nominations });
+      const nominations = this.state.data.nominations.concat({});
+      const data = updateData(this.state.data, { nominations });
 
       return { data };
     });
@@ -92,10 +97,10 @@ export default class NewHousehold extends React.Component<
 
   removeChild() {
     this.setState(() => {
-      const nominations = this.data.nominations.slice();
+      const nominations = this.state.data.nominations.slice();
       nominations.pop();
 
-      const data = updateData(this.data, { nominations });
+      const data = updateData(this.state.data, { nominations });
 
       return { data };
     });
@@ -108,8 +113,8 @@ export default class NewHousehold extends React.Component<
       const saved = await uploadAttachment({ id, file });
 
       this.setState(() => {
-        const files = this.data.files.concat(saved);
-        const data = updateData(this.data, { files });
+        const files = this.state.data.files.concat(saved);
+        const data = updateData(this.state.data, { files });
 
         return { data };
       });
@@ -145,6 +150,8 @@ export default class NewHousehold extends React.Component<
     try {
       const { id = undefined } = this.props.match && this.props.match.params;
       if (id) {
+        this.setState(() => ({ loadingState: LoadingState.Loading }));
+
         const household = await getHousehold(id);
         const {
                     children: nominations = [],
@@ -152,9 +159,11 @@ export default class NewHousehold extends React.Component<
                     address = {},
                     attachments: files = []
                 } = household;
-        const newState = { household, nominations, phoneNumbers, address, id, files };
+        const newState = { data: { household, nominations, phoneNumbers, address, id, files } };
 
         this.setState(() => newState);
+        this.setState(() => ({ loadingState: LoadingState.Success }));
+
       } else {
         const status = await getNominationStatus();
         this.setState(() => ({ disabled: status.count >= status.limit }));
@@ -165,18 +174,22 @@ export default class NewHousehold extends React.Component<
       this.setState(() => ({ schools }));
     } catch (error) {
       console.log(error);
+      this.setState(() => ({ loadingState: LoadingState.Error }));
+
     }
   }
 
   reset() {
     this.setState(() => {
       return {
-        household: {},
-        address: {},
-        nominations: [],
-        schools: [],
-        phoneNumbers: [],
-        attachments: [],
+        data: {
+          household: {},
+          address: {},
+          nominations: [],
+          schools: [],
+          phoneNumbers: [],
+          files: [],
+        },
         saved: false
       };
     });
@@ -190,9 +203,9 @@ export default class NewHousehold extends React.Component<
     try {
       const { id = undefined } = this.state;
       if (id) {
-        await updateHousehold(id, this.state);
+        await updateHousehold(id, this.state.data);
       } else {
-        const { id } = await createHousehold(this.state);
+        const { id } = await createHousehold(this.state.data);
 
         this.setState({ saved: true, id: id });
       }
@@ -207,8 +220,8 @@ export default class NewHousehold extends React.Component<
   onUpdate() {
     const { history } = this.props;
 
-    const { id } = this.state.household && this.state.household;
-    updateHousehold(id, this.state).then(() => history.push('/dashboard/household'));
+    const { id } = this.state.data.household && this.state.data.household;
+    updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
   }
 
   onSubmit() {
@@ -218,6 +231,18 @@ export default class NewHousehold extends React.Component<
   render(): React.Node {
     const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
 
+    if (this.state.loadingState === LoadingState.Loading) {
+      return null;
+    }
+
+    if (this.state.loadingState === LoadingState.Error) {
+      return (
+                <Alert bsStyle="danger">
+                    <strong>Sorry!</strong> There was an error loading this form.
+                </Alert>
+      );
+    }
+
     return (
             <div>
                 {this.state.disabled && (
@@ -226,7 +251,7 @@ export default class NewHousehold extends React.Component<
                     </Alert>
                 )}
                 <HouseholdForm
-                    data={this.state}
+                    data={this.state.data}
                     getValue={getValue}
                     onChange={this.onChange}
                     onSubmit={this.onSubmit}
