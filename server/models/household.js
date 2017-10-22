@@ -12,12 +12,15 @@ module.exports = Sequelize => ({
     },
     name_first: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      encrypt: true
     },
     name_middle: {
       type: Sequelize.STRING,
-      defaultValue: null
+      defaultValue: null,
+      encrypt: true
     },
+    // We can't encrypt last names because of search
     name_last: {
       type: Sequelize.STRING,
       allowNull: false
