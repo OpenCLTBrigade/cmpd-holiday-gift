@@ -30,6 +30,7 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
 
   const columnSpecs = {
     household: {},
+    child: {},
     household_address: {},
     household_phone: {},
     user: { id: { width: 3 } }
@@ -41,18 +42,20 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
     const cols = [];
     for (const col of Object.getOwnPropertyNames(columnSpecs[table])) {
       if (columnSpecs[table][col] !== false) {
-        cols.push(Object.assign({}, { key: col, header: col, width: 5 }, columnSpecs[table][col]));
+        cols.push(Object.assign({}, { key: col, header: col, width: 10 }, columnSpecs[table][col]));
       }
     }
     if (data[0]) {
       for (const col in data[0].toJSON()) {
         if (!(col in columnSpecs[table])) {
-          cols.push({ key: col, header: col, width: 5 });
+          cols.push({ key: col, header: col, width: 10 });
         }
       }
     }
     worksheet.columns = cols;
-    data.forEach(row => worksheet.addRow(row.toJSON()).commit());
+    data.forEach(row => {
+      worksheet.addRow(row).commit();
+    });
     worksheet.commit();
   }
   await workbook.commit();
@@ -167,7 +170,7 @@ async function division_report(req: UserRequest<AdminRole>, res: Response) {
     ]
   });
   households.forEach(household => {
-    worksheet.addRow(flatten('address', household.toJSON())).commit();
+    worksheet.addRow(flatten('address', household)).commit();
   });
   worksheet.commit();
   workbook.commit();
