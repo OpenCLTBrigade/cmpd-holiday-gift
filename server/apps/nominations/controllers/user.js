@@ -126,7 +126,7 @@ module.exports = {
       active: user.active,
       nomination_limit: user.nomination_limit,
       email_verifed: user.email_verifed,
-      approved: user.approved,
+      approved: true,
       password: auth.hashPassword(user.password),
       affiliation_id: user.affiliation_id,
     }).then((createdUser) => {

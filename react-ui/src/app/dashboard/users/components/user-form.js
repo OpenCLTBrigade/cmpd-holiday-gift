@@ -58,7 +58,7 @@ class UserForm extends React.Component<{
         <Row>
           <Col xs={12}>
             <Box bsStyle="primary">
-              <Row>
+              {/* <Row>
                 <Col md={12}>
                   <p>
                     <strong>Note:</strong> After creating a new user they will need to be activated from the
@@ -66,7 +66,7 @@ class UserForm extends React.Component<{
                     screen.
                   </p>
                 </Col>
-              </Row>
+              </Row> */}
               <Row>
                 <Col md={12}>
                   <Input
