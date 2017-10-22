@@ -41,8 +41,8 @@ export default class List extends React.Component<{}> {
     this.currentPage = 1;
   }
 
-  uploadedFormFormatter(_cell: any, _row: HouseholdType): React.Node {
-    return <i className="fa fa-check" />;
+  uploadedFormFormatter(cell: any, row: HouseholdType): React.Node {
+    return row.attachment_data && row.attachment_data.length > 0 ? <i className="fa fa-check" /> : null;
   }
 
   // Called by householdIndex when FeedbackModal is closed

@@ -51,7 +51,14 @@ module.exports = {
       if (query.search) {
         whereClause = { name_last: { $like: `${query.search}%` } };
       }
-      const result = await api.fetchAndParse(db.household, whereClause, related, { method: ['filteredByUser', req.user] });
+
+      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }];
+
+      const pullRelated = [...related, ...attachmentRelation];
+
+      console.log('what', pullRelated);
+
+      const result = await api.fetchAndParse(db.household, whereClause, pullRelated, { method: ['filteredByUser', req.user] });
       res.json(result);
     } catch (err) {
             // TODO: properly log error

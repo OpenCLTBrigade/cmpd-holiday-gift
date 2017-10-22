@@ -113,5 +113,6 @@ module.exports = Sequelize => ({
     household.hasMany(db.household_phone, { as: 'phones' });
     household.belongsTo(db.user, { as: 'nominator' });
     household.hasMany(db.child, { as: 'children' });
+    household.hasMany(db.household_attachment, { as: 'attachment_data' });
   }
 });
