@@ -12,3 +12,4 @@ yarn-error.log*
 .env.local
 /*.tgz
 /server-notypes
+nodemon.sh

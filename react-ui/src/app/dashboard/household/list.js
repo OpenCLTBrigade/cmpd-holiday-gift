@@ -25,6 +25,10 @@ const TD_STYLE_LARGE = {
   'min-width': '75px',
   'width': '75px'
  };
+ const TD_STYLE_XSMALL = { 
+  'min-width': '50px',
+  'width': '50px'
+ };
 
  const StyledButton = styled.button`
   margin-right: 5px;
@@ -57,6 +61,18 @@ export default class List extends React.Component<{}> {
         </Link>
         <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton>
       </div>
+    );
+  }
+
+  nominatorCellFormatter(cell, row) {
+    if (!row.nominator) {
+      console.log('NOPE', row);
+      return null;
+    }
+    return (
+      <Link to={`/dashboard/user/${row.nominator.id}`}>
+        {row.nominator.name_first} {row.nominator.name_last}
+      </Link>
     );
   }
 
@@ -94,8 +110,11 @@ export default class List extends React.Component<{}> {
         <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="name_first" dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
           Head of Household
         </TableHeaderColumn>
+        <TableHeaderColumn tdStyle={TD_STYLE_XSMALL} thStyle={TD_STYLE_XSMALL} dataField="name_first" dataFormat={(cell, row) => row.children ? `${row.children.length}` : 0}>
+          Children
+        </TableHeaderColumn>
         {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}
-        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={(cell, row) => row.nominator ? `${row.nominator.name_first} ${row.nominator.name_last}` : ''}>
+        <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="nominator" dataFormat={this.nominatorCellFormatter}>
           Nominated by
         </TableHeaderColumn>
         <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
