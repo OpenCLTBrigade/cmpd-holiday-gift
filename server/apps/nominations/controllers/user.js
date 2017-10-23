@@ -99,6 +99,7 @@ module.exports = {
     if (req.user.role !== 'admin') {
       res.status(401);
       res.json({ data: null });
+      return;
     }
 
     const { user } = req.body;
@@ -106,6 +107,7 @@ module.exports = {
     if (user.password !== user.password_confirmation) {
       res.status(401);
       res.json({ data: null });
+      return;
     }
     console.log('start');
     // Find existing user with that email address
@@ -116,6 +118,8 @@ module.exports = {
         data: null,
         message: 'User already exists'
       });
+      console.log('User already exists');
+      return;
     }
 
     db.user.create({
@@ -131,6 +135,7 @@ module.exports = {
       approved: true,
       password: auth.hashPassword(user.password),
       affiliation_id: user.affiliation_id,
+      confirmation_email: false
     }).then((createdUser) => {
       console.log('made a user!', createdUser);
       res.json({ data: { user: { id: createdUser.id } } });

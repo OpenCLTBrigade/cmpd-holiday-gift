@@ -62,7 +62,7 @@ export default class NewUser extends React.Component<{}, { user: * }> {
           window.location = '/dashboard/user';
         });
       }).catch(() => {
-        alert('Could not save user. An unknown error has occured.');
+        alert('Could not save user. An unknown error has occured. Perhaps a user with that email address already exists in the database?');
       });
     })
   }
