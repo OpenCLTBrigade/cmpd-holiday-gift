@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
         <Header user={ user } />
         <Sidebar user={ user }/>
         <div className="content-wrapper">
-          <ContentTitle />
+          {/* <ContentTitle /> */}
           <section className="content">
             <Switch location={this.props.location}>
               <Route exact path="/dashboard" component={() => <Home user={user}/>} />

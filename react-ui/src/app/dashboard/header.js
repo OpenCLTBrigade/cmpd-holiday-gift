@@ -22,7 +22,7 @@ export default class Header extends React.Component<{}> {
     return (
       <header className="main-header">
         <Link to="/" className="logo">
-          Home
+          CMPD Explorers
         </Link>
         <nav className="navbar navbar-static-top" onClick={this.toggleNavCollapsed}>
           <a className="sidebar-toggle">

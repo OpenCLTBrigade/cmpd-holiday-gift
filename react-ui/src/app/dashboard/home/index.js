@@ -19,7 +19,43 @@ export default class Home extends React.Component<{}> {
     const { user } = this.props;
     
     if (!user || user.role !== 'admin') {
-      return null;
+      return (
+        <div>
+          <Row>
+            <Col xs={12}>
+              <Box title="Welcome!">
+                <p>Welcome to the CMPD Explorers Christmas Project Dashboard!</p>
+                <p>
+                  You can add and manage your nominations using the navigation menu to the left.
+                  If you do not see the menu, please click the menu button (three lines) at the top
+                  of the page.
+                </p>
+              </Box>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Box title="Tips">
+                <ul>
+                  <li>
+                    When submitting a nomination you must first press save before you can upload the signed form.
+                  </li>
+                  <li>
+                    File uploads will occur automatically when you select a file. After a few seconds the "Scanned Forms"
+                    box will update with your uploaded file as a blue link.
+                  </li>
+                  <li>
+                    When you submit your nomination it may take a moment; please avoid double clicking on the submit / save buttons.
+                  </li>
+                  <li>
+                    If the form does not seem to be submitting, please scroll up and verify there are no fields outlined in red.
+                  </li>
+                </ul>
+              </Box>
+            </Col>
+          </Row>
+        </div>
+      )
     }
 
     return (
