@@ -141,6 +141,7 @@ export default class NewHousehold extends React.Component<
         value.cmpd_division = response.data.properties.DIVISION;
         value.cmpd_response_area = response.data.properties.RA;
       }
+      value.type = this.state.data.address.type && this.state.data.address.type;
       this.onChange(name, value);
     });
   }

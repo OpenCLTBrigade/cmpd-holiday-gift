@@ -13,8 +13,7 @@ import type { UserType } from 'api/user';
 
 
 async function fetchAffiliations(): Promise<AffiliationType[]> {
-  const response: Object = await getAffiliationList(0, null);
-  // console.log(response.items);
+  const response: Object = await getAffiliationList(1, null); // Page 1, not 0 - GIFT-241
   return response.items;
 }
 
