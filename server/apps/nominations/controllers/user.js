@@ -3,6 +3,7 @@
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const auth = require('../../lib/auth');
+const path = require('path');
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
 
 import type { Response } from '../../lib/typed-express';
