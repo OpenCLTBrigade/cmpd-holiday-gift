@@ -3,6 +3,7 @@
 const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const auth = require('../../lib/auth');
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AdminRole } from '../../lib/auth';
@@ -221,10 +222,12 @@ module.exports = {
       approved: true,
       email_verifed: true
     }).then(() => {
-      res.json({
-        data: true,
-        message: '',
-        error: null
+      sendMail('user-account-approved', { to: existingUser.email }).then(() => {
+        res.json({
+          data: true,
+          message: '',
+          error: null
+        });
       });
     }).catch((err) => {
       res.json({
