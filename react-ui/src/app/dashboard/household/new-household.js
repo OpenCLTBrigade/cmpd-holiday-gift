@@ -23,6 +23,12 @@ const LoadingState = {
   Error: 3
 };
 
+const HouseholdStatus = {
+  New: 0,
+  Draft: 1,
+  Submitted: 2
+};
+
 const updateData = (oldData, newData) => {
   return {
     ...oldData,
@@ -38,7 +44,6 @@ export default class NewHousehold extends React.Component<
         nominations: Array<{}>,
         schools: Array<mixed>,
         phoneNumbers: Array<{}>,
-        saved: false,
         errorMessage: ''
     }
 > {
@@ -55,7 +60,7 @@ export default class NewHousehold extends React.Component<
         files: []
       },
       loadingState: LoadingState.NotStarted,
-      saved: false,
+      status: HouseholdStatus.New,
       errorMessage: ''
     }
         ;(this: any).onChange = this.onChange.bind(this)
@@ -68,7 +73,7 @@ export default class NewHousehold extends React.Component<
   addPhoneNumber() {
     this.setState(() => {
       console.log(this);
-      //TODO: Should really clean this up by using reselect
+            //TODO: Should really clean this up by using reselect
       const phoneNumbers = this.state.data.phoneNumbers.concat({});
       const data = updateData(this.state.data, { phoneNumbers });
 
@@ -180,11 +185,23 @@ export default class NewHousehold extends React.Component<
                     address = {},
                     attachments: files = []
                 } = household;
-        const newState = { data: { household, nominations, phoneNumbers, address, id, files } };
+
+        const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
+
+        const newState = {
+          data: {
+            household,
+            nominations,
+            phoneNumbers,
+            address,
+            id,
+            files
+          },
+          status
+        };
 
         this.setState(() => newState);
         this.setState(() => ({ loadingState: LoadingState.Success }));
-
       } else {
         const status = await getNominationStatus();
         this.reset();
@@ -193,7 +210,6 @@ export default class NewHousehold extends React.Component<
     } catch (error) {
       console.log(error);
       this.setState(() => ({ loadingState: LoadingState.Error }));
-
     }
   }
 
@@ -206,9 +222,9 @@ export default class NewHousehold extends React.Component<
           nominations: [],
           schools: [],
           phoneNumbers: [],
-          files: [],
+          files: []
         },
-        saved: false
+        status: HouseholdStatus.New
       };
     });
   }
@@ -225,7 +241,7 @@ export default class NewHousehold extends React.Component<
       } else {
         const { id } = await createHousehold(this.state.data);
 
-        this.setState({ saved: true, id: id });
+        this.setState({ status: HouseholdStatus.Draft, id: id });
       }
     } catch (error) {
       console.log(error.response.status);
@@ -242,8 +258,26 @@ export default class NewHousehold extends React.Component<
     updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
   }
 
-  onSubmit() {
-    submitNomination({ id: this.state.id }).then(() => this.reset());
+  async onSubmit() {
+    const { history } = this.props;
+
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
+
+    try {
+      await submitNomination({ id });
+
+      const redirectToList =
+                this.props.match && this.props.match.params && this.props.match && this.props.match.params.id;
+
+      if (redirectToList) {
+        history.push('/dashboard/household');
+      } else {
+        this.reset();
+      }
+    } catch (e) {
+      this.setState(() => ({ show: true, errorMessage: 'Something went wrong' }));
+      console.error(e);
+    }
   }
 
   render(): React.Node {
@@ -282,7 +316,7 @@ export default class NewHousehold extends React.Component<
                     onFileChange={this.onFileChange}
                     affiliations={this.state.schools}
                     onAddressChange={address => this.onAddressChange('address', address)}
-                    saved={this.state.saved}
+                    status={this.state.status}
                     disabled={this.state.disabled}
                 />
                 <ErrorModal
