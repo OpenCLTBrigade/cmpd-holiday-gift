@@ -21,26 +21,33 @@ async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean
     user,
     confirmation_code,
     // TODO: proper front-end path for confirmation
-    recover_url: `${rootUrl}/auth/recover`
+    recover_url: `${rootUrl}/auth/new_password`
   });
   return true;
 }
 
 // Step 2
-async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<?{token: string}> {
+// Not presently used. See auth/controllers for more details
+// async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<?{token: string}> {
+async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<boolean> {
   const user = await db.user.findById(user_id);
   if (user == null || user.confirmation_code == null || user.confirmation_code !== confirmation_code) {
-    return null;
+    return false;
   }
-  user.set('confirmation_code', null);
-  await user.save();
-  return { token: await auth.newAuthSession(user_id) };
+  // Uncomment these when implementing other method
+  // user.set('confirmation_code', null);
+  // await user.save();
+  return true;
+  // return { token: await auth.newAuthSession(user_id) };
 }
 
 // Step 3
-async function resetPassword(user: $TODO, new_password: string): Promise<void> {
+// async function resetPassword(user: $TODO, new_password: string): Promise<void> { // Needs step 2 implemented
+async function resetPassword(id, confirmation_code, new_password: string): Promise<void> {
   // TODO: invalidate other sessions
+  const user = await db.user.findById(id);
   user.set('password', auth.hashPassword(new_password));
+  user.set('confirmation_code', null); // Do this in the other method in future
   await user.save();
 }
 

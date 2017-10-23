@@ -122,6 +122,10 @@ async function sendRecoverEmail(req: Request<>, res: Response): Promise<void> {
   }
 }
 
+/**
+ * This will log a user in using a confirmation code.
+ * For 2017.1.0 let's skip to just using resetPassword() below.
+ */
 type VerifyConfirmationCodeRequest = {
   user_id: number,
   confirmation_code: string
@@ -139,7 +143,22 @@ async function verifyConfirmationCode(req: Request<>, res: Response): Promise<vo
 type ResetPasswordRequest = { new_password: string };
 async function resetPassword(req: UserRequest<>, res: Response): Promise<void> {
   const body: ResetPasswordRequest = (req.body: any);
-  await recovery.resetPassword(req.user, body.new_password);
+  // When using verifyConfirmationCode
+  // await recovery.resetPassword(req.user, body.new_password);
+  const { id, confirmation_code, password } = body;
+  if (!id || !confirmation_code || !password) {
+    res.json({ success: false });
+    return;
+  }
+
+  const token = recovery.verifyConfirmationCode(id, confirmation_code); // Remove when implementing other method
+  if (!token) {
+    res.json({ success: false, error: 'Invalid token.' });
+    return;
+  }
+
+  // await recovery.resetPassword(req.user, body.new_password); // when using verifyConfirmationCode
+  await recovery.resetPassword(id, confirmation_code, password);
   res.json({ success: true });
 }
 

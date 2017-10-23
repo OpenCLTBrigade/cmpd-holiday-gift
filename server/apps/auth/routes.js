@@ -20,7 +20,8 @@ router.post('/confirm_email').handleAsync(confirm);
 router.post('/extend').use(ensureLoggedIn).handleAsync(extend);
 router.post('/approve').use(ensureAdmin).handleAsync(approve);
 router.post('/recover/send_email').handleAsync(sendRecoverEmail);
-router.post('/recover/verify').handleAsync(verifyConfirmationCode);
-router.post('/reset_password').use(auth.ensureLoggedIn).handleAsync(resetPassword);
+// router.post('/recover/verify').handleAsync(verifyConfirmationCode); // Not implemented. See auth/controllers
+// router.post('/reset_password').use(auth.ensureLoggedIn).handleAsync(resetPassword); // Not implemented. See auth/controllers
+router.post('/recover/reset_password').handleAsync(resetPassword);
 
 module.exports = router;
