@@ -19,9 +19,9 @@ module.exports = (config /*: * */) => { // eslint-disable-line
 // **** Sample Email Settings (Amazon SES) ****
 
 config.email.ses = {
- accessKeyId: process.env.AWS_ACCESS_KEY_ID,
- secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
- region: process.env.AWS_REGION
+ accessKeyId: process.env.SES_AWS_ACCESS_KEY_ID,
+ secretAccessKey: process.env.SES_AWS_SECRET_ACCESS_KEY,
+ region: process.env.SES_AWS_REGION
 };
 
 // **** Sample MySQL Database ****
