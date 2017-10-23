@@ -64,8 +64,9 @@ export default class Recover extends React.Component<{
   async onSubmit({ email }: {email: string}): Promise<void> {
     try {
       const success = await sendRecoverEmail(email);
-      if (success) {
+      if (success && success.success === true) {
         // TODO: flash message: "An email has been sent to ... with further instructions"
+        alert('Please check your email for recovery instructions.');
         this.props.history.replace('/auth/login');
       } else {
         (this.box: any).flashErrorMessage(

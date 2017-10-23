@@ -10,7 +10,8 @@ const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 // Step 1
 async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean> {
   const user = await db.user.findOne({ where: { email: email } });
-  if (user == null || user.confirmation_code != null || user.active === false || user.approved === false) {
+  if (user == null || user.active === false || user.approved === false) {
+    console.log('sendRecoverEmail - User not found');
     return false;
   }
   const confirmation_code = auth.generateConfirmationCode();
