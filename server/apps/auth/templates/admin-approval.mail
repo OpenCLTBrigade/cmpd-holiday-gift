@@ -1,0 +1,9 @@
+Subject: A new user needs approval
+
+<!-- TODO: improve this email -->
+
+A new user requires approval.
+
+Name: {{user.name_first}} {{user.name_last}}
+
+Navigate to {{url}} to active the user.

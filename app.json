@@ -1,0 +1,13 @@
+{
+  "environments": {
+    "test": {
+      "env": {
+        "PHOTON_TORPEDOES": "online"
+      },
+      "scripts": {
+        "postinstall": "echo 'postinstall'",
+        "test": "bin/ci"
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "name": "cmpd-explorers-christmas-2017",
+  "version": "2017.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run build-server && node server-notypes/apps/serve.js",
+    "heroku-postbuild": "cd react-ui/ && npm install && NODE_PATH=./src react-scripts build",
+    "start-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts start",
+    "build-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts build",
+    "test-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
+    "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
+    "start-server": "node server-notypes/apps/serve.js",
+    "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
+    "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
+    "seed-server": "flow-node server/seeds",
+    "postinstall": "if [ -z '$CI' ]; then NODE_PATH=./react-ui/src react-scripts build; fi",
+    "prepack": "npm run build-client && npm run build-server",
+    "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
+    "flow": "flow",
+    "test": "npm run test-client && npm run test-server"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "engines": {
+    "node": "8.4.x"
+  },
+  "files": [
+    "build",
+    "server-notypes"
+  ],
+  "main": "server/apps/serve.js",
+  "devDependencies": {
+    "cross-env": "^5.0.5",
+    "debug": "~2.6.3",
+    "faker": "^4.1.0",
+    "jasmine": "^2.6.0",
+    "nodemon": "^1.11.0",
+    "quoted-printable": "^1.0.1",
+    "sqlite3": "^3.1.13",
+    "webpack-create-file-plugin": "^0.1.0",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-hot-middleware": "^2.18.0"
+  },
+  "dependencies": {
+    "@google/maps": "^0.4.3",
+    "admin-lte": "^2.3.11",
+    "aws-sdk": "^2.133.0",
+    "axios": "^0.16.2",
+    "babel": "^6.23.0",
+    "babel-eslint": "https://registry.npmjs.org/babel-eslint/-/babel-eslint-7.2.3.tgz",
+    "babel-plugin-transform-flow-strip-types": "https://registry.npmjs.org/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.22.0.tgz",
+    "babel-polyfill": "https://registry.npmjs.org/babel-polyfill/-/babel-polyfill-6.26.0.tgz",
+    "babel-preset-es2015": "^6.24.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "bootstrap": "^3.3.7",
+    "compression": "^1.6.2",
+    "eslint": "https://registry.npmjs.org/eslint/-/eslint-3.19.0.tgz",
+    "eslint-plugin-dependencies": "^2.4.0",
+    "eslint-plugin-flowtype": "https://registry.npmjs.org/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.33.0.tgz",
+    "eslint-plugin-flowtype-errors": "^3.3.1",
+    "eslint-plugin-html": "^2.0.1",
+    "exceljs": "^0.5.1",
+    "express": "~4.15.2",
+    "express-jwt": "^5.3.0",
+    "express-validator": "^4.2.1",
+    "flow-bin": "^0.54.0",
+    "flow-remove-types": "^1.2.1",
+    "flow-typed": "^2.1.5",
+    "font-awesome": "^4.7.0",
+    "formidable": "^1.1.1",
+    "fs-extra": "^4.0.2",
+    "jsonwebtoken": "^7.4.1",
+    "jwt-decode": "^2.2.0",
+    "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
+    "morgan": "^1.8.1",
+    "mustache": "^2.3.0",
+    "mysql2": "^1.4.2",
+    "neoform": "^0.2.0",
+    "neoform-plain-object-helpers": "^0.1.0",
+    "neoform-validation": "^0.3.0",
+    "nodemailer": "^4.0.1",
+    "nodemailer-ses-transport": "^1.5.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "pino": "^4.7.2",
+    "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
+    "react-scripts": "^1.0.14",
+    "sequelize": "^4.15.0",
+    "sequelize-encrypted": "^1.0.0",
+    "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz",
+    "styled-components": "^2.1.0"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001",
+      "ws": true
+    }
+  }
+}

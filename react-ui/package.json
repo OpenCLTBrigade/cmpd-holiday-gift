@@ -1,0 +1,26 @@
+{
+  "name": "react-ui",
+  "version": "0.1.0",
+  "private": true,
+  "cacheDirectories": [
+    "node_modules",
+    "../node_modules"
+  ],
+  "devDependencies": {},
+  "dependencies": {
+    "react-scripts": "1.0.7",
+    "react": "^15.5.4",
+    "react-bootstrap": "^0.31.0",
+    "react-bootstrap-table": "^3.4.6",
+    "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3001"
+}
