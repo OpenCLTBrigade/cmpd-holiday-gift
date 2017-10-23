@@ -45,18 +45,18 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
           <section className="content">
             <Switch location={this.props.location}>
               <Route exact path="/dashboard" component={() => <Home user={user}/>} />
-              {/* TODO: Finish routes */}
-              <Route exact path="/dashboard/household" component={HouseholdIndex} />
-              <Route exact path="/dashboard/household/create" component={NewHousehold} />
-              <Route exact path="/dashboard/household/show/:id" component={ShowHousehold} />
-              <Route exact path="/dashboard/household/edit/:id" component={NewHousehold} />
-              <Route exact path="/dashboard/affiliation" component={AffiliationList} />
-              <Route exact path="/dashboard/affiliation/:affiliation_id" component={Affiliation} />
-              <Route exact path="/dashboard/user" component={UsersList} />
-              <Route exact path="/dashboard/user/pending" component={PendingUsersList} />
-              <Route exact path="/dashboard/user/create" component={NewUser} />
-              <Route exact path="/dashboard/user/:user_id/edit" component={EditUser} />
-              <Route exact path="/dashboard/user/:user_id" component={ViewUser} />
+              {/* Needs Redux */}
+              <Route exact path="/dashboard/household" component={() => <HouseholdIndex user={user}/>} />
+              <Route exact path="/dashboard/household/create" component={() => <NewHousehold user={user}/>} />
+              <Route exact path="/dashboard/household/show/:id" component={() => <ShowHousehold user={user}/>} />
+              <Route exact path="/dashboard/household/edit/:id" component={() => <NewHousehold user={user}/>} />
+              <Route exact path="/dashboard/affiliation" component={() => <AffiliationList user={user}/>} />
+              <Route exact path="/dashboard/affiliation/:affiliation_id" component={() => <Affiliation user={user}/>} />
+              <Route exact path="/dashboard/user" component={() => <UsersList user={user}/>} />
+              <Route exact path="/dashboard/user/pending" component={() => <PendingUsersList user={user}/>} />
+              <Route exact path="/dashboard/user/create" component={() => <NewUser user={user}/>} />
+              <Route exact path="/dashboard/user/:user_id/edit" component={() => <EditUser user={user}/>} />
+              <Route exact path="/dashboard/user/:user_id" component={() => <ViewUser user={user}/>} />
             </Switch>
           </section>
         </div>

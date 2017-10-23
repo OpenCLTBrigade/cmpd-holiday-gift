@@ -76,6 +76,10 @@ export default class List extends React.Component<{}> {
     );
   }
 
+  submittedCellFormatter = (cell, row) => {
+    return (row.draft === false) ? <i className="fa fa-check"/> : '';
+  }
+
   reviewCellFormatter = (cell, row: HouseholdType): React.Node => {
     const { currentPage } = this;
     return (
@@ -100,6 +104,13 @@ export default class List extends React.Component<{}> {
   }
 
   render(): React.Node {
+    const { user } = this.props;
+
+    // TODO: Needs Redux hardcore
+    if (!user) {
+      return null;
+    }
+
     return (
       <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name" ref={(table) => {
         this.table = table;
@@ -120,12 +131,19 @@ export default class List extends React.Component<{}> {
         <TableHeaderColumn tdStyle={TD_STYLE_XSMALL} thStyle={TD_STYLE_XSMALL} dataField="uploaded_form" dataFormat={this.uploadedFormFormatter} dataAlign="center">
           Form
         </TableHeaderColumn>
+        {user && user.role !== 'admin' &&
+          <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="draft" dataFormat={this.submittedCellFormatter}>
+            <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">Submitted</acronym>
+          </TableHeaderColumn>
+        }
         <TableHeaderColumn tdStyle={TD_STYLE_LARGE} thStyle={TD_STYLE_LARGE} dataField="id" dataFormat={this.actionCellFormatter}>
           Actions
         </TableHeaderColumn>
-        <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="surname" dataFormat={this.reviewCellFormatter}>
-          Review
-        </TableHeaderColumn>
+        {user && user.role === 'admin' &&
+          <TableHeaderColumn tdStyle={TD_STYLE_SMALL} thStyle={TD_STYLE_SMALL} dataField="surname" dataFormat={this.reviewCellFormatter}>
+            Review
+          </TableHeaderColumn>
+        }
       </DataTable>
     );
   }

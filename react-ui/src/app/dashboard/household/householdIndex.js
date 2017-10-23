@@ -30,7 +30,7 @@ export default class HouseholdIndex extends React.Component<{}> {
           <Col xs={12}>
             <Box title="Household List">
 
-              <List openHouseholdReview={this.openHouseholdReview} ref={(el) => this.listComponent = el}/>
+              <List user={this.props.user} openHouseholdReview={this.openHouseholdReview} ref={(el) => this.listComponent = el}/>
             </Box>
           </Col>
         </Row>
