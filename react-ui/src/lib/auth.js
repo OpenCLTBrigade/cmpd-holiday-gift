@@ -149,7 +149,7 @@ export const AuthToken = (() => {
   }
 
   load();
-  return { login, logout, expired, getToken, getAuthorization, addHandler };
+  return { login, logout, expired, getToken, getAuthorization, addHandler, token };
 })();
 
 export const AppToken = (() => {

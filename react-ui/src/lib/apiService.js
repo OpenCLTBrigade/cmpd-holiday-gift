@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import { getAuthorization } from 'lib/auth';
+import { AuthToken } from './auth';
 
 export type DataTableResponse<Item: Object> = {
   totalSize: number,
@@ -74,6 +75,9 @@ const makeRequest = async function (
 
   requestConfig.url = `${app}/${path}`;
   requestConfig.method = method.toLowerCase();
+  
+  // console.log('authtoken', AuthToken.token);
+  // console.log('url', requestConfig.url);
 
   // Add an authorization header to the request if a token is available
   const authorization = await getAuthorization(app);
