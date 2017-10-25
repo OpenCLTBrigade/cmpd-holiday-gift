@@ -194,6 +194,10 @@ module.exports = {
       newData.password = auth.hashPassword(user.password);
     }
 
+    if (req.user.role !== 'admin') {
+      newData.role = existingUser.role;
+    }
+
     existingUser.update(newData).then(() => {
       res.json({ data: true });
     }).catch((err) => {
