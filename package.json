@@ -10,6 +10,8 @@
     "test-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
     "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
     "start-server": "node server-notypes/apps/serve.js",
+    "predebug-server": "npm run build-server",
+    "debug-server": "node --inspect server-notypes/apps/serve.js",
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",

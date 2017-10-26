@@ -5,7 +5,7 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Home from './home';
 import HouseholdIndex from './household/householdIndex.js';
-import NewHousehold from './household/new-household';
+import EditHousehold from './household/EditHousehold';
 import ShowHousehold from './household/ShowHousehold';
 import { AffiliationList, Affiliation } from './affiliations';
 import UsersList from './users/UsersList';
@@ -22,7 +22,7 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
   // TODO: Return AdminLTE base template and register sub-routes here
   constructor(props) {
     super(props);
-    this.state = {user: null};
+    this.state = { user: null };
   }
 
   componentDidMount() {
@@ -47,9 +47,9 @@ export default class Dashboard extends React.Component<{location: mixed}, {user:
               <Route exact path="/dashboard" component={() => <Home user={user}/>} />
               {/* Needs Redux */}
               <Route exact path="/dashboard/household" component={(rest) => <HouseholdIndex user={user} {...rest}/>} />
-              <Route exact path="/dashboard/household/create" component={(rest) => <NewHousehold user={user} {...rest} />} />
+              <Route exact path="/dashboard/household/create" component={(rest) => <EditHousehold user={user} {...rest} />} />
               <Route exact path="/dashboard/household/show/:id" component={(rest) => <ShowHousehold user={user} {...rest} />} />
-              <Route exact path="/dashboard/household/edit/:id" component={(rest) => <NewHousehold user={user} {...rest} />} />
+              <Route exact path="/dashboard/household/edit/:id" component={(rest) => <EditHousehold user={user} {...rest} />} />
               <Route exact path="/dashboard/affiliation" component={(rest) => <AffiliationList user={user} {...rest} />} />
               <Route exact path="/dashboard/affiliation/:affiliation_id" component={(rest) => <Affiliation user={user} {...rest} />} />
               <Route exact path="/dashboard/user" component={(rest) => <UsersList user={user} {...rest} />} />
