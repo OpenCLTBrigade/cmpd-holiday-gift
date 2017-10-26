@@ -56,13 +56,13 @@ module.exports = {
 
       const pullRelated = [...related, ...attachmentRelation];
 
-      console.log('what', pullRelated);
+      logger.info('what', { pullRelated });
 
       const result = await api.fetchAndParse(db.household, whereClause, pullRelated, { method: ['filteredByUser', req.user] });
       res.json(result);
+
     } catch (err) {
-            // TODO: properly log error
-      console.error(err);
+      logger.error(err);
       res.json({ error: 'error fetching data' });
     }
   },
@@ -81,7 +81,7 @@ module.exports = {
       if (household.vault) {
         delete household.vault;
       }
-      
+
       // Courtesy GIFT-210 (see models/index.js) we no longer need to use dataValues here
       address = addressEntity;
 
@@ -154,7 +154,7 @@ module.exports = {
         files.push({ filename: file.name, path: file.path });
         logger.info('uploading to s3', { filename: file.name });
       });
-  
+
           // log any errors that occur
       form.on('error', function (err) {
         logger.info('An error has occured: \n' + err);
@@ -212,7 +212,7 @@ module.exports = {
     }
   },
 
-  async submitFeedback(req: any, res: any){
+  async submitFeedback(req: any, res: any) {
     const { approved, reason, message } = req.body;
     try {
       logger.info(`Submitting feedback for ${req.params.id}`);
@@ -220,20 +220,20 @@ module.exports = {
       if (!household) {
         throw new Error('Household not found');
       }
-  
+
       // Message is not stored; it gets emailed
       household.reviewed = true;
       household.approved = approved;
       household.reason = reason || '';
-  
+
       await household.save();
-  
+
       if (approved) {
         await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.name_last });
       } else {
         await sendMail('feedback-declined', { to: household.nominator.email, feedbackText: message, reason, name_last: household.name_last });
       }
-  
+
       res.json({ data: true });
     } catch (err) {
       logger.info('feedback submission failed.', 'approved', approved, 'reason', reason, 'message', message, 'error', err);
@@ -249,7 +249,7 @@ module.exports = {
     }
 
     const { id } = req.params;
-    
+
     logger.info('This is a test of the system', req.body);
 
     return db.sequelize
