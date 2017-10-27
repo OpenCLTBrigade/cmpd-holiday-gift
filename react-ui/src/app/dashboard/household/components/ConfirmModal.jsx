@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, ButtonToolbar } from 'react-bootstrap';
 
 type Props = {
     title: string,
@@ -12,12 +12,12 @@ type Props = {
 export default (props: Props) => {
   const {
         show,
-        title = 'Saved successfully',
+        title = 'Save successful',
         message = 'Your nomination has been saved successfully.',
         onReject,
         onConfirm,
         rejectText = 'Reject',
-        confirmText = 'Confirm',
+        confirmText = 'Confirm'
     } = props;
   return (
         <Modal show={show}>
@@ -26,12 +26,12 @@ export default (props: Props) => {
             </Modal.Header>
             <Modal.Body>{message}</Modal.Body>
             <Modal.Footer>
-                <Button onClick={onReject}>
-                    {rejectText}
-                </Button>
-                <Button onClick={onConfirm} bsStyle="primary">
-                    {confirmText}
-                </Button>
+                <ButtonToolbar>
+                    <Button onClick={onReject}>{rejectText}</Button>
+                    <Button onClick={onConfirm} bsStyle="primary">
+                        {confirmText}
+                    </Button>
+                </ButtonToolbar>
             </Modal.Footer>
         </Modal>
   );
