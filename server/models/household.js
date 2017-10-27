@@ -86,6 +86,11 @@ module.exports = Sequelize => ({
       allowNull: false,
       defaultValue: ''
     },
+    deleted: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      defaultValue: false
+    },
     deleted_at: {
       type: Sequelize.DATE,
       defaultValue: null
