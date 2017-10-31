@@ -94,6 +94,10 @@ class Router<Req: Request<>> {
     return new Chain(this.router, 'put', (path: string));
   }
 
+  destroy<Params: Parameters>(path: string, _: Params = ({}: any)): Chain<Req & {params: Params}> {
+    return new Chain(this.router, 'delete', (path: string));
+  }
+
 }
 
 module.exports = { Router, proxy };
