@@ -68,32 +68,29 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
 
   }
 
-  componentDidMount() {
-    this.fetchData().then();
+  async componentDidMount() {
+    await this.fetchData();
   }
 
-  fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
-    //console.log('page', page, 'search', searchText);
+  async fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
+
     querystring.update({ page, search: searchText });
-    return new Promise((resolve, _reject) => {
-      // console.log('fetchData', page, searchText);
-      this.props.fetch(page, searchText).then(data => {
-        // console.log('results', data.items);
-        this.options.sizePerPage = data.per_page;
-        this.setState({ items: data.items, totalSize: data.totalSize, page, sizePerPage: data.per_page }, () => {
-          resolve();
-        });
-      });
-    });
+
+    const { fetch } = this.props;
+
+    try {
+      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
+      this.options.sizePerPage = sizePerPage;
+
+      this.setState(() => ({ items: items, totalSize, page, sizePerPage }));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  handlePageChange = (page: number) => {
-    this.fetchData(page);
-  };
+  handlePageChange = async (page: number) => await this.fetchData(page);
 
-  handleSearchChange = (searchText?: string) => {
-    this.fetchData(1, searchText);
-  };
+  handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
 
   render(): React.Node {
     return (

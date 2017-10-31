@@ -56,13 +56,13 @@ module.exports = {
 
       const pullRelated = [...related, ...attachmentRelation];
 
-      console.log('what', pullRelated);
+      logger.info('what', { pullRelated });
 
       const result = await api.fetchAndParse(db.household, whereClause, pullRelated, { method: ['filteredByUser', req.user] });
       res.json(result);
+
     } catch (err) {
-            // TODO: properly log error
-      console.error(err);
+      logger.error(err);
       res.json({ error: 'error fetching data' });
     }
   },
