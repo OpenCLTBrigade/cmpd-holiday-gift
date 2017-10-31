@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Files from './components/form/files';
-import withFetch from '../../components/withFetch';
 import ChildDetail from './components/ChildDetail';
 import { getHousehold } from '../../../api/household';
 import { getSchools } from '../../../api/affiliation';
+import withAsync from '../../components/withAsync';
 
 const LabelText = styled.span`font-weight: bold;`;
 const ValueText = styled.span`display: block;`;
@@ -134,11 +134,11 @@ class ShowHousehold extends React.PureComponent {
   }
 }
 
-const fetchData = async ({ id }) => {
+const fetchData = ({ id }) => async () => {
   const household = await getHousehold(id);
   const schools = await getSchools().then(({ items }) => items);
 
   return { household, schools };
 };
 
-export default withFetch(fetchData)(ShowHousehold);
+export default withAsync({ async: fetchData })(ShowHousehold);
