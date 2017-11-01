@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { Alert } from 'react-bootstrap';
 
 import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
@@ -13,8 +14,8 @@ import {
     getNominationStatus
 } from 'api/household';
 import { getAddressInfo } from 'api/cmpd';
-import ErrorModal from './components/error-modal';
-import { Alert } from 'react-bootstrap';
+import ErrorModal from './components/ErrorModal';
+import ConfirmModal from './components/ConfirmModal';
 
 const LoadingState = {
   NotStarted: 0,
@@ -273,12 +274,32 @@ export default class NewHousehold extends React.Component<
       if (redirectToList) {
         history.push('/dashboard/household');
       } else {
-        this.reset();
+        this.showConfirmation();
       }
     } catch (e) {
       this.setState(() => ({ show: true, errorMessage: 'Something went wrong' }));
       console.error(e);
     }
+  }
+
+  showConfirmation =() => this.setState(() => ({ showConfirm: true }))
+
+  onSavedReject = () => {
+    const { history } = this.props;
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
+
+    this.setState(() => {
+      return { showConfirm: false };
+    }, () => history.push(`show/${id}`));
+  }
+
+  onSavedConfirm = () => {
+    const { history } = this.props;
+    this.reset();
+    this.setState(() => {
+      return { showConfirm: false };
+    });
+
   }
 
   render(): React.Node {
@@ -326,6 +347,8 @@ export default class NewHousehold extends React.Component<
                     show={this.state.show}
                     handleClose={handleClose}
                 />
+
+                <ConfirmModal show={this.state.showConfirm} rejectText="View nomination" confirmText="Create another" onReject={this.onSavedReject} onConfirm={this.onSavedConfirm} />
             </div>
     );
   }
