@@ -40,7 +40,7 @@ class PhoneNumbersForm extends React.PureComponent<
                                                     <option value="">Select...</option>
                                                     <option value="home">Home</option>
                                                     <option value="work">Work</option>
-                                                    <option value="work">Mobile</option>
+                                                    <option value="mobile">Mobile</option>
                                                 </Input>
                                             </Col>
                                             <Col md={6} xs={12}>
