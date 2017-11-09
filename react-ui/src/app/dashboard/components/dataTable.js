@@ -76,9 +76,11 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
 
     querystring.update({ page, search: searchText });
 
-    const { fetch } = this.props;
+    const { fetch, onFetch } = this.props;
 
     try {
+
+      onFetch && onFetch(page, searchText);
       const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
       this.options.sizePerPage = sizePerPage;
 
