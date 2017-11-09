@@ -1,31 +1,32 @@
 // @flow
 
 const misc = require('./misc');
+const logger = require('./logger');
 
 import type { Request } from '../lib/typed-express';
 
 type CountedSet<Row> = {
-  rows: Row[],
-  count: number
-};
+    rows: Row[],
+    count: number
+}
 
-type IncludeSpec = ?{
-  model: $TODO,
-  as?: string
-}[];
+type IncludeSpec = ?({
+    model: $TODO,
+    as?: string
+}[])
 
 interface Model {
-  scope: $TODO
+    scope: $TODO;
 }
 
 export type TableRequest = {
-  page?: number
-};
+    page?: number
+}
 
 class TableApi<Row: {}> {
-  baseUrl: string;
-  page: number;
-  itemsPerPage: number;
+  baseUrl: string
+  page: number
+  itemsPerPage: number
 
   constructor(req: Request<>, query: TableRequest, itemsPerPage: number = 10) {
     this.baseUrl = misc.baseUrl(req);
@@ -34,36 +35,43 @@ class TableApi<Row: {}> {
   }
 
   async fetch(
-    model: Model,                 // Name of model to work with
-    where: $TODO = {},            // Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where
-    _include: IncludeSpec = null, // Include related models
-    scope: $TODO = ''             // Scope name
-  ): Promise<CountedSet<Row>> {
-    // TODO: Make include work :(
+        model: Model,
+        where: $TODO = {},
+        _include: IncludeSpec = null,
+        scope: $TODO = '' // Scope name
+    ): Promise<CountedSet<Row>> {
+        // TODO: Make include work :(
     const currentOffset = this.getCurrentOffset();
     const opts: Object = {
       limit: this.itemsPerPage,
       offset: currentOffset,
       where: where
     };
+    logger.info('retrieving count', { opts });
+
+    const count = await model.scope(scope).count(opts);
 
     if (_include != null) {
       opts['include'] = _include;
     }
 
-    return model
-      .scope(scope)
-      .findAndCountAll(opts);
-  }
+    logger.info('retrieving count', { opts });
+
+    const rows = await model.scope(scope).findAll(opts);
+
+    return { rows, count };
+  } // Name of model to work with // Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where // Include related models
 
   async fetchAndParse(
-    model: Model,
-    where: $TODO = {},
-    include: IncludeSpec = null,
-    scope: $TODO = '',
-    fieldWhitelist: ?$Keys<Row>[] = null
-  ): Promise<*> { // TODO: fill in type
+        model: Model,
+        where: $TODO = {},
+        include: IncludeSpec = null,
+        scope: $TODO = '',
+        fieldWhitelist: ?($Keys<Row>[]) = null
+    ): Promise<*> {
+        // TODO: fill in type
     const results = await this.fetch(model, where, include, scope);
+    console.log(results.count);
     return this.parseResultSet(results, fieldWhitelist);
   }
 
@@ -72,9 +80,9 @@ class TableApi<Row: {}> {
   }
 
   parseResultSet(
-    resultSet: CountedSet<Row>,
-    fieldWhitelist: ?$Keys<Row>[] = null // Fields to be returned if not null
-  ): $TODO {
+        resultSet: CountedSet<Row>,
+        fieldWhitelist: ?($Keys<Row>[]) = null // Fields to be returned if not null
+    ): $TODO {
     const lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
 
     const nextPageNumber = TableApi.calculateNextPage(resultSet, this.page, lastPage);
