@@ -41,7 +41,6 @@ const bike_want = check('nominations.*.bike_want').optional();
 const bike_style = check('nominations.*.bike_style').optional();
 const reason_for_nomination = check('nominations.*.reason_for_nomination').optional();
 const interests = check('nominations.*.interests').optional();
-const nominationFavoriteColor = check('nominations.*.favourite_colour').exists();
 
 module.exports = [
   firstName,
@@ -79,7 +78,6 @@ module.exports = [
   nominationSchool,
   nominationSsn,
   nominationHasLunch,
-  nominationFavoriteColor,
   clothes_size_pants,
   shoe_size
 ];

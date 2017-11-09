@@ -193,7 +193,6 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                                                 label="Favorite Color"
                                                 name={`nominations[${idx}].favourite_colour`}
                                                 type="text"
-                                                validator={requiredValidator}
                                             />
                                         </Col>
                                     </Row>
