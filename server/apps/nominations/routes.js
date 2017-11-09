@@ -21,7 +21,7 @@ router.post('/households/:id/upload').use(auth.ensureLoggedIn).handleAsync(House
 router.post('/households/:id/feedback').use(auth.ensureLoggedIn).handleAsync(Household.submitFeedback);
 router.post('/households/:id/attachments').use(auth.ensureLoggedIn).handleAsync(Household.createAttachments);
 router.get('/households/:id/attachments').use(auth.ensureLoggedIn).handleAsync(Household.getAttachments);
-// router.destroy('/households/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsync(Household.removeHousehold);
+router.destroy('/households/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsync(Household.removeHousehold);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);
