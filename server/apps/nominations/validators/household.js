@@ -7,7 +7,7 @@ const lastName = check('household.name_last').exists();
 const dob = check('household.dob').exists();
 const race = check('household.race').exists();
 const gender = check('household.gender').exists();
-const email = check('household.email').exists();
+// const email = check('household.email').exists();
 const last4ssn = check('household.last4ssn').exists();
 const preferredContact = check('household.preferred_contact_method').exists();
 
@@ -48,7 +48,6 @@ module.exports = [
   dob,
   race,
   gender,
-  email,
   last4ssn,
   preferredContact,
   addressLine1,

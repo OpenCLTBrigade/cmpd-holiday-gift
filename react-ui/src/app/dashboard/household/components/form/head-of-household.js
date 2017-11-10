@@ -74,7 +74,6 @@ const HeadOfHousehold = () => {
                                     id="email"
                                     name="household.email"
                                     type="email"
-                                    validator={requiredValidator}
                                 />
                             </Col>
                             <Col md={4} xs={12}>
