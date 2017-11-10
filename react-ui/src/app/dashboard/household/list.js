@@ -6,39 +6,41 @@ import { TableHeaderColumn } from 'react-bootstrap-table';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { getHouseholdList } from 'api/household';
+import { getHouseholdList, deleteNomination } from 'api/household';
 
 import type { HouseholdType } from 'api/household';
 
 
-const TD_STYLE_LARGE = { 
+const TD_STYLE_LARGE = {
   'min-width': '175px',
   'width': '175px'
- };
+};
 
- const TD_STYLE = { 
+const TD_STYLE = {
   'min-width': '150px',
   'width': '150px'
- };
+};
 
- const TD_STYLE_SMALL = { 
+const TD_STYLE_SMALL = {
   'min-width': '75px',
   'width': '75px'
- };
- const TD_STYLE_XSMALL = { 
+};
+const TD_STYLE_XSMALL = {
   'min-width': '50px',
   'width': '50px'
- };
+};
 
- const StyledButton = styled.button`
+const StyledButton = styled.button`
   margin-right: 5px;
  `;
 
 export default class List extends React.Component<{}> {
-  
+
   constructor(props) {
     super(props);
     this.currentPage = 1;
+
+    this.refetch.bind(this)
   }
 
   uploadedFormFormatter(cell: any, row: HouseholdType): React.Node {
@@ -59,9 +61,18 @@ export default class List extends React.Component<{}> {
         <Link to={`/dashboard/household/edit/${row.id}`}>
           <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
         </Link>
-        {/* <StyledButton className="btn btn-sm btn-danger">Delete</StyledButton> */}
+        <StyledButton className="btn btn-sm btn-danger" onClick={() => this.handleDelete(row.id)}>Delete</StyledButton>
       </div>
     );
+  }
+
+  handleDelete(id) {
+    deleteNomination(id).then(() => this.refetch());
+  }
+
+  refetch() {
+    const { page, searchText } = this.state;
+    this.table.fetchData(page, searchText);
   }
 
   nominatorCellFormatter(cell, row) {
@@ -112,7 +123,7 @@ export default class List extends React.Component<{}> {
     }
 
     return (
-      <DataTable search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name" ref={(table) => {
+      <DataTable onFetch={(page, searchText) => this.setState(() => ({ page, searchText }))} search={true} fetch={this.fetch.bind(this)} searchPlaceholder="Search by last name" ref={(table) => {
         this.table = table;
       }}>
         <TableHeaderColumn dataField="id" hidden isKey>
@@ -136,7 +147,7 @@ export default class List extends React.Component<{}> {
             <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">Submitted</acronym>
           </TableHeaderColumn>
         }
-        <TableHeaderColumn tdStyle={TD_STYLE_LARGE} thStyle={TD_STYLE_LARGE} dataField="id" dataFormat={this.actionCellFormatter}>
+        <TableHeaderColumn tdStyle={TD_STYLE_LARGE} thStyle={TD_STYLE_LARGE} dataField="id" dataFormat={this.actionCellFormatter.bind(this)}>
           Actions
         </TableHeaderColumn>
         {user && user.role === 'admin' &&
