@@ -1295,6 +1295,20 @@ const cmsSchools = [
     'city': 'Charlotte',
     'state': 'NC',
     'zip': 28205
+  },
+  {
+    'name': 'Other',
+    'street': '',
+    'city': '',
+    'state': '',
+    'zip': ''
+  },
+  {
+    'name': 'No School',
+    'street': '',
+    'city': '',
+    'state': '',
+    'zip': ''
   }
 ];
 
