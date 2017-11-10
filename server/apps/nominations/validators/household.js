@@ -15,8 +15,8 @@ const addressLine1 = check('address.street').exists();
 const city = check('address.city').exists();
 const state = check('address.state').exists();
 const zip = check('address.zip').exists();
-const division = check('address.cmpd_division').exists();
-const responseArea = check('address.cmpd_response_area').exists();
+// const division = check('address.cmpd_division').exists();
+// const responseArea = check('address.cmpd_response_area').exists();
 const deliveryAddressType = check('address.type').exists();
 
 const number = check('phoneNumbers.*.number').exists();
@@ -55,8 +55,6 @@ module.exports = [
   city,
   state,
   zip,
-  division,
-  responseArea,
   deliveryAddressType,
   number,
   type,
