@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { map } from 'rambda';
+import { map } from 'ramda';
 import { Grid, Row, Col, ListGroup, ListGroupItem, ButtonToolbar, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
