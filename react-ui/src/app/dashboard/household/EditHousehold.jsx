@@ -37,6 +37,8 @@ const updateData = (oldData, newData) => {
   };
 };
 
+const getId = (state) => state.id || (state.data && state.data.household && state.data.household.id);
+
 export default class NewHousehold extends React.Component<
     {},
     {
@@ -113,7 +115,7 @@ export default class NewHousehold extends React.Component<
   }
 
   async onFileChange(file) {
-    const { id = undefined } = this.state;
+    const id = getId(this.state);
 
     if (id) {
       const saved = await uploadAttachment({ id, file });
@@ -237,7 +239,8 @@ export default class NewHousehold extends React.Component<
 
   async onSaveDraft() {
     try {
-      const { id = undefined } = this.state;
+      const id = getId(this.state);
+
       if (id) {
         await updateHousehold(id, this.state.data);
       } else {
