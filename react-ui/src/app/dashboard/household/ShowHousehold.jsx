@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { map } from 'rambda';
-import { Grid, Row, Col, ListGroup, ListGroupItem, ButtonToolbar } from 'react-bootstrap';
+import { Grid, Row, Col, ListGroup, ListGroupItem, ButtonToolbar, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -10,6 +10,18 @@ import ChildDetail from './components/ChildDetail';
 import { getHousehold } from '../../../api/household';
 import { getSchools } from '../../../api/affiliation';
 import withAsync from '../../components/withAsync';
+import { FeedbackModal } from './components/FeedbackModal';
+
+const getStatus = household => {
+  if (!household.reviewed) {
+    return 'Not Reviewed';
+  }
+  if (household.reviewed && household.approved) {
+    return 'Approved';
+  }
+
+  return 'Rejected';
+};
 
 const LabelText = styled.span`font-weight: bold;`;
 const ValueText = styled.span`display: block;`;
@@ -74,8 +86,23 @@ const RowTitle = ({ title }) => (
 );
 
 class ShowHousehold extends React.PureComponent {
-  render() {
+  constructor() {
+    super();
+    this.state = {
+      household: {},
+      schools: []
+    };
+  }
+
+
+  componentWillMount() {
     const { household, schools = [] } = this.props;
+
+    this.setState(() => ({ household, schools }));
+  }
+
+  render() {
+    const { household, schools = [] } = this.state;
 
     if (household === null || schools.length === 0) {
       return null;
@@ -115,6 +142,14 @@ class ShowHousehold extends React.PureComponent {
 
                 {household && household.attachments && <Files files={household.attachments} />}
 
+                <RowTitle title="Review Status" />
+                <Row>
+                    <Col xs={12}>
+                        <ListGroup>
+                            <LineItem label="Status" text={getStatus(household)} />
+                        </ListGroup>
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs={12}>
                         <DoNotPrint>
@@ -122,13 +157,24 @@ class ShowHousehold extends React.PureComponent {
                                 <Link className="btn btn-default" to="/dashboard/household">
                                     Go back
                                 </Link>
-                                <Link className="btn btn-primary" to={`/dashboard/household/edit/${household.id}`}>
+                                <Link className="btn btn-info" to={`/dashboard/household/edit/${household.id}`}>
                                     Edit
                                 </Link>
+                                {!household.reviewed && (
+                                    <Button
+                                        bsStyle="primary"
+                                        onClick={() => this.setState(() => ({ householdInReview: household }))}>
+                                        Review
+                                    </Button>
+                                )}
                             </ButtonToolbar>
                         </DoNotPrint>
                     </Col>
                 </Row>
+                <FeedbackModal
+                    household={this.state.householdInReview}
+                    doClose={({ reviewed, approved } = {}) => this.setState(({ household }) => ({ householdInReview: undefined, household: { ...household, reviewed, approved } }))}
+                />
             </Grid>
     );
   }
