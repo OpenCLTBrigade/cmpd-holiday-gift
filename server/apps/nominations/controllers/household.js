@@ -58,7 +58,7 @@ module.exports = {
 
       logger.info('what', { pullRelated });
 
-      const result = await api.fetchAndParse(db.household, whereClause, pullRelated, { method: ['filteredByUser', req.user] });
+      const result = await api.fetchAndParse(db.household, whereClause, pullRelated, ['active', { method: ['filteredByUser', req.user] }]);
       res.json(result);
 
     } catch (err) {
