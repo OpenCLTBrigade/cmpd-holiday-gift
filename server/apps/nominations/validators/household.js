@@ -7,7 +7,7 @@ const lastName = check('household.name_last').exists();
 const dob = check('household.dob').exists();
 const race = check('household.race').exists();
 const gender = check('household.gender').exists();
-const email = check('household.email').exists();
+// const email = check('household.email').exists();
 const last4ssn = check('household.last4ssn').exists();
 const preferredContact = check('household.preferred_contact_method').exists();
 
@@ -15,8 +15,8 @@ const addressLine1 = check('address.street').exists();
 const city = check('address.city').exists();
 const state = check('address.state').exists();
 const zip = check('address.zip').exists();
-const division = check('address.cmpd_division').exists();
-const responseArea = check('address.cmpd_response_area').exists();
+// const division = check('address.cmpd_division').exists();
+// const responseArea = check('address.cmpd_response_area').exists();
 const deliveryAddressType = check('address.type').exists();
 
 const number = check('phoneNumbers.*.number').exists();
@@ -48,15 +48,12 @@ module.exports = [
   dob,
   race,
   gender,
-  email,
   last4ssn,
   preferredContact,
   addressLine1,
   city,
   state,
   zip,
-  division,
-  responseArea,
   deliveryAddressType,
   number,
   type,
