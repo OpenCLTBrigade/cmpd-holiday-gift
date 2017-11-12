@@ -1,5 +1,5 @@
 // @flow
-import { get, post, put } from 'lib/apiService';
+import { get, post, put, delete_ } from 'lib/apiService';
 import type { DataTableResponse } from 'lib/apiService';
 
 export type HouseholdType = {
@@ -49,4 +49,8 @@ export function reviewHousehold(id, payload: Object<{approved: boolean, reason: 
 
 export function getNominationStatus() {
   return get('nominations', 'me/limit/status');
+}
+
+export function deleteNomination(id) {
+  return delete_('nominations', `households/${id}`);
 }

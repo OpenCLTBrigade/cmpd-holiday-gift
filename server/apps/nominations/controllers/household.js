@@ -250,10 +250,8 @@ module.exports = {
 
     const { id } = req.params;
 
-    logger.info('This is a test of the system', req.body);
-
     return db.sequelize
-            .transaction(async t => {
+            .transaction(async () => {
               // const payload = matchedData(req);
               const payload = { ...req.body };
 
@@ -340,7 +338,7 @@ module.exports = {
 
                 for (const updated of updatedNominations) {
                   logger.info('updating nomination');
-                  logger.info('updated nomination:', updated);
+                  logger.info('updated nomination:', { id: updated.id });
 
                   const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
                   toUpdate.update(updated);
@@ -439,21 +437,28 @@ module.exports = {
 
   async removeHousehold(req, res) {
     const { id } = req.params;
+    const nominator = Object.assign({}, req.user.dataValues);
+    const isAdmin = req.user.role === 'admin';
 
-    console.log(id);
     let household = undefined;
 
     try {
       logger.info('searching for nomination');
+
       household = await db.household.findById(id);
-      console.log(household);
+
       if (!household) {
         throw new Error('Household not found');
       }
 
-      household.deleted = true;
-      household.deleted_at = new Date();
-      household.save().then(() => res.sendStatus(200));
+      if (!isAdmin && household.nominator_id !== nominator.id) {
+        res.sendStatus(403);
+      } else {
+        household.deleted = true;
+        household.deleted_at = new Date();
+        household.save().then(() => res.sendStatus(200));
+      }
+
     } catch (err) {
       logger.error(err);
       res.sendStatus(404);

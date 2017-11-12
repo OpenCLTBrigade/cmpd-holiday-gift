@@ -16,13 +16,7 @@ import {
 import { getAddressInfo } from 'api/cmpd';
 import ErrorModal from './components/ErrorModal';
 import ConfirmModal from './components/ConfirmModal';
-
-const LoadingState = {
-  NotStarted: 0,
-  Loading: 1,
-  Success: 2,
-  Error: 3
-};
+import withAsync from '../../components/withAsync';
 
 const HouseholdStatus = {
   New: 0,
@@ -39,7 +33,7 @@ const updateData = (oldData, newData) => {
 
 const getId = (state) => state.id || (state.data && state.data.household && state.data.household.id);
 
-export default class NewHousehold extends React.Component<
+class NewHousehold extends React.Component<
     {},
     {
         household: {},
@@ -62,7 +56,6 @@ export default class NewHousehold extends React.Component<
         phoneNumbers: [],
         files: []
       },
-      loadingState: LoadingState.NotStarted,
       status: HouseholdStatus.New,
       errorMessage: ''
     }
@@ -75,7 +68,6 @@ export default class NewHousehold extends React.Component<
 
   addPhoneNumber() {
     this.setState(() => {
-      console.log(this);
             //TODO: Should really clean this up by using reselect
       const phoneNumbers = this.state.data.phoneNumbers.concat({});
       const data = updateData(this.state.data, { phoneNumbers });
@@ -155,71 +147,50 @@ export default class NewHousehold extends React.Component<
     });
   }
 
-  async componentDidMount() {
-    const { id = undefined } = this.props.match && this.props.match.params;
-    this.fetchHousehold(id);
+  componentDidMount() {
+    const { household, schools } = this.props;
 
-    try {
-      const { items: schools } = await getSchools();
+    this.setState(() => ({ schools }));
 
-      this.setState(() => ({ schools }));
-    } catch (error) {
-      console.log(error);
+    if (household) {
+
+      const {
+        id,
+                  children: nominations = [],
+                  phoneNumbers = [],
+                  address = {},
+                  attachments: files = []
+              } = household;
+
+      const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
+
+      const newState = {
+        data: {
+          household,
+          nominations,
+          phoneNumbers,
+          address,
+          id,
+          files
+        },
+        status
+      };
+
+      this.setState(() => newState);
+    } else {
+
+      const { status } = this.props;
+      this.reset();
+      this.setState(() => ({ disabled: status.count >= status.limit }));
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { id: oldId } = prevProps.match && prevProps.match.params;
-    const { id: newId } = this.props.match && this.props.match.params;
-
-    if (newId !== oldId) {
-      this.fetchHousehold(newId);
-    }
-  }
-
-  async fetchHousehold(id) {
-    try {
-      if (id) {
-        this.setState(() => ({ loadingState: LoadingState.Loading }));
-
-        const household = await getHousehold(id);
-        const {
-                    children: nominations = [],
-                    phoneNumbers = [],
-                    address = {},
-                    attachments: files = []
-                } = household;
-
-        const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
-
-        const newState = {
-          data: {
-            household,
-            nominations,
-            phoneNumbers,
-            address,
-            id,
-            files
-          },
-          status
-        };
-
-        this.setState(() => newState);
-        this.setState(() => ({ loadingState: LoadingState.Success }));
-      } else {
-        const status = await getNominationStatus();
-        this.reset();
-        this.setState(() => ({ disabled: status.count >= status.limit }));
-      }
-    } catch (error) {
-      console.log(error);
-      this.setState(() => ({ loadingState: LoadingState.Error }));
-    }
-  }
+  componentWillReceiveProps({ household, schools }) {}
 
   reset() {
     this.setState(() => {
       return {
+        id: undefined,
         data: {
           household: {},
           address: {},
@@ -297,7 +268,6 @@ export default class NewHousehold extends React.Component<
   }
 
   onSavedConfirm = () => {
-    const { history } = this.props;
     this.reset();
     this.setState(() => {
       return { showConfirm: false };
@@ -307,18 +277,6 @@ export default class NewHousehold extends React.Component<
 
   render(): React.Node {
     const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
-
-    if (this.state.loadingState === LoadingState.Loading) {
-      return null;
-    }
-
-    if (this.state.loadingState === LoadingState.Error) {
-      return (
-                <Alert bsStyle="danger">
-                    <strong>Sorry!</strong> There was an error loading this form.
-                </Alert>
-      );
-    }
 
     return (
             <div>
@@ -356,3 +314,18 @@ export default class NewHousehold extends React.Component<
     );
   }
 }
+
+const fetchData = ({ id }) => async () => {
+  let household = {};
+
+  if (id) {
+    household = await getHousehold(id);
+  }
+
+  const { items: schools } = await getSchools();
+  const status = await getNominationStatus();
+
+  return { household, schools, status };
+};
+
+export default withAsync({ async: fetchData })(NewHousehold);
