@@ -58,7 +58,7 @@ module.exports = {
 
       logger.info('what', { pullRelated });
 
-      const result = await api.fetchAndParse(db.household, whereClause, pullRelated, { method: ['filteredByUser', req.user] });
+      const result = await api.fetchAndParse(db.household, whereClause, pullRelated, ['active', { method: ['filteredByUser', req.user] }]);
       res.json(result);
 
     } catch (err) {
@@ -221,6 +221,8 @@ module.exports = {
         throw new Error('Household not found');
       }
 
+      logger.info('saving feedback');
+
       // Message is not stored; it gets emailed
       household.reviewed = true;
       household.approved = approved;
@@ -228,15 +230,21 @@ module.exports = {
 
       await household.save();
 
-      if (approved) {
-        await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.name_last });
-      } else {
-        await sendMail('feedback-declined', { to: household.nominator.email, feedbackText: message, reason, name_last: household.name_last });
+      logger.info('sending feedback email');
+
+      try {
+        if (approved) {
+          await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.name_last });
+        } else {
+          await sendMail('feedback-declined', { to: household.nominator.email, feedbackText: message, reason, name_last: household.name_last });
+        }
+      } catch (error) {
+        logger.error('failed to send submission feedback email');
       }
 
       res.json({ data: true });
     } catch (err) {
-      logger.info('feedback submission failed.', 'approved', approved, 'reason', reason, 'message', message, 'error', err);
+      logger.info('feedback submission failed.', { approved, reason, message, err });
       res.json({ data: false });
     }
   },

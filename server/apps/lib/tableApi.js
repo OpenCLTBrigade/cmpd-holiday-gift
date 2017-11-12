@@ -49,7 +49,7 @@ class TableApi<Row: {}> {
     };
     logger.info('retrieving count', { opts });
 
-    const count = await model.scope('defaultScope', scope).count(opts);
+    const count = await model.scope(scope).count(opts);
 
     if (_include != null) {
       opts['include'] = _include;
@@ -57,7 +57,7 @@ class TableApi<Row: {}> {
 
     logger.info('retrieving count', { opts });
 
-    const rows = await model.scope('defaultScope', scope).findAll(opts);
+    const rows = await model.scope(scope).findAll(opts);
 
     return { rows, count };
   } // Name of model to work with // Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where // Include related models

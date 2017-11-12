@@ -108,8 +108,8 @@ module.exports = Sequelize => ({
       }
     }
   },
-  defaultScope: { where: { deleted: false } },
   scopes: {
+    active: { where: { deleted: false } },
     filteredByUser: function (user) {
       if (user.role !== 'admin') {
         return { where: { nominator_id: user.id } };
