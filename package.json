@@ -90,6 +90,7 @@
     "pino": "^4.7.2",
     "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
     "ramda": "^0.25.0",
+    "react-inline-confirm": "^2.1.1",
     "react-scripts": "^1.0.14",
     "sequelize": "^4.15.0",
     "sequelize-encrypted": "^1.0.0",

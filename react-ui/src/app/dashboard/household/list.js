@@ -4,9 +4,9 @@ import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
 import { Link } from 'react-router-dom';
-
 import styled from 'styled-components';
 import { getHouseholdList, deleteNomination } from 'api/household';
+import RecordActionItems from './RecordActionItems';
 
 import type { HouseholdType } from 'api/household';
 
@@ -30,15 +30,15 @@ const TD_STYLE_XSMALL = {
   'width': '50px'
 };
 
-const StyledButton = styled.button`
-  margin-right: 5px;
- `;
-
 export default class List extends React.Component<{}> {
 
   constructor(props) {
     super(props);
     this.currentPage = 1;
+
+    this.state = {
+      isDeleting: false
+    };
 
     this.refetch.bind(this)
   }
@@ -53,21 +53,16 @@ export default class List extends React.Component<{}> {
   }
 
   actionCellFormatter(cell: any, row: HouseholdType): React.Node {
-    return (
-      <div>
-        <Link to={`/dashboard/household/show/${row.id}`}>
-          <StyledButton className="btn btn-sm btn-primary">Show</StyledButton>
-        </Link>
-        <Link to={`/dashboard/household/edit/${row.id}`}>
-          <StyledButton className="btn btn-sm btn-info">Edit</StyledButton>
-        </Link>
-        <StyledButton className="btn btn-sm btn-danger" onClick={() => this.handleDelete(row.id)}>Delete</StyledButton>
-      </div>
-    );
+    return <RecordActionItems handleDelete={this.handleDelete} householdId={row.id} />
   }
 
-  handleDelete(id) {
-    deleteNomination(id).then(() => this.refetch());
+  handleDelete = (id: number) => {
+    this.setState({ isDeleting: true }, () => {
+      deleteNomination(id).then(() => {
+        this.setState({ isDeleting: false });
+        this.refetch();
+      });
+    });
   }
 
   refetch() {
