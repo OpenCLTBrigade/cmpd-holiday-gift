@@ -19,9 +19,9 @@ export default function ChildDetail({ child, school }) {
   return (
         <Row key={`childRow${child.id}`}>
             <Col xs={12}>
-                <h2>{`${child.name_first} ${child.name_middle} ${child.name_last}`}</h2>
+                <h2>{`${child.name_first} ${child.name_last}`}</h2>
                 <ListGroup>
-                    <LineItem label="Name" text={`${child.name_first} ${child.name_middle} ${child.name_last}`} />
+                    <LineItem label="Name" text={`${child.name_first} ${child.name_last}`} />
                     <LineItem label="Gender" text={child.gender} />
                     <LineItem label="Age" text={age(child.age, child.dob)} />
                     <LineItem label="DOB" text={moment(child.dob).format('LL')} />

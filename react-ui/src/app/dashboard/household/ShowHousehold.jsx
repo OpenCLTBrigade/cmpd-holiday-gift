@@ -118,7 +118,7 @@ class ShowHousehold extends React.PureComponent {
                         <ListGroup>
                             <LineItem
                                 label="Full Name"
-                                text={`${household.name_first} ${household.name_middle} ${household.name_last}`}
+                                text={`${household.name_first} ${household.name_last}`}
                             />
                             <LineItem label="Family #" text={household.id} />
                             <LineItem label="Email" text={household.email} />
