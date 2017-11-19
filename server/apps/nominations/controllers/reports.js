@@ -71,33 +71,44 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
 
   const workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
 
-  let worksheet = workbook.addWorksheet('Heads of Household');
+  let worksheet = workbook.addWorksheet('Household Report');
   worksheet.columns = [
-    { key: 'id', header: 'Family Number', width: 10 },
-    { key: 'name_last', header: 'Last Name', width: 15 },
-    { key: 'name_first', header: 'First Name', width: 15 },
+    { key: 'id', header: 'familyId', width: 10 },
+    { key: 'name_last', header: 'familyHeadFirst', width: 15 },
+    { key: 'name_first', header: 'familyHeadLast', width: 15 },
+    { key: 'approved', header: 'familyApproved', width: 15 },
+    { key: 'blocked', header: 'familyBlocked', width: 15 },
   ];
 
-  const households = await db.household.findAll({ where: { approved: true } });
-  households.forEach(household => worksheet.addRow(household).commit());
+  const households = await db.household.findAll();
+  // const households = await db.household.findAll({ where: { approved: true } });
+  households.forEach(household => {
+    // See GIFT-260
+    household.approved = (household.approved) ? 1 : 0;
+    household.blocked = (household.deleted) ? 1 : 0;
+    worksheet.addRow(household).commit();
+  });
   worksheet.commit();
 
 
-  worksheet = workbook.addWorksheet('Children');
+  worksheet = workbook.addWorksheet('Child Report');
   worksheet.columns = [
-    { key: 'household_id', header: 'Family Number', width: 10 },
-    { key: 'household_name_full', header: 'Head of Household', width: 10 },
-    { key: 'id', header: 'Child Number', width: 10 },
-    { key: 'name_first', header: 'Child First Name', width: 10 },
-    { key: 'age', header: 'Age', width: 10 },
-    { key: 'additional_ideas', header: 'Wish List', width: 10 },
-    { key: 'bike_want', header: 'Bike?', width: 10 },
-    { key: 'bike_style', header: 'Bike Style', width: 10 },
-    { key: 'bike_size', header: 'Bike Size', width: 10 },
-    { key: 'clothes_want', header: 'Clothes?', width: 10 },
-    { key: 'clothes_size_shirt', header: 'Shirt Size', width: 10 },
-    { key: 'clothes_size_pants', header: 'Pants Size', width: 10 },
-    { key: 'show_size', header: 'Shoe Size', width: 10 }
+    { key: 'id', header: 'childId', width: 10 },
+    { key: 'household_id', header: 'familyId', width: 10 },
+    { key: 'name_first', header: 'childFirstName', width: 10 },
+    { key: 'gender', header: 'childGender', width: 10 },
+    { key: 'gender', header: 'childGender', width: 10 },
+    { key: 'age', header: 'childAge', width: 10 },
+    { key: 'bike_want', header: 'wantBike', width: 10 },
+    { key: 'bike_size', header: 'bikeSize', width: 10 },
+    { key: 'bike_style', header: 'bikeStyle', width: 10 },
+    { key: 'clothes_want', header: 'wantClothes', width: 10 },
+    { key: 'clothes_size_shirt', header: 'shirtSize', width: 10 },
+    { key: 'clothes_size_pants', header: 'pantSize', width: 10 },
+    { key: 'shoe_size', header: 'shoeSize', width: 10 },
+    { key: 'favourite_colour', header: 'favoriteColor', width: 10 },
+    { key: 'childNotes', header: 'childNotes', width: 10 },
+    { key: 'additional_ideas', header: 'additionalIdeas', width: 10 }
   ];
 
   const children = await db.child.findAll({
@@ -110,6 +121,7 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
   });
 
   children.forEach(child => {
+    child.childNotes = ''; // Link needs this but we don't support it...
     worksheet.addRow(flatten('household', child.toJSON())).commit();
   });
   worksheet.commit();
