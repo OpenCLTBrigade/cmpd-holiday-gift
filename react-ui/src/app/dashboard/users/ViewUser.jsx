@@ -89,6 +89,18 @@ export default class ViewUser extends React.Component<{
                     <br/>
                   </ListGroupItem>
                   <ListGroupItem>
+                    <strong>Role (Application Permission Level)</strong>
+                    <br/>
+                      { user.role }
+                    <br/>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <strong>Nomination Limit</strong>
+                    <br/>
+                      { user.nomination_limit }
+                    <br/>
+                  </ListGroupItem>
+                  <ListGroupItem>
                     <strong>Phone Number</strong>
                     <br/>
                       { user.phone }
