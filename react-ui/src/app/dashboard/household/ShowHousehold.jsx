@@ -110,6 +110,10 @@ class ShowHousehold extends React.PureComponent {
 
     const { address } = household;
 
+    const { cmpd_division, cmpd_response_area } = address;
+
+    const familyNumber = `${cmpd_division || 'x' }-${cmpd_response_area || 'x' }-${household.id}`;
+
     return (
             <Grid>
                 <RowTitle title="Head of Household" />
@@ -120,7 +124,7 @@ class ShowHousehold extends React.PureComponent {
                                 label="Full Name"
                                 text={`${household.name_first} ${household.name_last}`}
                             />
-                            <LineItem label="Family #" text={household.id} />
+                            <LineItem label="Family #" text={familyNumber} />
                             <LineItem label="Email" text={household.email} />
                             <LineItem label="Gender" text={household.gender} />
                             <LineItem label="Date of Birth" text={moment(household.dob).format('LL')} />
