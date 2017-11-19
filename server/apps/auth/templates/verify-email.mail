@@ -8,3 +8,13 @@ Subject: Please confirm your email address
   </a>
   to confirm your registration.
 </p>
+
+<p>
+  If you are having difficulty opening the link please make sure you are opening it using
+  either the Chrome or FireFox web browser. Try copying the link below and pasting it into the 
+  address bar of either browser.
+</p>
+
+<p>
+{{confirm_email_url}}?id={{user.id}}&confirmation_code={{confirmation_code}}
+</p>
