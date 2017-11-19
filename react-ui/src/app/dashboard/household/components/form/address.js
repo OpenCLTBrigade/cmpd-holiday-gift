@@ -123,10 +123,10 @@ class AddressForm extends React.Component<{onChange?: any}> {
                             </Row>
                             <Row>
                                 <Col md={6} xs={12}>
-                                    <Input label="CMPD Division" name="address.cmpd_division" type="text" disabled/>
+                                    <Input label="CMPD Division" name="address.cmpd_division" type="text" disabled={this.props.user.role !== 'admin'}/>
                                 </Col>
                                 <Col md={6} xs={12}>
-                                    <Input label="CMPD Response Area" name="address.cmpd_response_area" type="text" disabled />
+                                    <Input label="CMPD Response Area" name="address.cmpd_response_area" type="text" disabled={this.props.user.role !== 'admin'} />
                                 </Col>
                             </Row>
                         </Box>

@@ -301,6 +301,7 @@ class NewHousehold extends React.Component<
                     onAddressChange={address => this.onAddressChange('address', address)}
                     status={this.state.status}
                     disabled={this.state.disabled}
+                    user={this.props.user}
                 />
                 <ErrorModal
                     title="Oops - there's an error"
