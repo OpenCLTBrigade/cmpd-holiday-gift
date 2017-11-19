@@ -97,7 +97,6 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
     { key: 'household_id', header: 'familyId', width: 10 },
     { key: 'name_first', header: 'childFirstName', width: 10 },
     { key: 'gender', header: 'childGender', width: 10 },
-    { key: 'gender', header: 'childGender', width: 10 },
     { key: 'age', header: 'childAge', width: 10 },
     { key: 'bike_want', header: 'wantBike', width: 10 },
     { key: 'bike_size', header: 'bikeSize', width: 10 },
@@ -122,7 +121,10 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
 
   children.forEach(child => {
     child.childNotes = ''; // Link needs this but we don't support it...
-    worksheet.addRow(flatten('household', child.toJSON())).commit();
+    const childData = child.toJSON();
+    childData.age = child.age; // Need to append virtual fields
+    childData.gender = child.gender; // For some reason this doesn't get auto-included
+    worksheet.addRow(flatten('household', childData)).commit();
   });
   worksheet.commit();
 
