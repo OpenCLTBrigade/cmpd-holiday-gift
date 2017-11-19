@@ -1297,6 +1297,13 @@ const cmsSchools = [
     'zip': 28205
   },
   {
+    'name': 'Renaissance West STEAM Academy',
+    'street': '3241 New Renaissance Way',
+    'city': 'Charlotte',
+    'state': 'NC',
+    'zip': 28208
+  },
+  {
     'name': 'Other',
     'street': '',
     'city': '',
