@@ -37,7 +37,7 @@ function parseResults({ results, totalSize, fieldWhitelist, page, itemsPerPage, 
 
   const rows = results.rows.slice(offsets.start, offsets.end);
 
-  const lastPage = Math.ceil(results.count / itemsPerPage);
+  const lastPage = Math.ceil(totalSize / itemsPerPage);
 
   const nextPageNumber = calculateNextPage(page, lastPage);
   const previousPageNumber = calculatePreviousPage(page, lastPage);
@@ -61,8 +61,6 @@ async function fetch({ model, include = null, scope = '' }) {
 
   logger.info('retrieving count', { opts });
 
-  const count = await model.scope(scope).count(opts);
-
   if (include != null) {
     opts['include'] = include;
   }
@@ -73,7 +71,7 @@ async function fetch({ model, include = null, scope = '' }) {
 
   logger.info(`returning ${rows.count} results`);
 
-  return { rows, count };
+  return { rows };
 }
 
 const init = ({ model, baseUrl, fieldWhitelist = null }) => ({
