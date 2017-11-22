@@ -12,13 +12,24 @@ type PropType<Row> = {|
   searchPlaceholder: string
 |};
 
+const defaultOptions = {
+  pageStartIndex: 1, // where to start counting the pages
+  paginationSize: 5, // the pagination bar size.
+  prePage: 'Prev', // Previous page button text
+  nextPage: 'Next', // Next page button text
+  firstPage: 'First', // First page button text
+  lastPage: 'Last', // Last page button text
+  paginationShowsTotal: true, // Accept bool or function
+  hideSizePerPage: true,
+  searchDelayTime: 500
+};
+
 export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   state: {|
     items: Row[],
     totalSize: number,
     page: number,
-    sizePerPage: number,
-    defaultPage: number
+    sizePerPage: number
   |};
 
   static defaultProps = {
@@ -27,45 +38,19 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     searchPlaceholder: 'Search'
   };
 
-  defaultOptions = {
-    pageStartIndex: 1, // where to start counting the pages
-    paginationSize: 5, // the pagination bar size.
-    prePage: 'Prev', // Previous page button text
-    nextPage: 'Next', // Next page button text
-    firstPage: 'First', // First page button text
-    lastPage: 'Last', // Last page button text
-    paginationShowsTotal: true, // Accept bool or function
-    hideSizePerPage: true,
-    searchDelayTime: 500
-  };
-
-  options: *;
-
   constructor(props: PropType<Row>) {
     super(props);
 
     // Looking for ?page and ?search
     const qs: Object = querystring.parse();
-    const defaultPage: number = qs.page ? parseInt(qs.page, 10) : 1;
-    const defaultSearch: string = qs.search || '';
+    const page: number = qs.page ? parseInt(qs.page, 10) : 1;
 
     this.state = {
       items: [],
       totalSize: 1,
       sizePerPage: 10,
-      page: defaultPage,
-      defaultPage: defaultPage
+      page
     };
-
-    this.options = {
-      sizePerPage: this.state.sizePerPage, // which size per page you want to locate as default
-      onPageChange: this.handlePageChange,
-      onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
-      page: defaultPage,
-      defaultSearch,
-      ...this.defaultOptions
-    };
-
   }
 
   async componentDidMount() {
@@ -75,14 +60,12 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   async fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
 
     querystring.update({ page, search: searchText });
-
     const { fetch, onFetch } = this.props;
 
     try {
 
       onFetch && onFetch(page, searchText);
       const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
-      this.options.sizePerPage = sizePerPage;
 
       this.setState(() => ({ items: items, totalSize, page, sizePerPage }));
     } catch (error) {
@@ -94,18 +77,31 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
 
   handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
 
-  render(): React.Node {
+  render() {
+    const { items, totalSize, page, sizePerPage } = this.state;
+    const { pagination, search, searchPlaceholder } = this.props;
+
+
+    const options = {
+      sizePerPage, // which size per page you want to locate as default
+      onPageChange: this.handlePageChange,
+      onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
+      page,
+      ...defaultOptions
+    };
+
     return (
       <BootstrapTable
-        data={(this.state.items: Array<any>)}
-        fetchInfo={{ dataTotalSize: this.state.totalSize }}
-        options={this.options}
+        data={items}
+        fetchInfo={{ dataTotalSize: totalSize }}
+        options={options}
+        page={page}
         striped
         hover
         remote
-        pagination={this.props.pagination}
-        search={this.props.search}
-        searchPlaceholder={this.props.searchPlaceholder}
+        pagination={pagination}
+        search={search}
+        searchPlaceholder={searchPlaceholder}
         containerClass='table-responsive'
         tableContainerClass='table-responsive'
       >
