@@ -22,6 +22,7 @@ export default function ChildDetail({ child, school }) {
                 <h2>{`${child.name_first} ${child.name_last}`}</h2>
                 <ListGroup>
                     <LineItem label="Name" text={`${child.name_first} ${child.name_last}`} />
+                    <LineItem label="Child #" text={`${child.id}`} />
                     <LineItem label="Gender" text={child.gender} />
                     <LineItem label="Age" text={age(child.age, child.dob)} />
                     <LineItem label="DOB" text={moment(child.dob).format('LL')} />
