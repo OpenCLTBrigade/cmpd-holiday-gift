@@ -348,7 +348,7 @@ module.exports = {
                   logger.info('updating nomination');
                   logger.info('updated nomination:', { id: updated.id });
 
-                  const toUpdate = nominations.find(nomination => nomination.last4ssn === updated.last4ssn);
+                  const toUpdate = nominations.find(nomination => nomination.id === updated.id);
                   toUpdate.update(updated);
                 }
               } catch (error) {
