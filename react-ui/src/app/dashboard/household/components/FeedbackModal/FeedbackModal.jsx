@@ -58,6 +58,8 @@ class FeedbackModal extends React.Component {
                     <Modal.Title>Review Household</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                  {household.address && (!household.address.cmpd_division || !household.address.cmpd_response_area) &&
+                  <span style={{ fontWeight: 'bold' }}>Warning: Address is missing CMPD Division / Response Area<hr/></span>}
                     <Form
                         data={this.state.data}
                         handleFormSubmit={this.handleFormSubmit}

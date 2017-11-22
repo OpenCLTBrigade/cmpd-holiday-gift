@@ -52,7 +52,7 @@ module.exports = {
         whereClause = { name_last: { $like: `${query.search}%` } };
       }
 
-      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }];
+      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
 
       const pullRelated = [...related, ...attachmentRelation];
 
