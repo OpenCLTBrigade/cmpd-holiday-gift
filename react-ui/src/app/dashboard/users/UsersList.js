@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const PAGE_TITLE = 'Active Users';
 
-const TD_STYLE = { 
+const TD_STYLE = {
   'min-width': '150px',
   'width': '150px'
  };
@@ -26,6 +26,12 @@ export default class UsersList extends React.Component<{}> {
           <button className="btn btn-sm btn-default">Edit</button>
         </Link>
       </div>
+    );
+  }
+
+  countListFormatter(cell: any, row: UserType): React.Node {
+    return (
+      `${row.nomination.length}`
     );
   }
 
@@ -56,6 +62,7 @@ export default class UsersList extends React.Component<{}> {
               <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
                 Actions
               </TableHeaderColumn>
+              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="nomination" dataFormat={this.countListFormatter}>Nominations</TableHeaderColumn>
             </DataTable>
           </Box>
         </Col>

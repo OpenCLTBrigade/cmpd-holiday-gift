@@ -11,7 +11,10 @@ import type { UserRequest, AdminRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
 
 
-const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
+const RELATED_MODELS = [
+  { model: db.affiliation, as: 'affiliation' },
+  { model: db.household, as: 'nomination' }
+];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const criteria = {
@@ -76,6 +79,10 @@ module.exports = {
           {
             model: db.affiliation,
             as: 'affiliation'
+          },
+          {
+            model: db.household,
+            as: 'nomination'
           }
         ]
       });

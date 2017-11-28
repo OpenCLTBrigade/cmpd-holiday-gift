@@ -80,5 +80,6 @@ module.exports = Sequelize => ({
   },
   associate: function (user, db) {
     user.belongsTo(db.affiliation, { foreignKey: 'affiliation_id' });
+    user.hasMany(db.household, { as: 'nomination', foreignKey: 'nominator_id' });
   }
 });

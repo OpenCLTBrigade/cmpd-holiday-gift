@@ -68,6 +68,14 @@ export default class ViewUser extends React.Component<{
       return null;
     }
 
+    const listItems = user.nomination.map((nomination) =>
+      <ListGroupItem>
+        <a href={`/dashboard/household/show/${nomination.id}`}>
+          {`${nomination.name_first} ${nomination.name_last}`}
+        </a>
+      </ListGroupItem>
+    );
+
     return (
       <Grid>
       <Row>
@@ -115,6 +123,13 @@ export default class ViewUser extends React.Component<{
                 </ListGroup>
               </Col>
             </Row>
+          </Box>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <Box title="Nominations">
+            <ListGroup>{ listItems }</ListGroup>
           </Box>
         </Col>
       </Row>
