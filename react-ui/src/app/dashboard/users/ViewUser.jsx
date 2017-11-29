@@ -68,7 +68,11 @@ export default class ViewUser extends React.Component<{
       return null;
     }
 
-    const listItems = user.nomination.map((nomination) =>
+    const nominations = user.nomination.filter((nomination) => {
+      return nomination.deleted === false;
+    });
+
+    const listItems = nominations.map((nomination) =>
       <ListGroupItem>
         <a href={`/dashboard/household/show/${nomination.id}`}>
           {`${nomination.name_first} ${nomination.name_last}`}
