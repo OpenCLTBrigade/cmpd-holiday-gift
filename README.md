@@ -15,7 +15,7 @@ on the dependencies we use.
 * Run `npm install` to install the dependencies.
 * Run `npm run seed-server` to generate sample data.
 
-Then run `npm start-client` to start the front-end in development mode. Access
+Then run `npm run start-client` to start the front-end in development mode. Access
 the application on http://localhost:3000.
 
 In a separate terminal, run `npm run nodemon-server` to start the back
