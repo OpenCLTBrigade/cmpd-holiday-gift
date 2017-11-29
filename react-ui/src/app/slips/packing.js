@@ -38,8 +38,8 @@ const Page = styled.div`
   width: 7.3in;
 `;
 
-export default async () => {
-  const data = await getPackingSlipData();
+export default async (household_id) => {
+  const data = await getPackingSlipData(household_id);
 
   return <Pages>{
     data.households.map(household => {
