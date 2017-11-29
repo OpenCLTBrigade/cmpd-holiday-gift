@@ -103,6 +103,7 @@ class ShowHousehold extends React.PureComponent {
 
   render() {
     const { household, schools = [] } = this.state;
+    const { user } = this.props;
 
     if (household === null || schools.length === 0) {
       return null;
@@ -164,12 +165,17 @@ class ShowHousehold extends React.PureComponent {
                                 <Link className="btn btn-info" to={`/dashboard/household/edit/${household.id}`}>
                                     Edit
                                 </Link>
-                                {!household.reviewed && (
+                                {!household.reviewed &&  user.role === 'admin' &&(
                                     <Button
                                         bsStyle="primary"
                                         onClick={() => this.setState(() => ({ householdInReview: household }))}>
                                         Review
                                     </Button>
+                                )}
+                                {user.role === 'admin' && (
+                                    <Link to={`/slips/packing?household_id=${household.id}`}>
+                                        {' '}<Button bsStyle="primary">Packing Slip</Button>
+                                    </Link>
                                 )}
                             </ButtonToolbar>
                         </DoNotPrint>

@@ -49,6 +49,7 @@ class Routes extends React.Component<{}> {
         <Route path="/auth" component={Auth} />
         { AuthToken.expired() ? null :
           <Route path='/slips/packing' component={slips.packing} /> }
+          <Route path='/slips/bicycle' component={slips.bicycle} /> }
         <Route path='*' component={NotFound} />
       </Switch>
     </Router>;
