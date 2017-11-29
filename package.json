@@ -92,7 +92,7 @@
     "ramda": "^0.25.0",
     "react-inline-confirm": "^2.1.1",
     "react-scripts": "^1.0.14",
-    "sequelize": "^4.15.0",
+    "sequelize": "^4.23.2",
     "sequelize-encrypted": "^1.0.0",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz",
     "styled-components": "^2.1.0"
