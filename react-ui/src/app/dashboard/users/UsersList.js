@@ -62,7 +62,7 @@ export default class UsersList extends React.Component<{}> {
               <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="id" dataFormat={this.actionCellFormatter}>
                 Actions
               </TableHeaderColumn>
-              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="nomination" dataFormat={this.countListFormatter}>Nominations</TableHeaderColumn>
+              {/* <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="nomination" dataFormat={this.countListFormatter}>Nominations</TableHeaderColumn> */}
             </DataTable>
           </Box>
         </Col>
