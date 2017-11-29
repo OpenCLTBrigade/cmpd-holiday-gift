@@ -38,7 +38,7 @@ const Page = styled.div`
   width: 7.3in;
 `;
 
-export default async (household_id) => {
+async function packingSlip (household_id) {
   const data = await getPackingSlipData(household_id);
 
   return <Pages>{
@@ -189,3 +189,91 @@ export default async (household_id) => {
   }
   </Pages>;
 };
+
+async function bicycleSlip(household_id) {
+  let data = await getPackingSlipData(household_id);
+
+  data = data.households.filter((household) => {
+    const children = household.children.filter((child) => {
+      return child.bike_want;
+    });
+    return children.length > 0;
+  });
+
+  return <Pages>{
+    data.map(household => {
+      const { address } = household;
+      
+      let cmpd_division = 'x';
+      let cmpd_response_area = 'x';
+      
+      if (address) {
+        cmpd_division = address.cmpd_division;
+        cmpd_response_area = address.cmpd_response_area;
+      }
+
+      const familyNumber = `${cmpd_division || 'x' }-${cmpd_response_area || 'x' }-${household.id}`;
+
+      return household.children.map((child) => {
+        return (
+        <Page key={`bikeSlip-Child-${child.id}`}>
+          <table style={{ width: '100%' }}><tbody>
+            <tr>
+              <td width="50%">
+                <div style={{ fontWeight: 'bold', fontSize: '2.6em' }}>
+                  {familyNumber}-{child.id}
+                </div>
+                
+              </td>
+              <td width="50%" rowSpan="2">
+                <b>Address</b>
+                { household.address ?
+                  <span>
+                    <br/>{' '}{ household.address.street }
+                    { household.address.street2 ?
+                      <span><br/>{' '}{ household.address.street2 }</span>
+                      : null }
+                    <br/>{' '}{ household.address.city }, {' '}
+                    { household.address.state }, {' '}
+                    { household.address.zip }
+                  </span>
+                : 'Not available' }
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Child (Last, First):</b>
+                {' '}{child.name_last} {child.name_first}
+                <br/>
+                <b>Family (Last, First):</b>
+                {' '}{ household.name_last }, { household.name_first }
+              </td>
+            </tr>
+          </tbody></table>
+          <table width="100%"><tbody>
+            <tr>
+              <td colSpan="6" style={{ textAlign: 'center', background: '#ccc' }}>
+                <b style={{ fontSize: '1.5em' }}>Bike Requested</b>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Size</b></td>
+              <td><b>Style</b></td>
+            </tr>
+            
+            <tr>
+              <td>{child.bike_size}</td>
+              <td>{ child.bike_style }</td>
+            </tr>
+            
+          </tbody></table>
+          {/* Force a page break... by cheating... because rushing */}
+          <br/><br/><br/><br/><br/>
+          <br/><br/><br/><br/><br/>
+        </Page>);
+      });
+    })}
+  </Pages>;
+};
+
+export { packingSlip, bicycleSlip };

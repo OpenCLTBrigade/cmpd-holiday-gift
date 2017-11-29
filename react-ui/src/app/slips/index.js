@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as querystring from '../../lib/queryString';
 
-import packingAsync from './packing';
+import { packingSlip, bicycleSlip } from './packing';
 
 function wrap<T>(asyncSlip: T => Promise<React.Node>): * {
   return class LoadingSlip extends React.Component<T, {content: React.Node}> {
@@ -30,4 +30,5 @@ function wrap<T>(asyncSlip: T => Promise<React.Node>): * {
   };
 }
 
-export const packing = wrap(packingAsync);
+export const packing = wrap(packingSlip);
+export const bicycle = wrap(bicycleSlip);
