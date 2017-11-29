@@ -68,6 +68,14 @@ export default class ViewUser extends React.Component<{
       return null;
     }
 
+    const listItems = user.nomination.map((nomination) =>
+      <ListGroupItem>
+        <a href={`/dashboard/household/show/${nomination.id}`}>
+          {`${nomination.name_first} ${nomination.name_last}`}
+        </a>
+      </ListGroupItem>
+    );
+
     return (
       <Grid>
       <Row>
@@ -118,6 +126,13 @@ export default class ViewUser extends React.Component<{
           </Box>
         </Col>
       </Row>
+      {user.nomination.length > 0 &&<Row>
+        <Col xs={12}>
+          <Box title="Nominations">
+            <ListGroup>{ listItems }</ListGroup>
+          </Box>
+        </Col>
+      </Row>}
       {user.email_verified === true && user.approved === false && <Row>
         <Col xs={12}>
           <Box title='Review pending account'>
