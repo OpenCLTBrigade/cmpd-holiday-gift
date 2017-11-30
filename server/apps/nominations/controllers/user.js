@@ -11,7 +11,10 @@ import type { UserRequest, AdminRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
 
 
-const RELATED_MODELS = [{ model: db.affiliation, as: 'affiliation' }];
+const RELATED_MODELS = [
+  { model: db.affiliation, as: 'affiliation' },
+  { model: db.household, as: 'nomination' }
+];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const criteria = {
@@ -23,25 +26,27 @@ const scope = { FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] })
 
 // TODO: move user endpoints to auth app
 
-type ListRequest = {|
-  ...$Exact<TableRequest>,
-  search?: string
-|};
-
 module.exports = {
   list: async (req: UserRequest<AdminRole>, res: Response) => {
-    const query: ListRequest = (req.query: any);
+    const query = req.query;
     const api = new TableApi(req, query);
     try {
-      const whereClause = criteria.LIVE;
+      let whereClause = undefined;
       if (query.search != null && query.search.length > 0) {
         // TODO: why search only live users?
-        Object.assign(whereClause, { name_last: { $like: `${query.search}%` } });
+        whereClause = {
+          name_last: { $like: `${query.search}%` },
+          ...criteria.LIVE
+        };
       }
       if (query.affiliation_id != null) {
-        Object.assign(whereClause, { affiliation_id: query.affiliation_id });
+        whereClause = {
+          affiliation_id: query.affiliation_id,
+          ...criteria.LIVE
+        };
       }
       const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -76,6 +81,10 @@ module.exports = {
           {
             model: db.affiliation,
             as: 'affiliation'
+          },
+          {
+            model: db.household,
+            as: 'nomination'
           }
         ]
       });
@@ -87,7 +96,7 @@ module.exports = {
     }
 
     const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
-    
+
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
     user.nomination_count = nomination_count;
@@ -176,7 +185,7 @@ module.exports = {
       });
     }
 
-    let newData = {
+    const newData = {
       name_first: user.name_first,
       name_last: user.name_last,
       role: user.role,

@@ -37,7 +37,7 @@ module.exports = {
     const nominator = Object.assign({}, req.user);
     const { id, nomination_limit: limit } = nominator.dataValues;
 
-    const count = await db.household.count({ where: { nominator_id: id } });
+    const count = await db.household.count({ where: { nominator_id: id, deleted: false } });
 
     return res.json({ count, limit });
   },

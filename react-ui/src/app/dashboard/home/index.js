@@ -91,6 +91,9 @@ export default class Home extends React.Component<{}> {
                 <li>
                   <Link to="/slips/packing" target="_blank">All packing slips</Link>
                 </li>
+                <li>
+                  <Link to="/slips/bicycle" target="_blank">All bicycle slips</Link>
+                </li>
               </ul>
             </Box>
           </Col>
