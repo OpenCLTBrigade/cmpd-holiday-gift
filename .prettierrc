@@ -1,4 +1,4 @@
 {
-    "prettier.jsxBracketSameLine": true,
-    "prettier.semi": true
+  "jsxBracketSameLine": true,
+  "semi": true
 }
