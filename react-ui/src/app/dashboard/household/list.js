@@ -3,13 +3,7 @@ import * as React from 'react';
 import DataTable from '../components/dataTable';
 import * as querystring from '../../../lib/queryString';
 
-import {
-  Row,
-  Col,
-  ButtonToolbar,
-  ToggleButtonGroup,
-  ToggleButton
-} from 'react-bootstrap';
+import { Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { TableHeaderColumn } from 'react-bootstrap-table';
 
 import { Link } from 'react-router-dom';
@@ -51,9 +45,7 @@ export default class List extends React.Component<{}> {
   }
 
   uploadedFormFormatter(cell: any, row: HouseholdType): React.Node {
-    return row.attachment_data && row.attachment_data.length > 0 ? (
-      <i className="fa fa-check" />
-    ) : null;
+    return row.attachment_data && row.attachment_data.length > 0 ? <i className="fa fa-check" /> : null;
   }
 
   // Called by householdIndex when FeedbackModal is closed
@@ -62,12 +54,7 @@ export default class List extends React.Component<{}> {
   }
 
   actionCellFormatter(cell: any, row: HouseholdType): React.Node {
-    return (
-      <RecordActionItems
-        handleDelete={this.handleDelete}
-        householdId={row.id}
-      />
-    );
+    return <RecordActionItems handleDelete={this.handleDelete} householdId={row.id} />;
   }
 
   handleDelete = (id: number) => {
@@ -86,7 +73,6 @@ export default class List extends React.Component<{}> {
 
   nominatorCellFormatter(cell, row) {
     if (!row.nominator) {
-
       return null;
     }
     return (
@@ -105,9 +91,7 @@ export default class List extends React.Component<{}> {
     return (
       <div>
         {row.reviewed !== true && (
-          <button
-            className="btn btn-sm btn-default"
-            onClick={() => this.props.openHouseholdReview(row, currentPage)}>
+          <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
             Review
           </button>
         )}
@@ -125,7 +109,6 @@ export default class List extends React.Component<{}> {
     totalSize: number,
     sizePerPage: number
   }> {
-
     this.currentPage = page; // Used for refreshing list when submitting feedback
     const response: Object = await getHouseholdList({ page, search, active });
     return {
@@ -136,7 +119,6 @@ export default class List extends React.Component<{}> {
   }
 
   handleFilter(active = true) {
-
     querystring.update({ ...querystring.parse(), active });
 
     const query = querystring.parse();
@@ -146,8 +128,8 @@ export default class List extends React.Component<{}> {
 
   render(): React.Node {
     const { user } = this.props;
-    const { active } = querystring.parse();
-    const bool = val => (val == 'true');
+    const { active = true } = querystring.parse();
+    const bool = val => String(val).toLowerCase() == 'true';
 
     // TODO: Needs Redux hardcore
     if (!user) {
@@ -156,22 +138,26 @@ export default class List extends React.Component<{}> {
 
     return (
       <div>
-        <Row>
-          <Col lg={3} xs={12}>
-            <ButtonToolbar>
-              <ToggleButtonGroup type="radio" name="options" defaultValue={bool(active) ? 1 : 2}>
-                <ToggleButton value={1} onClick={() => this.handleFilter()}>Active</ToggleButton>
-                <ToggleButton value={2} onClick={() => this.handleFilter(false)}>All</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
-          </Col>
-        </Row>
+        {user.role === 'admin' && (
+          <Row>
+            <Col lg={3} xs={12}>
+              <ButtonToolbar>
+                <ToggleButtonGroup type="radio" name="options" defaultValue={bool(active)}>
+                  <ToggleButton value={true} onClick={() => this.handleFilter()}>
+                    Active
+                  </ToggleButton>
+                  <ToggleButton value={false} onClick={() => this.handleFilter(false)}>
+                    All
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </ButtonToolbar>
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col xs={12}>
             <DataTable
-              onFetch={(page, searchText) =>
-                this.setState(() => ({ page, searchText }))
-              }
+              onFetch={(page, searchText) => this.setState(() => ({ page, searchText }))}
               search={true}
               fetch={this.fetch.bind(this)}
               searchPlaceholder="Search by last name"
@@ -185,18 +171,14 @@ export default class List extends React.Component<{}> {
                 tdStyle={TD_STYLE}
                 thStyle={TD_STYLE}
                 dataField="name_first"
-                dataFormat={(cell, row) =>
-                  `${row.name_first} ${row.name_last}`
-                }>
+                dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
                 Head of Household
               </TableHeaderColumn>
               <TableHeaderColumn
                 tdStyle={TD_STYLE_XSMALL}
                 thStyle={TD_STYLE_XSMALL}
                 dataField="name_first"
-                dataFormat={(cell, row) =>
-                  row.children ? `${row.children.length}` : 0
-                }>
+                dataFormat={(cell, row) => (row.children ? `${row.children.length}` : 0)}>
                 Children
               </TableHeaderColumn>
               {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}
