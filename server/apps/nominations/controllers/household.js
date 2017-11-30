@@ -22,6 +22,8 @@ import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
 
+const bool = val => (val == 'true');
+
 type ListRequest = {
   ...TableRequest,
   search: string
@@ -44,6 +46,8 @@ const householdDefaults = {
   approved: false
 };
 
+const createWhere = ({ search, keys }) => search ? { keys, search } : undefined;
+
 module.exports = {
   list: async (req: UserRequest<>, res: Response): Promise<void> => {
     const query: ListRequest = (req.query: any);
@@ -52,17 +56,7 @@ module.exports = {
     const table = createTable({ model: db.household, baseUrl });
 
     try {
-      let whereClause = undefined;
-
-      if (query.search) {
-        whereClause = {
-          keys: [
-            'name_last',
-            'nominator.name_last'
-          ],
-          search: query.search
-        };
-      }
+      const whereClause = createWhere({ search: query.search, keys: ['name_last', 'nominator.name_last'] });
 
       const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
 
@@ -74,9 +68,41 @@ module.exports = {
         page: query.page,
         where: whereClause,
         include: pullRelated,
-        scope: ['active', { method: ['filteredByUser', req.user] }]
+        scope: bool(query.active) && ['active']
       });
 
+      res.json(result);
+    } catch (err) {
+      logger.error(err);
+      res.json({ error: 'error fetching data' });
+    }
+  },
+  /**
+   * List all households by logged in user
+   */
+  filterByUser: async (req: UserRequest<>, res: Response): Promise<void> => {
+    const query: ListRequest = (req.query: any);
+    const baseUrl = misc.baseUrl(req);
+
+    const table = createTable({ model: db.household, baseUrl });
+
+    try {
+      const whereClause = createWhere({ search: query.search, keys: ['name_last', 'nominator.name_last'] });
+
+      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
+
+      const pullRelated = [...related, ...attachmentRelation];
+      const scope = [bool(query.active) && 'active', { method: ['filteredByUser', req.user] }].filter(row => !!row);
+      logger.info('what', { pullRelated });
+
+      const result = await table.fetch({
+        page: query.page,
+        where: whereClause,
+        include: pullRelated,
+        scope
+      });
+
+      logger.info('returning count', result.totalSize);
       res.json(result);
     } catch (err) {
       logger.error(err);
