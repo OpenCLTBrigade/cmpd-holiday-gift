@@ -13,7 +13,7 @@ import type { TableRequest } from '../../lib/tableApi';
 
 const RELATED_MODELS = [
   { model: db.affiliation, as: 'affiliation' },
-  { model: db.household, as: 'nomination' }
+  { model: db.household, as: 'nomination', where: {'deleted': false}, required: false }
 ];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
