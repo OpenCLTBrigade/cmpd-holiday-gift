@@ -363,7 +363,11 @@ module.exports = {
 
     const nominator = Object.assign({}, req.user.dataValues);
     const { nomination_limit } = nominator;
-    const count = await db.household.count({ where: { nominator_id: nominator.id } });
+    const count = await db.household.count({
+      where: {
+        nominator_id: nominator.id,
+        deleted: false,
+      } });
     logger.info({ nominator });
     if (nomination_limit === count) {
       return res.sendStatus(403);
