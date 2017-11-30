@@ -20,7 +20,16 @@ class Files extends React.PureComponent<any, any> {
                                 <a href={file.url} download>{file.filename}</a>
                             </div>
                         ))}
-
+                    <Row>
+                      <Col xs={12}>
+                        <p>
+                          Save as Draft before uploading form.
+                        </p>
+                        <p class="text-danger">
+                          Reminder: Nominations are not eligible for approval WITHOUT uploaded form.
+                        </p>
+                      </Col>
+                    </Row>
                     {/* Re-used this box in ShowHousehold */}
                     {onChange &&
                         <Row>

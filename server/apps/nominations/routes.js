@@ -47,7 +47,7 @@ router.post('/report/division').use(auth.ensureAdmin).handleAsync(Reports.divisi
 // CMPD Address Info
 router.get('/cmpd/address_info').use(auth.ensureLoggedIn).handleAsync(Cmpd.getAddressInfo);
 
-// Slips
+// Slips - Packing slip handles both the packing slips AND bicycles
 router.get('/slips/packing').use(auth.ensureAdmin).handleAsync(Slips.packing);
 
 router.get('/test').handleAsync(async function (req, res) {
