@@ -44,10 +44,10 @@ async function packingSlip (household_id) {
   return <Pages>{
     data.households.map(household => {
       const { address } = household;
-      
+
       let cmpd_division = 'x';
       let cmpd_response_area = 'x';
-      
+
       if (address) {
         cmpd_division = address.cmpd_division;
         cmpd_response_area = address.cmpd_response_area;
@@ -155,6 +155,7 @@ async function packingSlip (household_id) {
                   { !child.clothes_want ? null : `
                     Shirt size: ${ child.clothes_size_shirt },
                     Pants size: ${ child.clothes_size_pants },
+                    Coat size: ${ child.clothes_size_coat },
                     Shoe size: ${ child.shoe_size }
                   `}
                   { !child.favourite_colour ? null :
@@ -203,10 +204,10 @@ async function bicycleSlip(household_id) {
   return <Pages>{
     data.map(household => {
       const { address } = household;
-      
+
       let cmpd_division = 'x';
       let cmpd_response_area = 'x';
-      
+
       if (address) {
         cmpd_division = address.cmpd_division;
         cmpd_response_area = address.cmpd_response_area;
@@ -223,7 +224,7 @@ async function bicycleSlip(household_id) {
                 <div style={{ fontWeight: 'bold', fontSize: '2.6em' }}>
                   {familyNumber}-{child.id}
                 </div>
-                
+
               </td>
               <td width="50%" rowSpan="2">
                 <b>Address</b>
@@ -260,12 +261,12 @@ async function bicycleSlip(household_id) {
               <td><b>Size</b></td>
               <td><b>Style</b></td>
             </tr>
-            
+
             <tr>
               <td>{child.bike_size}</td>
               <td>{ child.bike_style }</td>
             </tr>
-            
+
           </tbody></table>
           {/* Force a page break... by cheating... because rushing */}
           <br/><br/><br/><br/><br/>
