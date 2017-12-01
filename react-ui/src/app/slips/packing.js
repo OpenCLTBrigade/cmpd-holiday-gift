@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { getPackingSlipData } from 'api/slips';
 import { descFromValue } from 'lib/constants/bike-size';
 
+const moment = require('moment');
+
 const Pages = styled.div`
   @page {
     size: 8.5in 11in;
@@ -44,10 +46,10 @@ async function packingSlip (household_id) {
   return <Pages>{
     data.households.map(household => {
       const { address } = household;
-      
+
       let cmpd_division = 'x';
       let cmpd_response_area = 'x';
-      
+
       if (address) {
         cmpd_division = address.cmpd_division;
         cmpd_response_area = address.cmpd_response_area;
@@ -134,7 +136,7 @@ async function packingSlip (household_id) {
               </td>
             </tr>
             <tr>
-              <td><b>Done</b></td>
+              <td><b>ID</b></td>
               <td><b>Name</b></td>
               <td><b>Sex</b></td>
               <td><b>Age</b></td>
@@ -143,10 +145,11 @@ async function packingSlip (household_id) {
             </tr>
             { household.children.map(child =>
             <tr key={child.id}>
-              <td></td>
+              <td>{ child.id }</td>
               <td>{ child.name_first }</td>
               <td>{ child.gender }</td>
-              <td>{ child.age }</td>
+              {/* //TODO Not sure why Virtual field child.age is not working in model. Copied this logic from Nomination Report view.*/}
+              <td>{ moment().diff(moment(child.dob).format('LL'), 'years') }</td>
               <td>
                 { child.bike_want ? `${descFromValue(child.bike_size)}\n${child.bike_style}` : 'no' }
               </td>
@@ -203,10 +206,10 @@ async function bicycleSlip(household_id) {
   return <Pages>{
     data.map(household => {
       const { address } = household;
-      
+
       let cmpd_division = 'x';
       let cmpd_response_area = 'x';
-      
+
       if (address) {
         cmpd_division = address.cmpd_division;
         cmpd_response_area = address.cmpd_response_area;
@@ -223,7 +226,7 @@ async function bicycleSlip(household_id) {
                 <div style={{ fontWeight: 'bold', fontSize: '2.6em' }}>
                   {familyNumber}-{child.id}
                 </div>
-                
+
               </td>
               <td width="50%" rowSpan="2">
                 <b>Address</b>
@@ -260,12 +263,12 @@ async function bicycleSlip(household_id) {
               <td><b>Size</b></td>
               <td><b>Style</b></td>
             </tr>
-            
+
             <tr>
               <td>{child.bike_size}</td>
               <td>{ child.bike_style }</td>
             </tr>
-            
+
           </tbody></table>
           {/* Force a page break... by cheating... because rushing */}
           <br/><br/><br/><br/><br/>
