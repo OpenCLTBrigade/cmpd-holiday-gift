@@ -51,6 +51,8 @@ export default function ChildDetail({ child, school }) {
                             <br />
                             {child.clothes_want && `Pants Size: ${child.clothes_size_pants}`}
                             <br />
+                            {child.clothes_want && `Coat Size: ${child.clothes_size_coat}`}
+                            <br />
                             {child.clothes_want && `Shoe Size: ${child.shoe_size}`}
                         </ValueText>
                     </ListGroupItem>

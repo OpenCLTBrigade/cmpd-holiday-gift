@@ -158,6 +158,7 @@ async function packingSlip (household_id) {
                   { !child.clothes_want ? null : `
                     Shirt size: ${ child.clothes_size_shirt },
                     Pants size: ${ child.clothes_size_pants },
+                    Coat size: ${ child.clothes_size_coat },
                     Shoe size: ${ child.shoe_size }
                   `}
                   { !child.favourite_colour ? null :

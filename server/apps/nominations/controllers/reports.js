@@ -104,6 +104,7 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
     { key: 'clothes_want', header: 'wantClothes', width: 10 },
     { key: 'clothes_size_shirt', header: 'shirtSize', width: 10 },
     { key: 'clothes_size_pants', header: 'pantSize', width: 10 },
+    { key: 'clothes_size_coat', header: 'coatSize', width: 10 },
     { key: 'shoe_size', header: 'shoeSize', width: 10 },
     { key: 'favourite_colour', header: 'favoriteColor', width: 10 },
     { key: 'childNotes', header: 'childNotes', width: 10 },

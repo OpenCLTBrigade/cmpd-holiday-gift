@@ -22,6 +22,7 @@ module.exports = async db => {
       'clothes_want': faker.random.boolean(),
       'clothes_size_shirt': faker.random.arrayElement(config.clothesSizes),
       'clothes_size_pants': faker.random.arrayElement(config.clothesSizes),
+      'clothes_size_coat': faker.random.arrayElement(config.clothesSizes),
       'shoe_size': '' + faker.random.number({ min: 1, max: 9 }),
       'favourite_colour': faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']),
       'interests': faker.lorem.text(30),

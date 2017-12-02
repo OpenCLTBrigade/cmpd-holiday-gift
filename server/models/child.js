@@ -82,6 +82,10 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       defaultValue: null
     },
+    clothes_size_coat: {
+      type: Sequelize.STRING,
+      defaultValue: null
+    },
     shoe_size: {
       type: Sequelize.STRING,
       defaultValue: null

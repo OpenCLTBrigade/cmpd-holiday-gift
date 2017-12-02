@@ -183,6 +183,12 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                                                     />
                                                 </Col>
                                                 <Col xs={12}>
+                                                    <Input
+                                                        label="Coat size"
+                                                        name={`nominations[${idx}].clothes_size_coat`}
+                                                    />
+                                                </Col>
+                                                <Col xs={12}>
                                                     <Input label="Shoe size" name={`nominations[${idx}].shoe_size`} />
                                                 </Col>
                                             </Row>
