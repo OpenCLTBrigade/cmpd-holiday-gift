@@ -109,6 +109,7 @@ const HeadOfHousehold = () => {
                                     <option value="Pacific Islander">Pacific Islander</option>
                                     {' '}
                                     <option value="White">White</option>
+                                    <option value="White">Not Given</option>
                                     <option value="Other">Other</option>
                                 </Input>
                             </Col>
