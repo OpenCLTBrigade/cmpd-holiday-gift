@@ -67,13 +67,18 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
       onFetch && onFetch(page, searchText);
       const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
 
-      this.setState(() => ({ items: items, totalSize, page, sizePerPage }));
+      this.setState(() => ({ items: items, totalSize, page, sizePerPage, searchText }));
     } catch (error) {
       console.error(error);
     }
   }
 
-  handlePageChange = async (page: number) => await this.fetchData(page);
+  handlePageChange = async (page) => {
+    const qs = querystring.parse();
+    const search = qs.search;
+
+    await this.fetchData(page, search);
+  }
 
   handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
 
