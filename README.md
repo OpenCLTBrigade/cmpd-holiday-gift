@@ -123,6 +123,7 @@ Coding style is enforced by [eslint].
 * Join us on Slack: http://codeforcharlotte.org/slack
 * Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
 * Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+* Work with us in-person at our next MeetUp! https://www.meetup.com/Code-For-Charlotte/
 
 
 [Code for Charlotte]: http://www.codeforcharlotte.org/
