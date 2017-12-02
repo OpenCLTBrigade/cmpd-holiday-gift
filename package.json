@@ -74,6 +74,7 @@
     "font-awesome": "^4.7.0",
     "formidable": "^1.1.1",
     "fs-extra": "^4.0.2",
+    "fuse.js": "^3.2.0",
     "jsonwebtoken": "^7.4.1",
     "jwt-decode": "^2.2.0",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
