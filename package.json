@@ -23,7 +23,7 @@
     "precomit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,json,css,jsx}": ["prettier --write", "git add"]
+    "*.{js,css,jsx}": ["prettier --write", "git add"]
   },
   "cacheDirectories": ["node_modules", "react-ui/node_modules"],
   "engines": {
