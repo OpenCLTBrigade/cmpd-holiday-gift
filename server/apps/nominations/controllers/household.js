@@ -256,6 +256,8 @@ module.exports = {
       }
 
       household.draft = false;
+      household.deleted = true;
+
       household.save().then(() => res.sendStatus(200));
     } catch (err) {
       res.sendStatus(404);
