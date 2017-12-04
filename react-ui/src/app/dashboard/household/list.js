@@ -144,7 +144,7 @@ export default class List extends React.Component<{}> {
               <ButtonToolbar>
                 <ToggleButtonGroup type="radio" name="options" defaultValue={bool(active)}>
                   <ToggleButton value={true} onClick={() => this.handleFilter()}>
-                    Active
+                    Only Active
                   </ToggleButton>
                   <ToggleButton value={false} onClick={() => this.handleFilter(false)}>
                     All
@@ -197,18 +197,15 @@ export default class List extends React.Component<{}> {
                 dataAlign="center">
                 Form
               </TableHeaderColumn>
-              {user &&
-                user.role !== 'admin' && (
-                  <TableHeaderColumn
-                    tdStyle={TD_STYLE_SMALL}
-                    thStyle={TD_STYLE_SMALL}
-                    dataField="draft"
-                    dataFormat={this.submittedCellFormatter}>
-                    <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">
-                      Submitted
-                    </acronym>
-                  </TableHeaderColumn>
-                )}
+              <TableHeaderColumn
+                tdStyle={TD_STYLE_SMALL}
+                thStyle={TD_STYLE_SMALL}
+                dataField="draft"
+                dataFormat={this.submittedCellFormatter}>
+                <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">
+                  Submitted
+                </acronym>
+              </TableHeaderColumn>
               <TableHeaderColumn
                 tdStyle={TD_STYLE_LARGE}
                 thStyle={TD_STYLE_LARGE}
