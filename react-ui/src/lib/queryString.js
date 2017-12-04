@@ -1,6 +1,6 @@
 // @flow
 import * as querystring from 'querystring';
-
+import { isNil, isEmpty, pick } from 'ramda';
 /**
  * @return {Object}
  */
@@ -9,16 +9,13 @@ function parse(): Object {
 }
 
 function update(queryParams: Object) {
-  let newUrl = `${window.location.pathname}?`;
+  const keys = Object.keys(queryParams)
+    .filter(key => !isEmpty(key))
+    .filter(key => !isNil(queryParams[key]) && !isEmpty(queryParams[key]));
 
-  console.log('qs');
-  const keys = Object.keys(queryParams);
+  const url = `${window.location.pathname}?${querystring.stringify(pick(keys, queryParams))}`;
 
-  for (const key: string of keys) {
-    newUrl += `${key}=${queryParams[key]}&`;
-  }
-
-  window.history.replaceState({}, '', newUrl);
+  window.history.replaceState({}, '', url);
 }
 
 export { parse, update };

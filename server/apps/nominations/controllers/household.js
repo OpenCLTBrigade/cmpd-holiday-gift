@@ -22,6 +22,8 @@ import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AnyRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
 
+const bool = val => String(val).toLowerCase() === 'true';
+
 type ListRequest = {
   ...TableRequest,
   search: string
@@ -44,6 +46,8 @@ const householdDefaults = {
   approved: false
 };
 
+const createWhere = ({ search, keys }) => (search ? { keys, search } : undefined);
+
 module.exports = {
   list: async (req: UserRequest<>, res: Response): Promise<void> => {
     const query: ListRequest = (req.query: any);
@@ -52,19 +56,12 @@ module.exports = {
     const table = createTable({ model: db.household, baseUrl });
 
     try {
-      let whereClause = undefined;
+      const whereClause = createWhere({ search: query.search, keys: ['name_last', 'nominator.name_last'] });
 
-      if (query.search) {
-        whereClause = {
-          keys: [
-            'name_last',
-            'nominator.name_last'
-          ],
-          search: query.search
-        };
-      }
-
-      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
+      const attachmentRelation = [
+        { model: db.household_attachment, as: 'attachment_data' },
+        { model: db.household_address, as: 'address' }
+      ];
 
       const pullRelated = [...related, ...attachmentRelation];
 
@@ -74,9 +71,46 @@ module.exports = {
         page: query.page,
         where: whereClause,
         include: pullRelated,
-        scope: ['active', { method: ['filteredByUser', req.user] }]
+        scope: bool(query.active) && ['active']
       });
 
+      res.json(result);
+    } catch (err) {
+      logger.error(err);
+      res.json({ error: 'error fetching data' });
+    }
+  },
+  /**
+   * List all households by logged in user
+   */
+  filterByUser: async (req: UserRequest<>, res: Response): Promise<void> => {
+    const query: ListRequest = (req.query: any);
+    const baseUrl = misc.baseUrl(req);
+
+    const table = createTable({ model: db.household, baseUrl });
+    const { active = true } = query;
+    try {
+      const whereClause = createWhere({ search: query.search, keys: ['name_last', 'nominator.name_last'] });
+
+      const attachmentRelation = [
+        { model: db.household_attachment, as: 'attachment_data' },
+        { model: db.household_address, as: 'address' }
+      ];
+
+      const pullRelated = [...related, ...attachmentRelation];
+      const scope = [bool(active) && 'active', { method: ['filteredByUser', req.user] }].filter(row => !!row);
+      logger.info('what', { pullRelated });
+
+      console.log(scope);
+
+      const result = await table.fetch({
+        page: query.page,
+        where: whereClause,
+        include: pullRelated,
+        scope
+      });
+
+      logger.info('returning count', result.totalSize);
       res.json(result);
     } catch (err) {
       logger.error(err);
@@ -167,13 +201,13 @@ module.exports = {
     form.uploadDir = uploadDir;
 
     try {
-      form.on('file', function (field, file) {
+      form.on('file', function(field, file) {
         files.push({ filename: file.name, path: file.path });
         logger.info('uploading to s3', { filename: file.name });
       });
 
       // log any errors that occur
-      form.on('error', function (err) {
+      form.on('error', function(err) {
         logger.info('An error has occured: \n' + err);
       });
     } catch (err) {
@@ -181,7 +215,7 @@ module.exports = {
     }
 
     // once all the files have been uploaded, send a response to the client
-    form.on('end', async function () {
+    form.on('end', async function() {
       try {
         const fileResults = [];
         for (const file of files) {
@@ -222,6 +256,8 @@ module.exports = {
       }
 
       household.draft = false;
+      household.deleted = true;
+
       household.save().then(() => res.sendStatus(200));
     } catch (err) {
       res.sendStatus(404);
@@ -380,7 +416,7 @@ module.exports = {
           logger.info(error);
         }
       })
-            .then(() => res.sendStatus(200));
+      .then(() => res.sendStatus(200));
   },
 
   createHousehold: async (req: any, res: any): Promise<void> => {

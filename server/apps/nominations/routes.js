@@ -12,7 +12,7 @@ const router: Router<UserRequest<>> = new Router();
 // TODO: require more than ensureLoggedIn for these tasks
 
 // Households
-router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.list);
+router.get('/households').use(auth.ensureLoggedIn).handleAsync(Household.filterByUser);
 router.get('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).handleAsync(Household.getHousehold);
 router.put('/households/:id', (proxy: {id: string})).use(auth.ensureLoggedIn).use(validators).handleAsync(Household.updateHousehold);
 router.post('/households').use(auth.ensureLoggedIn).use(validators).handleAsync(Household.createHousehold);
@@ -22,6 +22,8 @@ router.post('/households/:id/feedback').use(auth.ensureLoggedIn).handleAsync(Hou
 router.post('/households/:id/attachments').use(auth.ensureLoggedIn).handleAsync(Household.createAttachments);
 router.get('/households/:id/attachments').use(auth.ensureLoggedIn).handleAsync(Household.getAttachments);
 router.destroy('/households/:id', (proxy: {id: string})).use(auth.ensureAdmin).handleAsync(Household.removeHousehold);
+
+router.get('/admin/households').use(auth.ensureAdmin).handleAsync(Household.list);
 
 // Users
 router.get('/me').use(auth.ensureLoggedIn).handleAsync(Me.getMe);

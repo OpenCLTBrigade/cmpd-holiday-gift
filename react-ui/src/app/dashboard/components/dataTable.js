@@ -54,18 +54,21 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   }
 
   async componentDidMount() {
-    await this.fetchData();
+    const { page, search, ...rest } = querystring.parse();
+    await this.fetchData(page, search, Object.values(rest));
   }
 
-  async fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
+  async fetchData(page: number = this.state.page, searchText: string = '', ...rest): Promise<void> {
 
-    querystring.update({ page, search: searchText });
+
+    querystring.update({ ...querystring.parse(), page, search: searchText });
     const { fetch, onFetch } = this.props;
 
     try {
 
       onFetch && onFetch(page, searchText);
-      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
+
+      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText, ...rest);
 
       this.setState(() => ({ items: items, totalSize, page, sizePerPage, searchText }));
     } catch (error) {
@@ -75,9 +78,10 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
 
   handlePageChange = async (page) => {
     const qs = querystring.parse();
-    const search = qs.search;
+    const { page: old, search, ...rest } = qs;
 
-    await this.fetchData(page, search);
+
+    await this.fetchData(page, search, Object.values(rest));
   }
 
   handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
@@ -86,12 +90,11 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     const { items, totalSize, page, sizePerPage } = this.state;
     const { pagination, search, searchPlaceholder } = this.props;
 
-
     const options = {
       sizePerPage, // which size per page you want to locate as default
       onPageChange: this.handlePageChange,
       onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
-      page,
+      page: +page,
       ...defaultOptions
     };
 
@@ -100,7 +103,7 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
         data={items}
         fetchInfo={{ dataTotalSize: totalSize }}
         options={options}
-        page={page}
+        page={+page}
         striped
         hover
         remote
