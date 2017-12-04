@@ -42,7 +42,7 @@ const defaultRequestConfig: RequestConfigType = {
  * @param  {Object}   response Request response
  * @param  {Function} next     resolve(data)
  */
-const preProcessResponse = function (response: Object, next) {
+const preProcessResponse = function(response: Object, next) {
   next(response.data);
 };
 
@@ -51,7 +51,7 @@ const preProcessResponse = function (response: Object, next) {
  * @param  {Object}   err
  * @param  {Function} next     reject(error)
  */
-const preProcessError = function (err: Object, next) {
+const preProcessError = function(err: Object, next) {
   next(err);
 };
 
@@ -63,7 +63,7 @@ const preProcessError = function (err: Object, next) {
  * @param  {Object} config Axios configuration object
  * @return {Promise}       Promise with response.data OR error
  */
-const makeRequest = async function (
+const makeRequest = async function(
   method: string,
   app: string,
   path: string,
@@ -75,7 +75,7 @@ const makeRequest = async function (
 
   requestConfig.url = `${app}/${path}`;
   requestConfig.method = method.toLowerCase();
-  
+
   // console.log('authtoken', AuthToken.token);
   // console.log('url', requestConfig.url);
 
@@ -87,7 +87,6 @@ const makeRequest = async function (
     }
     requestConfig.headers.Authorization = authorization;
   }
-
 
   // Set data to the post body or query string
   if (data != null) {
@@ -117,18 +116,38 @@ const makeRequest = async function (
  * one of the actual API libs instead.
  */
 
-export function get(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function get(
+  app: string,
+  path: string,
+  data: ?Object = null,
+  config: RequestConfigType = {}
+): Promise<any> {
   return makeRequest('get', app, path, data, config);
 }
 
-export function post(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function post(
+  app: string,
+  path: string,
+  data: ?Object = null,
+  config: RequestConfigType = {}
+): Promise<any> {
   return makeRequest('post', app, path, data, config);
 }
 
-export function put(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function put(
+  app: string,
+  path: string,
+  data: ?Object = null,
+  config: RequestConfigType = {}
+): Promise<any> {
   return makeRequest('put', app, path, data, config);
 }
 
-export function delete_(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function delete_(
+  app: string,
+  path: string,
+  data: ?Object = null,
+  config: RequestConfigType = {}
+): Promise<any> {
   return makeRequest('delete', app, path, data, config);
 }

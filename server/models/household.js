@@ -97,28 +97,31 @@ module.exports = Sequelize => ({
     },
     name_full: {
       type: Sequelize.VIRTUAL,
-      get: function () {
+      get: function() {
         return `${this.name_first} ${this.name_last}`;
       }
     },
     phone_numbers: {
       type: Sequelize.VIRTUAL,
-      get: function () {
+      get: function() {
         return this.phones && this.phones.map(phone => phone.number).join(', ');
       }
     }
   },
   scopes: {
     active: { where: { deleted: false } },
-    filteredByUser: function (user) {
+    filteredByUser: function(user) {
       if (user.role !== 'admin') {
         return { where: { nominator_id: user.id } };
       }
       return {};
     }
   },
-  associate: function (household, db) {
-    household.hasOne(db.household_address, { as: 'address', foreignKey: 'household_id' });
+  associate: function(household, db) {
+    household.hasOne(db.household_address, {
+      as: 'address',
+      foreignKey: 'household_id'
+    });
     household.hasMany(db.household_phone, { as: 'phones' });
     household.belongsTo(db.user, { as: 'nominator' });
     household.hasMany(db.child, { as: 'children' });

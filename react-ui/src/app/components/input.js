@@ -1,6 +1,11 @@
 // @flow
 import * as React from 'react';
-import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
+import {
+  FormControl,
+  FormGroup,
+  ControlLabel,
+  HelpBlock
+} from 'react-bootstrap';
 
 import { Field } from 'neoform';
 import { FieldValidation } from 'neoform-validation';
@@ -25,8 +30,8 @@ class Input extends React.Component<{
   validationStatus: *,
   validationMessage: *,
   children: React.Node,
-  inputRef: (HTMLInputElement) => mixed,
-  onBlur: (FocusEvent) => mixed
+  inputRef: HTMLInputElement => mixed,
+  onBlur: FocusEvent => mixed
 }> {
   static defaultProps = { value: '' };
 
@@ -35,37 +40,45 @@ class Input extends React.Component<{
   constructor(props) {
     super(props);
     const {
-      label, controlId, value, onChange, validate, validationStatus,
-      validationMessage, children, inputRef, onBlur, ...rest
+      label,
+      controlId,
+      value,
+      onChange,
+      validate,
+      validationStatus,
+      validationMessage,
+      children,
+      inputRef,
+      onBlur,
+      ...rest
     } = this.props;
     this.otherProps = rest;
   }
 
   render(): React.Node {
-    return <FormGroup controlId={this.props.controlId}
-                      validationState={getValidationState(this.props.validationStatus)}>
-      <ControlLabel>
-        {this.props.label}
-      </ControlLabel>
-      <FormControl
-        value={this.props.value}
-        onBlur={(ev) => {
-          if (this.props.onBlur != null) {
-            this.props.onBlur(ev);
-          }
-          return this.props.validate(ev);
-        }}
-        onChange={e => this.props.onChange(e.target.value)}
-        inputRef={this.props.inputRef}
-        {...this.otherProps}
-      >
-        {this.props.children}
-      </FormControl>
-      {this.props.validationStatus === false &&
-        <HelpBlock>
-          {this.props.validationMessage}
-        </HelpBlock>}
-    </FormGroup>;
+    return (
+      <FormGroup
+        controlId={this.props.controlId}
+        validationState={getValidationState(this.props.validationStatus)}>
+        <ControlLabel>{this.props.label}</ControlLabel>
+        <FormControl
+          value={this.props.value}
+          onBlur={ev => {
+            if (this.props.onBlur != null) {
+              this.props.onBlur(ev);
+            }
+            return this.props.validate(ev);
+          }}
+          onChange={e => this.props.onChange(e.target.value)}
+          inputRef={this.props.inputRef}
+          {...this.otherProps}>
+          {this.props.children}
+        </FormControl>
+        {this.props.validationStatus === false && (
+          <HelpBlock>{this.props.validationMessage}</HelpBlock>
+        )}
+      </FormGroup>
+    );
   }
 }
 

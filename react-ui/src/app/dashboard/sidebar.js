@@ -49,8 +49,8 @@ export default class Sidebar extends React.Component<{}> {
     // TODO: Finish this
     // const navItems = this.menu.map(item => )
     const { user } = this.props;
-    
-    if (!user) { 
+
+    if (!user) {
       return null;
     }
     console.log('user', user);
@@ -89,7 +89,8 @@ export default class Sidebar extends React.Component<{}> {
               <ul className="treeview-menu">
                 <li className="">
                   <Link to="/dashboard/household/create">
-                    <i className="fa fa-circle-o fa-fw" /> Nominate new Household
+                    <i className="fa fa-circle-o fa-fw" /> Nominate new
+                    Household
                   </Link>
                 </li>
                 <li className="">
@@ -100,34 +101,37 @@ export default class Sidebar extends React.Component<{}> {
               </ul>
             </li>
 
-            {isAdmin && <li className="treeview">
-              <a onClick={this.toggleMenu}>
-                <i className="fa fa-users fa-fw" /> Users
-                <i className="fa fa-angle-left pull-right" />{' '}
-              </a>
-              <ul className="treeview-menu">
-                <li className="">
-                  <Link to="/dashboard/user/create">
-                    <i className="fa fa-circle-o fa-fw" /> Add a User
-                  </Link>
-                </li>
-                <li className="">
-                  <Link to="/dashboard/user">
-                    <i className="fa fa-circle-o fa-fw" /> Active Users
-                  </Link>
-                </li>
-                <li className="">
-                  <Link to="/dashboard/user/pending">
-                    <i className="fa fa-circle-o fa-fw" /> Pending Registrations
-                  </Link>
-                </li>
-                <li className="">
-                  <Link to="/dashboard/affiliation">
-                    <i className="fa fa-circle-o fa-fw" /> List Affiliations
-                  </Link>
-                </li>
-              </ul>
-            </li>}
+            {isAdmin && (
+              <li className="treeview">
+                <a onClick={this.toggleMenu}>
+                  <i className="fa fa-users fa-fw" /> Users
+                  <i className="fa fa-angle-left pull-right" />{' '}
+                </a>
+                <ul className="treeview-menu">
+                  <li className="">
+                    <Link to="/dashboard/user/create">
+                      <i className="fa fa-circle-o fa-fw" /> Add a User
+                    </Link>
+                  </li>
+                  <li className="">
+                    <Link to="/dashboard/user">
+                      <i className="fa fa-circle-o fa-fw" /> Active Users
+                    </Link>
+                  </li>
+                  <li className="">
+                    <Link to="/dashboard/user/pending">
+                      <i className="fa fa-circle-o fa-fw" /> Pending
+                      Registrations
+                    </Link>
+                  </li>
+                  <li className="">
+                    <Link to="/dashboard/affiliation">
+                      <i className="fa fa-circle-o fa-fw" /> List Affiliations
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
         </section>
       </aside>

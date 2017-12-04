@@ -24,8 +24,10 @@ module.exports = {
       user = null;
     }
 
-    const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
-    
+    const nomination_count = await db.household.count({
+      where: { nominator_id: user.id }
+    });
+
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
     user.nomination_count = nomination_count;
@@ -37,8 +39,10 @@ module.exports = {
     const nominator = Object.assign({}, req.user);
     const { id, nomination_limit: limit } = nominator.dataValues;
 
-    const count = await db.household.count({ where: { nominator_id: id, deleted: false } });
+    const count = await db.household.count({
+      where: { nominator_id: id, deleted: false }
+    });
 
     return res.json({ count, limit });
-  },
+  }
 };

@@ -42,9 +42,9 @@ module.exports = Sequelize => ({
     cmpd_response_area: {
       type: Sequelize.STRING,
       defaultValue: null
-    },
+    }
   },
-  associate: function (address, db) {
+  associate: function(address, db) {
     address.belongsTo(db.household);
   }
 });

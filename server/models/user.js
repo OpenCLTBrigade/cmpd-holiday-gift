@@ -41,17 +41,17 @@ module.exports = Sequelize => ({
     active: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: false
     },
     nomination_limit: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      defaultValue: 5,
+      defaultValue: 5
     },
     confirmation_email: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: false
     },
     confirmation_code: {
       type: Sequelize.STRING,
@@ -61,16 +61,16 @@ module.exports = Sequelize => ({
     email_verified: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: false
     },
     approved: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
-    },
+      defaultValue: false
+    }
   },
   scopes: {
-    filteredByUser: function (user) {
+    filteredByUser: function(user) {
       if (user.role !== 'admin') {
         // Pro-tip: If your where clause competes with the scope, the where-clause wins
         return { where: { id: user.id } };
@@ -78,8 +78,11 @@ module.exports = Sequelize => ({
       return {};
     }
   },
-  associate: function (user, db) {
+  associate: function(user, db) {
     user.belongsTo(db.affiliation, { foreignKey: 'affiliation_id' });
-    user.hasMany(db.household, { as: 'nomination', foreignKey: 'nominator_id' });
+    user.hasMany(db.household, {
+      as: 'nomination',
+      foreignKey: 'nominator_id'
+    });
   }
 });
