@@ -10,15 +10,18 @@ const path = require('path');
 // TODO: emails sent should be standardized and mention the project name
 
 interface Transporter {
-  sendMail({
-    from: string,
-    to: string,
-    subject: string,
-    html: string
-  }, (any, any) => mixed): Promise<mixed>
+  sendMail(
+    {
+      from: string,
+      to: string,
+      subject: string,
+      html: string
+    },
+    (any, any) => mixed
+  ): Promise<mixed>;
 }
 
-function testTransporter(cb: {email: string} => void): Transporter {
+function testTransporter(cb: ({ email: string }) => void): Transporter {
   return nodemailer.createTransport({
     name: 'print',
     version: '1.0.0',
@@ -60,12 +63,16 @@ if (config.email.ses) {
   });
 }
 
-async function loadTemplate(dir: string, name: string): Promise<Object => {subject: string, contents: string}> {
+async function loadTemplate(
+  dir: string,
+  name: string
+): Promise<(Object) => { subject: string, contents: string }> {
   const data: string = await new Promise((ok, fail) => {
     fs.readFile(
       path.join(dir, `${name}.mail`),
       'utf8',
-      (err, data) => err ? fail(err) : ok(data));
+      (err, data) => (err ? fail(err) : ok(data))
+    );
   });
   const [headers, ...contentsArray] = data.split('\n\n');
   const contents = contentsArray.join('\n\n');
@@ -92,12 +99,17 @@ function mailer(
       cache[templateName] = await loadTemplate(templatesPath, templateName);
     }
     const message = cache[templateName](data);
-    await new Promise((ok, fail) => transporter.sendMail({
-      from: data.from || config.email.fromAddress,
-      to: data.to,
-      subject: message.subject,
-      html: message.contents
-    }, (err, res) => err ? fail(err) : ok(res)));
+    await new Promise((ok, fail) =>
+      transporter.sendMail(
+        {
+          from: data.from || config.email.fromAddress,
+          to: data.to,
+          subject: message.subject,
+          html: message.contents
+        },
+        (err, res) => (err ? fail(err) : ok(res))
+      )
+    );
   };
 }
 

@@ -1,10 +1,13 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3({ region: process.env.AWS_REGION || 'us-west-2', signatureVersion: 'v4' });
+const s3 = new AWS.S3({
+  region: process.env.AWS_REGION || 'us-west-2',
+  signatureVersion: 'v4'
+});
 
 const logger = require('./logger');
 
-const createMainBucket = async (name) => {
-// Create the parameters for calling createBucket
+const createMainBucket = async name => {
+  // Create the parameters for calling createBucket
   const bucketParams = { Bucket: name };
 
   try {
@@ -17,7 +20,6 @@ const createMainBucket = async (name) => {
     } catch (error) {
       logger.error(error);
       throw error;
-
     }
   }
 };

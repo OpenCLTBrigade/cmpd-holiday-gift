@@ -7,10 +7,13 @@ const config = require('../../config');
 const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 const asyncDo = require('./asyncDo');
 
-export type NullOrError<T={}> = null | { error: string, ...T };
+export type NullOrError<T = {}> = null | { error: string, ...T };
 
 // Step 1
-async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{field?: $Keys<$TODO>}>> {
+async function register(
+  rootUrl: string,
+  userInfo: $TODO
+): Promise<NullOrError<{ field?: $Keys<$TODO> }>> {
   const user = await db.user.findOne({ where: { email: userInfo.email } });
   if (user) {
     return {
@@ -62,13 +65,20 @@ async function sendVerification(rootUrl: string, user: $TODO): Promise<void> {
 // Step 3
 async function confirmEmail(
   rootUrl: string,
-  { user_id, confirmation_code }: {| user_id: number, confirmation_code: string |}
+  {
+    user_id,
+    confirmation_code
+  }: {| user_id: number, confirmation_code: string |}
 ): Promise<NullOrError<>> {
   const user = await db.user.findById(user_id);
   if (!user) {
     return { error: 'confirmation code does not match' };
   }
-  if (user.confirmation_email && user.confirmation_code !== confirmation_code && !user.email_verified) {
+  if (
+    user.confirmation_email &&
+    user.confirmation_code !== confirmation_code &&
+    !user.email_verified
+  ) {
     return { error: 'confirmation code does not match' };
   } else {
     user.set('email_verified', true);
@@ -82,7 +92,11 @@ async function confirmEmail(
 // Step 4
 async function sendApproval(rootUrl: string, user: $TODO): Promise<void> {
   const url = `${rootUrl}/dashboard/user/pending`;
-  await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
+  await sendMail('admin-approval', {
+    to: config.email.adminAddress,
+    url,
+    user
+  });
 }
 
 // Step 5

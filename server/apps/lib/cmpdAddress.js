@@ -9,17 +9,17 @@ function findFeature(data, lnglat) {
 
 function geometryContains(geo, lnglat) {
   switch (geo['type']) {
-  case 'Polygon':
-    return polygonContains(geo['coordinates'], lnglat);
-  case 'MultiPolygon':
-    for (const poly of geo.coordinates) {
-      if (polygonContains(poly, lnglat)) {
-        return true;
+    case 'Polygon':
+      return polygonContains(geo['coordinates'], lnglat);
+    case 'MultiPolygon':
+      for (const poly of geo.coordinates) {
+        if (polygonContains(poly, lnglat)) {
+          return true;
+        }
       }
-    }
-    return false;
-  default:
-    throw new Error('Unsupported geometry ', geo['type']);
+      return false;
+    default:
+      throw new Error('Unsupported geometry ', geo['type']);
   }
 }
 
@@ -46,8 +46,7 @@ function linearringContains(ring, lnglat) {
     const bx = ring[i + 1][0];
     const by = ring[i + 1][1];
     // See https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html for why this works
-    if ((ay > cy) !== (by > cy) &&
-       cx < (bx - ax) * (cy - ay) / (by - ay) + ax) {
+    if (ay > cy !== by > cy && cx < (bx - ax) * (cy - ay) / (by - ay) + ax) {
       inside = !inside;
     }
   }

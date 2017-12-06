@@ -8,14 +8,14 @@ import requiredValidator from 'lib/validators/required.validator';
 
 declare var places;
 
-class AddressForm extends React.Component<{onChange?: any}> {
-    placesRef: ?HTMLInputElement
+class AddressForm extends React.Component<{ onChange?: any }> {
+  placesRef: ?HTMLInputElement;
   addressRefs: {
-      address2?: ?HTMLInputElement,
-        city?: ?HTMLInputElement,
-        state?: ?HTMLInputElement,
-        zip?: ?HTMLInputElement
-    }
+    address2?: ?HTMLInputElement,
+    city?: ?HTMLInputElement,
+    state?: ?HTMLInputElement,
+    zip?: ?HTMLInputElement
+  };
 
   constructor() {
     super();
@@ -23,23 +23,29 @@ class AddressForm extends React.Component<{onChange?: any}> {
   }
 
   componentDidMount() {
-    const { onChange } = this.props
+    const { onChange } = this.props;
     var placesAutocomplete = places({
-        container: this.placesRef,
-        type: 'address',
-        templates: {
-          value(suggestion) {
-            return suggestion.name;
-          }
+      container: this.placesRef,
+      type: 'address',
+      templates: {
+        value(suggestion) {
+          return suggestion.name;
         }
-      });
+      }
+    });
 
-      placesAutocomplete.on('change', (e) => {
-          console.log('Selected address', e.suggestion);
-          const { name: street, administrative: state, city, postcode: zip, latlng } = e.suggestion;
-        //   onChange({ street, state, city, zip, latlng });
-          onChange({ street, state, city, latlng }); // Removed ZIP because Places is not returning correct value
-      })
+    placesAutocomplete.on('change', e => {
+      console.log('Selected address', e.suggestion);
+      const {
+        name: street,
+        administrative: state,
+        city,
+        postcode: zip,
+        latlng
+      } = e.suggestion;
+      //   onChange({ street, state, city, zip, latlng });
+      onChange({ street, state, city, latlng }); // Removed ZIP because Places is not returning correct value
+    });
   }
 
   render(): React.Node {

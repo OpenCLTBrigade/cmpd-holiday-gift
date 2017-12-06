@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import * as querystring from '../../lib/queryString';
 import { emailConfirmation } from '../../api/confirm-email';
 
-const CenteredContainer = styled.div`text-align:center;`;
+const CenteredContainer = styled.div`
+  text-align: center;
+`;
 
 export default class ConfirmEmail extends React.Component<any, any> {
-
-  constructor(props) { 
+  constructor(props) {
     super(props);
     this.state = {
       valid: true,
@@ -17,7 +18,7 @@ export default class ConfirmEmail extends React.Component<any, any> {
       finished: false
     };
   }
-  
+
   componentDidMount() {
     const qs: Object = querystring.parse();
     const id: number = qs.id ? parseInt(qs.id, 10) : null;
@@ -26,12 +27,14 @@ export default class ConfirmEmail extends React.Component<any, any> {
     if (id === null || confirmation_code === null) {
       this.setState({ valid: false, loading: false });
     } else {
-      emailConfirmation(id, confirmation_code).then(response => {
-        this.setState({ loading: false, finished: true });
-      }).catch(err => {
-        console.log(err);
-        this.setState({ loading: false });
-      });
+      emailConfirmation(id, confirmation_code)
+        .then(response => {
+          this.setState({ loading: false, finished: true });
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ loading: false });
+        });
     }
   }
 
@@ -39,29 +42,27 @@ export default class ConfirmEmail extends React.Component<any, any> {
     const { valid, loading, finished } = this.state;
     return (
       <CenteredContainer>
-        {!valid &&
+        {!valid && (
           <h3>
-            Invalid entry point. <a href="/">Click here to go back to the log in screen.</a>
+            Invalid entry point.{' '}
+            <a href="/">Click here to go back to the log in screen.</a>
           </h3>
-        }
-        {valid && loading &&
-          <h3>
-            Working...
-          </h3>
-        }
-        {valid && finished &&
-          <h3>
-            Thanks for confirming your email.<br/>
-            You will be notified when an administrator has approved your account.
-          </h3>
-        }
-        {valid && !loading && !finished &&
-          <h3>
-            An error occured while confirming your email address.
-          </h3>
-        }
-        </CenteredContainer>
+        )}
+        {valid && loading && <h3>Working...</h3>}
+        {valid &&
+          finished && (
+            <h3>
+              Thanks for confirming your email.<br />
+              You will be notified when an administrator has approved your
+              account.
+            </h3>
+          )}
+        {valid &&
+          !loading &&
+          !finished && (
+            <h3>An error occured while confirming your email address.</h3>
+          )}
+      </CenteredContainer>
     );
   }
-
 }

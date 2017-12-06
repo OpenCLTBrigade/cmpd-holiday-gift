@@ -6,12 +6,12 @@ import HouseholdForm from './components/household-form';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from 'api/affiliation';
 import {
-    createHousehold,
-    submitNomination,
-    getHousehold,
-    uploadAttachment,
-    updateHousehold,
-    getNominationStatus
+  createHousehold,
+  submitNomination,
+  getHousehold,
+  uploadAttachment,
+  updateHousehold,
+  getNominationStatus
 } from 'api/household';
 import { getAddressInfo } from 'api/cmpd';
 import ErrorModal from './components/ErrorModal';
@@ -31,18 +31,19 @@ const updateData = (oldData, newData) => {
   };
 };
 
-const getId = (state) => state.id || (state.data && state.data.household && state.data.household.id);
+const getId = state =>
+  state.id || (state.data && state.data.household && state.data.household.id);
 
 class NewHousehold extends React.Component<
-    {},
-    {
-        household: {},
-        address: {},
-        nominations: Array<{}>,
-        schools: Array<mixed>,
-        phoneNumbers: Array<{}>,
-        errorMessage: ''
-    }
+  {},
+  {
+    household: {},
+    address: {},
+    nominations: Array<{}>,
+    schools: Array<mixed>,
+    phoneNumbers: Array<{}>,
+    errorMessage: ''
+  }
 > {
   constructor() {
     super();
@@ -58,17 +59,17 @@ class NewHousehold extends React.Component<
       },
       status: HouseholdStatus.New,
       errorMessage: ''
-    }
-        ;(this: any).onChange = this.onChange.bind(this)
-        ;(this: any).onSubmit = this.onSubmit.bind(this)
-        ;(this: any).onSaveDraft = this.onSaveDraft.bind(this)
-        ;(this: any).onFileChange = this.onFileChange.bind(this)
-        ;(this: any).onUpdate = this.onUpdate.bind(this);
+    };
+    (this: any).onChange = this.onChange.bind(this);
+    (this: any).onSubmit = this.onSubmit.bind(this);
+    (this: any).onSaveDraft = this.onSaveDraft.bind(this);
+    (this: any).onFileChange = this.onFileChange.bind(this);
+    (this: any).onUpdate = this.onUpdate.bind(this);
   }
 
   addPhoneNumber() {
     this.setState(() => {
-            //TODO: Should really clean this up by using reselect
+      //TODO: Should really clean this up by using reselect
       const phoneNumbers = this.state.data.phoneNumbers.concat({});
       const data = updateData(this.state.data, { phoneNumbers });
 
@@ -124,9 +125,9 @@ class NewHousehold extends React.Component<
   onAddressChange(name: string, value: any) {
     const latlng = { ...value.latlng };
     delete value.latlng;
-        // console.log('latlng', latlng);
-        // console.log('oooooo', value);
-        // TODO: Get CMPD Address Info
+    // console.log('latlng', latlng);
+    // console.log('oooooo', value);
+    // TODO: Get CMPD Address Info
     getAddressInfo(latlng.lat, latlng.lng).then(response => {
       if (!response || response.data === null) {
         console.log('CMPD Division / Address not found');
@@ -153,16 +154,17 @@ class NewHousehold extends React.Component<
     this.setState(() => ({ schools }));
 
     if (household) {
-
       const {
         id,
-                  children: nominations = [],
-                  phoneNumbers = [],
-                  address = {},
-                  attachments: files = []
-              } = household;
+        children: nominations = [],
+        phoneNumbers = [],
+        address = {},
+        attachments: files = []
+      } = household;
 
-      const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
+      const status = household.draft
+        ? HouseholdStatus.Draft
+        : HouseholdStatus.Submitted;
 
       const newState = {
         data: {
@@ -178,7 +180,6 @@ class NewHousehold extends React.Component<
 
       this.setState(() => newState);
     } else {
-
       const { status } = this.props;
       this.reset();
       this.setState(() => ({ disabled: status.count >= status.limit }));
@@ -221,7 +222,10 @@ class NewHousehold extends React.Component<
       }
     } catch (error) {
       console.log(error.response.status);
-      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+      const errorMessage =
+        error.response.status === 403
+          ? 'Nomination limit reached'
+          : 'Something went wrong';
       this.setState(() => ({ show: true, errorMessage }));
       console.error(error);
     }
@@ -231,19 +235,28 @@ class NewHousehold extends React.Component<
     const { history } = this.props;
 
     const { id } = this.state.data.household && this.state.data.household;
-    updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
+    updateHousehold(id, this.state.data).then(() =>
+      history.push('/dashboard/household')
+    );
   }
 
   async onSubmit() {
     const { history } = this.props;
 
-    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
+    const id =
+      this.state.id ||
+      (this.state.data &&
+        this.state.data.household &&
+        this.state.data.household.id);
 
     try {
       await submitNomination({ id });
 
       const redirectToList =
-                this.props.match && this.props.match.params && this.props.match && this.props.match.params.id;
+        this.props.match &&
+        this.props.match.params &&
+        this.props.match &&
+        this.props.match.params.id;
 
       if (redirectToList) {
         history.push('/dashboard/household');
@@ -251,67 +264,83 @@ class NewHousehold extends React.Component<
         this.showConfirmation();
       }
     } catch (e) {
-      this.setState(() => ({ show: true, errorMessage: 'Something went wrong' }));
+      this.setState(() => ({
+        show: true,
+        errorMessage: 'Something went wrong'
+      }));
       console.error(e);
     }
   }
 
-  showConfirmation =() => this.setState(() => ({ showConfirm: true }))
+  showConfirmation = () => this.setState(() => ({ showConfirm: true }));
 
   onSavedReject = () => {
     const { history } = this.props;
-    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
+    const id =
+      this.state.id ||
+      (this.state.data &&
+        this.state.data.household &&
+        this.state.data.household.id);
 
-    this.setState(() => {
-      return { showConfirm: false };
-    }, () => history.push(`show/${id}`));
-  }
+    this.setState(
+      () => {
+        return { showConfirm: false };
+      },
+      () => history.push(`show/${id}`)
+    );
+  };
 
   onSavedConfirm = () => {
     this.reset();
     this.setState(() => {
       return { showConfirm: false };
     });
-
-  }
+  };
 
   render(): React.Node {
-    const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
+    const handleClose = () =>
+      this.setState({ show: false, errorMessage: 'Something went wrong' });
 
     return (
-            <div>
-                {this.state.disabled && (
-                    <Alert bsStyle="warning">
-                        <strong>Sorry!</strong> Your nomination limit has been reached.
-                    </Alert>
-                )}
-                <HouseholdForm
-                    data={this.state.data}
-                    getValue={getValue}
-                    onChange={this.onChange}
-                    onSubmit={this.onSubmit}
-                    onUpdate={this.onUpdate}
-                    onSaveDraft={this.onSaveDraft}
-                    addChild={this.addChild.bind(this)}
-                    removeChild={this.removeChild.bind(this)}
-                    removePhoneNumber={this.removePhoneNumber.bind(this)}
-                    addPhoneNumber={this.addPhoneNumber.bind(this)}
-                    onFileChange={this.onFileChange}
-                    affiliations={this.state.schools}
-                    onAddressChange={address => this.onAddressChange('address', address)}
-                    status={this.state.status}
-                    disabled={this.state.disabled}
-                    user={this.props.user}
-                />
-                <ErrorModal
-                    title="Oops - there's an error"
-                    message={this.state.errorMessage}
-                    show={this.state.show}
-                    handleClose={handleClose}
-                />
+      <div>
+        {this.state.disabled && (
+          <Alert bsStyle="warning">
+            <strong>Sorry!</strong> Your nomination limit has been reached.
+          </Alert>
+        )}
+        <HouseholdForm
+          data={this.state.data}
+          getValue={getValue}
+          onChange={this.onChange}
+          onSubmit={this.onSubmit}
+          onUpdate={this.onUpdate}
+          onSaveDraft={this.onSaveDraft}
+          addChild={this.addChild.bind(this)}
+          removeChild={this.removeChild.bind(this)}
+          removePhoneNumber={this.removePhoneNumber.bind(this)}
+          addPhoneNumber={this.addPhoneNumber.bind(this)}
+          onFileChange={this.onFileChange}
+          affiliations={this.state.schools}
+          onAddressChange={address => this.onAddressChange('address', address)}
+          status={this.state.status}
+          disabled={this.state.disabled}
+          user={this.props.user}
+        />
+        <ErrorModal
+          title="Oops - there's an error"
+          message={this.state.errorMessage}
+          show={this.state.show}
+          handleClose={handleClose}
+        />
 
-                <ConfirmModal show={this.state.showConfirm} rejectText="View nomination" confirmText="Create another" onReject={this.onSavedReject} onConfirm={this.onSavedConfirm} />
-            </div>
+        <ConfirmModal
+          show={this.state.showConfirm}
+          rejectText="View nomination"
+          confirmText="Create another"
+          onReject={this.onSavedReject}
+          onConfirm={this.onSavedConfirm}
+        />
+      </div>
     );
   }
 }

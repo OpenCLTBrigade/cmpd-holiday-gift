@@ -1,7 +1,15 @@
 import * as React from 'react';
 
 import { map } from 'ramda';
-import { Grid, Row, Col, ListGroup, ListGroupItem, ButtonToolbar, Button } from 'react-bootstrap';
+import {
+  Grid,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem,
+  ButtonToolbar,
+  Button
+} from 'react-bootstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -23,30 +31,38 @@ const getStatus = household => {
   return 'Rejected';
 };
 
-const LabelText = styled.span`font-weight: bold;`;
-const ValueText = styled.span`display: block;`;
+const LabelText = styled.span`
+  font-weight: bold;
+`;
+const ValueText = styled.span`
+  display: block;
+`;
 
 const DoNotPrint = styled.div``;
 
 const LineItem = ({ label, text }) => (
-    <ListGroupItem>
-        <LabelText>{label}</LabelText>
-        <ValueText>{text}</ValueText>
-    </ListGroupItem>
+  <ListGroupItem>
+    <LabelText>{label}</LabelText>
+    <ValueText>{text}</ValueText>
+  </ListGroupItem>
 );
 
 const PhoneNumber = phoneNumber => (
-    <LineItem key={phoneNumber.number} label={phoneNumber.type} text={phoneNumber.number} />
+  <LineItem
+    key={phoneNumber.number}
+    label={phoneNumber.type}
+    text={phoneNumber.number}
+  />
 );
 const PhoneNumberList = map(PhoneNumber);
 const PhoneNumbers = ({ phoneNumbers }) => {
   return (
-        <Row>
-            <Col xs={12}>
-                {phoneNumbers && <ListGroup>{PhoneNumberList(phoneNumbers)}</ListGroup>}
-                {!phoneNumbers && <ListGroup>No phone numbers entered!</ListGroup>}
-            </Col>
-        </Row>
+    <Row>
+      <Col xs={12}>
+        {phoneNumbers && <ListGroup>{PhoneNumberList(phoneNumbers)}</ListGroup>}
+        {!phoneNumbers && <ListGroup>No phone numbers entered!</ListGroup>}
+      </Col>
+    </Row>
   );
 };
 
@@ -79,11 +95,11 @@ const Address = ({ address }) => {
 };
 
 const RowTitle = ({ title }) => (
-    <Row>
-        <Col xs={12}>
-            <h1>{title}</h1>
-        </Col>
-    </Row>
+  <Row>
+    <Col xs={12}>
+      <h1>{title}</h1>
+    </Col>
+  </Row>
 );
 
 class ShowHousehold extends React.PureComponent {
@@ -94,7 +110,6 @@ class ShowHousehold extends React.PureComponent {
       schools: []
     };
   }
-
 
   componentWillMount() {
     const { household, schools = [] } = this.props;
@@ -114,79 +129,106 @@ class ShowHousehold extends React.PureComponent {
 
     const { cmpd_division, cmpd_response_area } = address;
 
-    const familyNumber = `${cmpd_division || 'x' }-${cmpd_response_area || 'x' }-${household.id}`;
+    const familyNumber = `${cmpd_division || 'x'}-${cmpd_response_area ||
+      'x'}-${household.id}`;
 
     return (
-            <Grid>
-                <RowTitle title="Head of Household" />
-                <Row>
-                    <Col xs={12}>
-                        <ListGroup>
-                            <LineItem
-                                label="Full Name"
-                                text={`${household.name_first} ${household.name_last}`}
-                            />
-                            <LineItem label="Family #" text={familyNumber} />
-                            <LineItem label="Email" text={household.email} />
-                            <LineItem label="Gender" text={household.gender} />
-                            <LineItem label="Date of Birth" text={moment(household.dob).format('LL')} />
-                            <LineItem label="Last 4 SSN" text={household.last4ssn} />
-                            <LineItem label="Preferred Contact Method" text={household.preferred_contact_method} />
-                        </ListGroup>
-                    </Col>
-                </Row>
-                <RowTitle title="Address" />
-                <Address address={address} />
-                <RowTitle title="Phone Number(s)" />
-                <PhoneNumbers phoneNumbers={household.phoneNumbers} />
-                <RowTitle title="Children" />
-                {household.children &&
-                    household.children.map(child => {
-                      const school = schools.filter(school => school.id === child.school_id)[0];
-                      return <ChildDetail key={`childRow${child.id}`} child={child} school={school} />;
-                    })}
+      <Grid>
+        <RowTitle title="Head of Household" />
+        <Row>
+          <Col xs={12}>
+            <ListGroup>
+              <LineItem
+                label="Full Name"
+                text={`${household.name_first} ${household.name_last}`}
+              />
+              <LineItem label="Family #" text={familyNumber} />
+              <LineItem label="Email" text={household.email} />
+              <LineItem label="Gender" text={household.gender} />
+              <LineItem
+                label="Date of Birth"
+                text={moment(household.dob).format('LL')}
+              />
+              <LineItem label="Last 4 SSN" text={household.last4ssn} />
+              <LineItem
+                label="Preferred Contact Method"
+                text={household.preferred_contact_method}
+              />
+            </ListGroup>
+          </Col>
+        </Row>
+        <RowTitle title="Address" />
+        <Address address={address} />
+        <RowTitle title="Phone Number(s)" />
+        <PhoneNumbers phoneNumbers={household.phoneNumbers} />
+        <RowTitle title="Children" />
+        {household.children &&
+          household.children.map(child => {
+            const school = schools.filter(
+              school => school.id === child.school_id
+            )[0];
+            return (
+              <ChildDetail
+                key={`childRow${child.id}`}
+                child={child}
+                school={school}
+              />
+            );
+          })}
 
-                {household && household.attachments && <Files files={household.attachments} />}
+        {household &&
+          household.attachments && <Files files={household.attachments} />}
 
-                <RowTitle title="Review Status" />
-                <Row>
-                    <Col xs={12}>
-                        <ListGroup>
-                            <LineItem label="Status" text={getStatus(household)} />
-                        </ListGroup>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <DoNotPrint>
-                            <ButtonToolbar>
-                                <Link className="btn btn-default" to="/dashboard/household">
-                                    Go back
-                                </Link>
-                                <Link className="btn btn-info" to={`/dashboard/household/edit/${household.id}`}>
-                                    Edit
-                                </Link>
-                                {!household.reviewed &&  user.role === 'admin' &&(
-                                    <Button
-                                        bsStyle="primary"
-                                        onClick={() => this.setState(() => ({ householdInReview: household }))}>
-                                        Review
-                                    </Button>
-                                )}
-                                {user.role === 'admin' && (
-                                    <Link to={`/slips/packing?household_id=${household.id}`}>
-                                        {' '}<Button bsStyle="primary">Packing Slip</Button>
-                                    </Link>
-                                )}
-                            </ButtonToolbar>
-                        </DoNotPrint>
-                    </Col>
-                </Row>
-                <FeedbackModal
-                    household={this.state.householdInReview}
-                    doClose={({ reviewed, approved } = {}) => this.setState(({ household }) => ({ householdInReview: undefined, household: { ...household, reviewed, approved } }))}
-                />
-            </Grid>
+        <RowTitle title="Review Status" />
+        <Row>
+          <Col xs={12}>
+            <ListGroup>
+              <LineItem label="Status" text={getStatus(household)} />
+            </ListGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <DoNotPrint>
+              <ButtonToolbar>
+                <Link className="btn btn-default" to="/dashboard/household">
+                  Go back
+                </Link>
+                <Link
+                  className="btn btn-info"
+                  to={`/dashboard/household/edit/${household.id}`}>
+                  Edit
+                </Link>
+                {!household.reviewed &&
+                  user.role === 'admin' && (
+                    <Button
+                      bsStyle="primary"
+                      onClick={() =>
+                        this.setState(() => ({ householdInReview: household }))
+                      }>
+                      Review
+                    </Button>
+                  )}
+                {user.role === 'admin' && (
+                  <Link to={`/slips/packing?household_id=${household.id}`}>
+                    {' '}
+                    <Button bsStyle="primary">Packing Slip</Button>
+                  </Link>
+                )}
+              </ButtonToolbar>
+            </DoNotPrint>
+          </Col>
+        </Row>
+        <FeedbackModal
+          household={this.state.householdInReview}
+          doClose={({ reviewed, approved } = {}) =>
+            this.setState(({ household }) => ({
+              householdInReview: undefined,
+              household: { ...household, reviewed, approved }
+            }))
+          }
+        />
+      </Grid>
     );
   }
 }

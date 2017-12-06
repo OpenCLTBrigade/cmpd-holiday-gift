@@ -48,7 +48,7 @@ module.exports = Sequelize => ({
       defaultValue: null
     }
   },
-  associate: function (address, db) {
+  associate: function(address, db) {
     address.belongsTo(db.household);
   }
 });

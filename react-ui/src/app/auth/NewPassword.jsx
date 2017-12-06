@@ -15,14 +15,15 @@ import Label from './components/form-label';
 
 import { resetPassword } from '../../api/recover';
 
-const Icon = styled.i`top: 20px !important;`;
+const Icon = styled.i`
+  top: 20px !important;
+`;
 
 export default class Recover extends React.Component<{
   history: Object
 }> {
   box: ?FormBox;
 
-  
   constructor(props) {
     const qs = querystring.parse();
     super(props);
@@ -42,20 +43,28 @@ export default class Recover extends React.Component<{
         submitText="Recover"
         onSubmit={this.onSubmit.bind(this)}
         headerImageClass="fa fa-lock"
-        ref={box => this.box = box}
+        ref={box => (this.box = box)}
         body={
           <div>
             <FormGroup className="form-group has-feedback">
               <Label>
                 New Password
-                <input className="form-control" name="password" type="password" />
+                <input
+                  className="form-control"
+                  name="password"
+                  type="password"
+                />
               </Label>
               <Icon className="fa fa-key form-control-feedback" />
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Confirm Password
-                <input className="form-control" name="password_confirm" type="password" />
+                <input
+                  className="form-control"
+                  name="password_confirm"
+                  type="password"
+                />
               </Label>
               <Icon className="fa fa-key form-control-feedback" />
             </FormGroup>
@@ -70,7 +79,9 @@ export default class Recover extends React.Component<{
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink className="btn btn-link pull-right" to="/auth/register">
+              <FooterLink
+                className="btn btn-link pull-right"
+                to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -81,7 +92,12 @@ export default class Recover extends React.Component<{
     );
   }
 
-  async onSubmit({ password, password_confirm }: {email: string}): Promise<void> {
+  async onSubmit({
+    password,
+    password_confirm
+  }: {
+    email: string
+  }): Promise<void> {
     try {
       const { id, confirmation_code } = this.state;
 
@@ -108,7 +124,9 @@ export default class Recover extends React.Component<{
         );
       }
     } catch (exc) {
-      (this.box: any).flashErrorMessage('Account recovery failed: unknown error');
+      (this.box: any).flashErrorMessage(
+        'Account recovery failed: unknown error'
+      );
       console.log(exc);
     }
   }

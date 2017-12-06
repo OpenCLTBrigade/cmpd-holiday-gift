@@ -39,7 +39,12 @@ export default class AsyncLifeCycle extends React.Component {
   }
 
   render() {
-    const { renderLoading = defaultRenderLoading, renderError = defaultRenderError, render, ...rest } = this.props;
+    const {
+      renderLoading = defaultRenderLoading,
+      renderError = defaultRenderError,
+      render,
+      ...rest
+    } = this.props;
     const { status, error, data } = this.state;
 
     if (status === Status.Loading) {

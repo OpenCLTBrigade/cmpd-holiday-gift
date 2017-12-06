@@ -32,18 +32,18 @@ class FeedbackModal extends React.Component {
         alert('Could not review household. Please try again later.');
       }
     });
-  }
+  };
 
   handleClose = ({ approved, reason, message, reviewed } = {}) => {
     this.setState(DEFAULT_STATE);
     this.props.doClose({ approved, reason, message, reviewed });
-  }
+  };
 
   handleFormChange = (field, value) => {
     const s = { ...this.state };
     s.data[field] = value;
     this.setState(s);
-  }
+  };
 
   render(): React.Node {
     const { household, handleClose } = this.props;
@@ -53,28 +53,33 @@ class FeedbackModal extends React.Component {
     }
 
     return (
-            <Modal show={household != null}>
-                <Modal.Header>
-                    <Modal.Title>Review Household</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  {household.address && (!household.address.cmpd_division || !household.address.cmpd_response_area) &&
-                  <span style={{ fontWeight: 'bold' }}>Warning: Address is missing CMPD Division / Response Area<hr/></span>}
-                    <Form
-                        data={this.state.data}
-                        handleFormSubmit={this.handleFormSubmit}
-                        handleFormChange={this.handleFormChange}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.handleClose} bsStyle="default">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handleFormSubmit} bsStyle="primary">
-                        Submit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+      <Modal show={household != null}>
+        <Modal.Header>
+          <Modal.Title>Review Household</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {household.address &&
+            (!household.address.cmpd_division ||
+              !household.address.cmpd_response_area) && (
+              <span style={{ fontWeight: 'bold' }}>
+                Warning: Address is missing CMPD Division / Response Area<hr />
+              </span>
+            )}
+          <Form
+            data={this.state.data}
+            handleFormSubmit={this.handleFormSubmit}
+            handleFormChange={this.handleFormChange}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleClose} bsStyle="default">
+            Cancel
+          </Button>
+          <Button onClick={this.handleFormSubmit} bsStyle="primary">
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
