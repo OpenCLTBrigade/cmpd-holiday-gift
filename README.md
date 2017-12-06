@@ -1,26 +1,23 @@
-# CMPD Explorers 2017
+# CMPD Explorers Christmas Project 2017
 
 This application, developed by [Code for Charlotte], helps automate
 the [CMPD Explorers Christmas Project].
 
 # Getting Started
 
-[NodeJS 8.4.0] or above is **required**. We recommend installing `nvm` if you're on a Mac so you can
-easily switch between Node versions on a per-project basis.
+Node 8 is **required**. We recommend at least Node 8.4.0. You should use [nvm](https://github.com/creationix/nvm) to install and use the appripriate version of Node on a per-project basis.
 
 See [Dependencies Documentation](#dependencies-documentation) below for more information
 on the dependencies we use.
 
 * Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
+* Run `nvm use` to ensure you're using the appropriate Node version for the project.
 * Run `npm install` to install the dependencies.
+* Copy `env.example.js` to `env.js`.
+* Run `npm run start-client` to start the front-end in development mode. Access the application at http://localhost:3000. 
+* In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
+saying you need to install sqlite3 manually, run `npm install sqlite3`.
 * Run `npm run seed-server` to generate sample data.
-
-Then run `npm run start-client` to start the front-end in development mode. Access
-the application on http://localhost:3000.
-
-In a separate terminal, run `npm run nodemon-server` to start the back
-end in development mode. The back end will run on port 3001 and the
-development mode front end server will act as a reverse proxy for it.
 
 Read [Front end development notes here](#front-end-development).
 
@@ -28,7 +25,7 @@ Read [Back end development notes here](#back-end-development).
 
 ## Checking out the old codebase
 
-To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`
+To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`. It's recommended to clone a separate copy of the repository for when you need to access the original application to research and port features. 
 
 ## Troubleshooting
 
@@ -52,13 +49,6 @@ Static assets are in `public/`. The react app is in `src/`.
 
 All front-end dependencies should be added using `npm install
 --save-dev`. They will be bundled into `build/` in production mode.
-
-## Front-end configuration
-
-To test features that require Google Maps:
-
-* Acquire an API key from https://developers.google.com/maps/documentation/javascript/get-api-key
-* Add `REACT_APP_GOOGLE_MAPS_API_KEY=your-api-key` to `.env.local`
 
 # Back end development
 
@@ -129,11 +119,12 @@ Back end tests are run using [Jasmine].
 
 Coding style is enforced by [eslint].
 
-# Contact
+# Get Involved
 
-* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
+* Join us on Slack: http://codeforcharlotte.org/slack
 * Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
 * Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+* Work with us in-person at our next MeetUp! https://www.meetup.com/Code-For-Charlotte/
 
 
 [Code for Charlotte]: http://www.codeforcharlotte.org/
@@ -160,4 +151,3 @@ Coding style is enforced by [eslint].
 [NodeJS 7]: https://nodejs.org/en/download/current/
 [Mustache]: https://www.npmjs.com/package/mustache
 [ESLint]: https://eslint.org/docs/user-guide/getting-started
-[flow]: https://flow.org/en/docs/

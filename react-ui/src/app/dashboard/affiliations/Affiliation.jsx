@@ -46,7 +46,14 @@ export default class Affiliation extends React.Component<propsType, stateType> {
 
   render(): React.Node {
     const { affiliation } = this.state;
-    const { phone, address_street, address_street2, address_city, address_state, address_zip } = affiliation;
+    const {
+      phone,
+      address_street,
+      address_street2,
+      address_city,
+      address_state,
+      address_zip
+    } = affiliation;
     return (
       <div>
         <Row>
@@ -58,16 +65,16 @@ export default class Affiliation extends React.Component<propsType, stateType> {
                     <ListGroupItem header="Name">
                       {affiliation.name} ({affiliation.type.toUpperCase()})
                     </ListGroupItem>
-                    {phone &&
+                    {phone && (
                       <ListGroupItem header="Phone Number">
                         {phone}
-                      </ListGroupItem>}
+                      </ListGroupItem>
+                    )}
                     <ListGroupItem header="Address">
                       {address_street}
-                      {address_street2 != null &&
-                        <span>
-                          {address_street2}
-                        </span>}
+                      {address_street2 != null && (
+                        <span>{address_street2}</span>
+                      )}
                       <br />
                       {address_city}, {address_state}, {address_zip}
                     </ListGroupItem>

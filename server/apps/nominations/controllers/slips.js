@@ -7,11 +7,13 @@ import type { UserRequest, AdminRole } from '../../lib/auth';
 
 /**
  * Used for standard packing slips _AND_ the bike slips
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
-async function packing(req: UserRequest<AdminRole>, res: Response): Promise<void> {
-
+async function packing(
+  req: UserRequest<AdminRole>,
+  res: Response
+): Promise<void> {
   const whereClause = { approved: true, deleted: false };
 
   if (req.query && req.query.household_id) {

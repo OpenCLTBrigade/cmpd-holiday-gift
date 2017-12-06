@@ -6,7 +6,12 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -40,19 +45,20 @@ import { AuthToken } from './lib/auth';
 
 class Routes extends React.Component<{}> {
   render(): React.Node {
-    return <Router>
-      <Switch>
-        <Route exact path="/" render={() => (
-          <Redirect to="/dashboard"/>
-        )}/>
-        <Route path="/dashboard" component={Restricted(Dashboard)} />
-        <Route path="/auth" component={Auth} />
-        { AuthToken.expired() ? null :
-          <Route path='/slips/packing' component={slips.packing} /> }
-          <Route path='/slips/bicycle' component={slips.bicycle} /> }
-        <Route path='*' component={NotFound} />
-      </Switch>
-    </Router>;
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+          <Route path="/dashboard" component={Restricted(Dashboard)} />
+          <Route path="/auth" component={Auth} />
+          {AuthToken.expired() ? null : (
+            <Route path="/slips/packing" component={slips.packing} />
+          )}
+          <Route path="/slips/bicycle" component={slips.bicycle} /> }
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    );
   }
 }
 

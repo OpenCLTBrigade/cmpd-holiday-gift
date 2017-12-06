@@ -10,16 +10,18 @@ async function seed() {
   await db.sync();
   let seq = Promise.resolve();
   fs
-        .readdirSync(__dirname)
-        .filter(function (file) {
-          return file.match(/.js$/) && (file !== 'index.js');
-        })
-        .forEach(async function (file) {
-          if (config.verboseSeed) {
-            seq = seq.then(() => console.log(`* Seeding from ${file}`));
-          }
-          seq = seq.then(() => require(path.join(__dirname, file))(db, config.verboseSeed));
-        });
+    .readdirSync(__dirname)
+    .filter(function(file) {
+      return file.match(/.js$/) && file !== 'index.js';
+    })
+    .forEach(async function(file) {
+      if (config.verboseSeed) {
+        seq = seq.then(() => console.log(`* Seeding from ${file}`));
+      }
+      seq = seq.then(() =>
+        require(path.join(__dirname, file))(db, config.verboseSeed)
+      );
+    });
   await seq;
 }
 

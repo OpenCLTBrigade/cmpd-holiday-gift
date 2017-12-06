@@ -8,7 +8,10 @@ const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 // TODO: should there be any restrictions on how often a user can reset their password?
 
 // Step 1
-async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean> {
+async function sendRecoverEmail(
+  rootUrl: string,
+  email: string
+): Promise<boolean> {
   const user = await db.user.findOne({ where: { email: email } });
   if (user == null || user.active === false || user.approved === false) {
     console.log('sendRecoverEmail - User not found');
@@ -30,9 +33,16 @@ async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean
 // Step 2
 // Not presently used. See auth/controllers for more details
 // async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<?{token: string}> {
-async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<boolean> {
+async function verifyConfirmationCode(
+  user_id: number,
+  confirmation_code: string
+): Promise<boolean> {
   const user = await db.user.findById(user_id);
-  if (user == null || user.confirmation_code == null || user.confirmation_code !== confirmation_code) {
+  if (
+    user == null ||
+    user.confirmation_code == null ||
+    user.confirmation_code !== confirmation_code
+  ) {
     return false;
   }
   // Uncomment these when implementing other method
@@ -44,7 +54,11 @@ async function verifyConfirmationCode(user_id: number, confirmation_code: string
 
 // Step 3
 // async function resetPassword(user: $TODO, new_password: string): Promise<void> { // Needs step 2 implemented
-async function resetPassword(id, confirmation_code, new_password: string): Promise<void> {
+async function resetPassword(
+  id,
+  confirmation_code,
+  new_password: string
+): Promise<void> {
   // TODO: invalidate other sessions
   const user = await db.user.findById(id);
   user.set('password', auth.hashPassword(new_password));

@@ -37,6 +37,6 @@ module.exports = Sequelize => ({
     phone: {
       type: Sequelize.STRING,
       defaultValue: null
-    },
+    }
   }
 });

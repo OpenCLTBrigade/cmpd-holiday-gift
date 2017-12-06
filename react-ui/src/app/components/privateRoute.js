@@ -26,9 +26,13 @@ export default class PrivateRoute<Props: {}> extends React.Component<
   render(): React.Node {
     const Ch = this.component;
     const TheComponent =
-      this.state.authenticated === true
-        ? <Ch />
-        : <Redirect to={{ pathname: '/auth/login', state: { from: this.props.location } }} />;
+      this.state.authenticated === true ? (
+        <Ch />
+      ) : (
+        <Redirect
+          to={{ pathname: '/auth/login', state: { from: this.props.location } }}
+        />
+      );
 
     return TheComponent;
   }

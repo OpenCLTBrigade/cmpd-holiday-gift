@@ -25,10 +25,13 @@ export type UserType = {
 
 export type LoggedInUser = UserType & { approved: true, active: true };
 
-export type UserIdRequest = AuthRequest<{id: number}>;
-export type SessionIdRequest = AuthRequest<{session_id: number}>;
+export type UserIdRequest = AuthRequest<{ id: number }>;
+export type SessionIdRequest = AuthRequest<{ session_id: number }>;
 export type AppName = 'nominations';
-export type UserRequest<Role: RoleType = RoleType, Params = {}> = AuthRequest<UserType & { role: Role }, Params>;
+export type UserRequest<Role: RoleType = RoleType, Params = {}> = AuthRequest<
+  UserType & { role: Role },
+  Params
+>;
 
 // TODO: automatically delete expired sessions from database
 
@@ -68,7 +71,7 @@ function authMiddleware(secret: string): $TODO {
 }
 
 async function sessionMiddleware(
-  req: UserIdRequest & SessionIdRequest & {user: null},
+  req: UserIdRequest & SessionIdRequest & { user: null },
   res: Response,
   next: Next
 ): Promise<void> {
@@ -97,7 +100,9 @@ function makeToken(payload: Object, secret: string, expiresIn: string): string {
   return jwt.sign(payload, secret, { expiresIn });
 }
 
-function ensureLoggedIn<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: LoggedInUser}, *] {
+function ensureLoggedIn<Req: AuthRequest<?UserType>>(
+  _: Req
+): [Req & { user: LoggedInUser }, *] {
   return [
     (undefined: any),
     (req: Req, res: Response, next: Next) => {
@@ -111,7 +116,9 @@ function ensureLoggedIn<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: Logg
   ];
 }
 
-function ensureAdmin<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: UserType & {role: 'admin'}}, *] {
+function ensureAdmin<Req: AuthRequest<?UserType>>(
+  _: Req
+): [Req & { user: UserType & { role: 'admin' } }, *] {
   return [
     (undefined: any),
     (req: Req, res: Response, next: Next) => {
@@ -141,7 +148,11 @@ function userCanUseApp(user: UserType, app: AppName): boolean {
 
 async function newAuthSession(user_id: number): Promise<string> {
   const session = await db.session.create({ user_id });
-  return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
+  return makeToken(
+    { session_id: session.id },
+    config.jwtSecrets.auth,
+    config.authTokenLifetime
+  );
 }
 
 module.exports = {
