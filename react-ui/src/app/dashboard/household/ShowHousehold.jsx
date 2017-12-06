@@ -71,6 +71,7 @@ const Address = ({ address }) => {
                     </ListGroupItem>
                     <LineItem label="CMPD Division" text={address.cmpd_division} />
                     <LineItem label="CMPD Response Area" text={address.cmpd_response_area} />
+                    <LineItem label="Note for Delivery" text={address.shipping_note} />
                 </ListGroup>
             </Col>
         </Row>
