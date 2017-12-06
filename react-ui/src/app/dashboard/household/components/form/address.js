@@ -135,7 +135,7 @@ class AddressForm extends React.Component<{onChange?: any}> {
                                         label="Note for Delivery"
                                         id="shippingNote"
                                         name="address.shipping_note"
-                                        type="textarea"
+                                        componentClass="textarea"
                                     />
                                 </Col>
                             </Row>
