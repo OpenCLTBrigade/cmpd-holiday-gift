@@ -176,8 +176,8 @@ export default class Register extends React.Component <{
       error = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
       error = 'Affiliation is required';
-    } else if (phone == null || phone === '') {
-      error = 'Phone number is required';
+    } else if (phone == null || phone === '' || !phone.match(/^\d{10}$/)) {
+      error = 'Phone number is required and must be 10 digits.';
     } else if (email == null || email === '' || !email.match('[a-zA-Z.-]{2,}')) {
       error = 'Email is required, and must be in email address format (text@text.domain)';
     } else if (password == null || password === '') {
