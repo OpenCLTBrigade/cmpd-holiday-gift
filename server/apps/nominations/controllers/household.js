@@ -212,6 +212,12 @@ module.exports = {
     logger.info('submitting nominations');
     const { id } = req.body;
 
+    const count = await db.child.count({ where: { household_id: id } });
+
+    if (count === 0) {
+      return res.sendStatus(403);
+    }
+
     let household = undefined;
 
     try {
