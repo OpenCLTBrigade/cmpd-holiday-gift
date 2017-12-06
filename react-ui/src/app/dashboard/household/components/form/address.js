@@ -129,6 +129,16 @@ class AddressForm extends React.Component<{onChange?: any}> {
                                     <Input label="CMPD Response Area" name="address.cmpd_response_area" type="text" disabled={this.props.user.role !== 'admin'} />
                                 </Col>
                             </Row>
+                            <Row>
+                                <Col md={12}>
+                                    <Input
+                                        label="Note for Delivery"
+                                        id="shippingNote"
+                                        name="address.shipping_note"
+                                        type="textarea"
+                                    />
+                                </Col>
+                            </Row>
                         </Box>
                     </Col>
                 </Row>
