@@ -4,16 +4,22 @@ const db = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const auth = require('../../lib/auth');
 const path = require('path');
-const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
+const sendMail = require('../../lib/mail')(
+  path.join(__dirname, '../mail-templates')
+);
 
 import type { Response } from '../../lib/typed-express';
 import type { UserRequest, AdminRole } from '../../lib/auth';
 import type { TableRequest } from '../../lib/tableApi';
 
-
 const RELATED_MODELS = [
   { model: db.affiliation, as: 'affiliation' },
-  { model: db.household, as: 'nomination', where: {'deleted': false}, required: false }
+  {
+    model: db.household,
+    as: 'nomination',
+    where: { deleted: false },
+    required: false
+  }
 ];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
@@ -22,7 +28,9 @@ const criteria = {
   LIVE: { active: true, approved: true }
 };
 
-const scope = { FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] }) };
+const scope = {
+  FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] })
+};
 
 // TODO: move user endpoints to auth app
 
@@ -45,7 +53,12 @@ module.exports = {
           ...criteria.LIVE
         };
       }
-      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(
+        db.user,
+        whereClause,
+        RELATED_MODELS,
+        scope.FILTERED_BY_USER(req.user)
+      );
 
       res.json(result);
     } catch (err) {
@@ -60,19 +73,32 @@ module.exports = {
       // TODO: Confirm criteria for what makes a pending user
       let whereClause = criteria.PENDING;
       if (query.search != null) {
-        whereClause = Object.assign({}, whereClause, { name_last: { $like: `${query.search}%` } });
+        whereClause = Object.assign({}, whereClause, {
+          name_last: { $like: `${query.search}%` }
+        });
       }
-      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(
+        db.user,
+        whereClause,
+        RELATED_MODELS,
+        scope.FILTERED_BY_USER(req.user)
+      );
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  getUser: async (req: UserRequest<AdminRole, { id: string }>, res: Response): Promise<void> => {
+  getUser: async (
+    req: UserRequest<AdminRole, { id: string }>,
+    res: Response
+  ): Promise<void> => {
     let user = null;
     try {
-      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
+      if (
+        req.user.role !== 'admin' &&
+        req.user.id !== parseInt(req.params.id)
+      ) {
         throw new Error('User not found');
       }
       user = await db.user.findOne({
@@ -95,7 +121,9 @@ module.exports = {
       res.status(404);
     }
 
-    const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
+    const nomination_count = await db.household.count({
+      where: { nominator_id: user.id }
+    });
 
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
@@ -120,7 +148,9 @@ module.exports = {
     }
     console.log('start');
     // Find existing user with that email address
-    const existingUser = await db.user.findOne({ where: { email: user.email } });
+    const existingUser = await db.user.findOne({
+      where: { email: user.email }
+    });
     if (existingUser) {
       res.status(400);
       res.json({
@@ -131,31 +161,34 @@ module.exports = {
       return;
     }
 
-    db.user.create({
-      name_first: user.name_first,
-      name_last: user.name_last,
-      role: user.role,
-      rank: user.rank,
-      phone: user.phone,
-      email: user.email,
-      active: user.active,
-      nomination_limit: user.nomination_limit,
-      email_verifed: user.email_verifed,
-      approved: true,
-      password: auth.hashPassword(user.password),
-      affiliation_id: user.affiliation_id,
-      confirmation_email: false
-    }).then((createdUser) => {
-      console.log('made a user!', createdUser);
-      res.json({ data: { user: { id: createdUser.id } } });
-    }).catch(() => {
-      res.status(500);
-      res.json({
-        // TODO: log error
-        data: null,
-        message: 'Could not create user. Unknown error.'
+    db.user
+      .create({
+        name_first: user.name_first,
+        name_last: user.name_last,
+        role: user.role,
+        rank: user.rank,
+        phone: user.phone,
+        email: user.email,
+        active: user.active,
+        nomination_limit: user.nomination_limit,
+        email_verifed: user.email_verifed,
+        approved: true,
+        password: auth.hashPassword(user.password),
+        affiliation_id: user.affiliation_id,
+        confirmation_email: false
+      })
+      .then(createdUser => {
+        console.log('made a user!', createdUser);
+        res.json({ data: { user: { id: createdUser.id } } });
+      })
+      .catch(() => {
+        res.status(500);
+        res.json({
+          // TODO: log error
+          data: null,
+          message: 'Could not create user. Unknown error.'
+        });
       });
-    });
   },
 
   /**
@@ -176,7 +209,9 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await db.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -207,16 +242,19 @@ module.exports = {
       newData.role = existingUser.role;
     }
 
-    existingUser.update(newData).then(() => {
-      res.json({ data: true });
-    }).catch((err) => {
-      res.status(500);
-      res.json({
-        data: null,
-        message: 'Could not update user. Unknown error.',
-        error: err
+    existingUser
+      .update(newData)
+      .then(() => {
+        res.json({ data: true });
+      })
+      .catch(err => {
+        res.status(500);
+        res.json({
+          data: null,
+          message: 'Could not update user. Unknown error.',
+          error: err
+        });
       });
-    });
   },
 
   approveUser: async (req: any, res: any): Promise<void> => {
@@ -227,7 +265,9 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await db.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -236,25 +276,30 @@ module.exports = {
       });
     }
 
-    existingUser.update({
-      active: true,
-      approved: true,
-      email_verifed: true
-    }).then(() => {
-      sendMail('user-account-approved', { to: existingUser.email }).then(() => {
+    existingUser
+      .update({
+        active: true,
+        approved: true,
+        email_verifed: true
+      })
+      .then(() => {
+        sendMail('user-account-approved', { to: existingUser.email }).then(
+          () => {
+            res.json({
+              data: true,
+              message: '',
+              error: null
+            });
+          }
+        );
+      })
+      .catch(err => {
         res.json({
-          data: true,
-          message: '',
-          error: null
+          data: false,
+          message: 'Could not update user.',
+          error: err
         });
       });
-    }).catch((err) => {
-      res.json({
-        data: false,
-        message: 'Could not update user.',
-        error: err
-      });
-    });
   },
 
   declineUser: async (req: any, res: any): Promise<void> => {
@@ -265,7 +310,9 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await db.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -274,23 +321,26 @@ module.exports = {
       });
     }
 
-    existingUser.update({
-      active: false,
-      approved: false,
-      email_verified: false,
-      confirmation_email: false
-    }).then(() => {
-      res.json({
-        data: true,
-        message: '',
-        error: null
+    existingUser
+      .update({
+        active: false,
+        approved: false,
+        email_verified: false,
+        confirmation_email: false
+      })
+      .then(() => {
+        res.json({
+          data: true,
+          message: '',
+          error: null
+        });
+      })
+      .catch(err => {
+        res.json({
+          data: false,
+          message: 'Could not update user.',
+          error: err
+        });
       });
-    }).catch((err) => {
-      res.json({
-        data: false,
-        message: 'Could not update user.',
-        error: err
-      });
-    });
   }
 };

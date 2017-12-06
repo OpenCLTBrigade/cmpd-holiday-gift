@@ -51,7 +51,7 @@ function loadModels(sequelize) {
     // Note which fields are private and bind them to the model
     const privateFields = [];
 
-    Object.keys(model).forEach(function (field) {
+    Object.keys(model).forEach(function(field) {
       if (model[field].encrypt) {
         model[field] = encrypt_field(field, model[field]);
       }
@@ -69,11 +69,15 @@ function loadModels(sequelize) {
     newModel.prototype.encryptedFields = encryptedFields;
 
     // GIFT-210 && GIFT-158
-    newModel.prototype.toJSON = function () {
+    newModel.prototype.toJSON = function() {
       // Encryption vault is NOT in dataValues
 
-      const values = Object.assign({}, this.dataValues, (this.vault) ? this.vault : {});
-      
+      const values = Object.assign(
+        {},
+        this.dataValues,
+        this.vault ? this.vault : {}
+      );
+
       this.privateFields.forEach(field => {
         delete values[field];
       });
@@ -87,7 +91,6 @@ function loadModels(sequelize) {
       }
 
       return values;
-
     };
 
     return newModel;
@@ -102,12 +105,17 @@ function loadModels(sequelize) {
   //   and performs associations such as `belongsTo`
   fs
     .readdirSync(__dirname)
-    .filter(function (file) {
+    .filter(function(file) {
       return file.indexOf('.') !== 0 && file !== 'index.js';
     })
-    .forEach(function (file) {
+    .forEach(function(file) {
       const table = require(path.join(__dirname, file))(Sequelize);
-      db[table.name] = define_table(table.name, table.fields, table.scopes, table.defaultScope);
+      db[table.name] = define_table(
+        table.name,
+        table.fields,
+        table.scopes,
+        table.defaultScope
+      );
       if (table.associate) {
         associations.push(() => table.associate(db[table.name], db));
       }
@@ -124,11 +132,14 @@ const db = loadModels(sequelize);
 db.sequelize = sequelize;
 
 db.test = {
-  open: path => loadModels(connect({
-    storage: path,
-    dialect: 'sqlite',
-    logging: false
-  }))
+  open: path =>
+    loadModels(
+      connect({
+        storage: path,
+        dialect: 'sqlite',
+        logging: false
+      })
+    )
 };
 
 db.sync = sequelize.sync.bind(sequelize);

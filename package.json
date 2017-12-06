@@ -17,9 +17,16 @@
     "seed-server": "flow-node server/seeds",
     "postinstall": "if [ -z '$CI' ]; then NODE_PATH=./react-ui/src react-scripts build; fi",
     "prepack": "npm run build-client && npm run build-server",
-    "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
+    "lint": "eslint -f unix --fix --ext js --ext jsx server react-ui env.js env.example.js",
     "flow": "flow",
-    "test": "npm run test-client && npm run test-server"
+    "test": "npm run test-client && npm run test-server",
+    "precomit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,css,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "cacheDirectories": [
     "node_modules",
@@ -36,9 +43,11 @@
   "devDependencies": {
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
+    "eslint-config-prettier": "^2.9.0",
     "faker": "^4.1.0",
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
+    "prettier": "1.8.2",
     "quoted-printable": "^1.0.1",
     "sqlite3": "^3.1.13",
     "webpack-create-file-plugin": "^0.1.0",

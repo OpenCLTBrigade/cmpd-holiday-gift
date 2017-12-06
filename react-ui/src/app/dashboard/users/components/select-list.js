@@ -15,7 +15,8 @@ export default class SelectList extends React.Component<*, *> {
   state: { items: Item[] };
 
   props: {
-    fetchAll: () => Promise<Item[]> };
+    fetchAll: () => Promise<Item[]>
+  };
 
   constructor() {
     super();
@@ -27,9 +28,9 @@ export default class SelectList extends React.Component<*, *> {
   }
 
   fetchData() {
-//console.log('fetchData');
+    //console.log('fetchData');
     this.props.fetchAll().then(data => {
-//console.log('In Fetch:', data);
+      //console.log('In Fetch:', data);
       this.setState({ items: data });
     });
   }
@@ -40,13 +41,17 @@ export default class SelectList extends React.Component<*, *> {
         label="Affilation"
         name={'user.affiliation_id'}
         componentClass="select"
-        validator={requiredValidator}
-      >
-        <option></option>
-        {this.state.items.length === 0 ?
-         <option disabled>Loading...</option> :
-         this.state.items.map(item =>
-            <option key={item.id} value={item.id}>{item.type.toUpperCase()} - {item.name}</option>)}
+        validator={requiredValidator}>
+        <option />
+        {this.state.items.length === 0 ? (
+          <option disabled>Loading...</option>
+        ) : (
+          this.state.items.map(item => (
+            <option key={item.id} value={item.id}>
+              {item.type.toUpperCase()} - {item.name}
+            </option>
+          ))
+        )}
       </Input>
     );
   }

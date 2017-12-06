@@ -7,7 +7,7 @@ module.exports = Sequelize => ({
       type: Sequelize.INTEGER
     }
   },
-  associate: function (session, db) {
+  associate: function(session, db) {
     session.belongsTo(db.user, { foreignKey: 'user_id' });
   }
 });
