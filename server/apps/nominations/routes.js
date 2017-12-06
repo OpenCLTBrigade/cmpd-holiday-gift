@@ -8,6 +8,7 @@ const {
   Affiliation,
   Reports,
   Slips,
+  Stats,
   Cmpd
 } = require('./controllers');
 const auth = require('../lib/auth');
@@ -107,6 +108,12 @@ router
   .get('/affiliations/:id', (proxy: { id: string }))
   .use(auth.ensureLoggedIn)
   .handleAsync(Affiliation.getAffiliation);
+
+// Stats
+router
+  .get('/stats/dashboard')
+  .use(auth.ensureAdmin)
+  .handleAsync(Stats.dashboardStats);
 
 // Reports
 router
