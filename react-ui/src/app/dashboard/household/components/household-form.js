@@ -11,55 +11,60 @@ import { FormValidation } from 'neoform-validation';
 import Files from './form/files';
 
 const Household = ({
-    onSubmit,
-    onInvalid,
-    onSaveDraft,
-    onUpdate,
-    validate,
-    data,
-    addChild,
-    removeChild,
-    affiliations,
-    onFileChange,
-    removePhoneNumber,
-    addPhoneNumber,
-    onAddressChange,
-    disabled,
-    user,
-    status
+  onSubmit,
+  onInvalid,
+  onSaveDraft,
+  onUpdate,
+  validate,
+  data,
+  addChild,
+  removeChild,
+  affiliations,
+  onFileChange,
+  removePhoneNumber,
+  addPhoneNumber,
+  onAddressChange,
+  disabled,
+  user,
+  status
 }) => {
   return (
-        <form
-            onSubmit={e => {
-              e.preventDefault();
+    <form
+      onSubmit={e => {
+        e.preventDefault();
 
-              validate(data.household && data.household.id ? onUpdate : onSaveDraft, onInvalid);
-            }}>
-            <HouseholdForm />
-            <AddressForm onChange={onAddressChange} user={user} />
-            <PhoneNumbers
-                removePhoneNumber={removePhoneNumber}
-                addPhoneNumber={addPhoneNumber}
-                phoneNumbers={data.phoneNumbers}
-            />
-            <ChildForm
-                nominations={data.nominations}
-                addChild={addChild}
-                removeChild={removeChild}
-                affiliations={affiliations}
-            />
-            {status >= 1 && <Files files={data.files} onChange={onFileChange} />}
-            <Row>
-                <Col xs={12}>
-                    <ButtonToolbar>
-                        <Button type="submit" disabled={disabled}>
-                            {data.household && data.household.id ? 'Update' : 'Save Draft'}
-                        </Button>
-                        {status === 1 && <Button onClick={onSubmit}>Submit Nomination</Button>}
-                    </ButtonToolbar>
-                </Col>
-            </Row>
-        </form>
+        validate(
+          data.household && data.household.id ? onUpdate : onSaveDraft,
+          onInvalid
+        );
+      }}>
+      <HouseholdForm />
+      <AddressForm onChange={onAddressChange} user={user} />
+      <PhoneNumbers
+        removePhoneNumber={removePhoneNumber}
+        addPhoneNumber={addPhoneNumber}
+        phoneNumbers={data.phoneNumbers}
+      />
+      <ChildForm
+        nominations={data.nominations}
+        addChild={addChild}
+        removeChild={removeChild}
+        affiliations={affiliations}
+      />
+      {status >= 1 && <Files files={data.files} onChange={onFileChange} />}
+      <Row>
+        <Col xs={12}>
+          <ButtonToolbar>
+            <Button type="submit" disabled={disabled}>
+              {data.household && data.household.id ? 'Update' : 'Save Draft'}
+            </Button>
+            {status === 1 && (
+              <Button onClick={onSubmit}>Submit Nomination</Button>
+            )}
+          </ButtonToolbar>
+        </Col>
+      </Row>
+    </form>
   );
 };
 

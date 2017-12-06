@@ -28,11 +28,13 @@ export type AffiliationType = {
   name: string
 };
 
-export function getUser(id: number): Promise<{ user: UserType & {affiliation: AffiliationType} }> {
+export function getUser(
+  id: number
+): Promise<{ user: UserType & { affiliation: AffiliationType } }> {
   return get('nominations', `/users/${id}`);
 }
 
-export function getMe(): Promise<{user: userType}> {
+export function getMe(): Promise<{ user: userType }> {
   return get('nominations', 'me');
 }
 
@@ -42,20 +44,28 @@ export function getUserList(
   affiliation_id: ?number
 ): Promise<{ response: DataTableResponse<UserType> }> {
   pageNumber = pageNumber < 1 ? 1 : pageNumber;
-  return get('nominations', 'users', { page: pageNumber, search, affiliation_id });
+  return get('nominations', 'users', {
+    page: pageNumber,
+    search,
+    affiliation_id
+  });
 }
 
 export function getPendingUserList(
-  pageNumber: number = 1, search: ?string
+  pageNumber: number = 1,
+  search: ?string
 ): Promise<{ response: DataTableResponse<UserType> }> {
-  return get('nominations', 'users/pending', { page: pageNumber, search: search });
+  return get('nominations', 'users/pending', {
+    page: pageNumber,
+    search: search
+  });
 }
 
-export function createUser(user: UserType): Promise<{user: UserType}> {
+export function createUser(user: UserType): Promise<{ user: UserType }> {
   return post('nominations', 'users', { user: user });
 }
 
-export function updateUser(user: UserType): Promise<{user: UserType}> {
+export function updateUser(user: UserType): Promise<{ user: UserType }> {
   return put('nominations', `users/${user.id}`, { user: user });
 }
 

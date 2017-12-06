@@ -9,7 +9,6 @@ const defaults = {
 };
 
 module.exports = ({ list, keys, search }) => {
-
   const options = { ...defaults, keys };
   const fuse = new Fuse(list, options);
   return fuse.search(search);

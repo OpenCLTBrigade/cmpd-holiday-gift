@@ -13,12 +13,16 @@ import Label from './components/form-label';
 import { getAffiliationList } from '../../api/affiliation';
 import { register } from '../../lib/auth';
 
-const Icon = styled.i`top: 20px !important;`;
+const Icon = styled.i`
+  top: 20px !important;
+`;
 
-export default class Register extends React.Component <{
-  history: *
-}, *> {
-
+export default class Register extends React.Component<
+  {
+    history: *
+  },
+  *
+> {
   box: ?FormBox;
 
   AFFILIATION_PLACEHOLDER: string;
@@ -39,7 +43,11 @@ export default class Register extends React.Component <{
 
   async fetch(): Promise<void> {
     const response: Object = await getAffiliationList(1);
-    if (response.items == null || response.items === '' || response.items === undefined) {
+    if (
+      response.items == null ||
+      response.items === '' ||
+      response.items === undefined
+    ) {
       throw new Error('items not defined');
     }
     this.setState({ affiliationItems: response.items });
@@ -51,12 +59,16 @@ export default class Register extends React.Component <{
     try {
       await this.fetch();
       const items: Array<Object> = this.state.affiliationItems;
-      affiliationList = items.map(item =>
-        <option key={item.id} value={item.id}>{item.type.toUpperCase()} - {item.name}</option>
-      );
+      affiliationList = items.map(item => (
+        <option key={item.id} value={item.id}>
+          {item.type.toUpperCase()} - {item.name}
+        </option>
+      ));
     } catch (err) {
       console.error(err);
-      this.flashErrorMessage('Error: could not get affiliation list from server');
+      this.flashErrorMessage(
+        'Error: could not get affiliation list from server'
+      );
       return;
     }
 
@@ -91,13 +103,16 @@ export default class Register extends React.Component <{
               </Label>
             </FormGroup>
             <FormGroup className="form-group has-feedback">
-                <Label>
-                  Affiliation
-                  <select className="form-control" name="affiliation_id" type="text" >
-                    <option>{this.AFFILIATION_PLACEHOLDER}</option>
-                    {this.state.affiliationList}
-                  </select>
-                </Label>
+              <Label>
+                Affiliation
+                <select
+                  className="form-control"
+                  name="affiliation_id"
+                  type="text">
+                  <option>{this.AFFILIATION_PLACEHOLDER}</option>
+                  {this.state.affiliationList}
+                </select>
+              </Label>
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
@@ -122,14 +137,22 @@ export default class Register extends React.Component <{
             <FormGroup className="form-group has-feedback">
               <Label>
                 Password
-                <input className="form-control" name="password" type="password" />
+                <input
+                  className="form-control"
+                  name="password"
+                  type="password"
+                />
               </Label>
               <Icon className="fa fa-lock form-control-feedback" />
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Confirm Password
-                <input className="form-control" name="password_confirm" type="password" />
+                <input
+                  className="form-control"
+                  name="password_confirm"
+                  type="password"
+                />
               </Label>
               <Icon className="fa fa-lock form-control-feedback" />
             </FormGroup>
@@ -143,8 +166,7 @@ export default class Register extends React.Component <{
                 <span> Login</span>
               </FooterLink>
             </div>
-            <div className="col-xs-6">
-            </div>
+            <div className="col-xs-6" />
           </Footer>
         }
       />
@@ -155,7 +177,9 @@ export default class Register extends React.Component <{
     name_first,
     name_last,
     affiliation_id,
-    rank, phone, email,
+    rank,
+    phone,
+    email,
     password,
     password_confirm
   }: {
@@ -168,18 +192,26 @@ export default class Register extends React.Component <{
     password: string,
     password_confirm: string
   }): Promise<void> {
-    const validName = name => name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
+    const validName = name =>
+      name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
     let error = null;
     if (!validName(name_first)) {
-      error = 'First Name must be at least two characters and only contain letters, dashes, or periods';
+      error =
+        'First Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (!validName(name_last)) {
-      error = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
+      error =
+        'Last Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
       error = 'Affiliation is required';
     } else if (phone == null || phone === '' || !phone.match(/^\d{10}$/)) {
-      error = 'Phone number is required and must be 10 digits.';
-    } else if (email == null || email === '' || !email.match('[a-zA-Z.-]{2,}')) {
-      error = 'Email is required, and must be in email address format (text@text.domain)';
+      error = 'Phone number is required';
+    } else if (
+      email == null ||
+      email === '' ||
+      !email.match('[a-zA-Z.-]{2,}')
+    ) {
+      error =
+        'Email is required, and must be in email address format (text@text.domain)';
     } else if (password == null || password === '') {
       error = 'Password is required';
     } else if (password_confirm == null || password_confirm === '') {
@@ -194,7 +226,14 @@ export default class Register extends React.Component <{
     }
 
     try {
-      const result = await register(name_first, name_last, rank, affiliation_id, email, password);
+      const result = await register(
+        name_first,
+        name_last,
+        rank,
+        affiliation_id,
+        email,
+        password
+      );
       if (result.success) {
         this.props.history.replace('/auth/login?justRegistered=true');
       } else {
