@@ -10,10 +10,12 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
-declare var process: {env: {
-  NODE_ENV: string,
-  PUBLIC_URL: string
-}};
+declare var process: {
+  env: {
+    NODE_ENV: string,
+    PUBLIC_URL: string
+  }
+};
 
 declare var navigator: Object;
 

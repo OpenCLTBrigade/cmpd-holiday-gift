@@ -53,7 +53,7 @@ async function login(req: Request<>, res: Response): Promise<void> {
   }
 }
 
-async function extend(req: AuthRequest<{id: number}>, res: Response) {
+async function extend(req: AuthRequest<{ id: number }>, res: Response) {
   if (req.user.id) {
     // TODO: extend existing session instead
     res.json({ token: await auth.newAuthSession(req.user.id) });
@@ -65,17 +65,23 @@ async function extend(req: AuthRequest<{id: number}>, res: Response) {
 type AccessRequest = {|
   app: AppName
 |};
-async function getToken(req: AuthRequest<UserType>, res: $Response): Promise<void> {
+async function getToken(
+  req: AuthRequest<UserType>,
+  res: $Response
+): Promise<void> {
   const body: AccessRequest = (req.body: any);
   if (req.user && auth.userCanUseApp(req.user, body.app)) {
     res.json({
-      token: auth.makeToken({
-        id: req.user.id,
-        role: req.user.role,
-        name_first: req.user.name_first,
-        name_last: req.user.name_last
-      },
-      config.jwtSecrets[body.app], config.appTokenLifetime)
+      token: auth.makeToken(
+        {
+          id: req.user.id,
+          role: req.user.role,
+          name_first: req.user.name_first,
+          name_last: req.user.name_last
+        },
+        config.jwtSecrets[body.app],
+        config.appTokenLifetime
+      )
     });
   } else {
     res.status(403).send();
@@ -102,7 +108,10 @@ async function confirm(req: Request<>, res: Response): Promise<void> {
 type ApproveRequest = {|
   user_id: number
 |};
-async function approve(req: UserRequest<AdminRole>, res: Response): Promise<void> {
+async function approve(
+  req: UserRequest<AdminRole>,
+  res: Response
+): Promise<void> {
   const body: ApproveRequest = (req.body: any);
   const error = await registration.steps.approve(body.user_id);
   if (error) {
@@ -130,9 +139,15 @@ type VerifyConfirmationCodeRequest = {
   user_id: number,
   confirmation_code: string
 };
-async function verifyConfirmationCode(req: Request<>, res: Response): Promise<void> {
+async function verifyConfirmationCode(
+  req: Request<>,
+  res: Response
+): Promise<void> {
   const body: VerifyConfirmationCodeRequest = (req.body: any);
-  const token = recovery.verifyConfirmationCode(body.user_id, body.confirmation_code);
+  const token = recovery.verifyConfirmationCode(
+    body.user_id,
+    body.confirmation_code
+  );
   if (!token) {
     res.json({ error: 'failed' });
   } else {

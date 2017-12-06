@@ -15,7 +15,7 @@ const logger = require('./lib/logger');
 
   const app = await loadApp;
 
-  const listener = app.listen((process.env.PORT || config.port), () => {
+  const listener = app.listen(process.env.PORT || config.port, () => {
     const port = listener.address().port;
     if (config.verbose) {
       logger.info('Express server listening on port ' + port);
