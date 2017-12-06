@@ -13,7 +13,9 @@ import FormGroup from './components/form-group';
 import Label from './components/form-label';
 import querystring from 'querystring';
 
-const Icon = styled.i`top: 20px !important;`;
+const Icon = styled.i`
+  top: 20px !important;
+`;
 
 export default class Login extends React.Component<{
   history: *,
@@ -26,13 +28,18 @@ export default class Login extends React.Component<{
   componentDidMount() {
     const params = querystring.parse(this.props.location.search);
     console.log('ohey', params);
-    if (params['?justRegistered'] && (params['?justRegistered'] === 'true' || params['?justRegistered'] === true)) {
-      (this.box).flashErrorMessage('Check your email to continue the registration process.');
+    if (
+      params['?justRegistered'] &&
+      (params['?justRegistered'] === 'true' ||
+        params['?justRegistered'] === true)
+    ) {
+      this.box.flashErrorMessage(
+        'Check your email to continue the registration process.'
+      );
     }
   }
 
   render(): React.Node {
-
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
@@ -55,7 +62,11 @@ export default class Login extends React.Component<{
             <FormGroup className="form-group has-feedback">
               <Label>
                 Password
-                <input className="form-control" name="password" type="password" />
+                <input
+                  className="form-control"
+                  name="password"
+                  type="password"
+                />
               </Label>
               <Icon className="fa fa-lock form-control-feedback" />
             </FormGroup>
@@ -70,7 +81,9 @@ export default class Login extends React.Component<{
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink className="btn btn-link pull-right" to="/auth/register">
+              <FooterLink
+                className="btn btn-link pull-right"
+                to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -81,16 +94,26 @@ export default class Login extends React.Component<{
     );
   }
 
-  async onSubmit({ email, password }: { email: string, password: string }): Promise<void> {
+  async onSubmit({
+    email,
+    password
+  }: {
+    email: string,
+    password: string
+  }): Promise<void> {
     try {
       const success = await AuthToken.login(email, password);
       if (success) {
         this.props.history.replace(
-          this.props.location.state != null && this.props.location.state.from != null
+          this.props.location.state != null &&
+          this.props.location.state.from != null
             ? this.props.location.state.from
-            : '/dashboard');
+            : '/dashboard'
+        );
       } else {
-        (this.box: any).flashErrorMessage('Login failed: wrong email or password');
+        (this.box: any).flashErrorMessage(
+          'Login failed: wrong email or password'
+        );
       }
     } catch (exc) {
       (this.box: any).flashErrorMessage('Login failed: unknown error');

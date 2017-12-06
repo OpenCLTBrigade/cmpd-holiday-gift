@@ -13,7 +13,9 @@ import Label from './components/form-label';
 
 import { sendRecoverEmail } from '../../api/recover';
 
-const Icon = styled.i`top: 20px !important;`;
+const Icon = styled.i`
+  top: 20px !important;
+`;
 
 export default class Recover extends React.Component<{
   history: Object
@@ -29,7 +31,7 @@ export default class Recover extends React.Component<{
         submitText="Recover"
         onSubmit={this.onSubmit.bind(this)}
         headerImageClass="fa fa-lock"
-        ref={box => this.box = box}
+        ref={box => (this.box = box)}
         body={
           <div>
             <FormGroup className="form-group has-feedback">
@@ -50,7 +52,9 @@ export default class Recover extends React.Component<{
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink className="btn btn-link pull-right" to="/auth/register">
+              <FooterLink
+                className="btn btn-link pull-right"
+                to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -61,7 +65,7 @@ export default class Recover extends React.Component<{
     );
   }
 
-  async onSubmit({ email }: {email: string}): Promise<void> {
+  async onSubmit({ email }: { email: string }): Promise<void> {
     try {
       const success = await sendRecoverEmail(email);
       if (success && success.success === true) {
@@ -74,7 +78,9 @@ export default class Recover extends React.Component<{
         );
       }
     } catch (exc) {
-      (this.box: any).flashErrorMessage('Account recovery failed: unknown error');
+      (this.box: any).flashErrorMessage(
+        'Account recovery failed: unknown error'
+      );
     }
   }
 }

@@ -13,14 +13,16 @@ export type HouseholdType = {
   attachments: Object[]
 };
 
-export function getHousehold(householdId: number): Promise<{household: HouseholdType}> {
+export function getHousehold(
+  householdId: number
+): Promise<{ household: HouseholdType }> {
   return get('nominations', `/households/${householdId}`);
 }
 
 export function getHouseholdList(
   pageNumber: number = 1,
   search: ?string
-): Promise<{response: DataTableResponse<HouseholdType>}> {
+): Promise<{ response: DataTableResponse<HouseholdType> }> {
   return get('nominations', 'households', { page: pageNumber, search: search });
 }
 
@@ -42,9 +44,16 @@ export function uploadAttachment({ id, file }) {
   return post('nominations', `households/${id}/upload`, formData);
 }
 
-export function reviewHousehold(id, payload: Object<{approved: boolean, reason: string, message: string}>) {
+export function reviewHousehold(
+  id,
+  payload: Object<{ approved: boolean, reason: string, message: string }>
+) {
   const { approved, reason, message } = payload;
-  return post('nominations', `households/${id}/feedback`, { approved, reason, message });
+  return post('nominations', `households/${id}/feedback`, {
+    approved,
+    reason,
+    message
+  });
 }
 
 export function getNominationStatus() {

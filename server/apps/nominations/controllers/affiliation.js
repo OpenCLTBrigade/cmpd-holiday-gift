@@ -30,14 +30,23 @@ module.exports = {
         whereClause.type = query.type;
       }
 
-      const result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
+      const result = await api.fetchAndParse(
+        db.affiliation,
+        whereClause,
+        null,
+        '',
+        whiteList
+      );
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  getAffiliation: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
+  getAffiliation: async (
+    req: UserRequest<AnyRole, { id: string }>,
+    res: Response
+  ): Promise<void> => {
     const id: number = parseInt(req.params.id);
     const affiliation = await db.affiliation.findById(id);
 

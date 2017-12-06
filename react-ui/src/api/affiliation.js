@@ -16,18 +16,26 @@ export type AffiliationType = {
   updatedAt: string
 };
 
-export function getAffiliation(affiliationId: number): Promise<{ affiliation: AffiliationType }> {
+export function getAffiliation(
+  affiliationId: number
+): Promise<{ affiliation: AffiliationType }> {
   return get('nominations', `/affiliations/${affiliationId}`);
 }
 
-export function getAffiliationsByType(type: string): Promise<{ affiliation: AffiliationType }> {
-  return get('nominations', 'affiliations', {type});
+export function getAffiliationsByType(
+  type: string
+): Promise<{ affiliation: AffiliationType }> {
+  return get('nominations', 'affiliations', { type });
 }
 
 export function getAffiliationList(
-  pageNumber: number = 1, search: ?string
+  pageNumber: number = 1,
+  search: ?string
 ): Promise<{ response: DataTableResponse<AffiliationType> }> {
-  return get('nominations', 'affiliations', { page: pageNumber, search: search });
+  return get('nominations', 'affiliations', {
+    page: pageNumber,
+    search: search
+  });
 }
 
 export function getSchools(): Promise<{ items: any[] }> {

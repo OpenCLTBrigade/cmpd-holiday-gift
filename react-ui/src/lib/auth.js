@@ -15,7 +15,6 @@ const localStorage = window.localStorage;
 // The token is automatically refreshed and expired
 // The token is stored in the localStorage under 'authToken'
 export const AuthToken = (() => {
-
   let token; // Cached JWT string
   let expirationTime; // Cached exp
   let refreshing = false; // Flag to avoid concurrent refresh
@@ -103,15 +102,17 @@ export const AuthToken = (() => {
       return;
     }
     refreshing = true;
-    post('auth', 'extend').then(res => {
-      setToken(res.token);
-      refreshing = false;
-    }).catch(err => {
-      console.log(`Error refreshing auth token: ${err}`);
-      setTimeout(() => {
+    post('auth', 'extend')
+      .then(res => {
+        setToken(res.token);
         refreshing = false;
-      }, minRefreshInterval * 1000);
-    });
+      })
+      .catch(err => {
+        console.log(`Error refreshing auth token: ${err}`);
+        setTimeout(() => {
+          refreshing = false;
+        }, minRefreshInterval * 1000);
+      });
   }
 
   async function login(email: string, password: string): Promise<boolean> {
@@ -149,11 +150,18 @@ export const AuthToken = (() => {
   }
 
   load();
-  return { login, logout, expired, getToken, getAuthorization, addHandler, token };
+  return {
+    login,
+    logout,
+    expired,
+    getToken,
+    getAuthorization,
+    addHandler,
+    token
+  };
 })();
 
 export const AppToken = (() => {
-
   const tokens = {};
 
   async function getToken(app: string): Promise<string> {
@@ -181,10 +189,12 @@ export const AppToken = (() => {
       AuthToken.logout();
       throw exc;
     }
-    if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {
+    if (
+      !token ||
+      jwt_decode(token).exp < Date.now() / 1000 - appTokenMinRemainingTime
+    ) {
       tokens[app] = getToken(app);
       token = await tokens[app];
-
     }
     return `Bearer ${token}`;
   }
@@ -200,15 +210,23 @@ export function getAuthorization(app: string): Promise<string> {
   }
 }
 
-export async function redirectPostWithAuth(app: string, path: string): Promise<void> {
+export async function redirectPostWithAuth(
+  app: string,
+  path: string
+): Promise<void> {
   const authorization = await getAuthorization(app);
   const div = document.createElement('div');
   (document.body: any).appendChild(div);
   const form = render(
-    <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
+    <form
+      style={{ display: 'none' }}
+      method="POST"
+      action={`/api/${app}/${path}`}
+      target="_blank">
       <input type="hidden" name="__authorization" value={authorization} />
     </form>,
-    div);
+    div
+  );
   form.submit();
 }
 
@@ -216,13 +234,13 @@ type RegisterResult = {| error: string |} | {| success: true |};
 
 // Registers user after user submits information for new user in registration form
 export async function register(
-    name_first: string,
-    name_last: string,
-    rank: string = '',
-    affiliation_id: number,
-    email: string,
-    password: string
-  ): Promise<RegisterResult> {
+  name_first: string,
+  name_last: string,
+  rank: string = '',
+  affiliation_id: number,
+  email: string,
+  password: string
+): Promise<RegisterResult> {
   return await post('auth', 'register', {
     firstname: name_first,
     lastname: name_last,

@@ -13,12 +13,12 @@ module.exports = Sequelize => ({
     name_first: {
       type: Sequelize.STRING,
       allowNull: false,
-      encrypt: true,
+      encrypt: true
     },
     name_middle: {
       type: Sequelize.STRING,
       defaultValue: null,
-      encrypt: true,
+      encrypt: true
     },
     // We can't encrypt last names due to search
     name_last: {
@@ -82,6 +82,10 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       defaultValue: null
     },
+    clothes_size_coat: {
+      type: Sequelize.STRING,
+      defaultValue: null
+    },
     shoe_size: {
       type: Sequelize.STRING,
       defaultValue: null
@@ -104,18 +108,18 @@ module.exports = Sequelize => ({
     },
     age: {
       type: Sequelize.VIRTUAL,
-      get: function () {
+      get: function() {
         return moment().diff(this.dob, 'years');
       }
     },
     name_full: {
       type: Sequelize.VIRTUAL,
-      get: function () {
+      get: function() {
         return `${this.name_first} ${this.name_last}`;
       }
     }
   },
-  associate: function (child, db) {
+  associate: function(child, db) {
     child.belongsTo(db.household);
   }
 });

@@ -2,8 +2,7 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
-import { getUser, updateUser } from '../../../api/user'
-
+import { getUser, updateUser } from '../../../api/user';
 
 export default class EditUser extends React.Component<{}, { user: * }> {
   constructor() {
@@ -32,12 +31,14 @@ export default class EditUser extends React.Component<{}, { user: * }> {
   }
 
   componentDidMount() {
-    getUser(this.props.match.params.user_id).then((response: any) => {
-      this.setState({ user: response.data });
-    }).catch(() => {
-      window.location = '/dashboard/users';
-      alert('User could not be found.');
-    });
+    getUser(this.props.match.params.user_id)
+      .then((response: any) => {
+        this.setState({ user: response.data });
+      })
+      .catch(() => {
+        window.location = '/dashboard/users';
+        alert('User could not be found.');
+      });
   }
 
   onChange = (name: string, value: any) => {
@@ -45,7 +46,7 @@ export default class EditUser extends React.Component<{}, { user: * }> {
       const newState = setValue(prevState, name, value);
       return newState;
     });
-  }
+  };
 
   onInvalid() {
     console.log('onInvalid');
@@ -59,20 +60,23 @@ export default class EditUser extends React.Component<{}, { user: * }> {
     }
 
     this.setState({ saving: true }, () => {
-      updateUser(this.state.user).then((response) => {
-        if (response.data == null) {
-          alert(response.message);
-        } else {
-          alert('User has been updated');
-        }
-        this.setState({ saving: false }, () => {
-          window.location = `/dashboard/user?search=${this.state.user.name_last || ''}`;
+      updateUser(this.state.user)
+        .then(response => {
+          if (response.data == null) {
+            alert(response.message);
+          } else {
+            alert('User has been updated');
+          }
+          this.setState({ saving: false }, () => {
+            window.location = `/dashboard/user?search=${this.state.user
+              .name_last || ''}`;
+          });
+        })
+        .catch(() => {
+          alert('Could not save user. An unknown error has occured.');
         });
-      }).catch(() => {
-        alert('Could not save user. An unknown error has occured.');
-      });
-    })
-  }
+    });
+  };
 
   render(): React.Node {
     if (this.state.saving) {
@@ -82,10 +86,10 @@ export default class EditUser extends React.Component<{}, { user: * }> {
     return (
       <div>
         <UserForm
-            data={this.state}
-            getValue={getValue}
-            onChange={this.onChange}
-            onSubmit={this.onSubmit}
+          data={this.state}
+          getValue={getValue}
+          onChange={this.onChange}
+          onSubmit={this.onSubmit}
         />
       </div>
     );
