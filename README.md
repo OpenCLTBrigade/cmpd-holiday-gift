@@ -17,6 +17,10 @@ on the dependencies we use.
 * Run `npm run start-client` to start the front-end in development mode. Access the application at http://localhost:3000. 
 * In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it.
 * Run `npm run seed` to generate sample data.
+* In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
+saying you need to install sqlite3 manually, run `npm install sqlite3`.
+* Run `npm run seed-server` to generate sample data.
+
 
 Read [Front end development notes here](#front-end-development).
 
