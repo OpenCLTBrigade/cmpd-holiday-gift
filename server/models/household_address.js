@@ -43,6 +43,10 @@ module.exports = Sequelize => ({
       type: Sequelize.STRING,
       defaultValue: null
     },
+    shipping_note: {
+      type: Sequelize.STRING,
+      defaultValue: null
+    }
   },
   associate: function (address, db) {
     address.belongsTo(db.household);

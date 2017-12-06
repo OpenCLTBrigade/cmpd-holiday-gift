@@ -393,6 +393,7 @@ module.exports = {
                 const newAddress = await db.household_address.create({
                   street: address.street,
                   street2: address.street2 || '',
+                  shipping_note: address.shipping_note || '',
                   city: address.city,
                   state: address.state,
                   zip: address.zip,
