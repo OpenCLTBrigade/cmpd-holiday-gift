@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const db = require('../models');
-const config = require('../config');
+import config from '../config';
 
 async function seed() {
   await db.sync();

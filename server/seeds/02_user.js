@@ -1,6 +1,5 @@
 const faker = require('faker');
-
-const auth = require('../apps/lib/auth');
+import auth from '../apps/lib/auth';
 
 module.exports = async db => {
   for (let i = 0; i < 5; i++) {

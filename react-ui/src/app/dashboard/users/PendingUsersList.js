@@ -41,7 +41,7 @@ export default class UsersList extends React.Component<{}> {
     search: ?string
   ): Promise<{ items: UserType[], totalSize: number, sizePerPage: number }> {
     const response: Object = await getUserList(page, search);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+    return { items.items, totalSize.totalSize, sizePerPage.sizePerPage };
   }
 
   onClickApprove = (user) => {

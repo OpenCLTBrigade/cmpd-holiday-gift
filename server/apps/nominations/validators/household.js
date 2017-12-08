@@ -1,5 +1,3 @@
-// @flow
-
 const { check } = require('express-validator/check');
 
 const firstName = check('household.name_first').exists();

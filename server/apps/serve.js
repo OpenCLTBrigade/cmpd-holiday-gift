@@ -1,10 +1,7 @@
-/*eslint no-console: "off"*/
-// @flow
-
 const process = require('process');
 
 const loadApp = require('.');
-const config = require('../config');
+import config from '../config';
 const seed = require('../seeds/');
 const logger = require('./lib/logger');
 

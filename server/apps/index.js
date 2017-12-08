@@ -1,6 +1,3 @@
-// @flow
-/*eslint no-console: "off"*/
-
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const morgan = require('morgan');
@@ -9,14 +6,12 @@ const { join } = require('path');
 const express = require('express');
 const path = require('path');
 
-const config = require('../config');
+import config from '../config';
 
 const models = require('../models');
 const nominations = require('./nominations');
 const authApp = require('./auth');
 const logger = require('./lib/logger');
-
-import type { $Application } from 'express';
 
 const app = express();
 
@@ -25,7 +20,7 @@ if (config.enableAccessLog) {
   app.use(morgan('combined', {
     stream: (fs.createWriteStream(
       join(config.run, 'access.log'),
-      { flags: 'a' }): any)
+      { flags: 'a' }))
   }));
 }
 
@@ -74,4 +69,4 @@ initialize.push(models.sync().then(function () {
 
 // Prepare to compile the views and web assets
 
-module.exports = (Promise.all(initialize).then(() => app): Promise<$Application>);
+module.exports = (Promise.all(initialize).then(() => app));

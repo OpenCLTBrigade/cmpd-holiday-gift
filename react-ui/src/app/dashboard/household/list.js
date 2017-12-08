@@ -106,7 +106,7 @@ export default class List extends React.Component<{}> {
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
     this.currentPage = page; // Used for refreshing list when submitting feedback
     const response: Object = await getHouseholdList(page, search);
-    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
+    return { items.items, totalSize.totalSize, per_page.per_page };
   }
 
   render(): React.Node {

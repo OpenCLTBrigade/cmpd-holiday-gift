@@ -1,16 +1,13 @@
-// @flow
-const path = require('path');
+import * as path from 'path'
 
 const auth = require('./auth.js');
 const db = require('../../models');
-const config = require('../../config');
+import config from '../../config'
 const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 const asyncDo = require('./asyncDo');
 
-export type NullOrError<T={}> = null | { error: string, ...T };
-
 // Step 1
-async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{field?: $Keys<$TODO>}>> {
+async function register(rootUrl: string, userInfo) {
   const user = await db.user.findOne({ where: { email: userInfo.email } });
   if (user) {
     return {
@@ -44,7 +41,7 @@ async function register(rootUrl: string, userInfo: $TODO): Promise<NullOrError<{
 }
 
 // Step 2
-async function sendVerification(rootUrl: string, user: $TODO): Promise<void> {
+async function sendVerification(rootUrl: string, user) {
   const confirmation_code = auth.generateConfirmationCode();
   user.set('confirmation_code', confirmation_code);
   await user.save();
@@ -61,9 +58,9 @@ async function sendVerification(rootUrl: string, user: $TODO): Promise<void> {
 
 // Step 3
 async function confirmEmail(
-  rootUrl: string,
-  { user_id, confirmation_code }: {| user_id: number, confirmation_code: string |}
-): Promise<NullOrError<>> {
+  rootUrl,
+  { user_id, confirmation_code }
+) {
   const user = await db.user.findById(user_id);
   if (!user) {
     return { error: 'confirmation code does not match' };
@@ -80,13 +77,13 @@ async function confirmEmail(
 }
 
 // Step 4
-async function sendApproval(rootUrl: string, user: $TODO): Promise<void> {
+async function sendApproval(rootUrl: string, user) {
   const url = `${rootUrl}/dashboard/user/pending`;
   await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
 }
 
 // Step 5
-async function approve(user_id: number): Promise<NullOrError<>> {
+async function approve(user_id: number) {
   const user = await db.user.findById(user_id);
   if (!user) {
     return { error: 'unknown user' };

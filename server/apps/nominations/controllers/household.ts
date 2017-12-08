@@ -1,8 +1,7 @@
-// @flow
-
 const { validationResult } = require('express-validator/check');
+import * as db from '../../../models'
+import { baseUrl } from '../../lib/misc'
 
-const db = require('../../../models');
 const logger = require('../../lib/logger');
 
 const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
@@ -14,18 +13,8 @@ const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 const createTable = require('../../lib/table');
-const misc = require('../../lib/misc');
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
-
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AnyRole } from '../../lib/auth';
-import type { TableRequest } from '../../lib/tableApi';
-
-type ListRequest = {
-  ...TableRequest,
-  search: string
-};
 
 const childDefaults = {
   additional_ideas: '',
@@ -44,10 +33,11 @@ const householdDefaults = {
   approved: false
 };
 
-module.exports = {
-  list: async (req: UserRequest<>, res: Response): Promise<void> => {
-    const query: ListRequest = (req.query: any);
-    const baseUrl = misc.baseUrl(req);
+export default {
+
+  list: async (req, res) => {
+    const query = (req.query);
+    const baseUrl = baseUrl(req);
 
     const table = createTable({ model: db.household, baseUrl });
 
@@ -84,7 +74,7 @@ module.exports = {
     }
   },
 
-  getHousehold: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
+  getHousehold: async (req, res) => {
     let household = null;
     let address = null;
     let phoneNumbers = [];
@@ -208,7 +198,7 @@ module.exports = {
     form.parse(req);
   },
 
-  async submitNomination(req: any, res: any): Promise<void> {
+  async submitNomination(req: any, res: any) {
     logger.info('submitting nominations');
     const { id } = req.body;
 
@@ -270,7 +260,7 @@ module.exports = {
     }
   },
 
-  async updateHousehold(req, res): Promise<void> {
+  async updateHousehold(req, res) {
     logger.info('updateHousehold');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -383,7 +373,7 @@ module.exports = {
             .then(() => res.sendStatus(200));
   },
 
-  createHousehold: async (req: any, res: any): Promise<void> => {
+  createHousehold: async (req: any, res: any) => {
     // TODO: Check if user has reached nomination limit and reject if so
 
     const nominator = Object.assign({}, req.user.dataValues);
@@ -498,21 +488,4 @@ module.exports = {
     }
   }
 
-  // async function register(req: Request<>, res: Response): Promise<void> {
-  //   const body: RegisterRequest = (req.body: any);
-  //   const error = await registration.steps.register(rootUrl(req), {
-  //     name_first: body.firstname,
-  //     name_last: body.lastname,
-  //     rank: body.rank,
-  //     phone: body.phone,
-  //     affiliation_id: body.affiliation,
-  //     email: body.email,
-  //     raw_password: body.password
-  //   });
-  //   if (error) {
-  //     res.json(error);
-  //   } else {
-  //     res.json({ success: true });
-  //   }
-  // }
-};
+}

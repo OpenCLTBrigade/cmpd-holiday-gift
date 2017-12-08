@@ -42,7 +42,7 @@ export default class Register extends React.Component <{
     if (response.items == null || response.items === '' || response.items === undefined) {
       throw new Error('items not defined');
     }
-    this.setState({ affiliationItems: response.items });
+    this.setState({ affiliationItems.items });
     return Promise.resolve();
   }
 

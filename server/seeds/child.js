@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const config = require('../config');
+import config from '../config';
 
 module.exports = async db => {
   // Add ten children to the DB

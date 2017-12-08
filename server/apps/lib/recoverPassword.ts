@@ -1,6 +1,5 @@
-// @flow
+import * as db from '../../models'
 
-const db = require('../../models');
 const auth = require('./auth');
 const path = require('path');
 const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
@@ -43,8 +42,8 @@ async function verifyConfirmationCode(user_id: number, confirmation_code: string
 }
 
 // Step 3
-// async function resetPassword(user: $TODO, new_password: string): Promise<void> { // Needs step 2 implemented
-async function resetPassword(id, confirmation_code, new_password: string): Promise<void> {
+// async function resetPassword(user, new_password: string) { // Needs step 2 implemented
+async function resetPassword(id, confirmation_code, new_password: string) {
   // TODO: invalidate other sessions
   const user = await db.user.findById(id);
   user.set('password', auth.hashPassword(new_password));
@@ -52,7 +51,7 @@ async function resetPassword(id, confirmation_code, new_password: string): Promi
   await user.save();
 }
 
-module.exports = {
+export default {
   sendRecoverEmail,
   verifyConfirmationCode,
   resetPassword

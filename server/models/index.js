@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const encrypted = require('sequelize-encrypted');
 
-const config = require('../config');
+import config from '../config';
 
 function connect(dbConfig) {
   return new Sequelize(

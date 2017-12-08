@@ -1,34 +1,22 @@
-// @flow
-
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const db = require('../../models');
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
-const config = require('../../config');
-
-import type { AuthRequest, Response, Next } from '../lib/typed-express';
-
-export type RoleType = null | 'admin';
-export type AnyRole = RoleType;
-export type AdminRole = 'admin';
+import config from '../../config'
 
 // TODO: import from model
 export type UserType = {
   id: number,
   approved: boolean,
   active: boolean,
-  role: RoleType,
+  role: any,
   name_first: string,
   name_last: string
 };
 
 export type LoggedInUser = UserType & { approved: true, active: true };
-
-export type UserIdRequest = AuthRequest<{id: number}>;
-export type SessionIdRequest = AuthRequest<{session_id: number}>;
 export type AppName = 'nominations';
-export type UserRequest<Role: RoleType = RoleType, Params = {}> = AuthRequest<UserType & { role: Role }, Params>;
 
 // TODO: automatically delete expired sessions from database
 
@@ -48,7 +36,7 @@ function generateConfirmationCode(): string {
 // if the token is valid has has not expired.
 // The token is retrieved from the Authorization header or
 // from the __authorization field of a posted form
-function authMiddleware(secret: string): $TODO {
+function authMiddleware(secret: string) {
   return jwtMiddleware({
     secret: secret,
     credentialsRequired: false,
@@ -68,10 +56,10 @@ function authMiddleware(secret: string): $TODO {
 }
 
 async function sessionMiddleware(
-  req: UserIdRequest & SessionIdRequest & {user: null},
-  res: Response,
-  next: Next
-): Promise<void> {
+  req,
+  res,
+  next
+) {
   let user = null;
   if (req.user) {
     if (req.user.session_id != null) {
@@ -97,40 +85,29 @@ function makeToken(payload: Object, secret: string, expiresIn: string): string {
   return jwt.sign(payload, secret, { expiresIn });
 }
 
-function ensureLoggedIn<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: LoggedInUser}, *] {
-  return [
-    (undefined: any),
-    (req: Req, res: Response, next: Next) => {
-      // TODO: active and approved should be in the type
-      if (req.user && req.user.active && req.user.approved) {
-        next();
-      } else {
-        res.sendStatus(403);
-      }
-    }
-  ];
+function ensureLoggedIn(req, res, next) {
+  // TODO: active and approved should be in the type
+  if (req.user && req.user.active && req.user.approved) {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
 }
 
-function ensureAdmin<Req: AuthRequest<?UserType>>(_: Req): [Req & {user: UserType & {role: 'admin'}}, *] {
-  return [
-    (undefined: any),
-    (req: Req, res: Response, next: Next) => {
-      if (req.user && req.user.role === 'admin') {
-        next();
-      } else {
-        res.sendStatus(403);
-      }
-    }
-  ];
+function ensureAdmin(req, res, next) {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
 }
-
 function isInvalidPassword(password: string): null | string {
   if (!password || password.length < 6) {
     return 'too short';
   }
   return null;
 }
-isInvalidPassword.english = 'The password must have 6 or more characters';
+isInvalidPassword['english'] = 'The password must have 6 or more characters';
 
 function userCanUseApp(user: UserType, app: AppName): boolean {
   if (app === 'nominations') {
@@ -144,7 +121,7 @@ async function newAuthSession(user_id: number): Promise<string> {
   return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
 }
 
-module.exports = {
+export default {
   hashPassword,
   validHashOfPassword,
   generateConfirmationCode,
@@ -156,4 +133,4 @@ module.exports = {
   userCanUseApp,
   ensureAdmin,
   newAuthSession
-};
+}

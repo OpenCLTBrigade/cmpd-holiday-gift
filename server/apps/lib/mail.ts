@@ -1,24 +1,13 @@
-// @flow
 const nodemailer = require('nodemailer');
 const ses = require('nodemailer-ses-transport');
-const config = require('../../config');
-const process = require('process');
+import config from '../../config'
 const fs = require('fs');
 const mustache = require('mustache');
-const path = require('path');
+import * as path from 'path';
 
 // TODO: emails sent should be standardized and mention the project name
 
-interface Transporter {
-  sendMail({
-    from: string,
-    to: string,
-    subject: string,
-    html: string
-  }, (any, any) => mixed): Promise<mixed>
-}
-
-function testTransporter(cb: {email: string} => void): Transporter {
+function testTransporter(cb: ({email}) => void) {
   return nodemailer.createTransport({
     name: 'print',
     version: '1.0.0',
@@ -37,7 +26,7 @@ function testTransporter(cb: {email: string} => void): Transporter {
   });
 }
 
-let defaultTransporter: Transporter;
+let defaultTransporter;
 if (config.email.ses) {
   defaultTransporter = nodemailer.createTransport(ses(config.email.ses));
 } else if (config.email.smtp) {
@@ -60,8 +49,8 @@ if (config.email.ses) {
   });
 }
 
-async function loadTemplate(dir: string, name: string): Promise<Object => {subject: string, contents: string}> {
-  const data: string = await new Promise((ok, fail) => {
+async function loadTemplate(dir, name) {
+  const data: any = await new Promise((ok, fail) => {
     fs.readFile(
       path.join(dir, `${name}.mail`),
       'utf8',
@@ -80,14 +69,14 @@ async function loadTemplate(dir: string, name: string): Promise<Object => {subje
 const globalCache: Object = {};
 
 function mailer(
-  templatesPath: string,
-  transporter: Transporter = defaultTransporter
+  templatesPath,
+  transporter = defaultTransporter
 ): (string, Object) => Promise<void> {
   if (!globalCache[templatesPath]) {
     globalCache[templatesPath] = {};
   }
   const cache = globalCache[templatesPath];
-  return async (templateName: string, data: Object) => {
+  return async (templateName, data: any) => {
     if (!cache[templateName] || config.enableHotReload) {
       cache[templateName] = await loadTemplate(templatesPath, templateName);
     }
@@ -101,6 +90,6 @@ function mailer(
   };
 }
 
-mailer.testTransporter = testTransporter;
+mailer['testTransporter'] = testTransporter;
 
 module.exports = mailer;

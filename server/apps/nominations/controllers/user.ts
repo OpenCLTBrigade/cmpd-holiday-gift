@@ -1,19 +1,14 @@
-// @flow
-
-const db = require('../../../models');
+const database = require('../../../models');
 const TableApi = require('../../lib/tableApi');
 const auth = require('../../lib/auth');
-const path = require('path');
-const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
+import * as path from 'path';
 
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AdminRole } from '../../lib/auth';
-import type { TableRequest } from '../../lib/tableApi';
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
 
 
 const RELATED_MODELS = [
-  { model: db.affiliation, as: 'affiliation' },
-  { model: db.household, as: 'nomination', where: {'deleted': false}, required: false }
+  { model: database.affiliation, as: 'affiliation' },
+  { model: database.household, as: 'nomination', where: {'deleted': false}, required: false }
 ];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
@@ -26,8 +21,8 @@ const scope = { FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] })
 
 // TODO: move user endpoints to auth app
 
-module.exports = {
-  list: async (req: UserRequest<AdminRole>, res: Response) => {
+export default {
+  list: async (req, res) => {
     const query = req.query;
     const api = new TableApi(req, query);
     try {
@@ -45,7 +40,7 @@ module.exports = {
           ...criteria.LIVE
         };
       }
-      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(database.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
 
       res.json(result);
     } catch (err) {
@@ -53,8 +48,8 @@ module.exports = {
     }
   },
 
-  listPendingUsers: async (req: UserRequest<AdminRole>, res: Response) => {
-    const query: ListRequest = (req.query: any);
+  listPendingUsers: async (req, res) => {
+    const query = req.query;
     const api = new TableApi(req, query);
     try {
       // TODO: Confirm criteria for what makes a pending user
@@ -62,28 +57,28 @@ module.exports = {
       if (query.search != null) {
         whereClause = Object.assign({}, whereClause, { name_last: { $like: `${query.search}%` } });
       }
-      const result = await api.fetchAndParse(db.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(database.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
     }
   },
 
-  getUser: async (req: UserRequest<AdminRole, { id: string }>, res: Response): Promise<void> => {
+  getUser: async (req, res) => {
     let user = null;
     try {
       if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
         throw new Error('User not found');
       }
-      user = await db.user.findOne({
+      user = await database.user.findOne({
         where: { id: req.params.id },
         include: [
           {
-            model: db.affiliation,
+            model: database.affiliation,
             as: 'affiliation'
           },
           {
-            model: db.household,
+            model: database.household,
             as: 'nomination'
           }
         ]
@@ -95,7 +90,7 @@ module.exports = {
       res.status(404);
     }
 
-    const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
+    const nomination_count = await database.household.count({ where: { 'nominator_id': user.id } });
 
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
@@ -103,7 +98,7 @@ module.exports = {
     res.json({ data: user });
   },
 
-  createUser: async (req: any, res: any): Promise<void> => {
+  createUser: async (req: any, res: any) => {
     // Must be an administrator
     if (req.user.role !== 'admin') {
       res.status(401);
@@ -120,7 +115,7 @@ module.exports = {
     }
     console.log('start');
     // Find existing user with that email address
-    const existingUser = await db.user.findOne({ where: { email: user.email } });
+    const existingUser = await database.user.findOne({ where: { email: user.email } });
     if (existingUser) {
       res.status(400);
       res.json({
@@ -131,7 +126,7 @@ module.exports = {
       return;
     }
 
-    db.user.create({
+    database.user.create({
       name_first: user.name_first,
       name_last: user.name_last,
       role: user.role,
@@ -161,7 +156,7 @@ module.exports = {
   /**
    * Edit / Update user
    */
-  updateUser: async (req: any, res: any): Promise<void> => {
+  updateUser: async (req: any, res: any) => {
     // Must be an administrator OR the current logged in user (editing themselves)
     if (req.user.role !== 'admin' && req.user.id !== req.params.id) {
       res.status(401);
@@ -176,7 +171,7 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -200,7 +195,7 @@ module.exports = {
     };
 
     if (user.password && user.password != null) {
-      newData.password = auth.hashPassword(user.password);
+      newData['password'] = auth.hashPassword(user.password);
     }
 
     if (req.user.role !== 'admin') {
@@ -219,7 +214,7 @@ module.exports = {
     });
   },
 
-  approveUser: async (req: any, res: any): Promise<void> => {
+  approveUser: async (req: any, res: any) => {
     // Must be an administrator
     if (req.user.role !== 'admin') {
       res.status(401);
@@ -227,7 +222,7 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -257,7 +252,7 @@ module.exports = {
     });
   },
 
-  declineUser: async (req: any, res: any): Promise<void> => {
+  declineUser: async (req: any, res: any) => {
     // Must be an administrator
     if (req.user.role !== 'admin') {
       res.status(401);
@@ -265,7 +260,7 @@ module.exports = {
     }
 
     // Find existing user with that id
-    const existingUser = await db.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -293,4 +288,4 @@ module.exports = {
       });
     });
   }
-};
+}

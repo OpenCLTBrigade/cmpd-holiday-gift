@@ -1,14 +1,11 @@
-// @flow
-const db = require('../../../models');
 
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AnyRole } from '../../lib/auth';
+import * as db from '../../../models'
 
-module.exports = {
-  /*
+export default {
+    /*
    * Redirects the user to /user/:theirId
    */
-  getMe: async (req: UserRequest<AnyRole>, res: Response) => {
+  getMe: async (req, res) => {
     let user = null;
     try {
       user = await db.user.findOne({
@@ -33,12 +30,12 @@ module.exports = {
     // res.redirect(`/api/nominations/users/${req.user.id}`);
   },
 
-  async getNominationsStatus(req: any, res: any) {
+  async getNominationsStatus(req, res) {
     const nominator = Object.assign({}, req.user);
     const { id, nomination_limit: limit } = nominator.dataValues;
 
     const count = await db.household.count({ where: { nominator_id: id, deleted: false } });
 
     return res.json({ count, limit });
-  },
-};
+  }
+}

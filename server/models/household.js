@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const config = require('../config');
+import config from '../config';
 
 module.exports = Sequelize => ({
   name: 'household',

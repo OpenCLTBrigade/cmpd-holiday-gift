@@ -1,16 +1,11 @@
-// @flow
-
-const db = require('../../../models');
-
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AdminRole } from '../../lib/auth';
+import * as db from '../../../models'
 
 /**
  * Used for standard packing slips _AND_ the bike slips
  * @param {*} req 
  * @param {*} res 
  */
-async function packing(req: UserRequest<AdminRole>, res: Response): Promise<void> {
+async function packing(req, res) {
 
   const whereClause = { approved: true, deleted: false };
 
@@ -35,4 +30,6 @@ async function packing(req: UserRequest<AdminRole>, res: Response): Promise<void
   res.json({ households, assistance });
 }
 
-module.exports = { packing };
+export default {
+  packing
+}

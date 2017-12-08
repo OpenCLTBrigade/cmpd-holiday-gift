@@ -15,7 +15,6 @@
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
     "seed-server": "flow-node server/seeds",
-    "postinstall": "if [ -z '$CI' ]; then NODE_PATH=./react-ui/src react-scripts build; fi",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "flow": "flow",
@@ -26,7 +25,7 @@
     "react-ui/node_modules"
   ],
   "engines": {
-    "node": "8.4.x"
+    "node": ">=8.4.x"
   },
   "files": [
     "build",
@@ -34,9 +33,12 @@
   ],
   "main": "server/apps/serve.js",
   "devDependencies": {
+    "@types/express": "^4.0.39",
+    "@types/node": "^8.0.54",
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
     "faker": "^4.1.0",
+    "fuse-box": "^2.5.0-beta.1",
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",

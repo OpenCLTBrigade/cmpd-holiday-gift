@@ -1,12 +1,7 @@
-// @flow
-
 const Excel = require('exceljs');
 const db = require('../../../models');
 
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AdminRole } from '../../lib/auth';
-
-function headersForExcelFile(name: string): * {
+function headersForExcelFile(name: string) {
   return {
     'Content-type': 'application/vnd.ms-excel',
     'Content-Disposition': `attachment; filename="${name}.xlsx"`,
@@ -22,7 +17,7 @@ function flatten(field: string, object: Object): Object {
   return ret;
 }
 
-async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Promise<void> {
+async function export_data_excel(req, res) {
   const now = new Date().toISOString();
   res.set(headersForExcelFile(`GiftProjectDump_${now}`));
 
@@ -65,7 +60,7 @@ async function export_data_excel(req: UserRequest<AdminRole>, res: Response): Pr
   await workbook.commit();
 }
 
-async function link_report(req: UserRequest<AdminRole>, res: Response) {
+async function link_report(req, res) {
   const now = new Date().toISOString();
   res.set(headersForExcelFile(`GiftProjectTheLinkReport_${now}`));
 
@@ -132,7 +127,7 @@ async function link_report(req: UserRequest<AdminRole>, res: Response) {
   await workbook.commit();
 }
 
-async function bike_report(req: UserRequest<AdminRole>, res: Response) {
+async function bike_report(req, res) {
   const now = new Date().toISOString();
   res.set(headersForExcelFile(`GiftProjectBikeReport_${now}`));
 
@@ -160,7 +155,7 @@ async function bike_report(req: UserRequest<AdminRole>, res: Response) {
   workbook.commit();
 }
 
-async function division_report(req: UserRequest<AdminRole>, res: Response) {
+async function division_report(req, res) {
   const now = new Date().toISOString();
   res.set(headersForExcelFile(`GiftProjectDivisionReport_${now}`));
 
@@ -195,4 +190,6 @@ async function division_report(req: UserRequest<AdminRole>, res: Response) {
   workbook.commit();
 }
 
-module.exports = { export_data_excel, link_report, bike_report, division_report };
+export default {
+  export_data_excel, link_report, bike_report, division_report
+}

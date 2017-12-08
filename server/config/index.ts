@@ -1,15 +1,10 @@
-// @flow
-
-const process = require('process');
-const fs = require('fs');
-
-import type { ConfigType } from './env.default.js';
+import * as fs from 'fs'
 
 // Default config values can be overridden by ../../env.js
 
-const config: ConfigType = require('./env.default.js');
+const config = require('./env.default.js');
 
-let customize: (ConfigType) => void = () => {};
+let customize = (config) => {};
 if (process.env.NODE_ENV === 'testing') {
   customize = require('./env.testing.js');
 } else if (fs.existsSync(require.resolve('../../env.js'))) {
@@ -24,4 +19,4 @@ if (process.env.NODE_ENV === 'testing') {
 
 customize(config);
 
-module.exports = config;
+export default config;

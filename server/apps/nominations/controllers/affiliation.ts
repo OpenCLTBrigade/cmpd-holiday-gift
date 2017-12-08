@@ -1,27 +1,17 @@
-// @flow
-
 const TableApi = require('../../lib/tableApi');
-const db = require('../../../models');
 
+import * as db from '../../../models'
 const guestWhiteList = ['id', 'type', 'name'];
 
-import type { Response } from '../../lib/typed-express';
-import type { TableRequest } from '../../lib/tableApi';
-import type { UserRequest, AnyRole } from '../../lib/auth';
-
-type ListRequest = {|
-  ...$Exact<TableRequest>,
-  search: string
-|};
-module.exports = {
-  list: async (req: UserRequest<>, res: Response): Promise<void> => {
-    const query: ListRequest = (req.query: any);
+export default {
+  list: async (req, res) => {
+    const query = req.query
     const api = new TableApi(req, query, 1000);
     try {
       // Limit fields shown to guests
       const whiteList = req.user != null ? null : guestWhiteList;
       // Filter by name
-      const whereClause = {};
+      const whereClause: any = {};
       if (query.search) {
         whereClause.name = { $like: `${query.search}%` };
       }
@@ -37,9 +27,9 @@ module.exports = {
     }
   },
 
-  getAffiliation: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
+  getAffiliation: async (req, res) => {
     const id: number = parseInt(req.params.id);
-    const affiliation = await db.affiliation.findById(id);
+    const affiliation = await  db.affiliation.findById(id);
 
     if (!affiliation) {
       res.status(404);
@@ -47,4 +37,4 @@ module.exports = {
 
     res.json(affiliation);
   }
-};
+}

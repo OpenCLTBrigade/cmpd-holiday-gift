@@ -2,7 +2,7 @@
 
 const faker = require('faker');
 
-const config = require('../config');
+import config from '../config';
 
 module.exports = async (db, verbose) => {
   for (let i = 1; i < 50; i++) {
