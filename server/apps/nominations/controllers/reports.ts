@@ -1,5 +1,5 @@
 const Excel = require('exceljs');
-const db = require('../../../models');
+import db from '../../../models'
 
 function headersForExcelFile(name: string) {
   return {
@@ -75,8 +75,8 @@ async function link_report(req, res) {
     { key: 'blocked', header: 'familyBlocked', width: 15 },
   ];
 
-  const households = await db.household.findAll();
-  // const households = await db.household.findAll({ where: { approved: true } });
+  const households = await db['household'].findAll();
+  // const households = await db['household'].findAll({ where: { approved: true } });
   households.forEach(household => {
     // See GIFT-260
     household.approved = (household.approved) ? 1 : 0;
@@ -144,7 +144,7 @@ async function bike_report(req, res) {
 
   const children = await db.child.findAll({
     include: [{
-      model: db.household,
+      model: db['household'],
       as: 'household',
       where: { approved: true },
       required: true
@@ -176,11 +176,11 @@ async function division_report(req, res) {
     { key: 'address_cmpd_response_area', header: 'Response Area', width: 15 }
   ];
 
-  const households = await db.household.findAll({
+  const households = await db['household'].findAll({
     where: { approved: true },
     include: [
-      { model: db.household_address, as: 'address' },
-      { model: db.household_phone, as: 'phones' }
+      { model: db['household_address'], as: 'address' },
+      { model: db['household_phone'], as: 'phones' }
     ]
   });
   households.forEach(household => {

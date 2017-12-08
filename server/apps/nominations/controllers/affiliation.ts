@@ -1,6 +1,6 @@
 const TableApi = require('../../lib/tableApi');
+import db from '../../../models';
 
-import * as db from '../../../models'
 const guestWhiteList = ['id', 'type', 'name'];
 
 export default {
@@ -20,7 +20,7 @@ export default {
         whereClause.type = query.type;
       }
 
-      const result = await api.fetchAndParse(db.affiliation, whereClause, null, '', whiteList);
+      const result = await api.fetchAndParse(db['affiliation'], whereClause, null, '', whiteList);
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -29,7 +29,7 @@ export default {
 
   getAffiliation: async (req, res) => {
     const id: number = parseInt(req.params.id);
-    const affiliation = await  db.affiliation.findById(id);
+    const affiliation = await  db['affiliation'].findById(id);
 
     if (!affiliation) {
       res.status(404);

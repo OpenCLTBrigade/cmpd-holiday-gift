@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import auth from '../lib/auth';
 import config from '../../config'
+import db from '../../models'
 
-const db = require('../../models')
 const registration = require('../lib/registration')
 const recovery = require('../lib/recoverPassword')
 
@@ -45,7 +45,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
     const body: LoginRequest = req.body
-    const user = await db.user.findOne({ where: { email: body.email } })
+    const user = await db['user'].findOne({ where: { email: body.email } })
     if (user && auth.validHashOfPassword(user.password, body.password)) {
       // TODO handle errors from newAuthSession
       res.json({ token: await auth.newAuthSession(user.id) })

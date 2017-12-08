@@ -9,7 +9,7 @@ module.exports = async (db, verbose) => {
     if (verbose) {
       console.log(`Seeding household ${i}`);
     }
-    await db.household.create({
+    await db['household'].create({
       nominator_user_id: 1,
       name_first: faker.name.firstName(),
       name_middle: faker.name.firstName(),

@@ -7,10 +7,11 @@ const express = require('express');
 const path = require('path');
 
 import config from '../config';
+import models from '../models';
+import authApp from './auth';
 
-const models = require('../models');
 const nominations = require('./nominations');
-const authApp = require('./auth');
+
 const logger = require('./lib/logger');
 
 const app = express();

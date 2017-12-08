@@ -1324,7 +1324,7 @@ module.exports = async (db, verbose) => {
     console.log('Seeding Code for Charlotte');
   }
 
-  await db.affiliation.create({
+  await db['affiliation'].create({
     'type': 'cfc',
     'name': 'Code for Charlotte',
     'address_street': '1000 NC Music Factory Blvd',
@@ -1337,7 +1337,7 @@ module.exports = async (db, verbose) => {
     if (verbose) {
       console.log(`Seeding CMPD Station ${station.name}`);
     }
-    await db.affiliation.create({
+    await db['affiliation'].create({
       'type': 'cmpd',
       'name': station.name,
       'address_street': station.street,
@@ -1352,7 +1352,7 @@ module.exports = async (db, verbose) => {
     if (verbose) {
       console.log(`Seeing CFD Station ${station.name}`);
     }
-    await db.affiliation.create({
+    await db['affiliation'].create({
       'type': 'cfd',
       'name': station.name,
       'address_street': station.street,
@@ -1367,7 +1367,7 @@ module.exports = async (db, verbose) => {
     if (verbose) {
       console.log(`Seeding CMS School ${school.name}`);
     }
-    await db.affiliation.create({
+    await db['affiliation'].create({
       'type': 'cms',
       'name': school.name,
       'address_street': school.street,

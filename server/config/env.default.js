@@ -6,7 +6,7 @@ const path = require('path');
 const config = {};
 
 // Runtime settings
-config.run = path.join(__dirname, '../../run');
+config.run = path.join(process.cwd(), 'run');
 config.pid = process.pid;
 
 if (process.env.NODE_ENV === 'production') {

@@ -1,10 +1,10 @@
 const { validationResult } = require('express-validator/check');
-import * as db from '../../../models'
+import db from '../../../models'
 import { baseUrl } from '../../lib/misc'
 
 const logger = require('../../lib/logger');
 
-const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
+const related = [{ model: db['child'], as: 'children' }, { model: db['user'], as: 'nominator' }];
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
@@ -37,9 +37,8 @@ export default {
 
   list: async (req, res) => {
     const query = (req.query);
-    const baseUrl = baseUrl(req);
-
-    const table = createTable({ model: db.household, baseUrl });
+    logger.info(db)
+    const table = createTable({ model: db['household'], baseUrl: baseUrl(req) });
 
     try {
       let whereClause = undefined;
@@ -54,7 +53,7 @@ export default {
         };
       }
 
-      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
+      const attachmentRelation = [{ model: db['household_attachment'], as: 'attachment_data' }, { model: db['household_address'], as: 'address' }];
 
       const pullRelated = [...related, ...attachmentRelation];
 
@@ -80,9 +79,9 @@ export default {
     let phoneNumbers = [];
 
     try {
-      const entity = await db.household.findById(req.params.id, { include: related });
-      const addressEntity = await db.household_address.find({ where: { household_id: req.params.id } });
-      phoneNumbers = await db.household_phone.findAll({ where: { household_id: req.params.id } });
+      const entity = await db['household'].findById(req.params.id, { include: related });
+      const addressEntity = await db['household_address'].find({ where: { household_id: req.params.id } });
+      phoneNumbers = await db['household_phone'].findAll({ where: { household_id: req.params.id } });
       household = Object.assign(entity.dataValues, entity.vault);
 
       if (household.vault) {
@@ -181,7 +180,7 @@ export default {
 
           logger.info('uploaded to s3', { filename });
 
-          await db.household_attachment.create({ household_id: id, path: filename });
+          await db['household_attachment'].create({ household_id: id, path: filename });
           await fs.remove(file.path);
           const url = await getAttachmentUrl({ name: bucketName, filename: `${owner}/${filename}` });
           fileResults.push({ url, filename });
@@ -206,7 +205,7 @@ export default {
 
     try {
       logger.info('searching for nomination');
-      household = await db.household.findById(id);
+      household = await db['household'].findById(id);
       if (!household) {
         throw new Error('Household not found');
       }
@@ -222,7 +221,7 @@ export default {
     const { approved, reason, message } = req.body;
     try {
       logger.info(`Submitting feedback for ${req.params.id}`);
-      const household = await db.household.findById(req.params.id, { include: [{ model: db.user, as: 'nominator' }] });
+      const household = await db['household'].findById(req.params.id, { include: [{ model: db['user'], as: 'nominator' }] });
       if (!household) {
         throw new Error('Household not found');
       }
@@ -269,15 +268,15 @@ export default {
 
     const { id } = req.params;
 
-    return db.sequelize
+    return db['sequelize']
       .transaction(async () => {
         // const payload = matchedData(req);
         const payload = { ...req.body };
 
         try {
           logger.info('finding household', id);
-          const household = await db.household.findById(id);
-          const address = await db.household_address.find({ where: { household_id: id } });
+          const household = await db['household'].findById(id);
+          const address = await db['household_address'].find({ where: { household_id: id } });
 
           logger.info('updating household', id);
 
@@ -287,7 +286,7 @@ export default {
 
           address.update(Object.assign({}, payload.address));
 
-          const numbers = await db.household_phone.findAll({ where: { household_id: id } });
+          const numbers = await db['household_phone'].findAll({ where: { household_id: id } });
 
           const removedNumbers =
             numbers &&
@@ -317,7 +316,7 @@ export default {
           for (const added of addedNumbers) {
             logger.info('adding number');
 
-            db.household_phone.create(Object.assign({}, added, { household_id: id }));
+            db['household_phone'].create(Object.assign({}, added, { household_id: id }));
           }
 
           for (const updated of updatedNumbers) {
@@ -327,7 +326,7 @@ export default {
             toUpdate.update(updated);
           }
 
-          const nominations = await db.child.findAll({ where: { household_id: id } });
+          const nominations = await db['child'].findAll({ where: { household_id: id } });
 
           const removedNominations =
             nominations &&
@@ -356,7 +355,7 @@ export default {
           for (const added of addedNominations) {
             logger.info('adding nomination', added);
 
-            db.child.create(Object.assign({}, childDefaults, added, { household_id: id }));
+            db['child'].create(Object.assign({}, childDefaults, added, { household_id: id }));
           }
 
           for (const updated of updatedNominations) {
@@ -378,7 +377,7 @@ export default {
 
     const nominator = Object.assign({}, req.user.dataValues);
     const { nomination_limit } = nominator;
-    const count = await db.household.count({
+    const count = await db['household'].count({
       where: {
         nominator_id: nominator.id,
         deleted: false,
@@ -393,14 +392,14 @@ export default {
       return res.status(400).json({ errors: errors.mapped() });
     }
 
-    return db.sequelize
+    return db['sequelize']
       .transaction(async t => {
         try {
           const { household, address, phoneNumbers, nominations } = req.body;
 
           logger.info('creating household');
           // Create household record
-          const newHousehold = await db.household.create(
+          const newHousehold = await db['household'].create(
             Object.assign({}, householdDefaults, household, { nominator_id: nominator.id })
           );
           const { id } = newHousehold;
@@ -409,7 +408,7 @@ export default {
           logger.info('creating household_address');
 
           // Create address record (from address{})
-          const newAddress = await db.household_address.create({
+          const newAddress = await db['household_address'].create({
             street: address.street,
             street2: address.street2 || '',
             city: address.city,
@@ -425,7 +424,7 @@ export default {
 
           for (const phone of phoneNumbers) {
             logger.info('creating household_phone');
-            const newPhone = await db.household_phone.create({
+            const newPhone = await db['household_phone'].create({
               number: phone.number,
               type: phone.type,
               household_id: id
@@ -438,7 +437,7 @@ export default {
           for (const child of nominations) {
             logger.info('creating child');
 
-            const newChild = await db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
+            const newChild = await db['child'].create(Object.assign({}, childDefaults, child, { household_id: id }));
 
             logger.info('created child', { id: newChild.id });
           }
@@ -469,7 +468,7 @@ export default {
     try {
       logger.info('searching for nomination');
 
-      household = await db.household.findById(id);
+      household = await db['household'].findById(id);
 
       if (!household) {
         throw new Error('Household not found');

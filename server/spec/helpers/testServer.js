@@ -4,7 +4,8 @@
 const child_process = require('child_process');
 const fs = require('fs');
 
-const db = require('../../models');
+import db from '../../models'
+
 const { asyncTest } = require('./asyncTest');
 
 function testServer({ seed, mode }) {

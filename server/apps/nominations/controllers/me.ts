@@ -1,5 +1,5 @@
 
-import * as db from '../../../models'
+import db from '../../../models'
 
 export default {
     /*
@@ -8,11 +8,11 @@ export default {
   getMe: async (req, res) => {
     let user = null;
     try {
-      user = await db.user.findOne({
+      user = await db['user'].findOne({
         where: { id: req.user.id },
         include: [
           {
-            model: db.affiliation,
+            model: db['affiliation'],
             as: 'affiliation'
           }
         ]
@@ -21,7 +21,7 @@ export default {
       user = null;
     }
 
-    const nomination_count = await db.household.count({ where: { 'nominator_id': user.id } });
+    const nomination_count = await db['household'].count({ where: { 'nominator_id': user.id } });
     
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
@@ -34,7 +34,7 @@ export default {
     const nominator = Object.assign({}, req.user);
     const { id, nomination_limit: limit } = nominator.dataValues;
 
-    const count = await db.household.count({ where: { nominator_id: id, deleted: false } });
+    const count = await db['household'].count({ where: { nominator_id: id, deleted: false } });
 
     return res.json({ count, limit });
   }

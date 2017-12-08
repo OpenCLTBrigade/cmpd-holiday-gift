@@ -13,4 +13,4 @@ app.use((auth.sessionMiddleware));
 // Load the routess
 app.use(routes);
 
-module.exports = app;
+export default app;

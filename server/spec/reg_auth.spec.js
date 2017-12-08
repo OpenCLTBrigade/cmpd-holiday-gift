@@ -40,7 +40,7 @@ describe('Authentication tests', () => {
         expect(response.statusCode).toBe(200);
         expect(body.success).toBe(true);
         db = openDB();
-        user = await db.user.find({ where: { email: sampleUser.email } });
+        user = await db['user'].find({ where: { email: sampleUser.email } });
         expect(user).not.toBeNull();
         done();
       });

@@ -1,9 +1,10 @@
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
-const db = require('../../models');
+
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
 import config from '../../config'
+import db from '../../models';
 
 // TODO: import from model
 export type UserType = {
@@ -74,7 +75,7 @@ async function sessionMiddleware(
       }
     } else if (req.user.id != null) {
       // When used by an application service
-      user = await db.user.findById(req.user.id);
+      user = await db['user'].findById(req.user.id);
       req.user = user;
     }
   }

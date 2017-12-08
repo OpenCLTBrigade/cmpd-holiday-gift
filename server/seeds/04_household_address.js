@@ -2,7 +2,7 @@ const faker = require('faker');
 
 module.exports = async db => {
   for (let i = 0; i < 45; i++) {
-    await db.household_address.create({
+    await db['household_address'].create({
       household_id: i + 1,
       type: 'home',
       street: faker.address.streetAddress('###'),

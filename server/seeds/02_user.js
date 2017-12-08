@@ -3,7 +3,7 @@ import auth from '../apps/lib/auth';
 
 module.exports = async db => {
   for (let i = 0; i < 5; i++) {
-    await db.user.create({
+    await db['user'].create({
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
       affiliation_id: faker.random.number({ min: 1, max: 57 }),
@@ -17,7 +17,7 @@ module.exports = async db => {
     });
   }
 
-  await db.user.create({
+  await db['user'].create({
     name_first: 'Developer',
     name_last: 'lastName',
     affiliation_id: 1,
@@ -29,7 +29,7 @@ module.exports = async db => {
     role: 'admin'
   });
 
-  await db.user.create({
+  await db['user'].create({
     name_first: 'Nominator',
     name_last: 'Account',
     affiliation_id: 2,
@@ -41,7 +41,7 @@ module.exports = async db => {
     role: 'nominator'
   });
 
-  await db.user.create({
+  await db['user'].create({
     name_first: 'NotYetApproved',
     name_last: 'Account',
     affiliation_id: 1,
@@ -53,7 +53,7 @@ module.exports = async db => {
     role: 'nominator'
   });
 
-  await db.user.create({
+  await db['user'].create({
     name_first: 'Unapproved',
     name_last: 'Account',
     affiliation_id: 1,
@@ -65,7 +65,7 @@ module.exports = async db => {
     role: 'nominator'
   });
 
-  await db.user.create({
+  await db['user'].create({
     name_first: 'Deactivated',
     name_last: 'Account',
     affiliation_id: 1,

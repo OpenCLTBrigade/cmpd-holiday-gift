@@ -1,4 +1,4 @@
-import * as db from '../../../models'
+import db from '../../../models'
 
 /**
  * Used for standard packing slips _AND_ the bike slips
@@ -13,13 +13,13 @@ async function packing(req, res) {
     whereClause['id'] = req.query.household_id;
   }
 
-  const households = await db.household.findAll({
+  const households = await db['household'].findAll({
     where: whereClause,
     include: [
-      { model: db.household_address, as: 'address' },
-      { model: db.household_phone, as: 'phones' },
-      { model: db.child, as: 'children' },
-      { model: db.user, as: 'nominator', include: [{ model: db.affiliation }] }
+      { model: db['household_address'], as: 'address' },
+      { model:db['household_phone'], as: 'phones' },
+      { model: db['child'], as: 'children' },
+      { model: db['user'], as: 'nominator', include: [{ model: db['affiliation'] }] }
     ]
   });
   const assistance = {

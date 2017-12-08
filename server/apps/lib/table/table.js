@@ -66,7 +66,7 @@ async function fetch({ model, include = null, scope = '' }) {
   }
 
   logger.info('retrieving count', { opts });
-
+  logger.info(model)
   const rows = await model.scope(scope).findAll(opts);
 
   logger.info(`returning ${rows.count} results`);

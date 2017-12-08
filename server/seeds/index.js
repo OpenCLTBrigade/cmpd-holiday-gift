@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+import db from '../models'
 
-const db = require('../models');
 import config from '../config';
 
 async function seed() {

@@ -1,9 +1,9 @@
 const process = require('process');
 
-const loadApp = require('.');
-import config from '../config';
-const seed = require('../seeds/');
-const logger = require('./lib/logger');
+const loadApp = require('./apps');
+import config from './config';
+const seed = require('./seeds/');
+const logger = require('./apps/lib/logger');
 
 (async () => {
   if (process.env.SEED_ON_START === 'true') {

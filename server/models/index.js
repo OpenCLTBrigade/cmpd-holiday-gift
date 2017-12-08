@@ -5,6 +5,26 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const encrypted = require('sequelize-encrypted');
 
+import * as affiliation from './affiliation';
+import * as child from './child';
+import * as householdAddress from './household_address';
+import * as householdAttachment from './household_attachment';
+import * as householdPhone from './household_phone';
+import * as household from './household';
+import * as user from './user';
+import * as session from './session';
+
+const models = [
+  affiliation,
+  child,
+  householdAddress,
+  householdAttachment,
+  householdPhone,
+  household,
+  user,
+  session
+]
+
 import config from '../config';
 
 function connect(dbConfig) {
@@ -100,18 +120,14 @@ function loadModels(sequelize) {
   // - fields: sequelize field definitions (additionally accepting `encrypted: true`)
   // - associate (optional): a function that takes the current table and the database object,
   //   and performs associations such as `belongsTo`
-  fs
-    .readdirSync(__dirname)
-    .filter(function (file) {
-      return file.indexOf('.') !== 0 && file !== 'index.js';
-    })
-    .forEach(function (file) {
-      const table = require(path.join(__dirname, file))(Sequelize);
-      db[table.name] = define_table(table.name, table.fields, table.scopes, table.defaultScope);
-      if (table.associate) {
-        associations.push(() => table.associate(db[table.name], db));
-      }
-    });
+
+  models.forEach((model) => {
+    const table = model(Sequelize);
+    db[table.name] = define_table(table.name, table.fields, table.scopes, table.defaultScope);
+    if (table.associate) {
+      associations.push(() => table.associate(db[table.name], db));
+    }
+  });
 
   associations.forEach(associate => associate());
 
@@ -134,4 +150,4 @@ db.test = {
 db.sync = sequelize.sync.bind(sequelize);
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export default db;

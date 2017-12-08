@@ -1,4 +1,4 @@
-import * as db from '../../models';
+import db from '../../models';
 import { Router } from 'express';
 import { Affiliation, Household, User, Me, Reports, Slips, Cmpd  } from './controllers'
 import auth from '../lib/auth'
@@ -49,11 +49,11 @@ router.get('/cmpd/address_info', auth.ensureLoggedIn, Cmpd.getAddressInfo);
 router.get('/slips/packing', auth.ensureAdmin, Slips.packing);
 
 router.get('/test', async function (req, res) {
-  const households = await db.household.findAll({
+  const households = await db['household'].findAll({
     where: { approved: true },
     include: [
-      { model: db.household_address, as: 'address' },
-      { model: db.household_phone, as: 'phones' }
+      { model: db['household_address'], as: 'address' },
+      { model: db['household_phone'], as: 'phones' }
     ]
   });
 

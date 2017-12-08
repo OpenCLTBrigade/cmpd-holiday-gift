@@ -1,4 +1,4 @@
-import * as db from '../../models'
+import db from '../../models';
 
 const auth = require('./auth');
 const path = require('path');
@@ -8,7 +8,7 @@ const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 
 // Step 1
 async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean> {
-  const user = await db.user.findOne({ where: { email: email } });
+  const user = await db['user'].findOne({ where: { email: email } });
   if (user == null || user.active === false || user.approved === false) {
     console.log('sendRecoverEmail - User not found');
     return false;
@@ -30,7 +30,7 @@ async function sendRecoverEmail(rootUrl: string, email: string): Promise<boolean
 // Not presently used. See auth/controllers for more details
 // async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<?{token: string}> {
 async function verifyConfirmationCode(user_id: number, confirmation_code: string): Promise<boolean> {
-  const user = await db.user.findById(user_id);
+  const user = await db['user'].findById(user_id);
   if (user == null || user.confirmation_code == null || user.confirmation_code !== confirmation_code) {
     return false;
   }
@@ -45,7 +45,7 @@ async function verifyConfirmationCode(user_id: number, confirmation_code: string
 // async function resetPassword(user, new_password: string) { // Needs step 2 implemented
 async function resetPassword(id, confirmation_code, new_password: string) {
   // TODO: invalidate other sessions
-  const user = await db.user.findById(id);
+  const user = await db['user'].findById(id);
   user.set('password', auth.hashPassword(new_password));
   user.set('confirmation_code', null); // Do this in the other method in future
   await user.save();
