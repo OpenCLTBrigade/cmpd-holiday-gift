@@ -1,10 +1,9 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import auth from '../lib/auth';
 import config from '../../config'
 import db from '../../models'
 
-const registration = require('../lib/registration')
-const recovery = require('../lib/recoverPassword')
+import * as accountService from './account.service'
 
 import { rootUrl } from '../lib/misc'
 
@@ -25,55 +24,59 @@ type LoginRequest = {
   password: string
 }
 
-export async function register(req, res) {
+export async function register(req: Request, res: Response) {
     const body: RegisterRequest = req.body
-    const error = await registration.steps.register(rootUrl(req), {
-      name_first: body.firstname,
-      name_last: body.lastname,
-      rank: body.rank,
-      phone: body.phone,
-      affiliation_id: body.affiliation,
-      email: body.email,
-      raw_password: body.password
+    const result = await accountService.register(rootUrl(req), {
+      ...body
     })
-    if (error) {
-      res.json(error)
+
+    if(result) {
+      res.sendStatus(200)
     } else {
-      res.json({ success: true })
+      res.sendStatus(400)
     }
   }
 
-export async function login(req, res) {
+export async function login(req: Request, res: Response) {
+  //TODO: Add validation
     const body: LoginRequest = req.body
-    const user = await db['user'].findOne({ where: { email: body.email } })
-    if (user && auth.validHashOfPassword(user.password, body.password)) {
-      // TODO handle errors from newAuthSession
-      res.json({ token: await auth.newAuthSession(user.id) })
+
+    const result = await accountService.login(body)
+
+    if(result) {
+      res.json(result);
     } else {
-      // Unknown username or invalid password
-      res.json({ failed: true })
+      res.sendStatus(400)
     }
   }
 
-  export async function extend(req, res) {
-    if (req.user.id) {
+  export async function extend(req: Request, res: Response) {
+    //TODO: Add validation
+    if (req['user'].id) {
       // TODO: extend existing session instead
-      res.json({ token: await auth.newAuthSession(req.user.id) })
+      const result = await accountService.extend(req['user'].id);
+
+      if(result) {
+        res.json(result)
+      } else {
+        res.sendStatus(403);
+      }
     } else {
-      res.status(403).send()
+      res.sendStatus(403);
     }
   }
 
-  export async function getToken(req, res) {
+  export async function getToken(req: Request, res: Response) {
+    //TODO: Add validation
     const body = req.body
-    if (req.user && auth.userCanUseApp(req.user, body.app)) {
+    if (req['user'] && auth.userCanUseApp(req['user'], body.app)) {
       res.json({
         token: auth.makeToken(
           {
-            id: req.user.id,
-            role: req.user.role,
-            name_first: req.user.name_first,
-            name_last: req.user.name_last
+            id: req['user'].id,
+            role: req['user'].role,
+            name_first: req['user'].name_first,
+            name_last: req['user'].name_last
           },
           config.jwtSecrets[body.app],
           config.appTokenLifetime
@@ -84,65 +87,73 @@ export async function login(req, res) {
     }
   }
 
-  export async function confirm(req, res) {
+  export async function confirm(req: Request, res: Response) {
+    //TODO: Add validation
     const body = req.body
-    const error = await registration.steps.confirmEmail(rootUrl(req), {
-      user_id: body.id,
-      confirmation_code: body.confirmation_code
-    })
-    if (error) {
-      res.json(error)
+
+    const result = await accountService.confirmEmail({url: rootUrl(req), ...body})
+    if(result) {
+      res.sendStatus(200);
     } else {
-      res.json({ success: true })
+      res.sendStatus(400);
     }
   }
 
-  export async function approve(req, res) {
+  export async function approve(req: Request, res: Response) {
+    //TODO: Add validation
     const body = req.body
-    const error = await registration.steps.approve(body.user_id)
-    if (error) {
-      res.json(error)
+    const result = await accountService.approveUser(body.user_id);
+
+    if(result) {
+      res.sendStatus(200);
     } else {
-      res.json({ success: true })
+      res.sendStatus(400);
     }
   }
 
-  export async function sendRecoverEmail(req, res) {
+  export async function sendRecoverEmail(req: Request, res: Response) {
+    //TODO: Add validation
     const body = req.body
-    if (await recovery.sendRecoverEmail(rootUrl(req), body.email)) {
-      res.json({ success: true })
+    const result = await accountService.sendRecoveryEmail({url: rootUrl(req), ...body});
+
+    if(result) {
+      res.sendStatus(200);
     } else {
-      res.json({ error: 'failed' })
+      res.sendStatus(400);
     }
   }
 
-  async function verifyConfirmationCode(req, res) {
+  async function verifyConfirmationCode(req: Request, res: Response) {
+    //TODO: Add validation
     const body = req.body
-    const token = recovery.verifyConfirmationCode(body.user_id, body.confirmation_code)
-    if (!token) {
-      res.json({ error: 'failed' })
+    const result = await accountService.verifyConfirmationCode(body)
+
+    if(result) {
+      res.sendStatus(200);
     } else {
-      res.json({ token })
+      res.sendStatus(400);
     }
   }
 
-  export async function resetPassword(req, res) {
+  export async function resetPassword(req: Request, res: Response) {
     const body = req.body
+    //TODO: Add validation that confirmation, password, and id are present.
+
     // When using verifyConfirmationCode
-    // await recovery.resetPassword(req.user, body.new_password);
-    const { id, confirmation_code, password } = body
-    if (!id || !confirmation_code || !password) {
-      res.json({ success: false })
-      return
-    }
+    // await recovery.resetPassword(req['user'], body.new_password);
+    const { id, confirmationCode, password } = body
+    
+    const hasValidCode = await accountService.verifyConfirmationCode({id, confirmationCode})
   
-    const token = recovery.verifyConfirmationCode(id, confirmation_code) // Remove when implementing other method
-    if (!token) {
-      res.json({ success: false, error: 'Invalid token.' })
-      return
+    if (!hasValidCode) {
+      return res.sendStatus(400);
     }
+
+    const result = await accountService.resetPassword({id, confirmationCode, password})
   
-    // await recovery.resetPassword(req.user, body.new_password); // when using verifyConfirmationCode
-    await recovery.resetPassword(id, confirmation_code, password)
-    res.json({ success: true })
+    if(result) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
   }
