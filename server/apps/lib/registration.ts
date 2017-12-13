@@ -8,7 +8,7 @@ const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 const asyncDo = require('./asyncDo');
 
 // Step 1
-async function register(rootUrl: string, userInfo) {
+export async function register(rootUrl: string, userInfo) {
   const user = await db['user'].findOne({ where: { email: userInfo.email } });
   if (user) {
     return {
@@ -42,7 +42,7 @@ async function register(rootUrl: string, userInfo) {
 }
 
 // Step 2
-async function sendVerification(rootUrl: string, user) {
+export async function sendVerification(rootUrl: string, user) {
   const confirmation_code = auth['generateConfirmationCode']();
   user.set('confirmation_code', confirmation_code);
   await user.save();
@@ -58,7 +58,7 @@ async function sendVerification(rootUrl: string, user) {
 }
 
 // Step 3
-async function confirmEmail(
+export async function confirmEmail(
   rootUrl,
   { user_id, confirmation_code }
 ) {
@@ -78,13 +78,13 @@ async function confirmEmail(
 }
 
 // Step 4
-async function sendApproval(rootUrl: string, user) {
+export async function sendApproval(rootUrl: string, user) {
   const url = `${rootUrl}/dashboard/user/pending`;
   await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
 }
 
 // Step 5
-async function approve(user_id: number) {
+export async function approve(user_id: number) {
   const user = await db['user'].findById(user_id);
   if (!user) {
     return { error: 'unknown user' };
@@ -94,11 +94,3 @@ async function approve(user_id: number) {
   await user.save();
   return null;
 }
-
-module.exports = {
-  steps: {
-    register,
-    confirmEmail,
-    approve
-  }
-};

@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
 const encrypted = require('sequelize-encrypted');
 
@@ -23,7 +21,7 @@ const models = [
   household,
   user,
   session
-]
+];
 
 import config from '../config';
 

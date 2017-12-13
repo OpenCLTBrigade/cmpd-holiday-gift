@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt-nodejs');
-const crypto = require('crypto');
+import * as bcrypt from 'bcrypt-nodejs'
+import * as crypto from 'crypto'
 
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
@@ -22,7 +22,7 @@ export type AppName = 'nominations';
 // TODO: automatically delete expired sessions from database
 
 function hashPassword(password: string): string {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 }
 
 function validHashOfPassword(hash: string, password: string): boolean {
