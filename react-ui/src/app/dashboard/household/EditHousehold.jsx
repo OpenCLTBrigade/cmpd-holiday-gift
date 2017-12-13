@@ -264,10 +264,9 @@ class NewHousehold extends React.Component<
         this.showConfirmation();
       }
     } catch (e) {
-      this.setState(() => ({
-        show: true,
-        errorMessage: 'Something went wrong'
-      }));
+      const errorMessage = e.response.status === 403 ? 'You must add at least one child to the household' : 'Something went wrong';
+
+      this.setState(() => ({ show: true, errorMessage }));
       console.error(e);
     }
   }
