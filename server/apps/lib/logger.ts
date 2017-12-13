@@ -1,4 +1,4 @@
 const pino = require('pino');
 const level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
 
-module.exports = pino({ level, prettyPrint: true });
+export default pino({ level, prettyPrint: true });

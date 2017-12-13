@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator/check');
 import db from '../../../models'
 import { baseUrl } from '../../lib/misc'
 
-const logger = require('../../lib/logger');
+import logger from '../../lib/logger';
 
 const related = [{ model: db['child'], as: 'children' }, { model: db['user'], as: 'nominator' }];
 const formidable = require('formidable');

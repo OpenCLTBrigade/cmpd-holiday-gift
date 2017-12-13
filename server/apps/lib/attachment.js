@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3({ region: process.env.AWS_REGION || 'us-west-2', signatureVersion: 'v4' });
 
-const logger = require('./logger');
+import logger from './logger';
 
 const createMainBucket = async (name) => {
 // Create the parameters for calling createBucket

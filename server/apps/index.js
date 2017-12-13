@@ -12,7 +12,7 @@ import authApp from './auth';
 
 const nominations = require('./nominations');
 
-const logger = require('./lib/logger');
+import logger from './lib/logger';
 
 const app = express();
 

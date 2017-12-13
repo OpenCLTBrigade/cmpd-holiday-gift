@@ -1,6 +1,6 @@
 const addressTool = require('../../lib/cmpdAddress');
 const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas');
-const logger = require('../../lib/logger');
+import logger from '../../lib/logger';
 
 async function getAddressInfo(req, res) {
 

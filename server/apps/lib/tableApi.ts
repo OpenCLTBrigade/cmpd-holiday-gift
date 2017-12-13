@@ -1,8 +1,6 @@
 import { baseUrl } from '../lib/misc'
 
-const logger = require('./logger')
-
-
+import logger from './logger';
 
 type CountedSet<Row> = {
   rows: Row[],

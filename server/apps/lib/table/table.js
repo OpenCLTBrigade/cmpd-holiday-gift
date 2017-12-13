@@ -1,6 +1,7 @@
 const { pick } = require('ramda');
-const logger = require('../logger');
+
 const filter = require('./filter');
+import logger from '../logger';
 
 function calculateNextPage(currentPage, lastPage) {
   if (currentPage >= lastPage) {
