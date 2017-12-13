@@ -203,7 +203,7 @@ export default class Register extends React.Component<
         'Last Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
       error = 'Affiliation is required';
-    } else if (phone == null || phone === '') {
+    } else if (phone == null || phone === '' || !phone.match(/^\d{10}$/)) {
       error = 'Phone number is required';
     } else if (
       email == null ||
