@@ -48,7 +48,7 @@ router
   .handleAsync(Household.createAttachments);
 router
   .post('/households/:id/feedback')
-  .use(auth.ensureLoggedIn)
+  .use(auth.ensureAdmin)
   .handleAsync(Household.submitFeedback);
 router
   .post('/households/:id/attachments')
