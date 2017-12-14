@@ -1,40 +1,29 @@
-const TableApi = require('../../lib/tableApi');
-import db from '../../../models';
 
-const guestWhiteList = ['id', 'type', 'name'];
+import * as affiliationService from '../service/affiliation.service'
 
 export default {
   list: async (req, res) => {
     const query = req.query
-    const api = new TableApi(req, query, 1000);
+    const whitelist = req.user != null ? null : ['id', 'type', 'name'];
+
     try {
-      // Limit fields shown to guests
-      const whiteList = req.user != null ? null : guestWhiteList;
-      // Filter by name
-      const whereClause: any = {};
-      if (query.search) {
-        whereClause.name = { $like: `${query.search}%` };
-      }
-
-      if (query.type) {
-        whereClause.type = query.type;
-      }
-
-      const result = await api.fetchAndParse(db['affiliation'], whereClause, null, '', whiteList);
-      res.json(result);
+      const affilations = await affiliationService.query({ search: query.search, page: query.page, whitelist })
+      
+      res.json(affilations);
     } catch (err) {
-      res.json({ error: 'error fetching data' });
+
+      res.json(404);
     }
   },
 
   getAffiliation: async (req, res) => {
     const id: number = parseInt(req.params.id);
-    const affiliation = await  db['affiliation'].findById(id);
+    const affiliation = await affiliationService.getAffiliation(id)
 
-    if (!affiliation) {
-      res.status(404);
+    if (affiliation) {
+      return res.json(affiliation);
     }
 
-    res.json(affiliation);
+    res.sendStatus(404);
   }
 }
