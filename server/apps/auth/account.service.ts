@@ -1,4 +1,4 @@
-import { User } from "./user";
+import User from "./user";
 import auth from "../lib/auth";
 import logger from "../lib/logger";
 
@@ -7,7 +7,7 @@ import * as path from "path";
 import { getRepository } from "typeorm";
 import config from "../../config";
 
-const sendMail = require("./mail")(path.join(__dirname, "../auth/templates"));
+const sendMail = require("../lib/mail")(path.join(__dirname, "../auth/templates"));
 
 export async function login({ email, password }) {
   try {
