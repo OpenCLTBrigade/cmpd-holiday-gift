@@ -11,7 +11,7 @@ export async function query({
   whitelist = ["id", "type", "name"]
 }) {
   try {
-    const query = {
+    const query = search && {
       keys: ["name"],
       search
     };
