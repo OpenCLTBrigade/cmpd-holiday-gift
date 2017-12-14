@@ -1,4 +1,5 @@
-const Fuse = require('fuse.js');
+import * as Fuse from 'fuse.js';
+
 const defaults = {
   shouldSort: true,
   threshold: 0.2,
@@ -8,7 +9,7 @@ const defaults = {
   minMatchCharLength: 1
 };
 
-module.exports = ({ list, keys, search }) => {
+export default ({ list, keys, search }) => {
 
   const options = { ...defaults, keys };
   const fuse = new Fuse(list, options);
