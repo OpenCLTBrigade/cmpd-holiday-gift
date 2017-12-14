@@ -1,6 +1,6 @@
 const { pick } = require('ramda');
 
-const filter = require('./filter');
+import filter from './filter';
 import logger from '../logger';
 
 function calculateNextPage(currentPage, lastPage) {
@@ -77,7 +77,7 @@ async function fetch({ model, include = null, scope = '' }) {
 
 const init = ({ model, baseUrl, fieldWhitelist = null }) => ({
   async fetch({ where, include = null, scope = '', page = 1, itemsPerPage = 10 }) {
-    const { rows } = await fetch({ model, where, include, scope, page, itemsPerPage });
+    const { rows } = await fetch({ model, include, scope });
 
     const list = where ? filter({ list: rows, ...where }) : rows;
 
@@ -85,4 +85,19 @@ const init = ({ model, baseUrl, fieldWhitelist = null }) => ({
   }
 });
 
-module.exports = init;
+type PageResultProps = {
+  results: any[],
+  page: number,
+  itemsPerPage?: number, 
+  query?: { keys: string[], search: string },
+  fieldWhitelist?: string[],
+  baseUrl: string
+}
+
+export const createPagedResults = ({results, page = 1, itemsPerPage = 10, query = undefined, fieldWhitelist = undefined, baseUrl}: PageResultProps) => {
+  const filtered = query ? filter({ list: results, ...query }) : results;
+
+  return parseResults({ results: { rows: filtered }, totalSize: filtered.length, fieldWhitelist, page, itemsPerPage, baseUrl });
+}
+
+export default init;
