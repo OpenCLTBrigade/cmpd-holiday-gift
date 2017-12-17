@@ -19,6 +19,7 @@ module.exports = async (db, verbose) => {
       gender: faker.random.arrayElement(config.genders),
       email: faker.internet.email(),
       last4ssn: ('000' + faker.random.number(9999)).slice(-4),
+      children_count: ('0' + faker.random.number(99)).slice(-2),
       preferred_contact_method: faker.random.arrayElement(['phone', 'email']),
       draft: false,
       approved: i % 5 !== 0

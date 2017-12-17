@@ -12,7 +12,7 @@ const HeadOfHousehold = () => {
         <Col xs={12}>
           <Box title="Head of Household Information" bsStyle="primary">
             <Row>
-              <Col md={6} xs={12}>
+              <Col md={4} xs={12}>
                 <Input
                   label="First Name"
                   name="household.name_first"
@@ -21,13 +21,25 @@ const HeadOfHousehold = () => {
                   validator={requiredValidator}
                 />
               </Col>
-              <Col md={6} xs={12}>
+              <Col md={4} xs={12}>
                 <Input
                   label="Last Name"
                   name="household.name_last"
                   id="lastName"
                   type="text"
                   validator={requiredValidator}
+                />
+              </Col>
+	      <Col md={4} xs={12}>
+                <Input
+                    label="Number of children Nominated"
+                    id="children_count"
+                    name="household.children_count"
+                    type="text"
+                    validator={requiredValidator}
+                    pattern="[0-9][0-9]|[0-9]"
+                      /* TODO: is this the correct number of children to nominate? */
+                    maxLength="4"
                 />
               </Col>
             </Row>
