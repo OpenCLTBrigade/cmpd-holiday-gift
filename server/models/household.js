@@ -53,6 +53,10 @@ module.exports = Sequelize => ({
       allowNull: false,
       encrypt: true
     },
+    children_count: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     preferred_contact_method: {
       type: Sequelize.STRING,
       allowNull: false
