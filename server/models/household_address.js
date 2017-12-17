@@ -42,6 +42,10 @@ module.exports = Sequelize => ({
     cmpd_response_area: {
       type: Sequelize.STRING,
       defaultValue: null
+    },
+    shipping_note: {
+      type: Sequelize.STRING,
+      defaultValue: null
     }
   },
   associate: function(address, db) {

@@ -68,31 +68,29 @@ const PhoneNumbers = ({ phoneNumbers }) => {
 
 const Address = ({ address }) => {
   return (
-    <Row>
-      <Col xs={12}>
-        <ListGroup>
-          <LineItem label="Type" text={address.type} />
-          <ListGroupItem>
-            <LabelText>Address</LabelText>
-            <ValueText>
-              {address.street} <br />
-              {address.street2 && (
-                <span>
-                  {address.street2}
-                  <br />
-                </span>
-              )}
-              {address.city}, {address.state}, {address.zip}
-            </ValueText>
-          </ListGroupItem>
-          <LineItem label="CMPD Division" text={address.cmpd_division} />
-          <LineItem
-            label="CMPD Response Area"
-            text={address.cmpd_response_area}
-          />
-        </ListGroup>
-      </Col>
-    </Row>
+        <Row>
+            <Col xs={12}>
+                <ListGroup>
+                    <LineItem label="Type" text={address.type} />
+                    <ListGroupItem>
+                        <LabelText>Address</LabelText>
+                        <ValueText>
+                            {address.street} <br />
+                            {address.street2 && (
+                                <span>
+                                    {address.street2}
+                                    <br />
+                                </span>
+                            )}
+                            {address.city}, {address.state}, {address.zip}
+                        </ValueText>
+                    </ListGroupItem>
+                    <LineItem label="CMPD Division" text={address.cmpd_division} />
+                    <LineItem label="CMPD Response Area" text={address.cmpd_response_area} />
+                    <LineItem label="Note for Delivery" text={address.shipping_note} />
+                </ListGroup>
+            </Col>
+        </Row>
   );
 };
 

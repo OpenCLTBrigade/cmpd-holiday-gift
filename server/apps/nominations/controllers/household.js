@@ -501,18 +501,19 @@ module.exports = {
           logger.info('created household', { id, nominator: nominator.id });
           logger.info('creating household_address');
 
-          // Create address record (from address{})
-          const newAddress = await db.household_address.create({
-            street: address.street,
-            street2: address.street2 || '',
-            city: address.city,
-            state: address.state,
-            zip: address.zip,
-            cmpd_division: address.cmpd_division,
-            cmpd_response_area: address.cmpd_response_area,
-            type: address.type || '',
-            household_id: id
-          });
+                                // Create address record (from address{})
+                const newAddress = await db.household_address.create({
+                  street: address.street,
+                  street2: address.street2 || '',
+                  shipping_note: address.shipping_note || '',
+                  city: address.city,
+                  state: address.state,
+                  zip: address.zip,
+                  cmpd_division: address.cmpd_division,
+                  cmpd_response_area: address.cmpd_response_area,
+                  type: address.type || '',
+                  household_id: id
+                });
 
           logger.info('created household_address', { id: newAddress.id });
 
