@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import Household from './household';
 
 //TODO: Encrypt all fields
 @Entity('household_addresses')
@@ -29,4 +30,8 @@ export default class {
 
     @Column('text', {nullable: true})
     cmpdResponseArea: string
+
+    @OneToOne(() => Household)
+    @JoinColumn({name: 'household_id'})
+    household: Household
 }

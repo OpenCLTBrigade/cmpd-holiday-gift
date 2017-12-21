@@ -48,26 +48,25 @@ export default class Household {
     @Column('text', {name: 'nomination_email_sent'}) 
     nominationEmailSent = false
 
-    @Column({nullable: true}) 
+    @Column('boolean', {nullable: true}) 
     draft: boolean = true
 
-    @Column() 
+    @Column('boolean') 
     reviewed: boolean = false
 
-    @Column() 
+    @Column('boolean') 
     approved: boolean = false
 
-    @Column({nullable: true}) 
+    @Column('text', {nullable: true}) 
     reason: string
 
-    @Column() 
+    @Column('boolean') 
     deleted: boolean = false
 
     @Column('date', {name: 'deleted_at'}) 
-    deletedAt: boolean = false
+    deletedAt
 
     @OneToOne(() => Address)
-    @JoinColumn()
     address: Address;
 
     @OneToMany(() => Child, child => child.household) 
@@ -80,6 +79,7 @@ export default class Household {
     phones: PhoneNumber[]
 
     @ManyToOne(() => User, user => user.households) 
+    @JoinColumn({ name: "nominator_id" })
     nominator: User
 
     get fullName() {

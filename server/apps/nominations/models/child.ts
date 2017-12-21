@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import * as moment from 'moment';
 import Household from './household';
 
@@ -34,49 +34,50 @@ export default class Child {
     @Column('text') 
     last4ssn: string
 
-    @Column({name: 'free_or_reduced_lunch'})
+    @Column('boolean', {name: 'free_or_reduced_lunch'})
     freeOrReducedLunch: boolean
 
     @Column('text', {name: 'reason_for_nomination'})
     reasonForNomination: string
 
-    @Column({name: 'school_id', nullable: true})
+    @Column('int', {name: 'school_id', nullable: true})
     schoolId: number
 
-    @Column({name: 'bike_want'})
+    @Column('boolean', {name: 'bike_want'})
     wantsBike: boolean = false
 
-    @Column({name: 'bike_size', nullable: true})
+    @Column('text', {name: 'bike_size', nullable: true})
     bikeSize: string
 
-    @Column({name: 'bike_style', nullable: true})
+    @Column('text', {name: 'bike_style', nullable: true})
     bikeStyle: string
 
-    @Column({name: 'clothes_want'})
+    @Column('boolean', {name: 'clothes_want'})
     wantsClothes: boolean = false
 
-    @Column({name: 'clothes_size_shirt', nullable: true})
+    @Column('text', {name: 'clothes_size_shirt', nullable: true})
     clothesShirtSize: string
 
-    @Column({name: 'clothes_size_pants', nullable: true})
+    @Column('text', {name: 'clothes_size_pants', nullable: true})
     clothesPantsSize: string
 
-    @Column({name: 'clothes_size_coat', nullable: true})
+    @Column('text', {name: 'clothes_size_coat', nullable: true})
     clothesCoatSize: string
 
-    @Column({name: 'shoe_size', nullable: true})
+    @Column('text', {name: 'shoe_size', nullable: true})
     shoeSize: string
 
-    @Column({name: 'favourite_colour', nullable: true})
+    @Column('text', {name: 'favourite_colour', nullable: true})
     favouriteColor: string
 
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     interests: string
 
-    @Column({name: 'additional_ideas', nullable: true})
+    @Column('text', {name: 'additional_ideas', nullable: true})
     additionalIdeas: string
 
     @ManyToOne(() => Household) 
+    @JoinColumn({ name: "household_id" })
     household: Household
 
     get age() {

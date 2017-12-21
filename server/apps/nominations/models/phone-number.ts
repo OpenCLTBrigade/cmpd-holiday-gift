@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import Household from './household';
 
 @Entity('household_phones')
@@ -13,6 +13,7 @@ export default class PhoneNumber {
     @Column('text')
     number: string
     
-    @ManyToOne(() => Household) 
+    @ManyToOne(() => Household)
+    @JoinColumn({ name: "household_id" })
     household: Household
 }

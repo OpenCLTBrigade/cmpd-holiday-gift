@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import Household from './household';
 import User from './user';
 
@@ -11,8 +11,10 @@ export default class Attachment {
     path: string
 
     @ManyToOne(() => Household)
+    @JoinColumn({ name: "household_id" })
     household: Household
 
     @ManyToOne(() => User)
+    @JoinColumn({ name: "owner_id" })
     user: User
 }
