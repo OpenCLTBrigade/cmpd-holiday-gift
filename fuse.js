@@ -30,7 +30,7 @@ server
   .completed(proc => {
     proc.start()
 
-    typeHelper.runSync()
+    // typeHelper.runSync()
   })
 
 server.run()
