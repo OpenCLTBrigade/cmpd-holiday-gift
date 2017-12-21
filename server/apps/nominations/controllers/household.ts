@@ -1,3 +1,5 @@
+
+import * as formidable from 'formidable';
 const { validationResult } = require('express-validator/check');
 import db from '../../../models'
 import { baseUrl } from '../../lib/misc'
@@ -5,14 +7,14 @@ import { baseUrl } from '../../lib/misc'
 import logger from '../../lib/logger';
 
 const related = [{ model: db['child'], as: 'children' }, { model: db['user'], as: 'nominator' }];
-const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
 const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
-const createTable = require('../../lib/table');
+import createTable from '../../lib/table';
+import { query as queryHouseholds } from '../service/household.service';
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
 
@@ -36,37 +38,31 @@ const householdDefaults = {
 export default {
 
   list: async (req, res) => {
-    const query = (req.query);
+    const {search, page} = (req.query);
     logger.info(db)
     const table = createTable({ model: db['household'], baseUrl: baseUrl(req) });
 
     try {
-      let whereClause = undefined;
-
-      if (query.search) {
-        whereClause = {
-          keys: [
-            'name_last',
-            'nominator.name_last'
-          ],
-          search: query.search
-        };
-      }
-
       const attachmentRelation = [{ model: db['household_attachment'], as: 'attachment_data' }, { model: db['household_address'], as: 'address' }];
 
       const pullRelated = [...related, ...attachmentRelation];
 
       logger.info('what', { pullRelated });
 
-      const result = await table.fetch({
-        page: query.page,
-        where: whereClause,
-        include: pullRelated,
-        scope: ['active', { method: ['filteredByUser', req.user] }]
-      });
+      const results = queryHouseholds({
+        page, 
+        search,
+        baseUrl: baseUrl(req)
+      })
 
-      res.json(result);
+      // const result = await table.fetch({
+      //   page: query.page,
+      //   where: whereClause,
+      //   include: pullRelated,
+      //   scope: ['active', { method: ['filteredByUser', req.user] }]
+      // });
+
+      res.json(results);
     } catch (err) {
       logger.error(err);
       res.json({ error: 'error fetching data' });
