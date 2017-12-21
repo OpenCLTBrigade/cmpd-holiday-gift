@@ -1,17 +1,20 @@
 const process = require('process');
 
-const loadApp = require('./apps');
+import loadApp from './apps'
+
 import config from './config';
 const seed = require('./seeds/');
 
 import logger from './apps/lib/logger';
+import connect from './instances/sequelize';
 
-(async () => {
+connect().then(async () => {
+
   if (process.env.SEED_ON_START === 'true') {
     await seed();
   }
 
-  const app = await loadApp;
+  const app = await loadApp();
 
   const listener = app.listen((process.env.PORT || config.port), () => {
     const port = listener.address().port;
@@ -25,4 +28,4 @@ import logger from './apps/lib/logger';
       });
     }
   });
-})();
+});
