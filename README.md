@@ -16,7 +16,7 @@ on the dependencies we use.
 * Copy `env.example.js` to `env.js`.
 * Run `npm run start-client` to start the front-end in development mode. Access the application at http://localhost:3000. 
 * In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it.
-* Run `npm run seed-server` to generate sample data.
+* Run `npm run seed` to generate sample data.
 
 Read [Front end development notes here](#front-end-development).
 
@@ -32,7 +32,7 @@ To access the PHP version of the project from 2016 you can run `git checkout 1.3
 
 When you pull changes to the database schema or sample data the application may stop working. When this occurs you need
 to delete the SQLite database in `run/` and restart your server instance. After restarting the server be sure to
-seed the database using `npm run seed-server`. You should now be good to keep going!
+seed the database using `npm run seed`. You should now be good to keep going!
 
 # Build for Production
 
@@ -59,7 +59,7 @@ Optionally, set up a [mailtrap.io] account if you are working on
 emails. Put your account info in `env.js` (see `env.example.js` for an
 example).
 
-Seed database: `node seed-server`
+Seed database: `node seed`
 
 Run tests: `npm test-server`
 
