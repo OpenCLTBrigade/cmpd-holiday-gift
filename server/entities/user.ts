@@ -1,5 +1,4 @@
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import Household from './household';
+import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('users')
 export default class User {
@@ -45,8 +44,6 @@ export default class User {
   @Column('text', {default: false})
   approved: boolean
 
-  @OneToMany(() => Household, household => household.nominator)
-  households: Household[]
 
   @BeforeInsert() 
   encrypt() {
