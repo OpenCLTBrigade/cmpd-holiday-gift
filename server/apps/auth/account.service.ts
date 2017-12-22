@@ -1,199 +1,200 @@
-import User from "./user";
-import auth from "../lib/auth";
-import logger from "../lib/logger";
 
+import { Component, Inject } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import * as path from "path";
 
-import { getRepository } from "typeorm";
+import User from '../../entities/user';
+import auth from "../lib/auth";
+import logger from "../lib/logger";
 import config from "../../config";
 
 const sendMail = require("../lib/mail")(path.join(__dirname, "../auth/templates"));
 
-export async function login({ email, password }) {
-  try {
-    let user = await getRepository(User).findOne({ email });
+@Component()
+export class AccountService {
+  constructor(
+    @Inject('UserRepositoryToken') private readonly userRepo: Repository<User>) {}
 
-    if (user && auth.validHashOfPassword(user.password, password)) {
-      return { token: await auth.newAuthSession(user.id) };
-    }
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-}
-
-export async function register(url, { email, password: rawPassword, ...rest }) {
-  try {
-    const repository = getRepository(User);
-    const password = auth.hashPassword(rawPassword);
-    const user = await repository.create({ email, password, ...rest });
-
-    const confirmationCode = auth.generateConfirmationCode();
-    user.confirmationCode = confirmationCode;
-    
-    await repository.save(user);
-
-    sendMail('verify-email', {
-      to: email,
-      confirmationCode,
-      confirmationUrl: `${url}/auth/confirm_email`
-    })
-
-    user.confirmationEmail = true;
-    
-    await repository.save(user);
-
-    return user;
-  } catch (error) {
-    logger.error(error);
-
-    return undefined;
-  }
-}
-
-export async function extend({ id }) {
-  if (id) {
-    return { token: await auth.newAuthSession(id) };
-  }
-
-  return undefined;
-}
-
-export async function getToken({ app, user }) {
-  try {
-    if (user && auth.userCanUseApp(user, app)) {
-      const { id, role, firstName, lastName } = user;
-
-      return {
-        token: auth.makeToken(
-          {
-            id,
-            role,
-            firstName,
-            lastName
-          },
-          config.jwtSecrets[app],
-          config.appTokenLifetime
-        )
-      };
-    }
-  } catch (error) {
-    logger.error(error);
-
-    return undefined;
-  }
-}
-
-export async function confirmEmail({ url, id, confirmationCode }) {
-  try {
-    const repository = getRepository(User);
-    let user = await repository.findOneById(id);
-
-    if (
-      user.confirmationEmail &&
-      !user.emailVerified &&
-      confirmationCode !== user.confirmationCode
-    ) {
-      throw new Error("confirmation code does not match");
+    async login({ email, password }) {
+        try {
+          let user = await this.userRepo.findOne({ email });
+      
+          if (user && auth.validHashOfPassword(user.password, password)) {
+            return { token: await auth.newAuthSession(user.id) };
+          }
+        } catch (error) {
+          logger.error(error);
+          return undefined;
+        }
     }
 
-    user.emailVerified = true;
-    user.confirmationCode = null;
+    async register(url, { email, password: rawPassword, ...rest }) {
+        try {
+          const password = auth.hashPassword(rawPassword);
+          const user = await this.userRepo.create({ email, password, ...rest });
+      
+          const confirmationCode = auth.generateConfirmationCode();
+          user.confirmationCode = confirmationCode;
+          
+          await this.userRepo.save(user);
+      
+          sendMail('verify-email', {
+            to: email,
+            confirmationCode,
+            confirmationUrl: `${url}/auth/confirm_email`
+          })
+      
+          user.confirmationEmail = true;
+          
+          await this.userRepo.save(user);
+      
+          return user;
+        } catch (error) {
+          logger.error(error);
+      
+          return undefined;
+        }
+      }
 
-    await repository.save(user);
+      async extend({ id }) {
+        if (id) {
+          return { token: await auth.newAuthSession(id) };
+        }
+      
+        return undefined;
+      }
 
-    return user;
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-}
+      async getToken({ app, user }) {
+        try {
+          if (user && auth.userCanUseApp(user, app)) {
+            const { id, role, firstName, lastName } = user;
+      
+            return {
+              token: auth.makeToken(
+                {
+                  id,
+                  role,
+                  firstName,
+                  lastName
+                },
+                config.jwtSecrets[app],
+                config.appTokenLifetime
+              )
+            };
+          }
+        } catch (error) {
+          logger.error(error);
+      
+          return undefined;
+        }
+      }
 
-export async function approveUser({ id }) {
-  try {
-    const repository = getRepository(User);
-    let user = await repository.findOneById(id);
+      async confirmEmail({ url, id, confirmationCode }) {
+        try {
+          let user = await this.userRepo.findOneById(id);
+      
+          if (
+            user.confirmationEmail &&
+            !user.emailVerified &&
+            confirmationCode !== user.confirmationCode
+          ) {
+            throw new Error("confirmation code does not match");
+          }
+      
+          user.emailVerified = true;
+          user.confirmationCode = null;
+      
+          await this.userRepo.save(user);
+      
+          return user;
+        } catch (error) {
+          logger.error(error);
+          return undefined;
+        }
+      }
 
-    user.approved = true;
-    user.active = true;
+      async approveUser({ id }) {
+        try {
+          let user = await this.userRepo.findOneById(id);
+      
+          user.approved = true;
+          user.active = true;
+      
+          await this.userRepo.save(user);
+      
+          return user;
+        } catch (error) {
+          logger.error(error);
+          return undefined;
+        }
+      }
 
-    await repository.save(user);
+      async sendRecoveryEmail({ url, email }) {
+        try {
+          let user = await this.userRepo.findOne({ email });
+      
+          if (user == null || user.active === false || user.approved === false) {
+            logger.info("sendRecoverEmail - User not found");
+            return undefined;
+          }
+      
+          const confirmationCode = auth.generateConfirmationCode();
+      
+          user.confirmationCode = confirmationCode;
+      
+          await this.userRepo.save(user);
+      
+          await sendMail("recover", {
+            to: email,
+            user,
+            confirmationCode,
+            confirmationUrl: `${url}/auth/new_password`
+          });
+      
+          return user;
+        } catch (error) {
+          logger.error(error);
+          return undefined;
+        }
+      }
 
-    return user;
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-}
+      async verifyConfirmationCode({ id, confirmationCode }) {
+        try {
+          let user = await this.userRepo.findOneById(id);
+      
+          if (
+            user.confirmationCode == null ||
+            user.confirmationCode !== confirmationCode
+          ) {
+            return false;
+          }
+      
+          return true;
+        } catch (error) {
+          logger.error(error);
+          return false;
+        }
+      }
 
-export async function sendRecoveryEmail({ url, email }) {
-  try {
-    const repository = getRepository(User);
-    let user = await repository.findOne({ email });
-
-    if (user == null || user.active === false || user.approved === false) {
-      logger.info("sendRecoverEmail - User not found");
-      return undefined;
+      async resetPassword({ id, confirmationCode, password }) {
+        try {
+          const hasValidCode = await this.verifyConfirmationCode({id, confirmationCode})
+      
+          if(!hasValidCode) {
+            return undefined
+          }
+      
+          let user = await this.userRepo.findOneById(id);
+      
+          user.password = auth.hashPassword(password);
+          user.confirmationCode = null;
+      
+          this.userRepo.save(user);
+      
+          return user;
+        } catch (error) {
+          logger.error(error);
+          return undefined;
+        }
     }
-
-    const confirmationCode = auth.generateConfirmationCode();
-
-    user.confirmationCode = confirmationCode;
-
-    await repository.save(user);
-
-    await sendMail("recover", {
-      to: email,
-      user,
-      confirmationCode,
-      confirmationUrl: `${url}/auth/new_password`
-    });
-
-    return user;
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-}
-
-export async function verifyConfirmationCode({ id, confirmationCode }) {
-  try {
-    const repository = getRepository(User);
-    let user = await repository.findOneById(id);
-
-    if (
-      user.confirmationCode == null ||
-      user.confirmationCode !== confirmationCode
-    ) {
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    logger.error(error);
-    return false;
-  }
-}
-
-export async function resetPassword({ id, confirmationCode, password }) {
-  try {
-    const hasValidCode = await verifyConfirmationCode({id, confirmationCode})
-
-    if(!hasValidCode) {
-      return undefined
-    }
-
-    const repository = getRepository(User);
-    let user = await repository.findOneById(id);
-
-    user.password = auth.hashPassword(password);
-    user.confirmationCode = null;
-
-    repository.save(user);
-
-    return user;
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
 }
