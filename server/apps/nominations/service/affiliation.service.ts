@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 
-import Affiliation from "../models/affiliation";
+import Affiliation from "../../../entities/affiliation";
 
 import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";

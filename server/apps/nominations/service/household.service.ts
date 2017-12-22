@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 
-import Household from '../models/household';
+import Household from '../../../entities/household';
 
 import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";
