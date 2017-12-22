@@ -7,6 +7,8 @@ export default class Child {
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column('int')
+    householdId: number
 
     //TODO: encrypt this field
     @Column('text', {name: 'name_first'})

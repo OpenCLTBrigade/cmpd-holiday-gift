@@ -1,9 +1,12 @@
+import { Connection } from "typeorm";
+import {Address} from '../entities'
 const faker = require('faker');
 
-module.exports = async db => {
-  for (let i = 0; i < 45; i++) {
-    await db['household_address'].create({
-      household_id: i + 1,
+export default async (connection: Connection) => {
+  const repo = connection.getRepository(Address)
+  for (let i = 0; i < 25; i++) {
+    await repo.create({
+      householdId: i + 1,
       type: 'home',
       street: faker.address.streetAddress('###'),
       street2: i % 7 === 0 ? faker.address.secondaryAddress() : '',
@@ -12,4 +15,4 @@ module.exports = async db => {
       zip: faker.address.zipCode()
     });
   }
-};
+}

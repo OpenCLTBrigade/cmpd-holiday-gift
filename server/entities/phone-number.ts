@@ -6,6 +6,9 @@ export default class PhoneNumber {
     @PrimaryGeneratedColumn() 
     id: number
 
+    @Column('int')
+    householdId: number
+
     //TODO: Encrypt field
     @Column('text')
     type: string

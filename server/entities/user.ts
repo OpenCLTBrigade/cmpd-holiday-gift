@@ -1,4 +1,5 @@
-import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import Affiliation from './affiliation';
 
 @Entity('users')
 export default class User {
@@ -44,6 +45,12 @@ export default class User {
   @Column('text', {default: false})
   approved: boolean
 
+  @Column('int')
+  affilationId: number
+
+  @OneToOne(() => Affiliation)
+  @JoinColumn({ name: 'affiliation_id' })
+  affiliation: Affiliation 
 
   @BeforeInsert() 
   encrypt() {

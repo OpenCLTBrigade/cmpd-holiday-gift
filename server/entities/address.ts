@@ -25,6 +25,9 @@ export default class {
     @Column('text')
     zip: string
 
+    @Column('int')
+    householdId: number
+
     @Column('text', {nullable: true})
     cmpdDivision: string
 
