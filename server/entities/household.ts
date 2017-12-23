@@ -25,7 +25,7 @@ export default class Household {
     lastName: string
 
     //TODO: encrypt this field
-    @Column('text', {name: 'name_last'}) 
+    @Column('text', {name: 'dob'}) 
     dob: string
 
     @Column('text') 
@@ -63,7 +63,7 @@ export default class Household {
     @Column('boolean') 
     deleted: boolean = false
 
-    @Column('date', {name: 'deleted_at'}) 
+    @Column('date', {name: 'deleted_at', nullable: true}) 
     deletedAt
 
     @OneToOne(() => Address)

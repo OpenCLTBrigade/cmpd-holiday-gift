@@ -23,7 +23,7 @@ export default class Child {
     lastName: string
 
     //TODO: encrypt this field
-    @Column('text', {name: 'name_last'}) 
+    @Column('text', {name: 'dob'}) 
     dob: string
 
     @Column('text') 

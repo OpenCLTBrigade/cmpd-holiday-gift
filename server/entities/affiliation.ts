@@ -14,7 +14,7 @@ export default class Affiliation {
     @Column('text', {name: 'address_street'})
     addressStreet: string
 
-    @Column('text', {name: 'address_street2'})
+    @Column('text', {name: 'address_street2', nullable: true})
     addressStreet2: string
 
     @Column('text', {name: 'address_city'})
@@ -23,9 +23,9 @@ export default class Affiliation {
     @Column('text', {name: 'address_state'})
     addressState: string
 
-    @Column('text', {name: 'address_zip'})
+    @Column('text', {name: 'address_zip', nullable: true})
     addressZip: string
 
-    @Column('text')
+    @Column('text', {nullable: true} )
     phone: string
 }

@@ -1,5 +1,6 @@
-import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import Affiliation from './affiliation';
+import Household from './household';
 
 @Entity('users')
 export default class User {
@@ -51,6 +52,9 @@ export default class User {
   @OneToOne(() => Affiliation)
   @JoinColumn({ name: 'affiliation_id' })
   affiliation: Affiliation 
+
+  @OneToMany(() => Household, household => household.nominator)
+  households: Household[]
 
   @BeforeInsert() 
   encrypt() {
