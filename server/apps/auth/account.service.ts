@@ -1,6 +1,5 @@
 
-import { Component, Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Component } from '@nestjs/common';
 import * as path from "path";
 
 import User from '../../entities/user';
@@ -12,12 +11,11 @@ const sendMail = require("../lib/mail")(path.join(__dirname, "../auth/templates"
 
 @Component()
 export class AccountService {
-  constructor(
-    @Inject('UserRepositoryToken') private readonly userRepo: Repository<User>) {}
+  constructor() {}
 
     async login({ email, password }) {
         try {
-          let user = await this.userRepo.findOne({ email });
+          let user = await User.findOne({ email });
       
           if (user && auth.validHashOfPassword(user.password, password)) {
             return { token: await auth.newAuthSession(user.id) };
@@ -31,12 +29,12 @@ export class AccountService {
     async register(url, { email, password: rawPassword, ...rest }) {
         try {
           const password = auth.hashPassword(rawPassword);
-          const user = await this.userRepo.create({ email, password, ...rest });
-      
+          const user = User.fromJSON({ email, password, ...rest });
+               
           const confirmationCode = auth.generateConfirmationCode();
           user.confirmationCode = confirmationCode;
           
-          await this.userRepo.save(user);
+          await user.save();
       
           sendMail('verify-email', {
             to: email,
@@ -46,7 +44,7 @@ export class AccountService {
       
           user.confirmationEmail = true;
           
-          await this.userRepo.save(user);
+          await user.save();
       
           return user;
         } catch (error) {
@@ -91,7 +89,7 @@ export class AccountService {
 
       async confirmEmail({ url, id, confirmationCode }) {
         try {
-          let user = await this.userRepo.findOneById(id);
+          let user = await User.findOneById(id);
       
           if (
             user.confirmationEmail &&
@@ -104,7 +102,7 @@ export class AccountService {
           user.emailVerified = true;
           user.confirmationCode = null;
       
-          await this.userRepo.save(user);
+          await user.save();
       
           return user;
         } catch (error) {
@@ -115,12 +113,12 @@ export class AccountService {
 
       async approveUser({ id }) {
         try {
-          let user = await this.userRepo.findOneById(id);
+          let user = await User.findOneById(id);
       
           user.approved = true;
           user.active = true;
       
-          await this.userRepo.save(user);
+          await user.save();
       
           return user;
         } catch (error) {
@@ -131,7 +129,7 @@ export class AccountService {
 
       async sendRecoveryEmail({ url, email }) {
         try {
-          let user = await this.userRepo.findOne({ email });
+          let user = await User.findOne({ email });
       
           if (user == null || user.active === false || user.approved === false) {
             logger.info("sendRecoverEmail - User not found");
@@ -142,7 +140,7 @@ export class AccountService {
       
           user.confirmationCode = confirmationCode;
       
-          await this.userRepo.save(user);
+          await user.save();
       
           await sendMail("recover", {
             to: email,
@@ -160,7 +158,7 @@ export class AccountService {
 
       async verifyConfirmationCode({ id, confirmationCode }) {
         try {
-          let user = await this.userRepo.findOneById(id);
+          let user = await User.findOneById(id);
       
           if (
             user.confirmationCode == null ||
@@ -184,12 +182,12 @@ export class AccountService {
             return undefined
           }
       
-          let user = await this.userRepo.findOneById(id);
+          let user = await User.findOneById(id);
       
           user.password = auth.hashPassword(password);
           user.confirmationCode = null;
       
-          this.userRepo.save(user);
+          user.save();
       
           return user;
         } catch (error) {
