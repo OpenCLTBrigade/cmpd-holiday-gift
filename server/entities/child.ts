@@ -1,29 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import * as moment from 'moment';
 import Household from './household';
 
+import encOptions from '../common/util/encryption-options';
+
+import { ExtendedColumnOptions } from "typeorm-encrypted";
+
 @Entity('children')
-export default class Child {
+export default class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
     @Column('int')
     householdId: number
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'name_first'})
+    @Column('varchar', <ExtendedColumnOptions>{name: 'name_first', ...encOptions}) 
     firstName: string
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'name_middle', nullable: true}) 
+    @Column('varchar', <ExtendedColumnOptions>{name: 'name_middle', nullable: true, ...encOptions}) 
     middleName: string
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'name_last'})
+    @Column('text', {name: 'name_last'}) 
     lastName: string
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'dob'}) 
+    @Column('varchar', <ExtendedColumnOptions>{name: 'dob', ...encOptions}) 
     dob: string
 
     @Column('text') 
@@ -32,8 +32,7 @@ export default class Child {
     @Column('text') 
     gender: string
 
-    //TODO: encrypt this field
-    @Column('text') 
+    @Column('varchar',  <ExtendedColumnOptions> encOptions) 
     last4ssn: string
 
     @Column('boolean', {name: 'free_or_reduced_lunch'})
