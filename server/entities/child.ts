@@ -17,7 +17,7 @@ export default class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column('int')
+    @Column('int', {name: 'household_id'})
     householdId: number
 
     @Column('varchar', <ExtendedColumnOptions>{name: 'name_first', ...encOptions}) 

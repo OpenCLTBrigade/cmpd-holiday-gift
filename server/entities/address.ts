@@ -33,7 +33,7 @@ export default class HouseholdAddress extends BaseEntity {
     @Column('varchar',  <ExtendedColumnOptions> encOptions) 
     zip: string
 
-    @Column('int')
+    @Column('int', {name: 'household_id'})
     householdId: number
 
     @Column('text', {nullable: true})

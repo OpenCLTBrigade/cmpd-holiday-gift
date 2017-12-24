@@ -21,7 +21,7 @@ export default class Household extends BaseEntity {
     @PrimaryGeneratedColumn() 
     id: number
 
-    @Column('int') 
+    @Column('int', { name: 'nominator_id' }) 
     nominatorId: number
 
     @Column('varchar', <ExtendedColumnOptions>{name: 'name_first', ...encOptions}) 
