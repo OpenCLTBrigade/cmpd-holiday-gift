@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany, ManyToOne, BaseEntity } from 'typeorm';
 
 import Address from './address';
 import User from './user';
@@ -6,26 +6,28 @@ import Child from './child';
 import PhoneNumber from './phone-number';
 import Attachment from './attachment';
 
+import encOptions from '../common/util/encryption-options';
+
+import { ExtendedColumnOptions } from "typeorm-encrypted";
 
 @Entity('households')
-export default class Household {
+export default class Household extends BaseEntity {
     @PrimaryGeneratedColumn() 
     id: number
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'name_first'}) 
+    @Column('int') 
+    nominatorId: number
+
+    @Column('varchar', <ExtendedColumnOptions>{name: 'name_first', ...encOptions}) 
     firstName: string
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'name_middle', nullable: true}) 
+    @Column('varchar', <ExtendedColumnOptions>{name: 'name_middle', nullable: true, ...encOptions}) 
     middleName: string
 
-    //TODO: encrypt this field
     @Column('text', {name: 'name_last'}) 
     lastName: string
 
-    //TODO: encrypt this field
-    @Column('text', {name: 'dob'}) 
+    @Column('varchar', <ExtendedColumnOptions>{name: 'dob', ...encOptions}) 
     dob: string
 
     @Column('text') 
@@ -34,12 +36,10 @@ export default class Household {
     @Column('text') 
     gender: string
 
-    //TODO: encrypt this field
-    @Column('text') 
+    @Column('varchar',  <ExtendedColumnOptions> encOptions) 
     last4ssn: string
 
-    //TODO: encrypt this field
-    @Column('text') 
+    @Column('varchar',  <ExtendedColumnOptions> encOptions) 
     email: string
 
     @Column('text', {name: 'preferred_contact_method', nullable: true}) 
