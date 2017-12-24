@@ -1,4 +1,4 @@
-import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BaseEntity } from 'typeorm';
+import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import Affiliation from './affiliation';
 import Household from './household';
 
@@ -55,10 +55,10 @@ export default class User extends BaseEntity {
   @Column('int')
   affilationId: number
 
-  @Column('date', { name: 'created_at', nullable: true })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt
 
-  @Column('date', { name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt
 
   @OneToOne(() => Affiliation)
