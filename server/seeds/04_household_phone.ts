@@ -1,16 +1,15 @@
-import { Connection } from "typeorm";
-import {PhoneNumber} from "../entities";
+import { Connection } from 'typeorm';
+import { PhoneNumber } from '../entities';
 
 const faker = require('faker');
 
 export default async (connection: Connection) => {
-  const repo = connection.getRepository(PhoneNumber)
+    for (let i = 0; i < 25; i++) {
+        const number = new PhoneNumber();
+        number.householdId = faker.random.number(25) + 1;
+        number.type = 'home';
+        number.number = '' + faker.phone.phoneNumberFormat();
 
-  for (let i = 0; i < 55; i++) {
-    await repo.create({
-      householdId: faker.random.number(48) + 1,
-      type: 'home',
-      number: faker.phone.phoneNumberFormat()
-    });
-  }
+        await number.save();
+    }
 };
