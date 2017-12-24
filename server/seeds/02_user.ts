@@ -23,22 +23,10 @@ const createUser = (props = {}) => ({
 });
 
 export default async (connection: Connection, verbose = true) => {
-    // const repo = connection.getRepository(User)
-
     for (let i = 0; i < 5; i++) {
         const user = createUser();
     
-        const entity = new User();
-        entity.firstName = user.firstName;
-        entity.lastName = user.lastName;
-        entity.email = user.email;
-        entity.active = user.active;
-        entity.affilationId = user.affilationId;
-        entity.approved = user.approved;
-        entity.confirmationEmail = user.confirmationEmail;
-        entity.password = user.password;
-        entity.nominationLimit = user.nominationLimit;
-        entity.role = user.role;
+        const entity = User.fromJSON(user);
 
         await entity.save();
     
@@ -47,72 +35,73 @@ export default async (connection: Connection, verbose = true) => {
         }
       }
 
-      const developer = new User();
-      developer.firstName = 'Developer';
-      developer.lastName = 'lastName';
-      developer.affilationId = 1;
-      developer.email = 'developer@codeforcharlotte.org';
-      developer.password = auth.hashPassword('admin');
-      developer.nominationLimit = 1000000;
-      developer.active = true;
-      developer.approved = true;
-      developer.role = 'admin';
+      const developer = User.fromJSON({
+        firstName: 'Developer',
+        lastName: 'lastName',
+        affilationId: 1, 
+        email: 'developer@codeforcharlotte.org',
+        password: auth.hashPassword('admin'),
+        nominationLimit: 1000000,
+        active: true,
+        approved: true,
+        role: 'admin'
+      });
 
       await developer.save();
 
-      const nominator = new User();
-
-      nominator.firstName = 'Developer';
-      nominator.lastName = 'Account';
-      nominator.affilationId = 2;
-      nominator.email = 'nominator@codeforcharlotte.org';
-      nominator.password = auth.hashPassword('admin');
-      nominator.nominationLimit = 5;
-      nominator.active = true;
-      nominator.approved = true;
-      nominator.role = 'nominator';
+      const nominator = User.fromJSON({
+        firstName: 'Nominator',
+        lastName: 'Account',
+        affilationId: 2, 
+        email: 'nominator@codeforcharlotte.org',
+        password: auth.hashPassword('admin'),
+        nominationLimit: 5,
+        active: true,
+        approved: true,
+        role: 'nominator'
+      });
 
       await nominator.save();
 
-      const notApproved = new User();
-
-      notApproved.firstName = 'NotYetApproved';
-      notApproved.lastName = 'Account';
-      notApproved.affilationId = 1;
-      notApproved.email = 'notyetapproved@codeforcharlotte.org';
-      notApproved.password = auth.hashPassword('admin');
-      notApproved.nominationLimit = 5;
-      notApproved.active = true;
-      notApproved.approved = false;
-      notApproved.role = 'nominator';
+      const notApproved = User.fromJSON({
+        firstName: 'NotYetApproved',
+        lastName: 'Account',
+        affilationId: 1, 
+        email: 'notyetapproved@codeforcharlotte.org',
+        password: auth.hashPassword('admin'),
+        nominationLimit: 5,
+        active: true,
+        approved: false,
+        role: 'nominator'
+      });
 
       await notApproved.save();
 
-      const denied = new User();
-
-      denied.firstName = 'Unapproved';
-      denied.lastName = 'Account';
-      denied.affilationId = 1;
-      denied.email = 'unapproved@codeforcharlotte.org';
-      denied.password = auth.hashPassword('admin');
-      denied.nominationLimit = 5;
-      denied.active = false;
-      denied.approved = false;
-      denied.role = 'nominator';
+      const denied = User.fromJSON({
+        firstName: 'Unapproved',
+        lastName: 'Account',
+        affilationId: 1, 
+        email: 'unapproved@codeforcharlotte.org',
+        password: auth.hashPassword('admin'),
+        nominationLimit: 5,
+        active: false,
+        approved: false,
+        role: 'nominator'
+      });
 
       await denied.save();
 
-      const deactivated = new User();
-
-      deactivated.firstName = 'Deactivated';
-      deactivated.lastName = 'Account';
-      deactivated.affilationId = 1;
-      deactivated.email = 'deactivated@codeforcharlotte.org';
-      deactivated.password = auth.hashPassword('admin');
-      deactivated.nominationLimit = 5;
-      deactivated.active = false;
-      deactivated.approved = true;
-      deactivated.role = 'nominator';
+      const deactivated = User.fromJSON({
+        firstName: 'Deactivated',
+        lastName: 'Account',
+        affilationId: 1, 
+        email: 'deactivated@codeforcharlotte.org',
+        password: auth.hashPassword('admin'),
+        nominationLimit: 5,
+        active: false,
+        approved: true,
+        role: 'nominator'
+      });
 
       await deactivated.save();
 }

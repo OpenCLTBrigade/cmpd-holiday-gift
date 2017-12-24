@@ -27,33 +27,11 @@ const createHousehold = i => ({
 });
 
 export default async (connection: Connection, verbose = true) => {
-  const repo = connection.getRepository(Household);
-
   try {
     for (let i = 1; i < 25; i++) {
-      const household = createHousehold(i);
+      const household = Household.fromJSON(createHousehold(i))
 
-      const house = new Household();
-
-      house.firstName = household.firstName;
-      house.middleName = household.middleName;
-      house.lastName = household.lastName;
-      house.dob = household.dob;
-      house.race = household.race;
-      house.gender = household.gender;
-      house.email = household.email;
-      house.last4ssn = household.last4ssn;
-      house.preferredContactMethod = household.preferredContactMethod;
-      house.draft = household.draft;
-      house.nominationEmailSent = household.nominationEmailSent;
-      house.reviewed = household.reviewed;
-      house.deleted = household.deleted;
-      house.approved = household.approved;
-      house.nominatorId = household.nominatorId;
-
-      house.save();
-
-      // await Household.create(house);
+      await household.save();
 
       if (verbose) {
         console.log(`Seeded household ${fullName(household)}`);

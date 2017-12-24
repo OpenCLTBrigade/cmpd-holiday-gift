@@ -10,31 +10,30 @@ export default async (connection: Connection) => {
   // Add 25 children to the DB
   for (let i = 0; i < 5; i++) {
 
-    const child = new Child();
-
-    child.householdId = faker.random.number(25) + 1;
-    child.firstName = faker.name.firstName();
-    child.middleName = faker.name.firstName();
-    child.lastName = faker.name.lastName();
-    child.dob = faker.date.past(18).toString();
-    child.race = faker.random.arrayElement(config.raceOptions);
-    child.last4ssn = '' + ('000' + faker.random.number(9999)).slice(-4);
-    child.freeOrReducedLunch = faker.random.boolean();
-    child.reasonForNomination = faker.lorem.text(300);
-    child.householdId = faker.random.number({ min: 60, max: 160 });
-    child.wantsBike = faker.random.boolean();
-    child.bikeSize = faker.random.arrayElement(config.bikeSizes);
-    child.bikeStyle = faker.random.arrayElement(config.bikeStyles);
-    child.wantsClothes = faker.random.boolean();
-    child.clothesShirtSize = faker.random.arrayElement(config.clothesSizes);
-    child.clothesPantsSize = faker.random.arrayElement(config.clothesSizes);
-    child.clothesCoatSize = faker.random.arrayElement(config.clothesSizes);
-    child.shoeSize = '' + faker.random.number({ min: 1, max: 9 });
-    child.favouriteColor = faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']);
-    child.interests = faker.lorem.text(30);
-    child.interests = faker.lorem.text(50);
-    child.gender = faker.random.boolean();
+    const child = Child.fromJSON({
+      householdId: faker.random.number(25) + 1,
+      firstName: faker.name.firstName(),
+      middleName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      dob: faker.date.past(18).toString(),
+      race: faker.random.arrayElement(config.raceOptions),
+      last4ssn: ('000' + faker.random.number(9999)).slice(-4).toString(),
+      freeOrReducedLunch: faker.random.boolean(),
+      reasonForNomination: faker.lorem.text(300),
+      wantsBike: faker.random.boolean(),
+      bikeSize: faker.random.arrayElement(config.bikeSizes),
+      bikeStyle: faker.random.arrayElement(config.bikeStyles),
+      wantsClothes: faker.random.boolean(),
+      clothesShirtSize: faker.random.arrayElement(config.clothesSizes),
+      clothesPantsSize: faker.random.arrayElement(config.clothesSizes),
+      clothesCoatSize: faker.random.arrayElement(config.clothesSizes),
+      shoeSize: faker.random.number({ min: 1, max: 9 }).toString(),
+      favouriteColor: faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']),
+      interests: faker.lorem.text(50),
+      gender: faker.random.boolean()
+    })
 
     await child.save();
+
   }
 };

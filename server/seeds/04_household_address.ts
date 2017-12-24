@@ -3,7 +3,6 @@ import { Address } from '../entities'
 const faker = require('faker');
 
 export default async (connection: Connection) => {
-  const repo = connection.getRepository(Address)
   for (let i = 0; i < 25; i++) {
 
     const address = new Address();
