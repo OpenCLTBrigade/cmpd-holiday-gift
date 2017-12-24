@@ -1,5 +1,3 @@
-import { getRepository } from "typeorm";
-
 import Household from '../../../entities/household';
 
 import logger from "../../lib/logger";
@@ -23,7 +21,7 @@ export async function query({
         search
       };
   
-      let results = await getRepository(Household).find();
+      let results = await Household.find();
       return createPagedResults({
         results,
         page,
