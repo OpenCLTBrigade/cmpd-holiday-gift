@@ -10,7 +10,8 @@ import {
   Child,
   PhoneNumber,
   Household,
-  User
+  User,
+  Session
 } from '../entities';
 
 import { createConnection } from 'typeorm';
@@ -28,7 +29,8 @@ async function seed({ db: { dialect: type, storage: database } }) {
       Child,
       PhoneNumber,
       Household,
-      User
+      User, 
+      Session
     ],
     subscribers: [AutoEncryptSubscriber]
   });
