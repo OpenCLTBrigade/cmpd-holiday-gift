@@ -12,6 +12,12 @@ import { ExtendedColumnOptions } from "typeorm-encrypted";
 
 @Entity('households')
 export default class Household extends BaseEntity {
+    private constructor(props) {
+      super();
+  
+      Object.assign(this, props);
+    }
+
     @PrimaryGeneratedColumn() 
     id: number
 
@@ -84,5 +90,11 @@ export default class Household extends BaseEntity {
 
     get fullName() {
         return `${this.firstName} ${this.lastName}`
+    }
+
+    static fromJSON(props) {
+      const entity = new Household(props);
+  
+      return entity;
     }
 }

@@ -3,7 +3,13 @@ import Affiliation from './affiliation';
 import Household from './household';
 
 @Entity('users')
-export default class User extends BaseEntity{
+export default class User extends BaseEntity {
+  private constructor(props) {
+    super();
+
+    Object.assign(this, props);
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -55,4 +61,10 @@ export default class User extends BaseEntity{
 
   @OneToMany(() => Household, household => household.nominator)
   households: Household[]
+
+  static fromJSON(props) {
+    const entity = new User(props);
+
+    return entity;
+  }
 }

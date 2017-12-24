@@ -8,6 +8,12 @@ import { ExtendedColumnOptions } from "typeorm-encrypted";
 
 @Entity('children')
 export default class Child extends BaseEntity {
+    private constructor(props) {
+      super();
+  
+      Object.assign(this, props);
+    }
+    
     @PrimaryGeneratedColumn()
     id: number
 
@@ -87,5 +93,11 @@ export default class Child extends BaseEntity {
 
     get fullName() {
         return `${this.firstName} ${this.lastName}`;
+    }
+
+    static fromJSON(props) {
+      const entity = new Child(props);
+  
+      return entity;
     }
 }

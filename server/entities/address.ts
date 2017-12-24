@@ -6,6 +6,12 @@ import encOptions from '../common/util/encryption-options';
 
 @Entity('household_addresses')
 export default class HouseholdAddress extends BaseEntity {
+    private constructor(props) {
+      super();
+  
+      Object.assign(this, props);
+    }
+    
     @PrimaryGeneratedColumn()
     id: number
 
@@ -39,4 +45,10 @@ export default class HouseholdAddress extends BaseEntity {
     @OneToOne(() => Household)
     @JoinColumn({name: 'household_id'})
     household: Household
+
+    static fromJSON(props) {
+      const entity = new HouseholdAddress(props);
+  
+      return entity;
+    }
 }
