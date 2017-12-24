@@ -14,7 +14,7 @@
     "debug-server": "node --inspect server-notypes/apps/serve.js",
     "test-server": "npm run build-server -- --quiet && cd server-notypes && jasmine spec/*.spec.js",
     "nodemon-server": "nodemon -x flow-node server/apps/serve.js -w env.js -w server -w node_modules",
-    "seed": "ts-node server/seeds",
+    "seed": "rimraf run/db.development.sqlite && ts-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "flow": "flow",
@@ -43,6 +43,7 @@
     "jasmine": "^2.6.0",
     "nodemon": "^1.11.0",
     "quoted-printable": "^1.0.1",
+    "rimraf": "^2.6.2",
     "sqlite3": "^3.1.13",
     "ts-node": "^4.0.2",
     "tslint": "^5.8.0",
@@ -110,7 +111,8 @@
     "sequelize-encrypted": "^1.0.0",
     "ssacl-attribute-roles": "https://registry.npmjs.org/ssacl-attribute-roles/-/ssacl-attribute-roles-0.0.5.tgz",
     "styled-components": "^2.1.0",
-    "typeorm": "^0.1.8"
+    "typeorm": "^0.1.8",
+    "typeorm-encrypted": "^0.5.0"
   },
   "proxy": {
     "/api": {
