@@ -1,9 +1,9 @@
-import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BaseEntity } from 'typeorm';
 import Affiliation from './affiliation';
 import Household from './household';
 
 @Entity('users')
-export default class User {
+export default class User extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -55,9 +55,4 @@ export default class User {
 
   @OneToMany(() => Household, household => household.nominator)
   households: Household[]
-
-  @BeforeInsert() 
-  encrypt() {
-    console.warn('Encrypt values', this)
-  }
 }
