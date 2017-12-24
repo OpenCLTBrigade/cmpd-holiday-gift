@@ -1,19 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import Household from './household';
 
+import encOptions from '../common/util/encryption-options';
+
+import { ExtendedColumnOptions } from "typeorm-encrypted";
+
 @Entity('household_phones')
-export default class PhoneNumber {
+export default class PhoneNumber extends BaseEntity {
     @PrimaryGeneratedColumn() 
     id: number
 
     @Column('int')
     householdId: number
 
-    //TODO: Encrypt field
-    @Column('text')
+    @Column('text') 
     type: string
 
-    @Column('text')
+    @Column('varchar',  <ExtendedColumnOptions> encOptions)
     number: string
     
     @ManyToOne(() => Household)
