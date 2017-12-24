@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, BeforeInsert, BeforeUpdate } from 'typeorm';
 import User from './user';
 
 @Entity('sessions')
-export default class Session {
+export default class Session extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -12,7 +12,21 @@ export default class Session {
     @Column('date', { name: 'updated_at' })
     updatedAt
 
-    @OneToOne(() => User)
+    @Column('int', { name: 'user_id' })
+    userId: number
+
+    @OneToOne(() => User, {eager: true})
     @JoinColumn({name: 'user_id'})
     user: User
+
+    @BeforeInsert()
+    updateCreated() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @BeforeUpdate()
+    updateUpdatedDate() {
+        this.updatedAt = new Date();
+    }
 }
