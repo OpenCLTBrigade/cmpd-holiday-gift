@@ -43,7 +43,7 @@ function parseResults({ results, totalSize, fieldWhitelist, page, itemsPerPage, 
   const nextPageNumber = calculateNextPage(page, lastPage);
   const previousPageNumber = calculatePreviousPage(page, lastPage);
 
-  const items = fieldWhitelist ? rows.map(record => pick(fieldWhitelist, record)) : rows;
+  const items = fieldWhitelist  && fieldWhitelist.length > 0 ? rows.map(record => pick(fieldWhitelist, record)) : rows;
 
   return {
     totalSize,
