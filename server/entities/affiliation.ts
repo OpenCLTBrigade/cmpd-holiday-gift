@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity('affiliations')
-export default class Affiliation {
+export default class Affiliation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 

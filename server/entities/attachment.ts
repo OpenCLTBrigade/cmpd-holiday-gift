@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import Household from './household';
 import User from './user';
 
 @Entity('household_attachments')
-export default class Attachment {
+export default class Attachment extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
