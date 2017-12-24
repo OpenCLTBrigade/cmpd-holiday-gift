@@ -4,7 +4,8 @@ import * as crypto from 'crypto'
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
 import config from '../../config'
-import db from '../../models';
+import { Session, User } from '../../entities'
+import logger from '../../common/util/logger';
 
 // TODO: import from model
 export type UserType = {
@@ -65,17 +66,22 @@ async function sessionMiddleware(
   if (req.user) {
     if (req.user.session_id != null) {
       // When used by the authentication service
-      const session = await db.session.findById(req.user.session_id);
+
+      const session = await Session.findOneById(req.user.session_id);
+
       if (!session) {
+        logger.info('session does not exist for user', { session: req.user.session_id })
         req.user = null;
       } else {
+        logger.info('session exists for user', { session: req.user.session_id })
+
         // TODO: validate session expiration
-        user = await session.getUser();
+        user = session.user;
         req.user = user;
       }
     } else if (req.user.id != null) {
       // When used by an application service
-      user = await db['user'].findById(req.user.id);
+      user = await User.findOneById(req.user.id);
       req.user = user;
     }
   }
@@ -117,8 +123,16 @@ function userCanUseApp(user: UserType, app: AppName): boolean {
   return false;
 }
 
-async function newAuthSession(user_id: number): Promise<string> {
-  const session = await db.session.create({ user_id });
+async function createSession(user_id: number): Promise<string> {
+
+  const session = new Session();
+
+  session.userId = user_id;
+
+  await session.save();
+
+  logger.info('created new session', session)
+
   return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
 }
 
@@ -133,5 +147,5 @@ export default {
   isInvalidPassword,
   userCanUseApp,
   ensureAdmin,
-  newAuthSession
+  createSession
 }

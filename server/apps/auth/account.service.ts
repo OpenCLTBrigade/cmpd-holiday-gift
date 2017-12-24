@@ -18,7 +18,7 @@ export class AccountService {
           let user = await User.findOne({ email });
       
           if (user && auth.validHashOfPassword(user.password, password)) {
-            return { token: await auth.newAuthSession(user.id) };
+            return { token: await auth.createSession(user.id) };
           }
         } catch (error) {
           logger.error(error);
@@ -56,7 +56,7 @@ export class AccountService {
 
       async extend({ id }) {
         if (id) {
-          return { token: await auth.newAuthSession(id) };
+          return { token: await auth.createSession(id) };
         }
       
         return undefined;

@@ -38,7 +38,7 @@ async function verifyConfirmationCode(user_id: number, confirmation_code: string
   // user.set('confirmation_code', null);
   // await user.save();
   return true;
-  // return { token: await auth.newAuthSession(user_id) };
+  // return { token: await auth.createSession(user_id) };
 }
 
 // Step 3
