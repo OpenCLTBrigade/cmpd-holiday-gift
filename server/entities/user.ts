@@ -55,6 +55,12 @@ export default class User extends BaseEntity {
   @Column('int')
   affilationId: number
 
+  @Column('date', { name: 'created_at', nullable: true })
+  createdAt
+
+  @Column('date', { name: 'updated_at', nullable: true })
+  updatedAt
+
   @OneToOne(() => Affiliation)
   @JoinColumn({ name: 'affiliation_id' })
   affiliation: Affiliation 
