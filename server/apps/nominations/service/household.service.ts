@@ -34,3 +34,7 @@ export async function query({
       return undefined;
     }
   }
+
+  export async function getById(id: number) {
+    return await Household.findOneById(id, { relations: ['nominator', 'phones', 'children']})
+  }
