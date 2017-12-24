@@ -51,8 +51,8 @@ export default class Household extends BaseEntity {
     @Column('text', {name: 'preferred_contact_method', nullable: true}) 
     preferredContactMethod: string
 
-    @Column('text', {name: 'nomination_email_sent'}) 
-    nominationEmailSent = false
+    @Column('boolean', {name: 'nomination_email_sent'}) 
+    nominationEmailSent: boolean = false
 
     @Column('boolean', {nullable: true}) 
     draft: boolean = true
