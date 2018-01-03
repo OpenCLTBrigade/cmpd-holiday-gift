@@ -25,7 +25,7 @@ server.dev({ port: 4455, httpServer: false })
 server
   .bundle('server')
   .watch('server/**') // watch only server related code.. bugs up atm
-  .instructions(' > [serve.ts]')
+  .instructions(' > [server.ts]')
   // launch and restart express
   .completed(proc => {
     proc.start()
