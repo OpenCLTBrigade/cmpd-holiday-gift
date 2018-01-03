@@ -7,7 +7,9 @@ import {
   Res,
   Body,
   HttpStatus,
-  UseGuards
+  UseGuards,
+  BadRequestException,
+  ForbiddenException
 } from '@nestjs/common';
 // import * as accountService from '../account.service';
 import { rootUrl } from '../../lib/misc';
@@ -54,7 +56,7 @@ export class AuthController {
     if (result) {
       res.sendStatus(HttpStatus.CREATED);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -66,7 +68,7 @@ export class AuthController {
     if (result) {
       return res.json(result);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -81,10 +83,10 @@ export class AuthController {
       if (result) {
         return res.json(result);
       } else {
-        res.sendStatus(HttpStatus.FORBIDDEN);
+        throw new ForbiddenException();
       }
     } else {
-      res.sendStatus(HttpStatus.FORBIDDEN);
+      throw new ForbiddenException();
     }
   }
 
@@ -107,7 +109,7 @@ export class AuthController {
         )
       });
     } else {
-      res.status(HttpStatus.FORBIDDEN).send();
+      throw new ForbiddenException();
     }
   }
 
@@ -123,7 +125,7 @@ export class AuthController {
     if (result) {
       res.sendStatus(HttpStatus.OK);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -136,7 +138,7 @@ export class AuthController {
     if (result) {
       res.sendStatus(HttpStatus.OK);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -151,7 +153,7 @@ export class AuthController {
     if (result) {
       res.sendStatus(HttpStatus.OK);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -182,7 +184,7 @@ export class AuthController {
     if (result) {
       res.sendStatus(HttpStatus.OK);
     } else {
-      res.sendStatus(HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 }
