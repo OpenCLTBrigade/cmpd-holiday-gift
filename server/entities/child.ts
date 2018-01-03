@@ -24,7 +24,7 @@ export default class Child extends BaseEntity {
     firstName: string
 
     @Column('varchar', <ExtendedColumnOptions>{name: 'name_middle', nullable: true, ...encOptions}) 
-    middleName: string
+    middleName: string = ''
 
     @Column('text', {name: 'name_last'}) 
     lastName: string
@@ -86,6 +86,9 @@ export default class Child extends BaseEntity {
     @ManyToOne(() => Household) 
     @JoinColumn({ name: "household_id" })
     household: Household
+
+    @Column('boolean') 
+    deleted: boolean = false
 
     get age() {
         return moment().diff(this.dob, 'years');

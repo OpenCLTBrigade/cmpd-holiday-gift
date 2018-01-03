@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany, ManyToOne, BaseEntity } from 'typeorm';
 
 import Address from './address';
-import User from './user';
+import User from './nominator';
 import Child from './child';
 import PhoneNumber from './phone-number';
 import Attachment from './attachment';
@@ -28,7 +28,7 @@ export default class Household extends BaseEntity {
     firstName: string
 
     @Column('varchar', <ExtendedColumnOptions>{name: 'name_middle', nullable: true, ...encOptions}) 
-    middleName: string
+    middleName: string = ''
 
     @Column('text', {name: 'name_last'}) 
     lastName: string
@@ -72,7 +72,7 @@ export default class Household extends BaseEntity {
     @Column('date', {name: 'deleted_at', nullable: true}) 
     deletedAt
 
-    @OneToOne(() => Address)
+    @OneToOne(() => Address, address => address.household)
     address: Address;
 
     @OneToMany(() => Child, child => child.household) 
@@ -82,7 +82,7 @@ export default class Household extends BaseEntity {
     attachments: Attachment[]
 
     @OneToMany(() => PhoneNumber, phone => phone.household) 
-    phones: PhoneNumber[]
+    phoneNumbers: PhoneNumber[]
 
     @ManyToOne(() => User, user => user.households) 
     @JoinColumn({ name: "nominator_id" })
@@ -94,6 +94,8 @@ export default class Household extends BaseEntity {
 
     static fromJSON(props) {
       const entity = new Household(props);
+
+      entity.address = null;
   
       return entity;
     }

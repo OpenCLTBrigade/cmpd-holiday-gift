@@ -22,7 +22,7 @@ export default class HouseholdAddress extends BaseEntity {
     street: string
 
     @Column('varchar',  <ExtendedColumnOptions> encOptions) 
-    street2: string
+    street2: string = ''
 
     @Column('varchar',  <ExtendedColumnOptions> encOptions) 
     city: string
@@ -42,7 +42,7 @@ export default class HouseholdAddress extends BaseEntity {
     @Column('text', {nullable: true})
     cmpdResponseArea: string
 
-    @OneToOne(() => Household)
+    @OneToOne(() => Household, household => household.address)
     @JoinColumn({name: 'household_id'})
     household: Household
 
