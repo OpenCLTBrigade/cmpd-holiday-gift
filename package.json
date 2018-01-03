@@ -69,6 +69,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
+    "class-validator": "^0.7.3",
     "compression": "^1.6.2",
     "date-fns": "^1.29.0",
     "eslint": "https://registry.npmjs.org/eslint/-/eslint-3.19.0.tgz",
