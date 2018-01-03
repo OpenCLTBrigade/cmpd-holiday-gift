@@ -29,6 +29,9 @@ export default class PhoneNumber extends BaseEntity {
     @JoinColumn({ name: "household_id" })
     household: Household
 
+    @Column('boolean') 
+    deleted: boolean = false
+
     static fromJSON(props) {
       const entity = new PhoneNumber(props);
   
