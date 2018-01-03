@@ -3,16 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 import config from '../config';
-import {
-  Affiliation,
-  Address,
-  Attachment,
-  Child,
-  PhoneNumber,
-  Household,
-  User,
-  Session
-} from '../entities';
+import { Affiliation, Address, Attachment, Child, PhoneNumber, Household, User, Session, Nominator } from '../entities';
 
 import { createConnection } from 'typeorm';
 import { AutoEncryptSubscriber } from 'typeorm-encrypted';
@@ -30,7 +21,8 @@ async function seed({ db: { dialect: type, storage: database } }) {
       PhoneNumber,
       Household,
       User, 
-      Session
+      Session,
+      Nominator
     ],
     subscribers: [AutoEncryptSubscriber]
   });
