@@ -1,23 +1,15 @@
 import { Entity, BeforeInsert, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import Affiliation from './affiliation';
 import Household from './household';
+import AbstractUser from './abstract/user'
 
 @Entity('users')
-export default class User extends BaseEntity {
+export default class User extends AbstractUser {
   private constructor(props) {
     super();
 
     Object.assign(this, props);
   }
-
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column('text', {name: 'name_first'})
-  firstName: string
-
-  @Column('text', {name: 'name_last'})
-  lastName: string
 
   @Column('text', {nullable: true})
   role: string
@@ -29,16 +21,13 @@ export default class User extends BaseEntity {
   phone: string
 
   @Column('text')
-  email: string
-
-  @Column('text')
   password: string
-
-  @Column('text')
-  active: boolean
 
   @Column('text', {name: 'nomination_limit', default: 5})
   nominationLimit: number
+
+  @Column('text', {name: 'email_verified', default: false})
+  emailVerified: boolean
 
   @Column('text', {name: 'confirmation_email', default: false})
   confirmationEmail: boolean
@@ -46,14 +35,8 @@ export default class User extends BaseEntity {
   @Column('text', {name: 'confirmation_code', nullable: true})
   confirmationCode: string
 
-  @Column('text', {name: 'email_verified', default: false})
-  emailVerified: boolean
-
-  @Column('text', {default: false})
-  approved: boolean
-
-  @Column('int')
-  affilationId: number
+  @Column('int', {name: 'affiliation_id'})
+  affiliationId: number
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt
@@ -64,9 +47,6 @@ export default class User extends BaseEntity {
   @OneToOne(() => Affiliation)
   @JoinColumn({ name: 'affiliation_id' })
   affiliation: Affiliation 
-
-  @OneToMany(() => Household, household => household.nominator)
-  households: Household[]
 
   static fromJSON(props) {
     const entity = new User(props);

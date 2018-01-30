@@ -1,25 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from 'typeorm';
 import Household from './household';
+import AbstractUser from './abstract/user'
 
 @Entity('users')
-export default class Nominator extends BaseEntity {
+export default class Nominator extends AbstractUser {
   private constructor(props) {
     super();
 
     Object.assign(this, props);
   }
-
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column('text', {name: 'name_first'})
-  firstName: string
-
-  @Column('text', {name: 'name_last'})
-  lastName: string
-
-  @Column('text')
-  email: string
 
   @OneToMany(() => Household, household => household.nominator)
   households: Household[]
