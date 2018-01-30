@@ -56,6 +56,7 @@
     "@google/maps": "^0.4.3",
     "@nestjs/common": "^4.5.1",
     "@nestjs/core": "^4.5.1",
+    "@nestjs/swagger": "^1.1.4",
     "@types/bcrypt-nodejs": "^0.0.30",
     "@types/formidable": "^1.0.29",
     "admin-lte": "^2.3.11",
