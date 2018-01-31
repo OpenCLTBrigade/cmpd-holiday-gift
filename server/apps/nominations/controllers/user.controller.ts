@@ -15,8 +15,11 @@ import {
 } from '@nestjs/common';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { AuthGuard } from '../../../common/guards/auth.guard';
-import { query, getPendingUsers, getById } from "../service/user.service";
+import { query, getPendingUsers, getById, create } from "../service/user.service";
 import { baseUrl } from '../../lib/misc'
+
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { CreateUserDto } from '../controllers/dto/create-user.dto';
 
 @UseGuards(RolesGuard)
 @Controller('api/nominations/users')
@@ -54,8 +57,9 @@ export class UserController {
     }
 
     @Post()
+    @Roles('admin')
     @UseGuards(AuthGuard)
-    async create() {
-        
+    async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+        return await create(createUserDto);
     }
 }

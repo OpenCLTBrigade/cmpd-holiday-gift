@@ -1,7 +1,9 @@
-import { Nominator } from '../../../entities';
+import { Nominator, User } from '../../../entities';
 
 import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";
+import { CreateUserDto } from '../controllers/dto/create-user.dto';
+import auth from "../../lib/auth";
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -91,4 +93,14 @@ export async function getPendingUsers ({
 
   export async function getById(id) {
     return await Nominator.findOneById(id, { relations: ['households']})
+  }
+
+  export async function create({password, ...rest}: CreateUserDto) {
+    logger.info('create user');
+
+    const user = User.fromJSON({ password: auth.hashPassword(password), ...rest });
+
+    const created = await user.save();
+
+    return created;
   }
