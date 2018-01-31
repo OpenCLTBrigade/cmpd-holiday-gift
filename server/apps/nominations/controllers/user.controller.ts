@@ -52,4 +52,10 @@ export class UserController {
     async getById(@Param('id') id) {
         return await getById(id);
     }
+
+    @Post()
+    @UseGuards(AuthGuard)
+    async create() {
+        
+    }
 }
