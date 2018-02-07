@@ -11,7 +11,9 @@ import {
   BadRequestException,
   ForbiddenException
 } from '@nestjs/common';
-// import * as accountService from '../account.service';
+
+import { RegisterRequestDto, LoginRequestDto } from './dto';
+import { ApiUseTags, ApiModelProperty } from '@nestjs/swagger';
 import { rootUrl } from '../../lib/misc';
 import auth from '../../lib/auth';
 import config from '../../../config';
@@ -21,23 +23,8 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 
-type RegisterRequest = {
-  firstname: string;
-  lastname: string;
-  rank: string;
-  phone: string;
-  affiliation: number;
-  email: string;
-  password: string;
-};
-
-type LoginRequest = {
-  email: string;
-  password: string;
-};
-
 @UseGuards(RolesGuard)
-
+@ApiUseTags('auth')
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly accountService: AccountService) {}
@@ -47,7 +34,7 @@ export class AuthController {
   async register(
     @Req() request: Request,
     @Res() res: Response,
-    @Body() registerDto: RegisterRequest
+    @Body() registerDto: RegisterRequestDto
   ) {
     const result = await this.accountService.register(rootUrl(request), {
       ...registerDto
@@ -61,7 +48,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Res() res: Response, @Body() loginDto: LoginRequest) {
+  async login(@Res() res: Response, @Body() loginDto: LoginRequestDto) {
     const result = await this.accountService.login(loginDto);
     logger.info(result);
 
