@@ -11,7 +11,7 @@ const fullName = compose(join(' '), props(['firstName', 'lastName']));
 const createUser = (props = {}) => ({
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  affilationId: faker.random.number({ min: 1, max: 57 }),
+  affiliationId: faker.random.number({ min: 1, max: 57 }),
   email: faker.internet.email(),
   password: auth.hashPassword('admin'),
   nominationLimit: 5,
@@ -38,7 +38,7 @@ export default async (connection: Connection, verbose = true) => {
       const developer = User.fromJSON({
         firstName: 'Developer',
         lastName: 'lastName',
-        affilationId: 1, 
+        affiliationId: 1, 
         email: 'developer@codeforcharlotte.org',
         password: auth.hashPassword('admin'),
         nominationLimit: 1000000,
@@ -52,7 +52,7 @@ export default async (connection: Connection, verbose = true) => {
       const nominator = User.fromJSON({
         firstName: 'Nominator',
         lastName: 'Account',
-        affilationId: 2, 
+        affiliationId: 2, 
         email: 'nominator@codeforcharlotte.org',
         password: auth.hashPassword('admin'),
         nominationLimit: 5,
@@ -66,7 +66,7 @@ export default async (connection: Connection, verbose = true) => {
       const notApproved = User.fromJSON({
         firstName: 'NotYetApproved',
         lastName: 'Account',
-        affilationId: 1, 
+        affiliationId: 1, 
         email: 'notyetapproved@codeforcharlotte.org',
         password: auth.hashPassword('admin'),
         nominationLimit: 5,
@@ -80,7 +80,7 @@ export default async (connection: Connection, verbose = true) => {
       const denied = User.fromJSON({
         firstName: 'Unapproved',
         lastName: 'Account',
-        affilationId: 1, 
+        affiliationId: 1, 
         email: 'unapproved@codeforcharlotte.org',
         password: auth.hashPassword('admin'),
         nominationLimit: 5,
@@ -94,7 +94,7 @@ export default async (connection: Connection, verbose = true) => {
       const deactivated = User.fromJSON({
         firstName: 'Deactivated',
         lastName: 'Account',
-        affilationId: 1, 
+        affiliationId: 1, 
         email: 'deactivated@codeforcharlotte.org',
         password: auth.hashPassword('admin'),
         nominationLimit: 5,
