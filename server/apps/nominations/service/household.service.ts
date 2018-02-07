@@ -2,6 +2,7 @@ import Household from '../../../entities/household';
 import Address from '../../../entities/address';
 import Child from '../../../entities/child';
 import PhoneNumber from '../../../entities/phone-number';
+import { BadRequestException } from '@nest/common';
 const path = require('path');
 
 import logger from "../../lib/logger";
@@ -47,7 +48,11 @@ export async function query({
   }
 
   export async function submitNomination(id) {
-    const household = await Household.findOneById(id);
+    const household = await Household.findOneById(id, { relations: ['children']});
+
+    if (household.children.length === 0) {
+      throw new BadRequestException();
+    }
 
     household.draft = false;
 
