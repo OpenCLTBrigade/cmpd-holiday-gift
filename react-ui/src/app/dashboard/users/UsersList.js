@@ -37,7 +37,7 @@ export default class UsersList extends React.Component<{}> {
 
   async fetch(page: number, search: ?string) {
     const response = await getUserList(page, search);
-    return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
+    return { items.items, totalSize.totalSize, per_page.per_page };
   }
 
   render(): React.Node {

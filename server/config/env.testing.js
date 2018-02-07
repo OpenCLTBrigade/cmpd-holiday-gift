@@ -1,7 +1,6 @@
-// @flow
 // These config settings are used for running the tests.
 
-module.exports = (config: *) => {
+module.exports = (config) => {
 
 // Listen on a random port
   config.port = 0;

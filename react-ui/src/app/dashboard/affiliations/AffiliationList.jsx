@@ -28,7 +28,7 @@ export default class AffiliationList extends React.Component<{}> {
     search: ?string
   ): Promise<{ items: AffiliationType[], totalSize: number, sizePerPage: number }> {
     const response: Object = await getAffiliationList(page, search);
-    return { items: response.items, totalSize: response.totalSize, sizePerPage: response.sizePerPage };
+    return { items.items, totalSize.totalSize, sizePerPage.sizePerPage };
   }
 
   render(): React.Node {

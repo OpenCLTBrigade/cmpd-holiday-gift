@@ -3,20 +3,16 @@
         "es6": true
     },
     "plugins": [
-        // "flowtype",
-        // "flowtype-errors",
         "dependencies"
     ],
     "extends": [
-        "eslint:recommended",
-        "plugin:flowtype/recommended"
+        "eslint:recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 8,
         "sourceType": "module"
     },
     "rules": {
-        "indent": ["error", 2],
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
@@ -34,13 +30,11 @@
         "no-tabs": ["error"],
         "no-trailing-spaces": ["error"],
         "no-whitespace-before-property": ["error"],
-        "object-curly-newline": ["error"],
         "object-curly-spacing": ["error", "always"],
         "semi-spacing": ["error"],
         "space-before-blocks": ["error"],
         "keyword-spacing": ["error"],
         "arrow-spacing": ["error"],
-        "space-before-function-paren": ["error", {"named": "never"}],
         "space-in-parens": ["error"],
         "space-infix-ops": ["error"],
         "unicode-bom": ["error"],
@@ -52,27 +46,8 @@
         "curly": ["error"],
         "eqeqeq": ["error", "always", {"null": "never"}],
         "no-multi-spaces": ["error"],
-        // "flowtype/boolean-style": ["error", "boolean"],
-        // "flowtype/define-flow-type": 1,
-        // "flowtype/delimiter-dangle": ["error", "never"],
-        // "flowtype/generic-spacing": ["error", "never"],
-        // "flowtype/no-primitive-constructor-types": "error",
-        // "flowtype/no-types-missing-file-annotation": "error",
-        // "flowtype/no-weak-types": 0,
-        // "flowtype/object-type-delimiter": ["error", "comma"],
-        // "flowtype/require-parameter-type": 0,
-        // "flowtype/semi": ["error", "always"],
-        // "flowtype/space-after-type-colon": ["error", "always"],
-        // "flowtype/space-before-generic-bracket": ["error", "never"],
-        // "flowtype/space-before-type-colon": ["error", "never"],
-        // "flowtype/union-intersection-spacing": ["error", "always"],
-        // "flowtype/use-flow-type": "warn",
-        // "flowtype/valid-syntax": "warn",
         "dependencies/case-sensitive": ["error"],
         "dependencies/no-cycles": ["error"],
-        // "dependencies/no-unresolved": ["error", {"paths": ["src"]}], TODO: does not support jsx
-        // "flowtype-errors/show-errors": 2,
-        // "flowtype-errors/enforce-min-coverage": [2, 25],
         "no-var": "error",
         "prefer-const": ["error", {"destructuring": "any"}]
     }

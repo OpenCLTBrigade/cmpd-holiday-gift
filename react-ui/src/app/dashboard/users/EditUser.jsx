@@ -33,7 +33,7 @@ export default class EditUser extends React.Component<{}, { user: * }> {
 
   componentDidMount() {
     getUser(this.props.match.params.user_id).then((response: any) => {
-      this.setState({ user: response.data });
+      this.setState({ user.data });
     }).catch(() => {
       window.location = '/dashboard/users';
       alert('User could not be found.');

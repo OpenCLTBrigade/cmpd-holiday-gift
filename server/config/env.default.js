@@ -1,37 +1,12 @@
-// @flow
-
 // Default values for configuration options. These settings can be
 // modified in ../env.js
 
 const path = require('path');
 
-export type ConfigType = {|
-  jwtSecrets: { [string]: string },
-  authTokenLifetime: string,
-  appTokenLifetime: string,
-  run: string,
-  email: $TODO,
-  port: number,
-  db: $TODO,
-  enableAccessLog: boolean,
-  verboseAccessLog: boolean,
-  verboseSeed: boolean,
-  useCompression: boolean,
-  verbose: boolean,
-  pid: number,
-  mode: string,
-  databaseEncryptionKey: string,
-  raceOptions: string[],
-  bikeSizes: string[],
-  clothesSizes: string[],
-  bikeStyles: string[],
-  genders: string[]
-|};
-
-const config: $Shape<ConfigType> = {};
+const config = {};
 
 // Runtime settings
-config.run = path.join(__dirname, '../../run');
+config.run = path.join(process.cwd(), 'run');
 config.pid = process.pid;
 
 if (process.env.NODE_ENV === 'production') {
@@ -106,4 +81,4 @@ config.bikeStyles = ['Mountain', 'BMX', 'Tricycle'];
 
 config.genders = ['F', 'M'];
 
-module.exports = ((config: any): ConfigType);
+module.exports = config;

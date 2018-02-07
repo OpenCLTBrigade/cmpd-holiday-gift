@@ -1,7 +1,5 @@
 const moment = require('moment');
 
-const config = require('../config');
-
 module.exports = Sequelize => ({
   name: 'household',
   fields: {
@@ -13,12 +11,12 @@ module.exports = Sequelize => ({
     name_first: {
       type: Sequelize.STRING,
       allowNull: false,
-      encrypt: true
+      // encrypt: true
     },
     name_middle: {
       type: Sequelize.STRING,
       defaultValue: null,
-      encrypt: true
+      // encrypt: true
     },
     // We can't encrypt last names because of search
     name_last: {
