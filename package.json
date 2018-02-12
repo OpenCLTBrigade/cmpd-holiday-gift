@@ -33,6 +33,7 @@
   ],
   "main": "server/apps/serve.js",
   "devDependencies": {
+    "@types/exceljs": "^0.5.2",
     "@types/express": "^4.0.39",
     "@types/node": "^8.0.54",
     "@types/pino": "^4.7.1",
