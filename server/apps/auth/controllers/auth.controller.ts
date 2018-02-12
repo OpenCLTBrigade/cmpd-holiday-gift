@@ -95,7 +95,6 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Authentication failure.'})
   async getToken(@Req() {user}, @Res() res: Response, @Body(new ValidationPipe()) {app}: AccessDto) {
     
-    //TODO: Add validation
     if (user && auth.userCanUseApp(user, app)) {
       const {id, role, firstName, lastName} = user
       res.json({
