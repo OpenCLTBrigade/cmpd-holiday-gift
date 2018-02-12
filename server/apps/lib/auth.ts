@@ -18,7 +18,7 @@ export type UserType = {
 };
 
 export type LoggedInUser = UserType & { approved: true, active: true };
-export type AppName = 'nominations';
+export type AppName = string | 'nominations';
 
 // TODO: automatically delete expired sessions from database
 
