@@ -4,11 +4,14 @@ import {
     Get,
     Param,
     Post,
+    Put,
     Query,
     Req,
     UseGuards,
     ValidationPipe,
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
+
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { AuthGuard } from '../../../common/guards/auth.guard';
 import { query, getPendingUsers, getById, create, approve, decline, update } from "../service/user.service";
@@ -20,6 +23,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @UseGuards(RolesGuard)
 @Controller('api/nominations/users')
+@ApiUseTags('users')
 export class UserController {
 
     //TODO: Explore using graphql here
@@ -60,21 +64,21 @@ export class UserController {
         return await create(createUserDto);
     }
 
-    @Post()
+    @Put('/:id')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async update(@Req() {user: {id: userId}}, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto) {
         return await update(updateUserDto, {id: userId});
     }
 
-    @Post('/:id/approve')
+    @Put('/:id/approve')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async approve(@Param('id') id) {
         return await approve(id);
     }
 
-    @Post('/:id/decline')
+    @Put('/:id/decline')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async decline(@Param('id') id) {

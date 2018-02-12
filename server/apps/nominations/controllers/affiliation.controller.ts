@@ -5,9 +5,12 @@ import {
     Query,
     NotFoundException
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
+
 import { query, getAffiliation } from "../service/affiliation.service";
 
 @Controller('api/nominations/affiliations')
+@ApiUseTags('cmpd')
 export class AffiliationController {
     //TODO: GraphQL probably better here.
     @Get()

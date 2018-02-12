@@ -16,6 +16,8 @@ import {
     BadRequestException,
     InternalServerErrorException
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
+
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -42,6 +44,7 @@ const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 
 @UseGuards(RolesGuard)
 @Controller('api/nominations/households')
+@ApiUseTags('nominations')
 export class HouseholdController {
 
     //TODO: Explore using graphql here
@@ -131,7 +134,7 @@ export class HouseholdController {
         }
     }
 
-    @Post('/submit')
+    @Put('/:id/submit')
     @UseGuards(AuthGuard)
     async submitNomination(@Param('id') id, @Res() res: Response) {
         await submitNomination(id);
@@ -140,7 +143,7 @@ export class HouseholdController {
     }
 
     @Roles('admin')
-    @Post(':id/feedback')
+    @Put(':id/feedback')
     @UseGuards(AuthGuard)
     async submitFeedback(@Param('id') id, @Res() res, @Body(new ValidationPipe()) submitFeedbackDto: SubmitNominationDto) {
         await submitFeedback({id, ...submitFeedbackDto});

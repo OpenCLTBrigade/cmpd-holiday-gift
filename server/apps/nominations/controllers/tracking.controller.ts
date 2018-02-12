@@ -6,10 +6,13 @@ import {
     Req,
     NotFoundException
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
+
 import { query } from '../service/household.service';
 import { baseUrl } from '../../lib/misc'
 
 @Controller('api/nominations/tracking')
+@ApiUseTags('tracking')
 export class TrackingController {
     //TODO: GraphQL probably better here.
     @Get('/packing-slips')

@@ -7,12 +7,14 @@ import {
     BadRequestException,
     InternalServerErrorException
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
 
 import logger from '../../lib/logger';
 const addressTool = require('../../lib/cmpdAddress');
 const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas');
 
 @Controller('api/nominations/cmpd')
+@ApiUseTags('cmpd')
 export class CmpdController {
     //TODO: GraphQL probably better here.
     @Get('/address-info')
