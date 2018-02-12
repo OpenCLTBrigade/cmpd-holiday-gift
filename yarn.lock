@@ -109,6 +109,13 @@
   version "8.0.57"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.57.tgz#e5d8b4dc112763e35cfc51988f4f38da3c486d99"
 
+"@types/pino@^4.7.1":
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/@types/pino/-/pino-4.7.1.tgz#8f818f8cde5c2052aef6c68a4560347f86256805"
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
+
 "@types/sequelize@^4.0.79":
   version "4.0.79"
   resolved "https://registry.yarnpkg.com/@types/sequelize/-/sequelize-4.0.79.tgz#74c366407a978e493e70d7cea3d80c681aed15c0"
