@@ -4,6 +4,8 @@ import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import auth from "../../lib/auth";
+import { UpdateUserDto } from '../controllers/dto/update-user.dto';
+import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -92,7 +94,7 @@ export async function getPendingUsers ({
   }
 
   export async function getById(id) {
-    return await Nominator.findOneById(id, { relations: ['households']})
+    return await Nominator.findOneById(id, { relations: ['households', 'affiliation']})
   }
 
   export async function create({password, ...rest}: CreateUserDto) {
@@ -100,7 +102,83 @@ export async function getPendingUsers ({
 
     const user = User.fromJSON({ password: auth.hashPassword(password), ...rest });
 
-    const created = await user.save();
+    const {password:omit, ...created} = await user.save();
 
     return created;
+  }
+
+  export async function update({id, password, ...rest}: UpdateUserDto, currentUser) {
+    if(currentUser.role !== 'admin' && currentUser.id !== id) {
+      throw new ForbiddenException();
+    } 
+
+    try {
+      const user = await User.findOneById(id);
+
+      if(!user) throw new NotFoundException();
+
+      user.firstName = rest.firstName;
+      user.lastName = rest.lastName;
+      user.rank = rest.rank;
+      user.phone = rest.phone;
+      user.email = rest.email;
+      user.emailVerified = rest.emailVerified;
+      user.nominationLimit = rest.nominationLimit;
+      user.active = rest.active;
+      user.approved = rest.approved;
+      user.affiliationId = rest.affiliationId;
+
+      if (user.password && user.password != null) {
+        user.password = auth.hashPassword(password);
+      }
+
+      if (currentUser.role === 'admin') {
+        user.role = rest.role;
+      }
+
+      const {password:omit, ...updated} = await user.save();
+
+      return updated;
+    } catch (error) {
+      
+      logger.error(error);
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
+    }
+  } 
+
+  export async function approve(id) {
+    try {
+      const user = await User.findOneById(id);
+
+      user.approved = true; 
+      user.active = true;
+      user.emailVerified = true;
+
+      const {password:omit, ...updated} = await user.save();
+
+      return updated;
+    } catch (error) {
+      
+      logger.error(error);
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
+    }
+  }
+
+  export async function decline(id) {
+    try {
+      const user = await User.findOneById(id);
+
+      user.approved = false; 
+      user.active = false;
+      user.emailVerified = false;
+      user.confirmationEmail = false;
+
+      const {password:omit, ...updated} = await user.save();
+
+      return updated;
+    } catch (error) {
+      
+      logger.error(error);
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
+    }
   }

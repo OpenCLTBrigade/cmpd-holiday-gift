@@ -3,6 +3,7 @@ import { NominationsModule } from './nominations/nominations.module';
 import { AuthModule } from './auth/auth.module';
 import auth from './lib/auth';
 import config from '../config'
+import { UploadMiddleware } from '../common/middlewares/upload.middleware';
 
 const allRoutes = {
   path: '*', method: RequestMethod.ALL
@@ -24,5 +25,10 @@ export class AppModule {
     consumer.apply(auth.authMiddleware(config.jwtSecrets.auth)).forRoutes(authRoutes);
     consumer.apply(auth.authMiddleware(config.jwtSecrets.nominations)).forRoutes(nominationRoutes);
     consumer.apply(auth.sessionMiddleware).forRoutes(allRoutes);
+
+    consumer.apply(UploadMiddleware).forRoutes({
+      path: '/api/nominations/:id/upload',
+      method: RequestMethod.PUT,
+    });
   }
 }

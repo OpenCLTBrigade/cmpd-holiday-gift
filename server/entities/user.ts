@@ -23,7 +23,7 @@ export default class User extends AbstractUser {
   @Column('text')
   password: string
 
-  @Column('text', {name: 'nomination_limit', default: 5})
+  @Column('int', {name: 'nomination_limit', default: 5})
   nominationLimit: number
 
   @Column('text', {name: 'email_verified', default: false})

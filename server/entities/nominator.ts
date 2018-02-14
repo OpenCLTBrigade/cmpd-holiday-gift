@@ -10,6 +10,9 @@ export default class Nominator extends AbstractUser {
     Object.assign(this, props);
   }
 
+  @Column('int', {name: 'nomination_limit', default: 5})
+  nominationLimit: number
+
   @OneToMany(() => Household, household => household.nominator)
   households: Household[]
 }
