@@ -7,6 +7,9 @@ import Affiliation from "../../../entities/affiliation";
 import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";
 
+export enum ErrorCodes {
+  NoAffiliationExists = "NoAffiliationExists"
+}
 
 @Component()
 export class AffiliationService {
