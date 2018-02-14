@@ -5,7 +5,7 @@ import { createPagedResults } from "../../lib/table/table";
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import auth from "../../lib/auth";
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
-import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Component, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -13,7 +13,13 @@ const Criteria = {
   LIVE: { active: true, approved: true }
 };
 
-export async function query({
+export enum ErrorCodes {
+  NoUserExists = "NoUserExists"
+}
+
+@Component()
+export class UserService {
+  async query({
     page,
     search,
     baseUrl = '',
@@ -55,7 +61,7 @@ export async function query({
     }
   }
 
-export async function getPendingUsers ({
+async getPendingUsers ({
   page,
   search,
   baseUrl = '',
@@ -93,11 +99,11 @@ export async function getPendingUsers ({
     }
   }
 
-  export async function getById(id) {
+  async getById(id) {
     return await Nominator.findOneById(id, { relations: ['households', 'affiliation']})
   }
 
-  export async function create({password, ...rest}: CreateUserDto) {
+  async create({password, ...rest}: CreateUserDto) {
     logger.info('create user');
 
     const user = User.fromJSON({ password: auth.hashPassword(password), ...rest });
@@ -107,7 +113,7 @@ export async function getPendingUsers ({
     return created;
   }
 
-  export async function update({id, password, ...rest}: UpdateUserDto, currentUser) {
+  async update({id, password, ...rest}: UpdateUserDto, currentUser) {
     if(currentUser.role !== 'admin' && currentUser.id !== id) {
       throw new ForbiddenException();
     } 
@@ -146,7 +152,7 @@ export async function getPendingUsers ({
     }
   } 
 
-  export async function approve(id) {
+  async approve(id) {
     try {
       const user = await User.findOneById(id);
 
@@ -164,7 +170,7 @@ export async function getPendingUsers ({
     }
   }
 
-  export async function decline(id) {
+  async decline(id) {
     try {
       const user = await User.findOneById(id);
 
@@ -182,3 +188,4 @@ export async function getPendingUsers ({
       throw new InternalServerErrorException('Could not update user. Unknown error.');
     }
   }
+}
