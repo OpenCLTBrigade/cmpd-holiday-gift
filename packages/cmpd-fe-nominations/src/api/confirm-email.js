@@ -1,6 +1,5 @@
-// @flow
-import { post } from 'lib/apiService';
+import { post } from '../lib/apiService';
 
-export function emailConfirmation(id: number, confirmation_code: string): Promise<void> {
+export function emailConfirmation(id, confirmation_code) {
   return post('auth', 'confirm_email', { id, confirmation_code });
 }

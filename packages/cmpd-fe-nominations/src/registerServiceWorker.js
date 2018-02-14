@@ -1,5 +1,3 @@
-// @flow
-
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -10,12 +8,14 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
-declare var process: {env: {
-  NODE_ENV: string,
-  PUBLIC_URL: string
-}};
+// declare var process: {
+//   env: {
+//     NODE_ENV: string,
+//     PUBLIC_URL: string
+//   }
+// };
 
-declare var navigator: Object;
+// declare var navigator: Object;
 
 export default function register() {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {

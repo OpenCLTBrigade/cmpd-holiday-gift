@@ -1,32 +1,22 @@
-// @flow
 import * as React from 'react';
 import { Form } from 'neoform';
-import Input from 'app/components/input';
+import Input from '../../../../app/components/input';
 import Box from '../../components/box';
 import SelectList from './select-list';
 import { Row, Col, Button } from 'react-bootstrap';
 import { FormValidation } from 'neoform-validation';
-import { getAffiliationList } from 'api/affiliation';
-import requiredValidator from 'lib/validators/required.validator';
-import type { AffiliationType } from 'api/affiliation';
-import type { UserType } from 'api/user';
+import { getAffiliationList } from '../../../../api/affiliation';
+import requiredValidator from '../../../../lib/validators/required.validator';
+// import type { AffiliationType } from 'api/affiliation';
+// import type { UserType } from 'api/user';
 
-
-async function fetchAffiliations(): Promise<AffiliationType[]> {
-  const response: Object = await getAffiliationList(1, null); // Page 1, not 0 - GIFT-241
+async function fetchAffiliations() {
+  const response = await getAffiliationList(1, null); // Page 1, not 0 - GIFT-241
   return response.items;
 }
 
-class UserForm extends React.Component<{
-  data: {user: UserType},
-  onSubmit: *,
-  validate: *,
-  onInvalid: *
-}, {
-  user: UserType
-}> {
-
-  initial: UserType;
+class UserForm extends React.Component {
+  // initial: UserType;
 
   constructor(props) {
     super(props);
@@ -39,21 +29,19 @@ class UserForm extends React.Component<{
   onReset = () => {
     this.setState({ user: this.initial });
     this.props.validate();
-  }
+  };
 
-  render(): React.Node {
-
+  render() {
     const { onSubmit, validate, onInvalid } = this.props;
 
     return (
-
-      <form id='create-new-user'
+      <form
+        id="create-new-user"
         onSubmit={e => {
           e.preventDefault();
           validate(onSubmit, onInvalid);
           onSubmit(this.props.data);
-        }}
-      >
+        }}>
         <Row>
           <Col xs={12}>
             <Box bsStyle="primary">
@@ -92,7 +80,7 @@ class UserForm extends React.Component<{
               </Row>
               <Row>
                 <Col md={12}>
-                  <SelectList fetchAll={fetchAffiliations}/>
+                  <SelectList fetchAll={fetchAffiliations} />
                 </Col>
               </Row>
               <Row>
@@ -114,15 +102,13 @@ class UserForm extends React.Component<{
                     label="Access Level"
                     name={'user.role'}
                     componentClass="select"
-                    validator={requiredValidator}
-                  >
-                    <option></option>
+                    validator={requiredValidator}>
+                    <option />
                     <option value="admin">admin</option>
                     <option value="nominator">nominator</option>
                     <option value="nominee">nominee</option>
                     <option value="partner">partner</option>
                     <option value="volunteer">volunteer</option>
-
                   </Input>
                 </Col>
               </Row>
@@ -169,9 +155,8 @@ class UserForm extends React.Component<{
                     label="Confirmed Email Address"
                     name={'user.email_verified'}
                     componentClass="select"
-                    validator={requiredValidator}
-                  >
-                    <option></option>
+                    validator={requiredValidator}>
+                    <option />
                     <option value="false">No</option>
                     <option value="true">Yes-Confirmed</option>
                   </Input>
@@ -184,9 +169,8 @@ class UserForm extends React.Component<{
                     label="Account Enabled"
                     name={'user.active'}
                     componentClass="select"
-                    validator={requiredValidator}
-                  >
-                    <option></option>
+                    validator={requiredValidator}>
+                    <option />
                     <option value="false">No-Deactivated</option>
                     <option value="true">Yes-Active</option>
                   </Input>
@@ -218,12 +202,12 @@ class UserForm extends React.Component<{
               </Row>
               <Row>
                 <Col xs={12}>
-                  <Button bsStyle="info" type="submit">Save</Button>
-                  <span></span>
-                  <Button
-                    bsStyle="warning"
-                    onClick={() => this.onReset()}
-                  >Reset
+                  <Button bsStyle="info" type="submit">
+                    Save
+                  </Button>
+                  <span />
+                  <Button bsStyle="warning" onClick={() => this.onReset()}>
+                    Reset
                   </Button>
                 </Col>
               </Row>

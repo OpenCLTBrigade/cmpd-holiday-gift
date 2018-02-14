@@ -1,6 +1,4 @@
-// @flow
-
-export default (value: ?string): Promise<string> => {
+export default value => {
   if (value == null || value === '') {
     return Promise.reject('required');
   }

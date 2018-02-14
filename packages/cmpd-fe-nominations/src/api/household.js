@@ -1,26 +1,23 @@
 // @flow
-import { get, post, put, delete_ } from 'lib/apiService';
-import type { DataTableResponse } from 'lib/apiService';
+import { get, post, put, delete_ } from '../lib/apiService';
+// import type { DataTableResponse } from 'lib/apiService';
 
-export type HouseholdType = {
-  id: number,
-  children: Object[],
-  name_first: string,
-  nominator: Object,
-  surname: string,
-  phoneNumbers: Object[],
-  address: Object,
-  attachments: Object[]
-};
+// export type HouseholdType = {
+//   id: number,
+//   children: Object[],
+//   name_first: string,
+//   nominator: Object,
+//   surname: string,
+//   phoneNumbers: Object[],
+//   address: Object,
+//   attachments: Object[]
+// };
 
-export function getHousehold(householdId: number): Promise<{household: HouseholdType}> {
+export function getHousehold(householdId) {
   return get('nominations', `/households/${householdId}`);
 }
 
-export function getHouseholdList(
-  pageNumber: number = 1,
-  search: ?string
-): Promise<{response: DataTableResponse<HouseholdType>}> {
+export function getHouseholdList(pageNumber = 1, search) {
   return get('nominations', 'households', { page: pageNumber, search: search });
 }
 
@@ -42,9 +39,13 @@ export function uploadAttachment({ id, file }) {
   return post('nominations', `households/${id}/upload`, formData);
 }
 
-export function reviewHousehold(id, payload: Object<{approved: boolean, reason: string, message: string}>) {
+export function reviewHousehold(id, payload) {
   const { approved, reason, message } = payload;
-  return post('nominations', `households/${id}/feedback`, { approved, reason, message });
+  return post('nominations', `households/${id}/feedback`, {
+    approved,
+    reason,
+    message
+  });
 }
 
 export function getNominationStatus() {

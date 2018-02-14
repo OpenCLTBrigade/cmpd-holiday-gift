@@ -1,16 +1,15 @@
-// @flow
 import * as React from 'react';
 import * as querystring from '../../../lib/queryString';
 import { BootstrapTable } from 'react-bootstrap-table';
 
-type PropType<Row> = {|
-  // TODO: is sizePerPage actually returned by the server?
-  fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
-  children: React.Node,
-  search: boolean,
-  pagination: boolean,
-  searchPlaceholder: string
-|};
+// type PropType<Row> = {|
+//   // TODO: is sizePerPage actually returned by the server?
+//   fetch: (number, ?string) => Promise<{ items: Row[], totalSize: number, sizePerPage: number }>,
+//   children,
+//   search: boolean,
+//   pagination: boolean,
+//   searchPlaceholder: string
+// |};
 
 const defaultOptions = {
   pageStartIndex: 1, // where to start counting the pages
@@ -24,26 +23,19 @@ const defaultOptions = {
   searchDelayTime: 500
 };
 
-export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
-  state: {|
-    items: Row[],
-    totalSize: number,
-    page: number,
-    sizePerPage: number
-  |};
-
+export default class DataTable extends React.Component {
   static defaultProps = {
     pagination: true,
     search: false,
     searchPlaceholder: 'Search'
   };
 
-  constructor(props: PropType<Row>) {
+  constructor(props) {
     super(props);
 
     // Looking for ?page and ?search
-    const qs: Object = querystring.parse();
-    const page: number = qs.page ? parseInt(qs.page, 10) : 1;
+    const qs = querystring.parse();
+    const page = qs.page ? parseInt(qs.page, 10) : 1;
 
     this.state = {
       items: [],
@@ -57,40 +49,49 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     await this.fetchData();
   }
 
-  async fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
-
+  async fetchData(page = this.state.page, searchText = '') {
     querystring.update({ page, search: searchText });
     const { fetch, onFetch } = this.props;
 
     try {
-
       onFetch && onFetch(page, searchText);
-      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
+      const { items, totalSize, per_page: sizePerPage } = await fetch(
+        page,
+        searchText
+      );
 
-      this.setState(() => ({ items: items, totalSize, page, sizePerPage, searchText }));
+      this.setState(() => ({
+        items: items,
+        totalSize,
+        page,
+        sizePerPage,
+        searchText
+      }));
     } catch (error) {
       console.error(error);
     }
   }
 
-  handlePageChange = async (page) => {
+  handlePageChange = async page => {
     const qs = querystring.parse();
     const search = qs.search;
 
     await this.fetchData(page, search);
-  }
+  };
 
-  handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
+  handleSearchChange = async searchText => await this.fetchData(1, searchText);
 
   render() {
     const { items, totalSize, page, sizePerPage } = this.state;
     const { pagination, search, searchPlaceholder } = this.props;
 
-
     const options = {
       sizePerPage, // which size per page you want to locate as default
       onPageChange: this.handlePageChange,
-      onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
+      onSearchChange:
+        this.props && this.props.search
+          ? this.handleSearchChange.bind(this)
+          : undefined,
       page,
       ...defaultOptions
     };
@@ -107,9 +108,8 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
         pagination={pagination}
         search={search}
         searchPlaceholder={searchPlaceholder}
-        containerClass='table-responsive'
-        tableContainerClass='table-responsive'
-      >
+        containerClass="table-responsive"
+        tableContainerClass="table-responsive">
         {this.props.children}
       </BootstrapTable>
     );

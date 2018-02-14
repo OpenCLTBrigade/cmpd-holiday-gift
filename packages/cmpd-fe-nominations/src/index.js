@@ -1,4 +1,3 @@
-// @flow
 // This is the main entry point of our application.
 // It tells WebPack what resources to load (css / fonts / etc) and creates the base routes for
 // our main modules such as the Dashboard and the Authentication-related screens.
@@ -6,7 +5,12 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -32,27 +36,28 @@ import 'babel-polyfill';
 // Our React Components that this component uses
 import Dashboard from './app/dashboard';
 import Auth from './app/auth';
-import Restricted from 'app/components/restricted';
+import Restricted from './app/components/restricted';
 import NotFound from './notFound';
 import * as slips from './app/slips';
 
 import { AuthToken } from './lib/auth';
 
-class Routes extends React.Component<{}> {
-  render(): React.Node {
-    return <Router>
-      <Switch>
-        <Route exact path="/" render={() => (
-          <Redirect to="/dashboard"/>
-        )}/>
-        <Route path="/dashboard" component={Restricted(Dashboard)} />
-        <Route path="/auth" component={Auth} />
-        { AuthToken.expired() ? null :
-          <Route path='/slips/packing' component={slips.packing} /> }
-          <Route path='/slips/bicycle' component={slips.bicycle} /> }
-        <Route path='*' component={NotFound} />
-      </Switch>
-    </Router>;
+class Routes extends React.Component {
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+          <Route path="/dashboard" component={Restricted(Dashboard)} />
+          <Route path="/auth" component={Auth} />
+          {AuthToken.expired() ? null : (
+            <Route path="/slips/packing" component={slips.packing} />
+          )}
+          <Route path="/slips/bicycle" component={slips.bicycle} /> }
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    );
   }
 }
 

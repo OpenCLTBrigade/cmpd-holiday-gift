@@ -1,4 +1,3 @@
-// @flow
 import Affiliation from './Affiliation';
 import AffiliationList from './AffiliationList';
 
