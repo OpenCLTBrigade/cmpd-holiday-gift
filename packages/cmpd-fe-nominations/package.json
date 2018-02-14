@@ -1,0 +1,36 @@
+{
+  "name": "cmpd-fe-nominations",
+  "version": "0.1.0",
+  "private": true,
+  "cacheDirectories": ["node_modules", "../node_modules"],
+  "devDependencies": {},
+  "dependencies": {
+    "admin-lte": "^2.3.11",
+    "axios": "^0.16.2",
+    "babel": "^6.23.0",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "neoform": "^0.2.0",
+    "neoform-plain-object-helpers": "^0.1.0",
+    "neoform-validation": "^0.3.0",
+    "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
+    "ramda": "^0.25.0",
+    "react-bootstrap": "^0.31.5",
+    "react-bootstrap-table": "^4.2.0",
+    "react-inline-confirm": "^2.1.1",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "^1.0.14",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
+    "rxjs": "^5.5.6",
+    "styled-components": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3001"
+}

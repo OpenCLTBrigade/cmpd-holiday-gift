@@ -5,22 +5,23 @@ the [CMPD Explorers Christmas Project].
 
 # Getting Started
 
-Node 8 is **required**. We recommend at least Node 8.4.0. You should use [nvm](https://github.com/creationix/nvm) to install and use the appripriate version of Node on a per-project basis.
+Node 8 is **required**. We recommend at least Node 8.9.4. We also recommend using [nvm](https://github.com/creationix/nvm) to install and use the appropriate version of Node on a per-project basis but we _do_ have it as a `devDependency` to ease that burden.
+
+You'll also need to use [yarn](https://yarnpkg.com) instead of npm. Install it using `npm install -g yarn` from the project directory (so it
+gets installed for the appropriate Node version).
 
 See [Dependencies Documentation](#dependencies-documentation) below for more information
 on the dependencies we use.
 
 * Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
-* Run `nvm use` to ensure you're using the appropriate Node version for the project.
-* Run `npm install` to install the dependencies.
-* Copy `env.example.js` to `env.js`.
-* Run `npm run start-client` to start the front-end in development mode. Access the application at http://localhost:3000. 
-* In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it.
-* Run `npm run seed` to generate sample data.
-* In a separate terminal (re-run `nvm use` if needed) run `npm run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
-saying you need to install sqlite3 manually, run `npm install sqlite3`.
-* Run `npm run seed-server` to generate sample data.
-
+* If using nvm, run `nvm use` to ensure you're using the appropriate Node version for the project.
+* Run `yarn bootstrap` to install the dependencies. This will take a few minutes and it may look like the command has locked up.
+* In the root project directory, copy `env.example.js` to `env.js`. You _don't_ need to make any changes just yet.
+* Run `yarn run start-client` to start the front-end in development mode. Access the application at http://localhost:3000.
+* In a separate terminal (re-run `nvm use` if needed) run `yarn run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it.
+* In a separate terminal (re-run `nvm use` if needed) run `yarn run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
+  saying you need to install sqlite3 manually, run `yarn add sqlite3`.
+* Run `yarn run seed-server` to generate sample data.
 
 Read [Front end development notes here](#front-end-development).
 
@@ -28,7 +29,7 @@ Read [Back end development notes here](#back-end-development).
 
 ## Checking out the old codebase
 
-To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`. It's recommended to clone a separate copy of the repository for when you need to access the original application to research and port features. 
+To access the PHP version of the project from 2016 you can run `git checkout 1.3.2`. It's recommended to clone a separate copy of the repository for when you need to access the original application to research and port features.
 
 ## Troubleshooting
 
@@ -36,22 +37,21 @@ To access the PHP version of the project from 2016 you can run `git checkout 1.3
 
 When you pull changes to the database schema or sample data the application may stop working. When this occurs you need
 to delete the SQLite database in `run/` and restart your server instance. After restarting the server be sure to
-seed the database using `npm run seed`. You should now be good to keep going!
+seed the database using `yarn run seed`. You should now be good to keep going!
 
 # Build for Production
 
-To prepare the server for production, run `npm run build`.
+To prepare the server for production, run `yarn run build`.
 
-Optionally run `npm prune --production`.
+Optionally run `yarn prune --production`.
 
-Start the production-mode server with `NODE_ENV=production npm run start-server`
+Start the production-mode server with `NODE_ENV=production yarn run start-server`
 
 # Front-end development
 
 Static assets are in `public/`. The react app is in `src/`.
 
-All front-end dependencies should be added using `npm install
---save-dev`. They will be bundled into `build/` in production mode.
+All front-end dependencies should be added using `yarn install --save-dev`. They will be bundled into `build/` in production mode.
 
 # Back end development
 
@@ -65,7 +65,7 @@ example).
 
 Seed database: `node seed`
 
-Run tests: `npm test-server`
+Run tests: `yarn test-server`
 
 Why we chose Node.js over PHP: https://medium.com/fuzz/php-a0d0b1d365d8
 
@@ -94,10 +94,10 @@ The `encrypt: true` property causes the field to be encrypted before storing it 
 Before pushing your code or sending a pull request, make sure the
 tests pass and let [ESLint] clean up your code.
 
-* To test the front-end: `npm run test-client`
-* To test the back-end: `npm run test-server`
-* To run eslint: `npm run lint`. 
-* To run the [flow] type-checker: `npm run flow`
+* To test the front-end: `yarn run test-client`
+* To test the back-end: `yarn run test-server`
+* To run eslint: `yarn run lint`.
+* To run the [flow] type-checker: `yarn run flow`
 
 # Dependencies Documentation
 
@@ -129,28 +129,27 @@ Coding style is enforced by [eslint].
 * Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
 * Work with us in-person at our next MeetUp! https://www.meetup.com/Code-For-Charlotte/
 
-
-[Code for Charlotte]: http://www.codeforcharlotte.org/
-[CMPD Explorers Christmas Project]: http://charlottenc.gov/CMPD/Organization/Pages/SupportSvcs/Explorer_XmasProject.aspx
-[Node]: https://nodejs.org/dist/latest-v6.x/docs/api/
-[Express]: https://expressjs.com/en/4x/api.html
-[ES6 features]: https://github.com/lukehoban/es6features
+[code for charlotte]: http://www.codeforcharlotte.org/
+[cmpd explorers christmas project]: http://charlottenc.gov/CMPD/Organization/Pages/SupportSvcs/Explorer_XmasProject.aspx
+[node]: https://nodejs.org/dist/latest-v6.x/docs/api/
+[express]: https://expressjs.com/en/4x/api.html
+[es6 features]: https://github.com/lukehoban/es6features
 [express-jwt]: https://github.com/auth0/express-jwt
 [node-jsonwebtoken]: https://github.com/auth0/node-jsonwebtoken
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
-[Sqlite]: https://sqlite.org/docs.html
-[Sequelize]: http://docs.sequelizejs.com/en/v3/
+[sqlite]: https://sqlite.org/docs.html
+[sequelize]: http://docs.sequelizejs.com/en/v3/
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [mailtrap.io]: https://mailtrap.io
 [nodemailer]: https://nodemailer.com/
-[React]: https://facebook.github.io/react/
+[react]: https://facebook.github.io/react/
 [react-bootstrap]: https://react-bootstrap.github.io/
 [styled-components]: https://github.com/styled-components/styled-components
 [create-react-app]: https://github.com/facebookincubator/create-react-app
-[AdminLTE]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
-[Bootstrap 3]: http://getbootstrap.com/getting-started/
-[Jasmine]: https://jasmine.github.io/1.3/introduction
+[adminlte]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
+[bootstrap 3]: http://getbootstrap.com/getting-started/
+[jasmine]: https://jasmine.github.io/1.3/introduction
 [eslint]: http://eslint.org/docs/user-guide/getting-started
-[NodeJS 7]: https://nodejs.org/en/download/current/
-[Mustache]: https://www.npmjs.com/package/mustache
-[ESLint]: https://eslint.org/docs/user-guide/getting-started
+[nodejs 7]: https://nodejs.org/en/download/current/
+[mustache]: https://www.npmjs.com/package/mustache
+[eslint]: https://eslint.org/docs/user-guide/getting-started
