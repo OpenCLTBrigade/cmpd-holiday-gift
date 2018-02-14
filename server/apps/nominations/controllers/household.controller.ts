@@ -1,3 +1,4 @@
+import { handleErrors } from '../../../common/util/application-error';
 import {
     Body,
     Controller,
@@ -26,7 +27,7 @@ import { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } 
 import { Request, Response } from 'express';
 import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
-import { query as queryHouseholds, getById, submitNomination, submitFeedback, updateHousehold, createHousehold, removeHousehold, addAttachment } from '../service/household.service';
+import { HouseholdService, ErrorCodes } from '../service/household.service';
 import { baseUrl } from '../../lib/misc'
 import { CreateHouseholdDto } from './dto/create-household.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
@@ -41,17 +42,25 @@ type AuthedRequest = {
 //TODO: better place to put this???
 const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 
+const errorMap = {
+    [ErrorCodes.NoChildren]: NotFoundException,
+    default: InternalServerErrorException
+}
+
+const handleHouseholdErrors = handleErrors(errorMap)
 
 @UseGuards(RolesGuard)
 @Controller('api/nominations/households')
 @ApiUseTags('nominations')
 export class HouseholdController {
 
+    constructor(private readonly householdService: HouseholdService) {}
+
     //TODO: Explore using graphql here
     @Get()
     @UseGuards(AuthGuard)
     async getAll(@Query('search') search, @Query('page') page, @Req() req) {
-        const results = await queryHouseholds({
+        const results = await this.householdService.query({
             page, 
             search,
             baseUrl: baseUrl(req)
@@ -63,7 +72,7 @@ export class HouseholdController {
     @Get('/:id')
     @UseGuards(AuthGuard)
     async getById(@Param('id') id) {
-        const household = await getById(id);
+        const household = await this.householdService.getById(id);
 
         if(!household) throw new NotFoundException();
 
@@ -73,19 +82,19 @@ export class HouseholdController {
     @Post()
     @UseGuards(AuthGuard)
     async createHousehold(@Req() {user: {id}}, @Body(new ValidationPipe()) createHouseholdDto: CreateHouseholdDto) {
-        return await createHousehold(createHouseholdDto, {id})
+        return await this.householdService.createHousehold(createHouseholdDto, {id})
     }
 
     @Put('/:id')
     @UseGuards(AuthGuard)
     async updateHousehold(@Param('id') id, @Body(new ValidationPipe()) updateHouseholdDto: UpdateHouseholdDto) {
-        return await updateHousehold(id, updateHouseholdDto);
+        return await this.householdService.updateHousehold(id, updateHouseholdDto);
     }
 
     @Delete('/:id')
     @UseGuards(AuthGuard)
     async removeHousehold(@Param('id') id) {
-        return await removeHousehold(id);
+        return await this.householdService.removeHousehold(id);
     }
 
     @Put(':id/upload')
@@ -118,7 +127,7 @@ export class HouseholdController {
 
                     logger.info('uploaded to s3', { filename });
 
-                    await addAttachment({householdId: id, path: filename})
+                    await this.householdService.addAttachment({householdId: id, path: filename})
 
                     await fs.remove(path);
 
@@ -137,16 +146,20 @@ export class HouseholdController {
     @Put('/:id/submit')
     @UseGuards(AuthGuard)
     async submitNomination(@Param('id') id, @Res() res: Response) {
-        await submitNomination(id);
+        try {
+            await this.householdService.submitNomination(id);
 
-        res.status(HttpStatus.OK).send();
+            res.status(HttpStatus.OK).send();
+        } catch (error) {
+            handleHouseholdErrors(error)
+        }
     }
 
     @Roles('admin')
     @Put(':id/feedback')
     @UseGuards(AuthGuard)
     async submitFeedback(@Param('id') id, @Res() res, @Body(new ValidationPipe()) submitFeedbackDto: SubmitNominationDto) {
-        await submitFeedback({id, ...submitFeedbackDto});
+        await this.householdService.submitFeedback({id, ...submitFeedbackDto});
 
         res.status(HttpStatus.OK).send();
     }
