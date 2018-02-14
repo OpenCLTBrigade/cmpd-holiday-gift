@@ -1,9 +1,10 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsBoolean, ArrayNotEmpty, ValidateNested } from 'class-validator';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { IsOptional, IsNotEmpty, IsNumber, IsBoolean, IsEmail } from "class-validator";
+import { ApiModelProperty } from "@nestjs/swagger";
 import { IsSame } from "../../../../common/validators/is-same.validator";
 
-export class CreateUserDto {
-    
+export class UpdateUserDto {
+    id: number
+
     @ApiModelProperty({type: String})
     @IsNotEmpty()
     readonly firstName: string
@@ -48,11 +49,11 @@ export class CreateUserDto {
     readonly emailVerified: boolean
 
     @ApiModelProperty({type: String})
-    @IsNotEmpty()
+    @IsOptional()
     readonly password: string
 
     @ApiModelProperty({type: String})
-    @IsNotEmpty()
+    @IsOptional()
     @IsSame("password")
     readonly confirmationPassword: string
 

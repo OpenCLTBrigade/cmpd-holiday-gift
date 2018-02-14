@@ -1,4 +1,6 @@
+import { BadRequestException } from "@nestjs/common";
 import Household from '../../../entities/household';
+import Attachment from '../../../entities/attachment';
 import Address from '../../../entities/address';
 import Child from '../../../entities/child';
 import PhoneNumber from '../../../entities/phone-number';
@@ -73,6 +75,7 @@ export async function query({
     try {
       logger.info('sending feedback email');
 
+      //TODO: Should probably be an event fired here and handled elsewhere
       if (approved) {
         await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.lastName });
       } else {
@@ -173,4 +176,10 @@ export async function query({
     household.deletedAt = new Date();
 
     return await household.save();
+  }
+
+  export async function addAttachment({householdId, path}) {
+    const attachment = Attachment.fromJSON({householdId, path});
+
+    return await attachment.save();
   }

@@ -1,12 +1,12 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsNotEmpty} from 'class-validator';
 
-export class LoginRequestDto {
+export class ConfirmEmailDto {
   @ApiModelProperty({type: String})
   @IsNotEmpty()
-  email: string;
+  id: string;
 
   @ApiModelProperty({type: String})
   @IsNotEmpty()
-  password: string;
+  confirmationCode: string;
 };
