@@ -43,7 +43,6 @@ export class AffiliationController {
 
             return household;
         } catch (error) {
-            logger.error(error);
             handleAffiliationErrors(error);
         }
     }
