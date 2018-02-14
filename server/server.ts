@@ -5,6 +5,7 @@ import logger from './apps/lib/logger';
 import { AnyExceptionFilter } from './common/filters/any-exception.filter';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,8 @@ async function bootstrap() {
     SwaggerModule.setup('/swagger', app, document);
 
   app.useGlobalFilters(new AnyExceptionFilter());
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
 
   const port = process.env.PORT || config.port;
   await app.listen(port, () => {
