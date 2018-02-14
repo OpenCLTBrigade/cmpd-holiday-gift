@@ -1,6 +1,4 @@
-// @flow
-
-import { post } from 'lib/apiService';
+import { post } from '../lib/apiService';
 import jwt_decode from 'jwt-decode';
 import { render } from 'react-dom';
 import * as React from 'react';
@@ -15,7 +13,6 @@ const localStorage = window.localStorage;
 // The token is automatically refreshed and expired
 // The token is stored in the localStorage under 'authToken'
 export const AuthToken = (() => {
-
   let token; // Cached JWT string
   let expirationTime; // Cached exp
   let refreshing = false; // Flag to avoid concurrent refresh
@@ -55,14 +52,14 @@ export const AuthToken = (() => {
     triggerHandlers();
   }
 
-  async function getToken(): Promise<?string> {
+  async function getToken() {
     load();
     maybeRefreshOrExpire();
     return token;
   }
 
   // Returns an up-to-date authorization header, or the empty string
-  async function getAuthorization(): Promise<string> {
+  async function getAuthorization() {
     await getToken();
     if (token) {
       return `Bearer ${token}`;
@@ -79,11 +76,11 @@ export const AuthToken = (() => {
     }
   }
 
-  function shouldExpire(): boolean {
+  function shouldExpire() {
     return expirationTime < Date.now() / 1000;
   }
 
-  function shouldRefresh(): boolean {
+  function shouldRefresh() {
     return expirationTime - Date.now() / 1000 < authTokenRefreshWhenSecondsLeft;
   }
 
@@ -93,7 +90,7 @@ export const AuthToken = (() => {
     }
   }
 
-  function expired(): boolean {
+  function expired() {
     return shouldExpire();
   }
 
@@ -103,18 +100,20 @@ export const AuthToken = (() => {
       return;
     }
     refreshing = true;
-    post('auth', 'extend').then(res => {
-      setToken(res.token);
-      refreshing = false;
-    }).catch(err => {
-      console.log(`Error refreshing auth token: ${err}`);
-      setTimeout(() => {
+    post('auth', 'extend')
+      .then(res => {
+        setToken(res.token);
         refreshing = false;
-      }, minRefreshInterval * 1000);
-    });
+      })
+      .catch(err => {
+        console.log(`Error refreshing auth token: ${err}`);
+        setTimeout(() => {
+          refreshing = false;
+        }, minRefreshInterval * 1000);
+      });
   }
 
-  async function login(email: string, password: string): Promise<boolean> {
+  async function login(email, password) {
     const res = await post('auth', 'login', { email, password });
     if (res.failed) {
       return false;
@@ -128,7 +127,7 @@ export const AuthToken = (() => {
     setToken(null);
   }
 
-  function addHandler(cb: *): () => void {
+  function addHandler(cb) {
     handlers.push(cb);
     return () => {
       const i = handlers.indexOf(cb);
@@ -149,14 +148,21 @@ export const AuthToken = (() => {
   }
 
   load();
-  return { login, logout, expired, getToken, getAuthorization, addHandler, token };
+  return {
+    login,
+    logout,
+    expired,
+    getToken,
+    getAuthorization,
+    addHandler,
+    token
+  };
 })();
 
 export const AppToken = (() => {
-
   const tokens = {};
 
-  async function getToken(app: string): Promise<string> {
+  async function getToken(app) {
     try {
       const res = await post('auth', 'access', { app });
       return res.token;
@@ -166,7 +172,7 @@ export const AppToken = (() => {
     }
   }
 
-  async function getAuthorization(app: string): Promise<string> {
+  async function getAuthorization(app) {
     if (AuthToken.expired()) {
       return '';
     }
@@ -181,10 +187,12 @@ export const AppToken = (() => {
       AuthToken.logout();
       throw exc;
     }
-    if (!token || jwt_decode(token).exp < (Date.now() / 1000) - appTokenMinRemainingTime) {
+    if (
+      !token ||
+      jwt_decode(token).exp < Date.now() / 1000 - appTokenMinRemainingTime
+    ) {
       tokens[app] = getToken(app);
       token = await tokens[app];
-
     }
     return `Bearer ${token}`;
   }
@@ -192,7 +200,7 @@ export const AppToken = (() => {
   return { getAuthorization };
 })();
 
-export function getAuthorization(app: string): Promise<string> {
+export function getAuthorization(app) {
   if (app === 'auth') {
     return AuthToken.getAuthorization();
   } else {
@@ -200,29 +208,34 @@ export function getAuthorization(app: string): Promise<string> {
   }
 }
 
-export async function redirectPostWithAuth(app: string, path: string): Promise<void> {
+export async function redirectPostWithAuth(app, path) {
   const authorization = await getAuthorization(app);
   const div = document.createElement('div');
-  (document.body: any).appendChild(div);
+  document.body.appendChild(div);
   const form = render(
-    <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
+    <form
+      style={{ display: 'none' }}
+      method="POST"
+      action={`/api/${app}/${path}`}
+      target="_blank">
       <input type="hidden" name="__authorization" value={authorization} />
     </form>,
-    div);
+    div
+  );
   form.submit();
 }
 
-type RegisterResult = {| error: string |} | {| success: true |};
+// type RegisterResult = {| error: string |} | {| success: true |};
 
 // Registers user after user submits information for new user in registration form
 export async function register(
-    name_first: string,
-    name_last: string,
-    rank: string = '',
-    affiliation_id: number,
-    email: string,
-    password: string
-  ): Promise<RegisterResult> {
+  name_first,
+  name_last,
+  rank = '',
+  affiliation_id,
+  email,
+  password
+) {
   return await post('auth', 'register', {
     firstname: name_first,
     lastname: name_last,

@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon --watch 'server/**/*.ts' --ignore 'server/**/*.spec.ts' --exec 'ts-node' server/server.ts",
-    "heroku-postbuild": "cd react-ui/ && npm install && NODE_PATH=./src react-scripts build",
-    "start-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts start",
-    "build-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts build",
-    "test-client": "cd react-ui && cross-env-shell NODE_PATH=./src react-scripts test --env=jsdom",
+    "start-client": "cd packages/cmpd-fe-nomiantions && cross-env-shell NODE_PATH=./src react-scripts start",
+    "build-client": "cd packages/cmpd-fe-nomiantions && cross-env-shell NODE_PATH=./src react-scripts build",
     "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
     "start-server": "node server-notypes/apps/serve.js",
     "predebug-server": "npm run build-server",
@@ -24,7 +22,7 @@
     "clean": "rimraf packages/**/dist",
     "reset": "rimraf packages/**/node_modules"
   },
-  "cacheDirectories": ["node_modules", "react-ui/node_modules"],
+  "cacheDirectories": ["node_modules", "packages/cmpd-fe-nomiantions/node_modules"],
   "engines": {
     "node": ">=8.9.x"
   },

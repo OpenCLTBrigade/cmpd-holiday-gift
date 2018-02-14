@@ -1,38 +1,37 @@
-// @flow
 import axios from 'axios';
 
-import { getAuthorization } from 'lib/auth';
+import { getAuthorization } from '../lib/auth';
 import { AuthToken } from './auth';
 
-export type DataTableResponse<Item: Object> = {
-  totalSize: number,
-  per_page: number,
-  page: number,
-  last_page: number,
-  next_page_url?: string,
-  prev_page_url?: string,
-  from: number,
-  to: number,
-  items: Array<Item>
-};
+// export type DataTableResponse<Item: Object> = {
+//   totalSize: number,
+//   per_page: number,
+//   page: number,
+//   last_page: number,
+//   next_page_url?: string,
+//   prev_page_url?: string,
+//   from: number,
+//   to: number,
+//   items: Array<Item>
+// };
 
 // Axios config object
-type RequestConfigType = {
-  baseURL?: string,
-  headers?: Object,
-  params?: Object,
-  headers?: Object,
-  url?: string,
-  method?: string,
-  params?: Object,
-  data?: Object
-};
+// type RequestConfigType = {
+//   baseURL?: string,
+//   headers?: Object,
+//   params?: Object,
+//   headers?: Object,
+//   url?: string,
+//   method?: string,
+//   params?: Object,
+//   data?: Object
+// };
 
 /**
  * Default axios config object
  * @type {RequestConfigType}
  */
-const defaultRequestConfig: RequestConfigType = {
+const defaultRequestConfig = {
   baseURL: '/api/',
   method: 'get'
 };
@@ -42,7 +41,7 @@ const defaultRequestConfig: RequestConfigType = {
  * @param  {Object}   response Request response
  * @param  {Function} next     resolve(data)
  */
-const preProcessResponse = function (response: Object, next) {
+const preProcessResponse = function(response, next) {
   next(response.data);
 };
 
@@ -51,7 +50,7 @@ const preProcessResponse = function (response: Object, next) {
  * @param  {Object}   err
  * @param  {Function} next     reject(error)
  */
-const preProcessError = function (err: Object, next) {
+const preProcessError = function(err, next) {
   next(err);
 };
 
@@ -63,19 +62,13 @@ const preProcessError = function (err: Object, next) {
  * @param  {Object} config Axios configuration object
  * @return {Promise}       Promise with response.data OR error
  */
-const makeRequest = async function (
-  method: string,
-  app: string,
-  path: string,
-  data: ?Object = null,
-  config: RequestConfigType = {}
-): Promise<any> {
+const makeRequest = async function(method, app, path, data, config = {}) {
   // Combine our passed configuration with the base configuration
-  const requestConfig: Object = Object.assign({}, defaultRequestConfig, config);
+  const requestConfig = Object.assign({}, defaultRequestConfig, config);
 
   requestConfig.url = `${app}/${path}`;
   requestConfig.method = method.toLowerCase();
-  
+
   // console.log('authtoken', AuthToken.token);
   // console.log('url', requestConfig.url);
 
@@ -87,7 +80,6 @@ const makeRequest = async function (
     }
     requestConfig.headers.Authorization = authorization;
   }
-
 
   // Set data to the post body or query string
   if (data != null) {
@@ -117,18 +109,18 @@ const makeRequest = async function (
  * one of the actual API libs instead.
  */
 
-export function get(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function get(app, path, data = null, config = {}) {
   return makeRequest('get', app, path, data, config);
 }
 
-export function post(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function post(app, path, data = null, config = {}) {
   return makeRequest('post', app, path, data, config);
 }
 
-export function put(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function put(app, path, data = null, config = {}) {
   return makeRequest('put', app, path, data, config);
 }
 
-export function delete_(app: string, path: string, data: ?Object = null, config: RequestConfigType = {}): Promise<any> {
+export function delete_(app, path, data = null, config = {}) {
   return makeRequest('delete', app, path, data, config);
 }

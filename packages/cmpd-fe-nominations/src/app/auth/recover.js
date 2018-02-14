@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
@@ -13,13 +11,13 @@ import Label from './components/form-label';
 
 import { sendRecoverEmail } from '../../api/recover';
 
-const Icon = styled.i`top: 20px !important;`;
+const Icon = styled.i`
+  top: 20px !important;
+`;
 
-export default class Recover extends React.Component<{
-  history: Object
-}> {
-  box: ?FormBox;
-  render(): React.Node {
+export default class Recover extends React.Component {
+  // box: ?FormBox;
+  render() {
     if (!AuthToken.expired()) {
       return <Redirect to="/dashboard" />;
     }
@@ -29,7 +27,7 @@ export default class Recover extends React.Component<{
         submitText="Recover"
         onSubmit={this.onSubmit.bind(this)}
         headerImageClass="fa fa-lock"
-        ref={box => this.box = box}
+        ref={box => (this.box = box)}
         body={
           <div>
             <FormGroup className="form-group has-feedback">
@@ -50,7 +48,9 @@ export default class Recover extends React.Component<{
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink className="btn btn-link pull-right" to="/auth/register">
+              <FooterLink
+                className="btn btn-link pull-right"
+                to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -61,7 +61,7 @@ export default class Recover extends React.Component<{
     );
   }
 
-  async onSubmit({ email }: {email: string}): Promise<void> {
+  async onSubmit({ email }) {
     try {
       const success = await sendRecoverEmail(email);
       if (success && success.success === true) {
@@ -69,12 +69,12 @@ export default class Recover extends React.Component<{
         alert('Please check your email for recovery instructions.');
         this.props.history.replace('/auth/login');
       } else {
-        (this.box: any).flashErrorMessage(
+        this.box.flashErrorMessage(
           'Could not initiate account recovery. Did you enter the correct email address?'
         );
       }
     } catch (exc) {
-      (this.box: any).flashErrorMessage('Account recovery failed: unknown error');
+      this.box.flashErrorMessage('Account recovery failed: unknown error');
     }
   }
 }

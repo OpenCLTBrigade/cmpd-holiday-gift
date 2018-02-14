@@ -1,10 +1,7 @@
-// @flow
-
 import * as React from 'react';
 import styled from 'styled-components';
 
 import ErrorMessage from './error-message';
-
 
 const formToJSON = elements =>
   [].reduce.call(
@@ -29,7 +26,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
   background: #00355d;
   border-radius: 4px 4px 0 0;
-  box-shadow: 0 -3px 0 rgba(0, 0, 0, .2) inset;
+  box-shadow: 0 -3px 0 rgba(0, 0, 0, 0.2) inset;
   color: #fff;
   font-size: 26px;
   font-weight: 300;
@@ -62,19 +59,10 @@ const Button = styled.input`
   }
 `;
 
-export default class FormBox extends React.Component<{
-  onSubmit(Object): void | Promise<void>,
-  title: string,
-  headerImageClass: string,
-  body: React.Node,
-  submitText: string,
-  footer: React.Node
-}, {
-  errorMessage: ?string
-}> {
-  footer: $TODO;
-  email: HTMLInputElement;
-  password: HTMLInputElement;
+export default class FormBox extends React.Component {
+  // footer: $TODO;
+  // email: HTMLInputElement;
+  // password: HTMLInputElement;
 
   constructor() {
     super();
@@ -84,7 +72,7 @@ export default class FormBox extends React.Component<{
     };
   }
 
-  onSubmit(ev: Event) {
+  onSubmit(ev) {
     const { onSubmit } = this.props;
     ev.preventDefault();
     const data = formToJSON(ev.target);
@@ -96,15 +84,15 @@ export default class FormBox extends React.Component<{
     }
   }
 
-  flashErrorMessage(message: string) {
-    (this.setState: $TODO)({
+  flashErrorMessage(message) {
+    this.setState({
       errorMessage: message,
       errorVisible: true
     });
     window.scrollTo(0, 0);
   }
 
-  render(): React.Node {
+  render() {
     return (
       <Wrapper className="form-box" id="form-box">
         <Header>
@@ -113,20 +101,24 @@ export default class FormBox extends React.Component<{
         </Header>
         {/* TODO:  Login box needs to accept content  */}
         <Body className="body">
-          { this.state.errorVisible === true &&
+          {this.state.errorVisible === true && (
             <ErrorMessage
               errorMessage={this.state.errorMessage}
               onDismissError={() => {
-                (this.setState: $TODO)({
+                this.setState({
                   errorMessage: '',
                   errorVisible: false
                 });
               }}
             />
-          }
+          )}
           <Form onSubmit={this.onSubmit.bind(this)}>
             {this.props.body}
-            <Button className="btn bg-auth btn-block btn-flat" type="submit" value={this.props.submitText} />
+            <Button
+              className="btn bg-auth btn-block btn-flat"
+              type="submit"
+              value={this.props.submitText}
+            />
           </Form>
         </Body>
         {this.props.footer}
