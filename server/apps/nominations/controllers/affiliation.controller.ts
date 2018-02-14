@@ -1,21 +1,31 @@
+import { handleErrors } from '../../../common/util/application-error';
 import {
     Controller,
     Get,
     Param,
     Query,
-    NotFoundException
+    NotFoundException,
+    InternalServerErrorException
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
-import { query, getAffiliation } from "../service/affiliation.service";
+import { AffiliationService } from "../service/affiliation.service";
+import logger from '../../lib/logger';
+
+const errorMap = {
+    default: InternalServerErrorException
+}
+
+const handleAffiliationErrors = handleErrors(errorMap)
 
 @Controller('api/nominations/affiliations')
-@ApiUseTags('cmpd')
+@ApiUseTags('affiliations')
 export class AffiliationController {
+    constructor(private readonly affiliationService: AffiliationService) {}
     //TODO: GraphQL probably better here.
     @Get()
-    async getAll(@Query('search') search, @Query('page') page) {
-        const results = await query({
+    async getAll(@Query('search') search = '', @Query('page') page = '') {
+        const results = await this.affiliationService.query({
             page, 
             search
           })
@@ -25,10 +35,16 @@ export class AffiliationController {
 
     @Get('/:id')
     async getById(@Param('id') id) {
-        const household = await getAffiliation(id);
 
-        if(!household) throw new NotFoundException();
+        try {
+            const household = await this.affiliationService.getAffiliation(id);
 
-        return household;
+            if(!household) throw new NotFoundException();
+
+            return household;
+        } catch (error) {
+            logger.error(error);
+            handleAffiliationErrors(error);
+        }
     }
 }
