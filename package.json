@@ -20,6 +20,7 @@
     "flow": "flow",
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
+    "jest": "jest --config=jest.json",
     "dist:watch": "lerna run --parallel dist:watch",
     "clean": "rimraf packages/**/dist",
     "reset": "rimraf packages/**/node_modules"
