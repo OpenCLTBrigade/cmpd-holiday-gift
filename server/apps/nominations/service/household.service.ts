@@ -1,4 +1,5 @@
-import { BadRequestException } from "@nestjs/common";
+import { ApplicationError } from '../../../common/util/application-error';
+import { Component } from "@nestjs/common";
 import Household from '../../../entities/household';
 import Attachment from '../../../entities/attachment';
 import Address from '../../../entities/address';
@@ -11,10 +12,17 @@ import logger from "../../lib/logger";
 import { createPagedResults } from "../../lib/table/table";
 import { CreateHouseholdDto } from '../controllers/dto/create-household.dto';
 import { UpdateHouseholdDto } from '../controllers/dto/update-household.dto';
+
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
+export enum ErrorCodes {
+  NoChildrenExists = "NoChildrenExists",
+  NoHouseholdExists = "NoHouseholdExists"
+}
 
-export async function query({
+@Component()
+export class HouseholdService {
+  async query({
     page,
     search,
     active = true,
@@ -45,15 +53,15 @@ export async function query({
     }
   }
 
-  export async function getById(id: number) {
+  async getById(id: number) {
     return await Household.findOneById(id, { relations: ['nominator', 'phoneNumbers', 'children', 'address']})
   }
 
-  export async function submitNomination(id) {
+  async submitNomination(id) {
     const household = await Household.findOneById(id, { relations: ['children']});
 
     if (household.children.length === 0) {
-      throw new BadRequestException();
+      throw new ApplicationError('Must add children to this household', ErrorCodes.NoChildren);
     }
 
     household.draft = false;
@@ -61,7 +69,7 @@ export async function query({
     await household.save();
   }
 
-  export async function submitFeedback({id, approved, reason, message}) {
+  async submitFeedback({id, approved, reason, message}) {
     logger.info('saving feedback');
 
     const household = await Household.findOneById(id);
@@ -91,7 +99,7 @@ export async function query({
     }
   }
 
-  export async function updateHousehold(id, updateHouseholdDto: UpdateHouseholdDto) {
+  async updateHousehold(id, updateHouseholdDto: UpdateHouseholdDto) {
     logger.info('updateHousehold');
 
     const household = await Household.findOneById(id);
@@ -137,10 +145,10 @@ export async function query({
       await entity.save();
     });
 
-    return await getById(id);
+    return await this.getById(id);
   }
 
-  export async function createHousehold(createHouseholdDto: CreateHouseholdDto, { id: nominatorId}) {
+  async createHousehold(createHouseholdDto: CreateHouseholdDto, { id: nominatorId}) {
     logger.info('createHousehold');
 
     const household = Household.fromJSON({nominatorId, ...createHouseholdDto});
@@ -164,10 +172,10 @@ export async function query({
 
     await address.save();
     
-    return await getById(created.id);
+    return await this.getById(created.id);
   }
 
-  export async function removeHousehold(id) {
+  async removeHousehold(id) {
     logger.info('removeHousehold');
 
     const household = await Household.findOneById(id);
@@ -178,8 +186,9 @@ export async function query({
     return await household.save();
   }
 
-  export async function addAttachment({householdId, path}) {
+  async addAttachment({householdId, path}) {
     const attachment = Attachment.fromJSON({householdId, path});
 
     return await attachment.save();
   }
+}
