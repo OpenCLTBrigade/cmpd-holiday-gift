@@ -1,5 +1,3 @@
-// @ flow
-
 // module.exports = (fun: () => Promise<void>) => {
 module.exports = (fun) => {
   setTimeout(() => {

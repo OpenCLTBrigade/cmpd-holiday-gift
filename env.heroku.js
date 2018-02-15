@@ -1,7 +1,6 @@
 // Before running this app, copy this file to env.js and edit the
 // settings. Any setting from `config/env.default.js' can be modified here.
 
-// @flow
 
 module.exports = (config /*: * */) => { // eslint-disable-line
 

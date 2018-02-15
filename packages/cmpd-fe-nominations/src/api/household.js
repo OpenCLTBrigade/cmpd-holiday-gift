@@ -1,4 +1,3 @@
-// @flow
 import { get, post, put, delete_ } from '../lib/apiService';
 // import type { DataTableResponse } from 'lib/apiService';
 
