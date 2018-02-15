@@ -97,7 +97,6 @@ tests pass and let [ESLint] clean up your code.
 * To test the front-end: `yarn run test-client`
 * To test the back-end: `yarn run test-server`
 * To run eslint: `yarn run lint`.
-* To run the [flow] type-checker: `yarn run flow`
 
 # Dependencies Documentation
 

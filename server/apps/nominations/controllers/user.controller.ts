@@ -14,7 +14,7 @@ import { ApiUseTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { AuthGuard } from '../../../common/guards/auth.guard';
-import { query, getPendingUsers, getById, create, approve, decline, update } from "../service/user.service";
+import { UserService } from "../service/user.service";
 import { baseUrl } from '../../lib/misc'
 
 import { Roles } from '../../../common/decorators/roles.decorator';
@@ -25,12 +25,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Controller('api/nominations/users')
 @ApiUseTags('users')
 export class UserController {
+    constructor(private readonly userService: UserService) {}
 
     //TODO: Explore using graphql here
     @Get()
     @UseGuards(AuthGuard)
     async getAll(@Query('search') search, @Query('page') page, @Req() req) {
-        const results = await query({
+        const results = await this.userService.query({
             page, 
             search,
             baseUrl: baseUrl(req)
@@ -42,7 +43,7 @@ export class UserController {
     @Get('/pending')
     @UseGuards(AuthGuard)
     async getPending(@Query('search') search, @Query('page') page, @Req() req) {
-        const results = await getPendingUsers({
+        const results = await this.userService.getPendingUsers({
             page, 
             search,
             baseUrl: baseUrl(req)
@@ -54,42 +55,42 @@ export class UserController {
     @Get('/:id')
     @UseGuards(AuthGuard)
     async getById(@Param('id') id) {
-        return await getById(id);
+        return await this.userService.getById(id);
     }
 
     @Post()
     @Roles('admin')
     @UseGuards(AuthGuard)
     async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
-        return await create(createUserDto);
+        return await this.userService.create(createUserDto);
     }
 
     @Put('/:id')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async update(@Req() {user: {id: userId}}, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto) {
-        return await update(updateUserDto, {id: userId});
+        return await this.userService.update(updateUserDto, {id: userId});
     }
 
     @Put('/:id/approve')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async approve(@Param('id') id) {
-        return await approve(id);
+        return await this.userService.approve(id);
     }
 
     @Put('/:id/decline')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async decline(@Param('id') id) {
-        return await decline(id);
+        return await this.userService.decline(id);
     }
 
     @Get('/:id/status')
     @Roles('admin')
     @UseGuards(AuthGuard)
     async getNominationsStatus(@Param('id') id) {
-        const { nominationLimit: limit, households } = await getById(id);
+        const { nominationLimit: limit, households } = await this.userService.getById(id);
         const count = households.filter(row => !row.deleted).length;
 
         return { limit, count }
@@ -98,6 +99,6 @@ export class UserController {
     @Get('/me')
     @UseGuards(AuthGuard)
     async getMe(@Req() {user: {id}}) {
-        return await getById(id);
+        return await this.userService.getById(id);
     }
 }
