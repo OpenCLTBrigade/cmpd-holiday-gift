@@ -3,17 +3,23 @@
   "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --watch 'server/**/*.ts' --ignore 'server/**/*.spec.ts' --exec 'ts-node' server/server.ts",
-    "start-client": "cd packages/cmpd-fe-nominations && parcel public/index.html",
-    "build-client": "cd packages/cmpd-fe-nominations && parcel build public/index.html",
-    "build-server": "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
+    "start":
+      "nodemon --watch 'server/**/*.ts' --ignore 'server/**/*.spec.ts' --exec 'ts-node' server/server.ts",
+    "start-client":
+      "cd packages/cmpd-fe-nominations && parcel public/index.html",
+    "build-client":
+      "cd packages/cmpd-fe-nominations && parcel build public/index.html",
+    "build-server":
+      "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
     "start-server": "node server-notypes/apps/serve.js",
     "predebug-server": "npm run build-server",
+    "precommit": "pretty-quick --staged",
     "debug-server": "",
     "test-server": "",
     "seed": "rimraf run/db.development.sqlite && ts-node server/seeds",
     "prepack": "npm run build-client && npm run build-server",
-    "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
+    "lint":
+      "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
     "jest": "jest --config=jest.json",
@@ -21,14 +27,14 @@
     "clean": "rimraf packages/**/dist",
     "reset": "rimraf packages/**/node_modules"
   },
-  "cacheDirectories": ["node_modules", "packages/cmpd-fe-nomiantions/node_modules"],
+  "cacheDirectories": [
+    "node_modules",
+    "packages/cmpd-fe-nomiantions/node_modules"
+  ],
   "engines": {
     "node": ">=8.9.x"
   },
-  "files": [
-    "build",
-    "server-notypes"
-  ],
+  "files": ["build", "server-notypes"],
   "main": "server/apps/serve.js",
   "devDependencies": {
     "@nestjs/testing": "^4.5.5",
@@ -41,9 +47,12 @@
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
     "faker": "^4.1.0",
+    "husky": "^0.14.3",
     "jasmine": "^2.6.0",
     "lerna": "^2.8.0",
     "nodemon": "^1.14.12",
+    "prettier": "1.10.2",
+    "pretty-quick": "^1.4.1",
     "quoted-printable": "^1.0.1",
     "rimraf": "^2.6.2",
     "sqlite3": "^3.1.13",
@@ -105,9 +114,7 @@
     "typeorm": "^0.1.8",
     "typeorm-encrypted": "^0.5.0"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "proxy": {
     "/api": {
       "target": "http://localhost:3001",
