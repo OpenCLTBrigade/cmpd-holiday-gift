@@ -1,5 +1,5 @@
 const Excel = require('exceljs');
-import db from '../../../models'
+import db from '../../../models';
 
 function headersForExcelFile(name: string) {
   return {
@@ -37,7 +37,13 @@ async function export_data_excel(req, res) {
     const cols = [];
     for (const col of Object.getOwnPropertyNames(columnSpecs[table])) {
       if (columnSpecs[table][col] !== false) {
-        cols.push(Object.assign({}, { key: col, header: col, width: 10 }, columnSpecs[table][col]));
+        cols.push(
+          Object.assign(
+            {},
+            { key: col, header: col, width: 10 },
+            columnSpecs[table][col]
+          )
+        );
       }
     }
     if (data[0]) {
@@ -72,19 +78,18 @@ async function link_report(req, res) {
     { key: 'name_last', header: 'familyHeadFirst', width: 15 },
     { key: 'name_first', header: 'familyHeadLast', width: 15 },
     { key: 'approved', header: 'familyApproved', width: 15 },
-    { key: 'blocked', header: 'familyBlocked', width: 15 },
+    { key: 'blocked', header: 'familyBlocked', width: 15 }
   ];
 
   const households = await db['household'].findAll();
   // const households = await db['household'].findAll({ where: { approved: true } });
   households.forEach(household => {
     // See GIFT-260
-    household.approved = (household.approved) ? 1 : 0;
-    household.blocked = (household.deleted) ? 1 : 0;
+    household.approved = household.approved ? 1 : 0;
+    household.blocked = household.deleted ? 1 : 0;
     worksheet.addRow(household).commit();
   });
   worksheet.commit();
-
 
   worksheet = workbook.addWorksheet('Child Report');
   worksheet.columns = [
@@ -107,12 +112,14 @@ async function link_report(req, res) {
   ];
 
   const children = await db.child.findAll({
-    include: [{
-      model: db.household,
-      as: 'household',
-      where: { approved: true },
-      required: true
-    }]
+    include: [
+      {
+        model: db.household,
+        as: 'household',
+        where: { approved: true },
+        required: true
+      }
+    ]
   });
 
   children.forEach(child => {
@@ -143,14 +150,18 @@ async function bike_report(req, res) {
   ];
 
   const children = await db.child.findAll({
-    include: [{
-      model: db['household'],
-      as: 'household',
-      where: { approved: true },
-      required: true
-    }]
+    include: [
+      {
+        model: db['household'],
+        as: 'household',
+        where: { approved: true },
+        required: true
+      }
+    ]
   });
-  children.forEach(child => worksheet.addRow(flatten('household', child.toJSON())).commit());
+  children.forEach(child =>
+    worksheet.addRow(flatten('household', child.toJSON())).commit()
+  );
   worksheet.commit();
   workbook.commit();
 }
@@ -191,5 +202,8 @@ async function division_report(req, res) {
 }
 
 export default {
-  export_data_excel, link_report, bike_report, division_report
-}
+  export_data_excel,
+  link_report,
+  bike_report,
+  division_report
+};

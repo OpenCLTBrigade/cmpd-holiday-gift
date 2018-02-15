@@ -1,8 +1,7 @@
-
-import db from '../../../models'
+import db from '../../../models';
 
 export default {
-    /*
+  /*
    * Redirects the user to /user/:theirId
    */
   getMe: async (req, res) => {
@@ -21,8 +20,10 @@ export default {
       user = null;
     }
 
-    const nomination_count = await db['household'].count({ where: { 'nominator_id': user.id } });
-    
+    const nomination_count = await db['household'].count({
+      where: { nominator_id: user.id }
+    });
+
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
     user.nomination_count = nomination_count;
@@ -34,8 +35,10 @@ export default {
     const nominator = Object.assign({}, req.user);
     const { id, nomination_limit: limit } = nominator.dataValues;
 
-    const count = await db['household'].count({ where: { nominator_id: id, deleted: false } });
+    const count = await db['household'].count({
+      where: { nominator_id: id, deleted: false }
+    });
 
     return res.json({ count, limit });
   }
-}
+};

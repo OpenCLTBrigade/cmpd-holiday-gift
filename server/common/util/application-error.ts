@@ -1,21 +1,21 @@
-import logger from './logger'
+import logger from './logger';
 
 export class ApplicationError extends Error {
-    constructor(message?: string, public code?: string) {
-        super(message); // 'Error' breaks prototype chain here
-        Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
-    }
+  constructor(message?: string, public code?: string) {
+    super(message); // 'Error' breaks prototype chain here
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+  }
 }
 
-export const handleErrors = (errorMap) =>(error: Error) => {
-    logger.error(error);
-    
-    if(error instanceof ApplicationError) {
-        const { code = "default" } = error;
-        const ErrorToThrow = errorMap[code];
+export const handleErrors = errorMap => (error: Error) => {
+  logger.error(error);
 
-        throw new ErrorToThrow();
-    }
+  if (error instanceof ApplicationError) {
+    const { code = 'default' } = error;
+    const ErrorToThrow = errorMap[code];
 
-    throw error;
-}
+    throw new ErrorToThrow();
+  }
+
+  throw error;
+};

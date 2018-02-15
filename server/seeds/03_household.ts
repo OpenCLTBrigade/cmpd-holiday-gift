@@ -29,7 +29,7 @@ const createHousehold = i => ({
 export default async (connection: Connection, verbose = true) => {
   try {
     for (let i = 1; i <= 25; i++) {
-      const household = Household.fromJSON(createHousehold(i))
+      const household = Household.fromJSON(createHousehold(i));
 
       await household.save();
 

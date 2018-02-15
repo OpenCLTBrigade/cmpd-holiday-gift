@@ -10,7 +10,6 @@ const defaults = {
 };
 
 export default ({ list, keys, search }) => {
-
   const options = { ...defaults, keys };
   const fuse = new Fuse(list, options);
   return fuse.search(search);

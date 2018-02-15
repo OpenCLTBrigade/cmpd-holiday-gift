@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany, ManyToOne, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinColumn,
+  OneToOne,
+  OneToMany,
+  ManyToOne,
+  BaseEntity
+} from 'typeorm';
 
 import Address from './address';
 import User from './nominator';
@@ -8,95 +17,96 @@ import Attachment from './attachment';
 
 import encOptions from '../common/util/encryption-options';
 
-import { ExtendedColumnOptions } from "typeorm-encrypted";
+import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('households')
 export default class Household extends BaseEntity {
-    private constructor(props) {
-      super();
-  
-      Object.assign(this, props);
-    }
+  private constructor(props) {
+    super();
 
-    @PrimaryGeneratedColumn() 
-    id: number
+    Object.assign(this, props);
+  }
 
-    @Column('int', { name: 'nominator_id' }) 
-    nominatorId: number
+  @PrimaryGeneratedColumn() id: number;
 
-    @Column('varchar', <ExtendedColumnOptions>{name: 'name_first', ...encOptions}) 
-    firstName: string
+  @Column('int', { name: 'nominator_id' })
+  nominatorId: number;
 
-    @Column('varchar', <ExtendedColumnOptions>{name: 'name_middle', nullable: true, ...encOptions}) 
-    middleName: string = ''
+  @Column('varchar', <ExtendedColumnOptions>{
+    name: 'name_first',
+    ...encOptions
+  })
+  firstName: string;
 
-    @Column('text', {name: 'name_last'}) 
-    lastName: string
+  @Column('varchar', <ExtendedColumnOptions>{
+    name: 'name_middle',
+    nullable: true,
+    ...encOptions
+  })
+  middleName: string = '';
 
-    @Column('varchar', <ExtendedColumnOptions>{name: 'dob', ...encOptions}) 
-    dob: string
+  @Column('text', { name: 'name_last' })
+  lastName: string;
 
-    @Column('text') 
-    race: string
+  @Column('varchar', <ExtendedColumnOptions>{ name: 'dob', ...encOptions })
+  dob: string;
 
-    @Column('text') 
-    gender: string
+  @Column('text') race: string;
 
-    @Column('varchar',  <ExtendedColumnOptions> encOptions) 
-    last4ssn: string
+  @Column('text') gender: string;
 
-    @Column('varchar',  <ExtendedColumnOptions> encOptions) 
-    email: string
+  @Column('varchar', <ExtendedColumnOptions>encOptions)
+  last4ssn: string;
 
-    @Column('text', {name: 'preferred_contact_method', nullable: true}) 
-    preferredContactMethod: string
+  @Column('varchar', <ExtendedColumnOptions>encOptions)
+  email: string;
 
-    @Column('boolean', {name: 'nomination_email_sent'}) 
-    nominationEmailSent: boolean = false
+  @Column('text', { name: 'preferred_contact_method', nullable: true })
+  preferredContactMethod: string;
 
-    @Column('boolean', {nullable: true}) 
-    draft: boolean = true
+  @Column('boolean', { name: 'nomination_email_sent' })
+  nominationEmailSent: boolean = false;
 
-    @Column('boolean') 
-    reviewed: boolean = false
+  @Column('boolean', { nullable: true })
+  draft: boolean = true;
 
-    @Column('boolean') 
-    approved: boolean = false
+  @Column('boolean') reviewed: boolean = false;
 
-    @Column('text', {nullable: true}) 
-    reason: string
+  @Column('boolean') approved: boolean = false;
 
-    @Column('boolean') 
-    deleted: boolean = false
+  @Column('text', { nullable: true })
+  reason: string;
 
-    @Column('date', {name: 'deleted_at', nullable: true}) 
-    deletedAt
+  @Column('boolean') deleted: boolean = false;
 
-    @OneToOne(() => Address, address => address.household)
-    address: Address;
+  @Column('date', { name: 'deleted_at', nullable: true })
+  deletedAt;
 
-    @OneToMany(() => Child, child => child.household) 
-    children: Child[]
+  @OneToOne(() => Address, address => address.household)
+  address: Address;
 
-    @OneToMany(() => Attachment, attachment => attachment.household) 
-    attachments: Attachment[]
+  @OneToMany(() => Child, child => child.household)
+  children: Child[];
 
-    @OneToMany(() => PhoneNumber, phone => phone.household) 
-    phoneNumbers: PhoneNumber[]
+  @OneToMany(() => Attachment, attachment => attachment.household)
+  attachments: Attachment[];
 
-    @ManyToOne(() => User, user => user.households) 
-    @JoinColumn({ name: "nominator_id" })
-    nominator: User
+  @OneToMany(() => PhoneNumber, phone => phone.household)
+  phoneNumbers: PhoneNumber[];
 
-    get fullName() {
-        return `${this.firstName} ${this.lastName}`
-    }
+  @ManyToOne(() => User, user => user.households)
+  @JoinColumn({ name: 'nominator_id' })
+  nominator: User;
 
-    static fromJSON(props) {
-      const entity = new Household(props);
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 
-      entity.address = null;
-  
-      return entity;
-    }
+  static fromJSON(props) {
+    const entity = new Household(props);
+
+    entity.address = null;
+
+    return entity;
+  }
 }

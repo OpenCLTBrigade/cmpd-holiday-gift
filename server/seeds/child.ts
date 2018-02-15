@@ -5,11 +5,8 @@ import { Connection } from 'typeorm';
 import { Child } from '../entities';
 
 export default async (connection: Connection) => {
-
-  
   // Add 25 children to the DB
   for (let i = 0; i < 5; i++) {
-
     const child = Child.fromJSON({
       householdId: faker.random.number(25) + 1,
       firstName: faker.name.firstName(),
@@ -28,12 +25,16 @@ export default async (connection: Connection) => {
       clothesPantsSize: faker.random.arrayElement(config.clothesSizes),
       clothesCoatSize: faker.random.arrayElement(config.clothesSizes),
       shoeSize: faker.random.number({ min: 1, max: 9 }).toString(),
-      favouriteColor: faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']),
+      favouriteColor: faker.random.arrayElement([
+        'Red',
+        'Blue',
+        'Green',
+        'Orange'
+      ]),
       interests: faker.lorem.text(50),
       gender: faker.random.boolean()
-    })
+    });
 
     await child.save();
-
   }
 };

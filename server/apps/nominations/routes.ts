@@ -1,7 +1,15 @@
 import db from '../../models';
 import { Router } from 'express';
-import { Affiliation, Household, User, Me, Reports, Slips, Cmpd  } from './controllers'
-import auth from '../lib/auth'
+import {
+  Affiliation,
+  Household,
+  User,
+  Me,
+  Reports,
+  Slips,
+  Cmpd
+} from './controllers';
+import auth from '../lib/auth';
 
 const validators = require('./validators/household');
 
@@ -34,8 +42,8 @@ router.get('/households', auth.ensureLoggedIn, Household.list);
 // router.get('/users/:id', auth.ensureLoggedIn, User.getUser);
 
 // Affiliations
-router.get('/affiliations', Affiliation.list)
-router.get('/affiliations/:id', Affiliation.getAffiliation)
+router.get('/affiliations', Affiliation.list);
+router.get('/affiliations/:id', Affiliation.getAffiliation);
 
 // Reports
 // router.post('/report/all', auth.ensureAdmin, Reports.export_data_excel);
@@ -62,4 +70,4 @@ router.get('/affiliations/:id', Affiliation.getAffiliation)
 //   return (res.json(households));
 // })
 
-export default router
+export default router;

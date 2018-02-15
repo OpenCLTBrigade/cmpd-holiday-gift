@@ -1,12 +1,11 @@
-import db from '../../../models'
+import db from '../../../models';
 
 /**
  * Used for standard packing slips _AND_ the bike slips
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 async function packing(req, res) {
-
   const whereClause = { approved: true, deleted: false };
 
   if (req.query && req.query.household_id) {
@@ -17,9 +16,13 @@ async function packing(req, res) {
     where: whereClause,
     include: [
       { model: db['household_address'], as: 'address' },
-      { model:db['household_phone'], as: 'phones' },
+      { model: db['household_phone'], as: 'phones' },
       { model: db['child'], as: 'children' },
-      { model: db['user'], as: 'nominator', include: [{ model: db['affiliation'] }] }
+      {
+        model: db['user'],
+        as: 'nominator',
+        include: [{ model: db['affiliation'] }]
+      }
     ]
   });
   const assistance = {
@@ -32,4 +35,4 @@ async function packing(req, res) {
 
 export default {
   packing
-}
+};

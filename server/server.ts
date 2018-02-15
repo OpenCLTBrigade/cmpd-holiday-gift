@@ -9,7 +9,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-    const options = new DocumentBuilder()
+  const options = new DocumentBuilder()
     .setTitle('CMPD Explorers')
     .setDescription('The CMPD API specification')
     .setVersion('1.0')
@@ -17,13 +17,12 @@ async function bootstrap() {
     .addTag('nominations')
     .addTag('users')
     .build();
-    
-    const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('/swagger', app, document);
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('/swagger', app, document);
 
   app.useGlobalFilters(new AnyExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
-
 
   const port = process.env.PORT || config.port;
   await app.listen(port, () => {

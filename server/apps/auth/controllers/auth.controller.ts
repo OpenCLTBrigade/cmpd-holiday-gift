@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { ApiUseTags, ApiResponse } from '@nestjs/swagger';
 
-
 import { RegisterRequestDto, LoginRequestDto } from './dto';
 import { rootUrl } from '../../lib/misc';
 import auth from '../../lib/auth';
@@ -38,12 +37,19 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('register')
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'The user has been successfully created.'})
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Validation failure.'})
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The user has been successfully created.'
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation failure.'
+  })
   async register(
     @Req() request: Request,
     @Res() res: Response,
-    @Body(new ValidationPipe()) registerDto: RegisterRequestDto
+    @Body(new ValidationPipe())
+    registerDto: RegisterRequestDto
   ) {
     const result = await this.accountService.register(rootUrl(request), {
       ...registerDto
@@ -57,9 +63,19 @@ export class AuthController {
   }
 
   @Post('login')
-  @ApiResponse({ status: HttpStatus.OK, description: 'The user has been successfully authenticated.'})
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Vailidation or authentication failure.'})
-  async login(@Res() res: Response, @Body(new ValidationPipe()) loginDto: LoginRequestDto){
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been successfully authenticated.'
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Vailidation or authentication failure.'
+  })
+  async login(
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    loginDto: LoginRequestDto
+  ) {
     const result = await this.accountService.login(loginDto);
     logger.info(result);
 
@@ -72,8 +88,14 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('extend')
-  @ApiResponse({ status: HttpStatus.OK, description: 'The user session has been successfully extended.'})
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Vailidation or authentication failure.'})
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user session has been successfully extended.'
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Vailidation or authentication failure.'
+  })
   async extend(@Req() req: Request, @Res() res: Response) {
     if (req['user'].id) {
       // TODO: extend existing session instead
@@ -91,12 +113,22 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('access')
-  @ApiResponse({ status: HttpStatus.OK, description: 'The user app token has been successfully created.'})
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Authentication failure.'})
-  async getToken(@Req() {user}, @Res() res: Response, @Body(new ValidationPipe()) {app}: AccessDto) {
-    
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user app token has been successfully created.'
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Authentication failure.'
+  })
+  async getToken(
+    @Req() { user },
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    { app }: AccessDto
+  ) {
     if (user && auth.userCanUseApp(user, app)) {
-      const {id, role, firstName, lastName} = user
+      const { id, role, firstName, lastName } = user;
       res.json({
         token: auth.makeToken(
           {
@@ -115,10 +147,17 @@ export class AuthController {
   }
 
   @Post('confirm-email')
-  @ApiResponse({ status: HttpStatus.OK, description: "The user's email has been successfully confirmed."})
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "The user's email has been successfully confirmed."
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async confirm(@Req() req: Request, @Res() res: Response, @Body(new ValidationPipe()) confirmEmailDto: ConfirmEmailDto) {
-
+  async confirm(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    confirmEmailDto: ConfirmEmailDto
+  ) {
     const result = await this.accountService.confirmEmail({
       url: rootUrl(req),
       ...confirmEmailDto
@@ -132,9 +171,17 @@ export class AuthController {
 
   @Roles('admin')
   @Post('approve')
-  @ApiResponse({ status: HttpStatus.OK, description: "The has been successfully approved."})
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The has been successfully approved.'
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async approve(@Req() req: Request, @Res() res: Response, @Body(new ValidationPipe()) approveUserDto: ApproveUserDto) {
+  async approve(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    approveUserDto: ApproveUserDto
+  ) {
     const body = req.body;
     const result = await this.accountService.approveUser(approveUserDto);
 
@@ -146,9 +193,17 @@ export class AuthController {
   }
 
   @Post('recover/send-email')
-  @ApiResponse({ status: HttpStatus.OK, description: "The user's recovery email has been successfully sent."})
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "The user's recovery email has been successfully sent."
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async sendRecoveryEmail(@Req() req: Request, @Res() res: Response, @Body(new ValidationPipe()) recoveryEmailDto: RecoveryEmailDto) {
+  async sendRecoveryEmail(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    recoveryEmailDto: RecoveryEmailDto
+  ) {
     const result = await this.accountService.sendRecoveryEmail({
       url: rootUrl(req),
       ...recoveryEmailDto
@@ -162,10 +217,17 @@ export class AuthController {
   }
 
   @Post('recover/reset-password')
-  @ApiResponse({ status: HttpStatus.OK, description: "The user's password has been successfully reset."})
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "The user's password has been successfully reset."
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async resetPassword(@Req() _: Request, @Res() res: Response, @Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto) {
-
+  async resetPassword(
+    @Req() _: Request,
+    @Res() res: Response,
+    @Body(new ValidationPipe())
+    resetPasswordDto: ResetPasswordDto
+  ) {
     // When using verifyConfirmationCode
     // await recovery.resetPassword(req['user'], body.new_password);
     const { id, confirmationCode, password } = resetPasswordDto;

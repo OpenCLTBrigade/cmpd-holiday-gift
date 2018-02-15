@@ -1,40 +1,44 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  BaseEntity
+} from 'typeorm';
 import Household from './household';
 
 import encOptions from '../common/util/encryption-options';
 
-import { ExtendedColumnOptions } from "typeorm-encrypted";
+import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('household_phones')
 export default class PhoneNumber extends BaseEntity {
-    private constructor(props) {
-        super();
+  private constructor(props) {
+    super();
 
-        Object.assign(this, props);
-    }
+    Object.assign(this, props);
+  }
 
-    @PrimaryGeneratedColumn() 
-    id: number
+  @PrimaryGeneratedColumn() id: number;
 
-    @Column('int', {name: 'household_id'})
-    householdId: number
+  @Column('int', { name: 'household_id' })
+  householdId: number;
 
-    @Column('text') 
-    type: string
+  @Column('text') type: string;
 
-    @Column('varchar',  <ExtendedColumnOptions> encOptions)
-    number: string
-    
-    @ManyToOne(() => Household)
-    @JoinColumn({ name: "household_id" })
-    household: Household
+  @Column('varchar', <ExtendedColumnOptions>encOptions)
+  number: string;
 
-    @Column('boolean') 
-    deleted: boolean = false
+  @ManyToOne(() => Household)
+  @JoinColumn({ name: 'household_id' })
+  household: Household;
 
-    static fromJSON(props) {
-      const entity = new PhoneNumber(props);
-  
-      return entity;
-    }
+  @Column('boolean') deleted: boolean = false;
+
+  static fromJSON(props) {
+    const entity = new PhoneNumber(props);
+
+    return entity;
+  }
 }

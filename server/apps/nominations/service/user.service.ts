@@ -1,11 +1,16 @@
 import { Nominator, User } from '../../../entities';
 
-import logger from "../../lib/logger";
-import { createPagedResults } from "../../lib/table/table";
+import logger from '../../lib/logger';
+import { createPagedResults } from '../../lib/table/table';
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
-import auth from "../../lib/auth";
+import auth from '../../lib/auth';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
-import { Component, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Component,
+  ForbiddenException,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -14,7 +19,7 @@ const Criteria = {
 };
 
 export enum ErrorCodes {
-  NoUserExists = "NoUserExists"
+  NoUserExists = 'NoUserExists'
 }
 
 @Component()
@@ -24,29 +29,30 @@ export class UserService {
     search,
     baseUrl = '',
     whitelist = [],
-    query = {affiliationId: undefined}
+    query = { affiliationId: undefined }
   }) {
     try {
       const searchQuery = search && {
-        keys: [
-          'lastName',
-          'firstName',
-          ],
+        keys: ['lastName', 'firstName'],
         search
       };
-  
-      let sqlQuery =  Nominator.createQueryBuilder("user")
-      if(query.affiliationId) {
-        sqlQuery = sqlQuery.where("user.affiliation_id = :affiliation_id", { affiliation_id: query.affiliationId})
+
+      let sqlQuery = Nominator.createQueryBuilder('user');
+      if (query.affiliationId) {
+        sqlQuery = sqlQuery.where('user.affiliation_id = :affiliation_id', {
+          affiliation_id: query.affiliationId
+        });
       } else {
         // TODO: why search only live users?
         sqlQuery = sqlQuery
-          .where("user.active = :active", {active: Criteria.LIVE.active})
-          .andWhere("user.approved = :approved", {approved: Criteria.LIVE.approved})
+          .where('user.active = :active', { active: Criteria.LIVE.active })
+          .andWhere('user.approved = :approved', {
+            approved: Criteria.LIVE.approved
+          });
       }
 
-      const results = await sqlQuery.getMany()
-      console.log(results)
+      const results = await sqlQuery.getMany();
+      console.log(results);
 
       return createPagedResults({
         results,
@@ -61,27 +67,22 @@ export class UserService {
     }
   }
 
-async getPendingUsers ({
-  page,
-  search,
-  baseUrl = '',
-  whitelist = [],
-}) {
+  async getPendingUsers({ page, search, baseUrl = '', whitelist = [] }) {
     try {
-      
       const searchQuery = search && {
-        keys: [
-          'lastName',
-          'firstName',
-          ],
+        keys: ['lastName', 'firstName'],
         search
       };
 
-      let sqlQuery =  Nominator.createQueryBuilder("user");
+      let sqlQuery = Nominator.createQueryBuilder('user');
 
       sqlQuery = sqlQuery
-        .where("user.email_verified = :email_verified", {active: Criteria.PENDING.emailVerified})
-        .andWhere("user.approved = :approved", {approved: Criteria.PENDING.approved});
+        .where('user.email_verified = :email_verified', {
+          active: Criteria.PENDING.emailVerified
+        })
+        .andWhere('user.approved = :approved', {
+          approved: Criteria.PENDING.approved
+        });
 
       const results = await sqlQuery.getMany();
 
@@ -93,35 +94,39 @@ async getPendingUsers ({
         fieldWhitelist: whitelist
       });
     } catch (error) {
-      
       logger.error(error);
       return undefined;
     }
   }
 
   async getById(id) {
-    return await Nominator.findOneById(id, { relations: ['households', 'affiliation']})
+    return await Nominator.findOneById(id, {
+      relations: ['households', 'affiliation']
+    });
   }
 
-  async create({password, ...rest}: CreateUserDto) {
+  async create({ password, ...rest }: CreateUserDto) {
     logger.info('create user');
 
-    const user = User.fromJSON({ password: auth.hashPassword(password), ...rest });
+    const user = User.fromJSON({
+      password: auth.hashPassword(password),
+      ...rest
+    });
 
-    const {password:omit, ...created} = await user.save();
+    const { password: omit, ...created } = await user.save();
 
     return created;
   }
 
-  async update({id, password, ...rest}: UpdateUserDto, currentUser) {
-    if(currentUser.role !== 'admin' && currentUser.id !== id) {
+  async update({ id, password, ...rest }: UpdateUserDto, currentUser) {
+    if (currentUser.role !== 'admin' && currentUser.id !== id) {
       throw new ForbiddenException();
-    } 
+    }
 
     try {
       const user = await User.findOneById(id);
 
-      if(!user) throw new NotFoundException();
+      if (!user) throw new NotFoundException();
 
       user.firstName = rest.firstName;
       user.lastName = rest.lastName;
@@ -142,31 +147,33 @@ async getPendingUsers ({
         user.role = rest.role;
       }
 
-      const {password:omit, ...updated} = await user.save();
+      const { password: omit, ...updated } = await user.save();
 
       return updated;
     } catch (error) {
-      
       logger.error(error);
-      throw new InternalServerErrorException('Could not update user. Unknown error.');
+      throw new InternalServerErrorException(
+        'Could not update user. Unknown error.'
+      );
     }
-  } 
+  }
 
   async approve(id) {
     try {
       const user = await User.findOneById(id);
 
-      user.approved = true; 
+      user.approved = true;
       user.active = true;
       user.emailVerified = true;
 
-      const {password:omit, ...updated} = await user.save();
+      const { password: omit, ...updated } = await user.save();
 
       return updated;
     } catch (error) {
-      
       logger.error(error);
-      throw new InternalServerErrorException('Could not update user. Unknown error.');
+      throw new InternalServerErrorException(
+        'Could not update user. Unknown error.'
+      );
     }
   }
 
@@ -174,18 +181,19 @@ async getPendingUsers ({
     try {
       const user = await User.findOneById(id);
 
-      user.approved = false; 
+      user.approved = false;
       user.active = false;
       user.emailVerified = false;
       user.confirmationEmail = false;
 
-      const {password:omit, ...updated} = await user.save();
+      const { password: omit, ...updated } = await user.save();
 
       return updated;
     } catch (error) {
-      
       logger.error(error);
-      throw new InternalServerErrorException('Could not update user. Unknown error.');
+      throw new InternalServerErrorException(
+        'Could not update user. Unknown error.'
+      );
     }
   }
 }

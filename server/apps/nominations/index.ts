@@ -1,8 +1,8 @@
 import * as express from 'express';
 import auth from '../lib/auth';
-import routes from './routes'
+import routes from './routes';
 
-import config from '../../config'
+import config from '../../config';
 
 const app = express();
 
