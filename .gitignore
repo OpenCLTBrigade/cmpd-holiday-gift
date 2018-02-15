@@ -14,3 +14,5 @@ yarn-error.log*
 /*.tgz
 /server-notypes
 nodemon.sh
+.cache
+dist/
