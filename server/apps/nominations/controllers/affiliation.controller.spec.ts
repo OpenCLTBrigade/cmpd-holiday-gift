@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException } from '@nestjs/common';
 import { AffiliationController } from './affiliation.controller';
 import { AffiliationService } from '../service/affiliation.service';
 
@@ -10,7 +10,7 @@ describe('AffiliationController', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [AffiliationController],
-      components: [AffiliationService],
+      components: [AffiliationService]
     }).compile();
 
     service = module.get<AffiliationService>(AffiliationService);

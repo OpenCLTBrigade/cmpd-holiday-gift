@@ -35,11 +35,7 @@ export default class SelectList extends React.Component {
 
   render() {
     return (
-      <Input
-        label="Affilation"
-        name={'user.affiliation_id'}
-        componentClass="select"
-        validator={requiredValidator}>
+      <Input label="Affilation" name={'user.affiliation_id'} componentClass="select" validator={requiredValidator}>
         <option />
         {this.state.items.length === 0 ? (
           <option disabled>Loading...</option>

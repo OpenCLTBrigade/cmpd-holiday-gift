@@ -34,10 +34,7 @@ export default class HouseholdIndex extends React.Component {
             </Box>
           </Col>
         </Row>
-        <FeedbackModal
-          household={this.state.householdInReview}
-          doClose={this.closeHouseholdReview}
-        />
+        <FeedbackModal household={this.state.householdInReview} doClose={this.closeHouseholdReview} />
       </div>
     );
   }

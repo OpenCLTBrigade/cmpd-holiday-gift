@@ -56,8 +56,7 @@ async function packingSlip(household_id) {
           cmpd_response_area = address.cmpd_response_area;
         }
 
-        const familyNumber = `${cmpd_division || 'x'}-${cmpd_response_area ||
-          'x'}-${household.id}`;
+        const familyNumber = `${cmpd_division || 'x'}-${cmpd_response_area || 'x'}-${household.id}`;
 
         return (
           <Page key={household.id}>
@@ -67,14 +66,11 @@ async function packingSlip(household_id) {
               <br />
               <b>Referred By:</b> {household.nominator_name}
               <br />
-              <b>Affiliation:</b>{' '}
-              {household.nominator && household.nominator.affiliation.name} ({household.nominator &&
+              <b>Affiliation:</b> {household.nominator && household.nominator.affiliation.name} ({household.nominator &&
                 household.nominator.affiliation.type})<br />
               <b style={{ fontSize: '1.3em' }}>
                 Division:{' '}
-                {household.address && household.address.cmpd_division
-                  ? household.address.cmpd_division
-                  : '__'}
+                {household.address && household.address.cmpd_division ? household.address.cmpd_division : '__'}
               </b>
               <br />
               <b style={{ fontSize: '1.3em' }}>
@@ -96,8 +92,7 @@ async function packingSlip(household_id) {
                 {familyNumber}
               </div>
               <br />
-              <b>Bicycles requested:</b>{' '}
-              {household.children.filter(child => child.bike_want).length}
+              <b>Bicycles requested:</b> {household.children.filter(child => child.bike_want).length}
               <br />
               <br />
               <b>Bicycles assigned:</b> ____<br />
@@ -147,14 +142,10 @@ async function packingSlip(household_id) {
                     <br />Radio: {data.assistance.radio}
                     <br />
                     <br />
-                    <b style={{ fontStretch: 'condensed' }}>
-                      RETURN THIS DOCUMENT TO THE WAREHOUSE
-                    </b>
+                    <b style={{ fontStretch: 'condensed' }}>RETURN THIS DOCUMENT TO THE WAREHOUSE</b>
                   </td>
                   <td style={{ border: '3px solid black' }}>
-                    <b>
-                      I certify that I have made the delivery to this location:
-                    </b>
+                    <b>I certify that I have made the delivery to this location:</b>
                     <br />
                     <br />
                     <div
@@ -174,12 +165,9 @@ async function packingSlip(household_id) {
             <table width="100%">
               <tbody>
                 <tr>
-                  <td
-                    colSpan="6"
-                    style={{ textAlign: 'center', background: '#ccc' }}>
+                  <td colSpan="6" style={{ textAlign: 'center', background: '#ccc' }}>
                     <b style={{ fontSize: '0.8em' }}>
-                      Check the first column below when toys for the child have
-                      been entered into their box
+                      Check the first column below when toys for the child have been entered into their box
                     </b>
                     <br />
                     <br />
@@ -212,16 +200,8 @@ async function packingSlip(household_id) {
                     <td>{child.name_first}</td>
                     <td>{child.gender}</td>
                     {/* //TODO Not sure why Virtual field child.age is not working in model. Copied this logic from Nomination Report view.*/}
-                    <td>
-                      {moment().diff(moment(child.dob).format('LL'), 'years')}
-                    </td>
-                    <td>
-                      {child.bike_want
-                        ? `${descFromValue(child.bike_size)}\n${
-                            child.bike_style
-                          }`
-                        : 'no'}
-                    </td>
+                    <td>{moment().diff(moment(child.dob).format('LL'), 'years')}</td>
+                    <td>{child.bike_want ? `${descFromValue(child.bike_size)}\n${child.bike_style}` : 'no'}</td>
                     <td>
                       <div
                         style={{
@@ -237,12 +217,8 @@ async function packingSlip(household_id) {
                     Coat size: ${child.clothes_size_coat},
                     Shoe size: ${child.shoe_size}
                   `}
-                        {!child.favourite_colour
-                          ? null
-                          : ` Favorite color: ${child.favourite_colour}`}
-                        {!child.interests
-                          ? null
-                          : ` Interests: ${child.interests}`}
+                        {!child.favourite_colour ? null : ` Favorite color: ${child.favourite_colour}`}
+                        {!child.interests ? null : ` Interests: ${child.interests}`}
                         {!child.ideas ? null : ` Ideas: ${child.ideas}`}
                       </div>
                     </td>
@@ -252,16 +228,14 @@ async function packingSlip(household_id) {
             </table>
             <br />
             <span style={{ fontSize: '0.8em' }}>
-              <b>Instructions: Officers,</b> although a bike may be requested,
-              there are not enough bikes for all requests. Please note the box
-              to determine the number of bikes that have bee nassigned to this
-              family. In the Bike Requested area, if a bike has been assigned,
-              it will be circled for the child it has bee nassigned to.
+              <b>Instructions: Officers,</b> although a bike may be requested, there are not enough bikes for all
+              requests. Please note the box to determine the number of bikes that have bee nassigned to this family. In
+              the Bike Requested area, if a bike has been assigned, it will be circled for the child it has bee
+              nassigned to.
               <br /> <br />
-              <b>Volunteers:</b> If you are filling the family box for the
-              children on this list, please enter the number of gifts you have
-              put into the box for each child in the DONE box to the left of
-              each child&quot;s name.
+              <b>Volunteers:</b> If you are filling the family box for the children on this list, please enter the
+              number of gifts you have put into the box for each child in the DONE box to the left of each child&quot;s
+              name.
             </span>
           </Page>
         );
@@ -293,8 +267,7 @@ async function bicycleSlip(household_id) {
           cmpd_response_area = address.cmpd_response_area;
         }
 
-        const familyNumber = `${cmpd_division || 'x'}-${cmpd_response_area ||
-          'x'}-${household.id}`;
+        const familyNumber = `${cmpd_division || 'x'}-${cmpd_response_area || 'x'}-${household.id}`;
 
         return household.children.map(child => {
           return (
@@ -317,8 +290,7 @@ async function bicycleSlip(household_id) {
                               <br /> {household.address.street2}
                             </span>
                           ) : null}
-                          <br /> {household.address.city},{' '}
-                          {household.address.state}, {household.address.zip}
+                          <br /> {household.address.city}, {household.address.state}, {household.address.zip}
                         </span>
                       ) : (
                         'Not available'
@@ -327,11 +299,9 @@ async function bicycleSlip(household_id) {
                   </tr>
                   <tr>
                     <td>
-                      <b>Child (Last, First):</b> {child.name_last}{' '}
-                      {child.name_first}
+                      <b>Child (Last, First):</b> {child.name_last} {child.name_first}
                       <br />
-                      <b>Family (Last, First):</b> {household.name_last},{' '}
-                      {household.name_first}
+                      <b>Family (Last, First):</b> {household.name_last}, {household.name_first}
                     </td>
                   </tr>
                 </tbody>
@@ -339,9 +309,7 @@ async function bicycleSlip(household_id) {
               <table width="100%">
                 <tbody>
                   <tr>
-                    <td
-                      colSpan="6"
-                      style={{ textAlign: 'center', background: '#ccc' }}>
+                    <td colSpan="6" style={{ textAlign: 'center', background: '#ccc' }}>
                       <b style={{ fontSize: '1.5em' }}>Bike Requested</b>
                     </td>
                   </tr>

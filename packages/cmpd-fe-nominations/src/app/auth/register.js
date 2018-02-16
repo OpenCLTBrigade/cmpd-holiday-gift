@@ -36,11 +36,7 @@ export default class Register extends React.Component {
 
   async fetch() {
     const response = await getAffiliationList(1);
-    if (
-      response.items == null ||
-      response.items === '' ||
-      response.items === undefined
-    ) {
+    if (response.items == null || response.items === '' || response.items === undefined) {
       throw new Error('items not defined');
     }
     this.setState({ affiliationItems: response.items });
@@ -59,9 +55,7 @@ export default class Register extends React.Component {
       ));
     } catch (err) {
       console.error(err);
-      this.flashErrorMessage(
-        'Error: could not get affiliation list from server'
-      );
+      this.flashErrorMessage('Error: could not get affiliation list from server');
       return;
     }
 
@@ -98,10 +92,7 @@ export default class Register extends React.Component {
             <FormGroup className="form-group has-feedback">
               <Label>
                 Affiliation
-                <select
-                  className="form-control"
-                  name="affiliation_id"
-                  type="text">
+                <select className="form-control" name="affiliation_id" type="text">
                   <option>{this.AFFILIATION_PLACEHOLDER}</option>
                   {this.state.affiliationList}
                 </select>
@@ -130,22 +121,14 @@ export default class Register extends React.Component {
             <FormGroup className="form-group has-feedback">
               <Label>
                 Password
-                <input
-                  className="form-control"
-                  name="password"
-                  type="password"
-                />
+                <input className="form-control" name="password" type="password" />
               </Label>
               <Icon className="fa fa-lock form-control-feedback" />
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Confirm Password
-                <input
-                  className="form-control"
-                  name="password_confirm"
-                  type="password"
-                />
+                <input className="form-control" name="password_confirm" type="password" />
               </Label>
               <Icon className="fa fa-lock form-control-feedback" />
             </FormGroup>
@@ -166,36 +149,19 @@ export default class Register extends React.Component {
     );
   }
 
-  async onSubmit({
-    name_first,
-    name_last,
-    affiliation_id,
-    rank,
-    phone,
-    email,
-    password,
-    password_confirm
-  }) {
-    const validName = name =>
-      name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
+  async onSubmit({ name_first, name_last, affiliation_id, rank, phone, email, password, password_confirm }) {
+    const validName = name => name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
     let error = null;
     if (!validName(name_first)) {
-      error =
-        'First Name must be at least two characters and only contain letters, dashes, or periods';
+      error = 'First Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (!validName(name_last)) {
-      error =
-        'Last Name must be at least two characters and only contain letters, dashes, or periods';
+      error = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
     } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
       error = 'Affiliation is required';
     } else if (phone == null || phone === '') {
       error = 'Phone number is required';
-    } else if (
-      email == null ||
-      email === '' ||
-      !email.match('[a-zA-Z.-]{2,}')
-    ) {
-      error =
-        'Email is required, and must be in email address format (text@text.domain)';
+    } else if (email == null || email === '' || !email.match('[a-zA-Z.-]{2,}')) {
+      error = 'Email is required, and must be in email address format (text@text.domain)';
     } else if (password == null || password === '') {
       error = 'Password is required';
     } else if (password_confirm == null || password_confirm === '') {
@@ -210,14 +176,7 @@ export default class Register extends React.Component {
     }
 
     try {
-      const result = await register(
-        name_first,
-        name_last,
-        rank,
-        affiliation_id,
-        email,
-        password
-      );
+      const result = await register(name_first, name_last, rank, affiliation_id, email, password);
       if (result.success) {
         this.props.history.replace('/auth/login?justRegistered=true');
       } else {

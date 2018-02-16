@@ -44,17 +44,9 @@ export default class Dashboard extends React.Component {
           {/* <ContentTitle /> */}
           <section className="content">
             <Switch location={this.props.location}>
-              <Route
-                exact
-                path="/dashboard"
-                render={() => <Home user={user} />}
-              />
+              <Route exact path="/dashboard" render={() => <Home user={user} />} />
               {/* Needs Redux */}
-              <Route
-                exact
-                path="/dashboard/household"
-                render={rest => <HouseholdIndex user={user} {...rest} />}
-              />
+              <Route exact path="/dashboard/household" render={rest => <HouseholdIndex user={user} {...rest} />} />
               <Route
                 exact
                 path="/dashboard/household/create"
@@ -70,41 +62,17 @@ export default class Dashboard extends React.Component {
                 path="/dashboard/household/edit/:id"
                 render={rest => <EditHousehold user={user} {...rest} />}
               />
-              <Route
-                exact
-                path="/dashboard/affiliation"
-                render={rest => <AffiliationList user={user} {...rest} />}
-              />
+              <Route exact path="/dashboard/affiliation" render={rest => <AffiliationList user={user} {...rest} />} />
               <Route
                 exact
                 path="/dashboard/affiliation/:affiliation_id"
                 render={rest => <Affiliation user={user} {...rest} />}
               />
-              <Route
-                exact
-                path="/dashboard/user"
-                render={rest => <UsersList user={user} {...rest} />}
-              />
-              <Route
-                exact
-                path="/dashboard/user/pending"
-                render={rest => <PendingUsersList user={user} {...rest} />}
-              />
-              <Route
-                exact
-                path="/dashboard/user/create"
-                render={rest => <NewUser user={user} {...rest} />}
-              />
-              <Route
-                exact
-                path="/dashboard/user/:user_id/edit"
-                render={rest => <EditUser user={user} {...rest} />}
-              />
-              <Route
-                exact
-                path="/dashboard/user/:user_id"
-                render={rest => <ViewUser user={user} {...rest} />}
-              />
+              <Route exact path="/dashboard/user" render={rest => <UsersList user={user} {...rest} />} />
+              <Route exact path="/dashboard/user/pending" render={rest => <PendingUsersList user={user} {...rest} />} />
+              <Route exact path="/dashboard/user/create" render={rest => <NewUser user={user} {...rest} />} />
+              <Route exact path="/dashboard/user/:user_id/edit" render={rest => <EditUser user={user} {...rest} />} />
+              <Route exact path="/dashboard/user/:user_id" render={rest => <ViewUser user={user} {...rest} />} />
             </Switch>
           </section>
         </div>

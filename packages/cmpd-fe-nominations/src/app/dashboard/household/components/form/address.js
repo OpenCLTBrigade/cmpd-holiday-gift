@@ -35,13 +35,7 @@ class AddressForm extends React.Component {
 
     placesAutocomplete.on('change', e => {
       console.log('Selected address', e.suggestion);
-      const {
-        name: street,
-        administrative: state,
-        city,
-        postcode: zip,
-        latlng
-      } = e.suggestion;
+      const { name: street, administrative: state, city, postcode: zip, latlng } = e.suggestion;
       //   onChange({ street, state, city, zip, latlng });
       onChange({ street, state, city, latlng }); // Removed ZIP because Places is not returning correct value
     });

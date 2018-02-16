@@ -1,35 +1,31 @@
 import { ApplicationError } from '../../../common/util/application-error';
-import { getRepository } from "typeorm";
+import { getRepository } from 'typeorm';
 import { Component } from '@nestjs/common';
 
-import Affiliation from "../../../entities/affiliation";
+import Affiliation from '../../../entities/affiliation';
 
-import logger from "../../lib/logger";
-import { createPagedResults } from "../../lib/table/table";
+import logger from '../../lib/logger';
+import { createPagedResults } from '../../lib/table/table';
 
 export enum ErrorCodes {
-  NoAffiliationExists = "NoAffiliationExists"
+  NoAffiliationExists = 'NoAffiliationExists'
 }
 
 @Component()
 export class AffiliationService {
-  async query({
-    page,
-    search,
-    whitelist = ["id", "type", "name"]
-  }) {
+  async query({ page, search, whitelist = ['id', 'type', 'name'] }) {
     try {
       const query = search && {
-        keys: ["name"],
+        keys: ['name'],
         search
       };
-  
+
       let results = await getRepository(Affiliation).find();
       return createPagedResults({
         results,
         page,
         query,
-        baseUrl: "",
+        baseUrl: '',
         fieldWhitelist: whitelist
       });
     } catch (error) {
@@ -41,7 +37,7 @@ export class AffiliationService {
   async getAffiliation(id) {
     try {
       let affiliation = await getRepository(Affiliation).findOneById(id);
-  
+
       return affiliation;
     } catch (error) {
       logger.error(error);

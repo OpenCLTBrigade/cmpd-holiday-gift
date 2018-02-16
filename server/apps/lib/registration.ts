@@ -1,9 +1,9 @@
-import * as path from 'path'
-import auth from '../auth'
+import * as path from 'path';
+import auth from '../auth';
 
-import db from '../../models'
+import db from '../../models';
 
-import config from '../../config'
+import config from '../../config';
 const sendMail = require('./mail')(path.join(__dirname, '../auth/templates'));
 const asyncDo = require('./asyncDo');
 
@@ -58,10 +58,7 @@ export async function sendVerification(rootUrl: string, user) {
 }
 
 // Step 3
-export async function confirmEmail(
-  rootUrl,
-  { user_id, confirmation_code }
-) {
+export async function confirmEmail(rootUrl, { user_id, confirmation_code }) {
   const user = await db['user'].findById(user_id);
   if (!user) {
     return { error: 'confirmation code does not match' };
@@ -80,7 +77,11 @@ export async function confirmEmail(
 // Step 4
 export async function sendApproval(rootUrl: string, user) {
   const url = `${rootUrl}/dashboard/user/pending`;
-  await sendMail('admin-approval', { to: config.email.adminAddress, url, user });
+  await sendMail('admin-approval', {
+    to: config.email.adminAddress,
+    url,
+    user
+  });
 }
 
 // Step 5

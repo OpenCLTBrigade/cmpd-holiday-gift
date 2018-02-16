@@ -1,23 +1,23 @@
-import * as bcrypt from 'bcrypt-nodejs'
-import * as crypto from 'crypto'
+import * as bcrypt from 'bcrypt-nodejs';
+import * as crypto from 'crypto';
 
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
-import config from '../../config'
-import { Session, User } from '../../entities'
+import config from '../../config';
+import { Session, User } from '../../entities';
 import logger from '../../common/util/logger';
 
 // TODO: import from model
 export type UserType = {
-  id: number,
-  approved: boolean,
-  active: boolean,
-  role: any,
-  name_first: string,
-  name_last: string
+  id: number;
+  approved: boolean;
+  active: boolean;
+  role: any;
+  name_first: string;
+  name_last: string;
 };
 
-export type LoggedInUser = UserType & { approved: true, active: true };
+export type LoggedInUser = UserType & { approved: true; active: true };
 export type AppName = string | 'nominations';
 
 // TODO: automatically delete expired sessions from database
@@ -57,11 +57,7 @@ function authMiddleware(secret: string) {
   });
 }
 
-async function sessionMiddleware(
-  req,
-  res,
-  next
-) {
+async function sessionMiddleware(req, res, next) {
   let user = null;
   if (req.user) {
     if (req.user.session_id != null) {
@@ -70,10 +66,14 @@ async function sessionMiddleware(
       const session = await Session.findOneById(req.user.session_id);
 
       if (!session) {
-        logger.info('session does not exist for user', { session: req.user.session_id })
+        logger.info('session does not exist for user', {
+          session: req.user.session_id
+        });
         req.user = null;
       } else {
-        logger.info('session exists for user', { session: req.user.session_id })
+        logger.info('session exists for user', {
+          session: req.user.session_id
+        });
 
         // TODO: validate session expiration
         user = session.user;
@@ -124,14 +124,13 @@ function userCanUseApp(user: UserType, app: AppName): boolean {
 }
 
 async function createSession(user_id: number): Promise<string> {
-
   const session = new Session();
 
   session.userId = user_id;
 
   await session.save();
 
-  logger.info('created new session', session)
+  logger.info('created new session', session);
 
   return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
 }
@@ -148,4 +147,4 @@ export default {
   userCanUseApp,
   ensureAdmin,
   createSession
-}
+};

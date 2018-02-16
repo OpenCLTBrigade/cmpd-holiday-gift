@@ -41,9 +41,7 @@ export default class List extends React.Component {
   }
 
   uploadedFormFormatter(cell, row) {
-    return row.attachment_data && row.attachment_data.length > 0 ? (
-      <i className="fa fa-check" />
-    ) : null;
+    return row.attachment_data && row.attachment_data.length > 0 ? <i className="fa fa-check" /> : null;
   }
 
   // Called by householdIndex when FeedbackModal is closed
@@ -52,12 +50,7 @@ export default class List extends React.Component {
   }
 
   actionCellFormatter(cell, row) {
-    return (
-      <RecordActionItems
-        handleDelete={this.handleDelete}
-        householdId={row.id}
-      />
-    );
+    return <RecordActionItems handleDelete={this.handleDelete} householdId={row.id} />;
   }
 
   handleDelete = id => {
@@ -95,9 +88,7 @@ export default class List extends React.Component {
     return (
       <div>
         {row.reviewed !== true && (
-          <button
-            className="btn btn-sm btn-default"
-            onClick={() => this.props.openHouseholdReview(row, currentPage)}>
+          <button className="btn btn-sm btn-default" onClick={() => this.props.openHouseholdReview(row, currentPage)}>
             Review
           </button>
         )}
@@ -126,9 +117,7 @@ export default class List extends React.Component {
 
     return (
       <DataTable
-        onFetch={(page, searchText) =>
-          this.setState(() => ({ page, searchText }))
-        }
+        onFetch={(page, searchText) => this.setState(() => ({ page, searchText }))}
         search={true}
         fetch={this.fetch.bind(this)}
         searchPlaceholder="Search by last name"
@@ -149,9 +138,7 @@ export default class List extends React.Component {
           tdStyle={TD_STYLE_XSMALL}
           thStyle={TD_STYLE_XSMALL}
           dataField="name_first"
-          dataFormat={(cell, row) =>
-            row.children ? `${row.children.length}` : 0
-          }>
+          dataFormat={(cell, row) => (row.children ? `${row.children.length}` : 0)}>
           Children
         </TableHeaderColumn>
         {/* <TableHeaderColumn dataField="children" dataFormat={cell => cell.length}>Children</TableHeaderColumn> */}

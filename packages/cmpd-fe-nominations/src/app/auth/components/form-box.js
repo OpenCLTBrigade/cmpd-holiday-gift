@@ -114,11 +114,7 @@ export default class FormBox extends React.Component {
           )}
           <Form onSubmit={this.onSubmit.bind(this)}>
             {this.props.body}
-            <Button
-              className="btn bg-auth btn-block btn-flat"
-              type="submit"
-              value={this.props.submitText}
-            />
+            <Button className="btn bg-auth btn-block btn-flat" type="submit" value={this.props.submitText} />
           </Form>
         </Body>
         {this.props.footer}

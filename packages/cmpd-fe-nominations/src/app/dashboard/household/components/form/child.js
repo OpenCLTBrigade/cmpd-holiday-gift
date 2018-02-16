@@ -56,18 +56,10 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                         placeholder="select"
                         validator={requiredValidator}>
                         <option value="">Select...</option>
-                        <option value="American Indian or Alaskan Native">
-                          American Indian or Alaskan Native
-                        </option>
-                        <option value="Asian">Asian</option>{' '}
-                        <option value="African American">
-                          African American
-                        </option>
+                        <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+                        <option value="Asian">Asian</option> <option value="African American">African American</option>
                         <option value="Hispanic">Hispanic</option>
-                        <option value="Pacific Islander">
-                          Pacific Islander
-                        </option>{' '}
-                        <option value="White">White</option>
+                        <option value="Pacific Islander">Pacific Islander</option> <option value="White">White</option>
                         <option value="Not Given">Not Given</option>
                         <option value="Other">Other</option>
                       </Input>
@@ -113,9 +105,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                         <option value="">Select...</option>
                         {affiliations &&
                           affiliations.map((affiliation, idx) => (
-                            <option
-                              key={`affiliation-${idx}`}
-                              value={affiliation.id}>
+                            <option key={`affiliation-${idx}`} value={affiliation.id}>
                               {affiliation.name}
                             </option>
                           ))}
@@ -124,10 +114,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                   </Row>
                   <Row>
                     <Col xs={12}>
-                      <Checkbox
-                        name={`nominations[${idx}].bike_want`}
-                        label="Child wants bike?"
-                      />
+                      <Checkbox name={`nominations[${idx}].bike_want`} label="Child wants bike?" />
                     </Col>
                   </Row>
                   {nominations[idx] &&
@@ -166,48 +153,29 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     )}
                   <Row>
                     <Col xs={12}>
-                      <Checkbox
-                        name={`nominations[${idx}].clothes_want`}
-                        label="Child wants clothes?"
-                      />
+                      <Checkbox name={`nominations[${idx}].clothes_want`} label="Child wants clothes?" />
                     </Col>
                   </Row>
                   {nominations[idx] &&
                     nominations[idx].clothes_want && (
                       <Row>
                         <Col xs={12}>
-                          <Input
-                            label="Shirt size"
-                            name={`nominations[${idx}].clothes_size_shirt`}
-                          />
+                          <Input label="Shirt size" name={`nominations[${idx}].clothes_size_shirt`} />
                         </Col>
                         <Col xs={12}>
-                          <Input
-                            label="Pant size"
-                            name={`nominations[${idx}].clothes_size_pants`}
-                          />
+                          <Input label="Pant size" name={`nominations[${idx}].clothes_size_pants`} />
                         </Col>
                         <Col xs={12}>
-                          <Input
-                            label="Coat size"
-                            name={`nominations[${idx}].clothes_size_coat`}
-                          />
+                          <Input label="Coat size" name={`nominations[${idx}].clothes_size_coat`} />
                         </Col>
                         <Col xs={12}>
-                          <Input
-                            label="Shoe size"
-                            name={`nominations[${idx}].shoe_size`}
-                          />
+                          <Input label="Shoe size" name={`nominations[${idx}].shoe_size`} />
                         </Col>
                       </Row>
                     )}
                   <Row>
                     <Col xs={12}>
-                      <Input
-                        label="Favorite Color"
-                        name={`nominations[${idx}].favourite_colour`}
-                        type="text"
-                      />
+                      <Input label="Favorite Color" name={`nominations[${idx}].favourite_colour`} type="text" />
                     </Col>
                   </Row>
                   <Row>
