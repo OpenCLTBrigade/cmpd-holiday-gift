@@ -17,11 +17,10 @@ on the dependencies we use.
 * If using nvm, run `nvm use` to ensure you're using the appropriate Node version for the project.
 * Run `yarn bootstrap` to install the dependencies. This will take a few minutes and it may look like the command has locked up.
 * In the root project directory, copy `env.example.js` to `env.js`. You _don't_ need to make any changes just yet.
-* Run `yarn run start-client` to start the front-end in development mode. Access the application at http://localhost:3000.
-* In a separate terminal (re-run `nvm use` if needed) run `yarn run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it.
-* In a separate terminal (re-run `nvm use` if needed) run `yarn run nodemon-server` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
+* Run `yarn start-client` to start the front-end in development mode. Access the application at http://localhost:3000.
+* In a separate terminal (re-run `nvm use` if needed) run `yarn start` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
   saying you need to install sqlite3 manually, run `yarn add sqlite3`.
-* Run `yarn run seed-server` to generate sample data.
+* Run `yarn seed` to generate sample data.
 
 Read [Front end development notes here](#front-end-development).
 
