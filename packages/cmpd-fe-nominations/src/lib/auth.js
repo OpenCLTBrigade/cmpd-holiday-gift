@@ -16,7 +16,7 @@ export const AuthToken = (() => {
   let token; // Cached JWT string
   let expirationTime; // Cached exp
   let refreshing = false; // Flag to avoid concurrent refresh
-  const handlers: (('login' | 'logout') => void)[] = [];
+  const handlers = [];
   let status = 'logout';
 
   // Load token from localStorage

@@ -3,15 +3,12 @@
   "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start":
-      "nodemon --watch 'server/**/*.ts' --ignore 'server/**/*.spec.ts' --exec 'ts-node' server/server.ts",
-    "start-client":
-      "cd packages/cmpd-fe-nominations && parcel public/index.html",
-    "build-client":
-      "cd packages/cmpd-fe-nominations && parcel build public/index.html",
-    "build-server":
-      "flow-remove-types --extensions '.js,.mail' --out-dir server-notypes server",
-    "start-server": "node server-notypes/apps/serve.js",
+    "start": "npm-run-all -p watch-server start-server",
+    "start-client": "cd packages/cmpd-fe-nominations && parcel public/index.html",
+    "build-client": "cd packages/cmpd-fe-nominations && parcel build public/index.html --detailed-report",
+    "build-server": "parcel build server/server.ts --target node",
+    "start-server": "nodemon --watch dist dist/server.js",
+    "watch-server": "parcel server/server.ts --target node",
     "predebug-server": "npm run build-server",
     "precommit": "pretty-quick --staged",
     "debug-server": "",
@@ -34,8 +31,10 @@
   "engines": {
     "node": ">=8.9.x"
   },
-  "files": ["build", "server-notypes"],
-  "main": "server/apps/serve.js",
+  "files": [
+    "build",
+    "server-notypes"
+  ],
   "devDependencies": {
     "@nestjs/testing": "^4.5.5",
     "@types/exceljs": "^0.5.2",
@@ -51,6 +50,8 @@
     "jasmine": "^2.6.0",
     "lerna": "^2.8.0",
     "nodemon": "^1.14.12",
+    "npm-run-all": "^4.1.2",
+    "parcel-bundler": "^1.6.1",
     "prettier": "1.10.2",
     "pretty-quick": "^1.4.1",
     "quoted-printable": "^1.0.1",
