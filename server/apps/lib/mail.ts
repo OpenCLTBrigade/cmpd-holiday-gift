@@ -51,11 +51,7 @@ if (config.email.ses) {
 
 async function loadTemplate(dir, name) {
   const data: any = await new Promise((ok, fail) => {
-    fs.readFile(
-      path.join(dir, `${name}.mail`),
-      'utf8',
-      (err, data) => (err ? fail(err) : ok(data))
-    );
+    fs.readFile(path.join(dir, `${name}.mail`), 'utf8', (err, data) => (err ? fail(err) : ok(data)));
   });
   const [headers, ...contentsArray] = data.split('\n\n');
   const contents = contentsArray.join('\n\n');
@@ -69,10 +65,7 @@ async function loadTemplate(dir, name) {
 
 const globalCache: Object = {};
 
-function mailer(
-  templatesPath,
-  transporter = defaultTransporter
-): (string, Object) => Promise<void> {
+function mailer(templatesPath, transporter = defaultTransporter): (string, Object) => Promise<void> {
   if (!globalCache[templatesPath]) {
     globalCache[templatesPath] = {};
   }

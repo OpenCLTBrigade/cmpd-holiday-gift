@@ -37,13 +37,7 @@ async function export_data_excel(req, res) {
     const cols = [];
     for (const col of Object.getOwnPropertyNames(columnSpecs[table])) {
       if (columnSpecs[table][col] !== false) {
-        cols.push(
-          Object.assign(
-            {},
-            { key: col, header: col, width: 10 },
-            columnSpecs[table][col]
-          )
-        );
+        cols.push(Object.assign({}, { key: col, header: col, width: 10 }, columnSpecs[table][col]));
       }
     }
     if (data[0]) {
@@ -159,9 +153,7 @@ async function bike_report(req, res) {
       }
     ]
   });
-  children.forEach(child =>
-    worksheet.addRow(flatten('household', child.toJSON())).commit()
-  );
+  children.forEach(child => worksheet.addRow(flatten('household', child.toJSON())).commit());
   worksheet.commit();
   workbook.commit();
 }
@@ -189,10 +181,7 @@ async function division_report(req, res) {
 
   const households = await db['household'].findAll({
     where: { approved: true },
-    include: [
-      { model: db['household_address'], as: 'address' },
-      { model: db['household_phone'], as: 'phones' }
-    ]
+    include: [{ model: db['household_address'], as: 'address' }, { model: db['household_phone'], as: 'phones' }]
   });
   households.forEach(household => {
     worksheet.addRow(flatten('address', household)).commit();

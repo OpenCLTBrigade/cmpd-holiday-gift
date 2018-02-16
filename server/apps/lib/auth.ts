@@ -132,11 +132,7 @@ async function createSession(user_id: number): Promise<string> {
 
   logger.info('created new session', session);
 
-  return makeToken(
-    { session_id: session.id },
-    config.jwtSecrets.auth,
-    config.authTokenLifetime
-  );
+  return makeToken({ session_id: session.id }, config.jwtSecrets.auth, config.authTokenLifetime);
 }
 
 export default {

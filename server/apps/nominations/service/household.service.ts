@@ -13,9 +13,7 @@ import { createPagedResults } from '../../lib/table/table';
 import { CreateHouseholdDto } from '../controllers/dto/create-household.dto';
 import { UpdateHouseholdDto } from '../controllers/dto/update-household.dto';
 
-const sendMail = require('../../lib/mail')(
-  path.join(__dirname, '../../nominations/mail-templates')
-);
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 export enum ErrorCodes {
   NoChildrenExists = 'NoChildrenExists',
@@ -24,14 +22,7 @@ export enum ErrorCodes {
 
 @Component()
 export class HouseholdService {
-  async query({
-    page,
-    search,
-    active = true,
-    nominator = undefined,
-    baseUrl = '',
-    whitelist = []
-  }) {
+  async query({ page, search, active = true, nominator = undefined, baseUrl = '', whitelist = [] }) {
     try {
       const query = search && {
         keys: ['name_last', 'nominator.name_last'],
@@ -64,10 +55,7 @@ export class HouseholdService {
     });
 
     if (household.children.length === 0) {
-      throw new ApplicationError(
-        'Must add children to this household',
-        ErrorCodes.NoChildren
-      );
+      throw new ApplicationError('Must add children to this household', ErrorCodes.NoChildren);
     }
 
     household.draft = false;
@@ -121,8 +109,7 @@ export class HouseholdService {
     household.gender = updateHouseholdDto.gender;
     household.last4ssn = updateHouseholdDto.last4ssn;
     household.email = updateHouseholdDto.email;
-    household.preferredContactMethod =
-      updateHouseholdDto.preferredContactMethod;
+    household.preferredContactMethod = updateHouseholdDto.preferredContactMethod;
 
     const children = await Child.find({ where: { householdId: id } });
     const phoneNumbers = await PhoneNumber.find({ where: { householdId: id } });
@@ -131,19 +118,13 @@ export class HouseholdService {
     const newPhones = updateHouseholdDto.phoneNumbers.filter(row => !row.id);
 
     const updatedChildren = updateHouseholdDto.children.filter(row => !!row.id);
-    const updatedPhones = updateHouseholdDto.phoneNumbers.filter(
-      row => !!row.id
-    );
+    const updatedPhones = updateHouseholdDto.phoneNumbers.filter(row => !!row.id);
 
     const updatedChildIds = updatedChildren.map(row => row.id);
     const updatedPhoneIds = updatedPhones.map(row => row.id);
 
-    const deletedChildIds = children
-      .filter(child => !updatedChildIds.includes(child.id))
-      .map(row => row.id);
-    const deletedPhoneIds = phoneNumbers
-      .filter(number => !updatedPhoneIds.includes(number.id))
-      .map(row => row.id);
+    const deletedChildIds = children.filter(child => !updatedChildIds.includes(child.id)).map(row => row.id);
+    const deletedPhoneIds = phoneNumbers.filter(number => !updatedPhoneIds.includes(number.id)).map(row => row.id);
 
     await Child.updateById(deletedChildIds, { deleted: true });
     await PhoneNumber.updateById(deletedPhoneIds, { deleted: true });
@@ -164,10 +145,7 @@ export class HouseholdService {
     return await this.getById(id);
   }
 
-  async createHousehold(
-    createHouseholdDto: CreateHouseholdDto,
-    { id: nominatorId }
-  ) {
+  async createHousehold(createHouseholdDto: CreateHouseholdDto, { id: nominatorId }) {
     logger.info('createHousehold');
 
     const household = Household.fromJSON({

@@ -48,9 +48,7 @@ export default class Recover extends React.Component {
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink
-                className="btn btn-link pull-right"
-                to="/auth/register">
+              <FooterLink className="btn btn-link pull-right" to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -69,9 +67,7 @@ export default class Recover extends React.Component {
         alert('Please check your email for recovery instructions.');
         this.props.history.replace('/auth/login');
       } else {
-        this.box.flashErrorMessage(
-          'Could not initiate account recovery. Did you enter the correct email address?'
-        );
+        this.box.flashErrorMessage('Could not initiate account recovery. Did you enter the correct email address?');
       }
     } catch (exc) {
       this.box.flashErrorMessage('Account recovery failed: unknown error');

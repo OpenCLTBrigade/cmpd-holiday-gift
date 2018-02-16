@@ -5,11 +5,7 @@ import { Field } from 'neoform';
 
 const Checkbox = ({ name, label, onChange, value, ...props }) => {
   return (
-    <FieldCheckbox
-      name={name}
-      checked={value}
-      onChange={e => onChange(e.target.checked)}
-      {...props}>
+    <FieldCheckbox name={name} checked={value} onChange={e => onChange(e.target.checked)} {...props}>
       {label}
     </FieldCheckbox>
   );

@@ -6,10 +6,7 @@ import {
   ValidationArguments
 } from 'class-validator';
 
-export function IsSame(
-  property: string,
-  validationOptions?: ValidationOptions
-) {
+export function IsSame(property: string, validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
@@ -26,10 +23,6 @@ export class IsSameConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;
     const relatedValue = (args.object as any)[relatedPropertyName];
-    return (
-      typeof value === 'string' &&
-      typeof relatedValue === 'string' &&
-      value.length === relatedValue.length
-    );
+    return typeof value === 'string' && typeof relatedValue === 'string' && value.length === relatedValue.length;
   }
 }

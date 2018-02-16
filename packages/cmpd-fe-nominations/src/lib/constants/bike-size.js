@@ -19,10 +19,7 @@ const sizes = [
   { name: BikeSize['24_INCH_GEARED'], description: '24" geared bicycle' }
 ];
 
-export const bikeSizeMap = sizes.reduce(
-  (acc, { name, description }) => ({ ...acc, [name]: description }),
-  {}
-);
+export const bikeSizeMap = sizes.reduce((acc, { name, description }) => ({ ...acc, [name]: description }), {});
 export const descFromValue = value => bikeSizeMap[value] || value;
 
 export default BikeSize;

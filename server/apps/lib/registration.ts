@@ -63,11 +63,7 @@ export async function confirmEmail(rootUrl, { user_id, confirmation_code }) {
   if (!user) {
     return { error: 'confirmation code does not match' };
   }
-  if (
-    user.confirmation_email &&
-    user.confirmation_code !== confirmation_code &&
-    !user.email_verified
-  ) {
+  if (user.confirmation_email && user.confirmation_code !== confirmation_code && !user.email_verified) {
     return { error: 'confirmation code does not match' };
   } else {
     user.set('email_verified', true);

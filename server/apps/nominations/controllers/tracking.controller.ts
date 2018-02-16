@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  Req,
-  NotFoundException
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, NotFoundException } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { query } from '../service/household.service';

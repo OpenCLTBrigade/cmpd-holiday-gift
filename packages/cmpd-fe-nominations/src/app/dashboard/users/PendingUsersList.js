@@ -28,19 +28,13 @@ export default class UsersList extends React.Component {
   actionCellFormatter = (cell, row) => {
     return (
       <div>
-        <StyledLink
-          className="btn btn-sm btn-default"
-          to={`/dashboard/user/${row.id}`}>
+        <StyledLink className="btn btn-sm btn-default" to={`/dashboard/user/${row.id}`}>
           Show
         </StyledLink>
-        <StyledButton
-          className="btn btn-sm btn-success"
-          onClick={() => this.onClickApprove(row)}>
+        <StyledButton className="btn btn-sm btn-success" onClick={() => this.onClickApprove(row)}>
           Approve
         </StyledButton>
-        <StyledButton
-          className="btn btn-sm btn-danger"
-          onClick={() => this.onClickDecline(row)}>
+        <StyledButton className="btn btn-sm btn-danger" onClick={() => this.onClickDecline(row)}>
           Decline
         </StyledButton>
       </div>
@@ -101,22 +95,14 @@ export default class UsersList extends React.Component {
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="name_last">
-                Last Name
-              </TableHeaderColumn>
-              <TableHeaderColumn dataField="name_first">
-                First Name
-              </TableHeaderColumn>
+              <TableHeaderColumn dataField="name_last">Last Name</TableHeaderColumn>
+              <TableHeaderColumn dataField="name_first">First Name</TableHeaderColumn>
               <TableHeaderColumn dataField="email">Email</TableHeaderColumn>
               <TableHeaderColumn dataField="phone">Phone</TableHeaderColumn>
-              <TableHeaderColumn
-                dataField="affiliation"
-                dataFormat={cell => cell.type.toUpperCase()}>
+              <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.type.toUpperCase()}>
                 Affiliation
               </TableHeaderColumn>
-              <TableHeaderColumn
-                dataField="affiliation"
-                dataFormat={cell => cell.name}>
+              <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.name}>
                 Location
               </TableHeaderColumn>
               <TableHeaderColumn

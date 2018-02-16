@@ -88,8 +88,7 @@ export default class Sidebar extends React.Component {
               <ul className="treeview-menu">
                 <li className="">
                   <Link to="/dashboard/household/create">
-                    <i className="fa fa-circle-o fa-fw" /> Nominate new
-                    Household
+                    <i className="fa fa-circle-o fa-fw" /> Nominate new Household
                   </Link>
                 </li>
                 <li className="">
@@ -119,8 +118,7 @@ export default class Sidebar extends React.Component {
                   </li>
                   <li className="">
                     <Link to="/dashboard/user/pending">
-                      <i className="fa fa-circle-o fa-fw" /> Pending
-                      Registrations
+                      <i className="fa fa-circle-o fa-fw" /> Pending Registrations
                     </Link>
                   </li>
                   <li className="">

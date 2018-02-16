@@ -8,12 +8,7 @@ import { AffiliationService } from './service/affiliation.service';
 import { HouseholdService } from './service/household.service';
 
 @Module({
-  controllers: [
-    HouseholdController,
-    UserController,
-    TrackingController,
-    AffiliationController
-  ],
+  controllers: [HouseholdController, UserController, TrackingController, AffiliationController],
   components: [AffiliationService, HouseholdService, UserService]
 })
 export class NominationsModule {}

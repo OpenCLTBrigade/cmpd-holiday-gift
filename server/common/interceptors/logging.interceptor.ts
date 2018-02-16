@@ -6,18 +6,13 @@ import logger from '../util/logger';
 
 @Interceptor()
 export class LoggingInterceptor implements NestInterceptor {
-  intercept(
-    { originalUrl = '', method = '' },
-    context: ExecutionContext,
-    stream$: Observable<any>
-  ): Observable<any> {
+  intercept({ originalUrl = '', method = '' }, context: ExecutionContext, stream$: Observable<any>): Observable<any> {
     logger.info('Before...', { method, originalUrl });
 
     const now = Date.now();
 
     return stream$.do(
-      () =>
-        logger.info(`After... ${Date.now() - now}ms`, { method, originalUrl }),
+      () => logger.info(`After... ${Date.now() - now}ms`, { method, originalUrl }),
       ({ message = '' }) =>
         logger.error(`Error... ${Date.now() - now}ms`, {
           method,

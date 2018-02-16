@@ -5,12 +5,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -50,9 +45,7 @@ class Routes extends React.Component {
           <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
           <Route path="/dashboard" component={Restricted(Dashboard)} />
           <Route path="/auth" component={Auth} />
-          {AuthToken.expired() ? null : (
-            <Route path="/slips/packing" component={slips.packing} />
-          )}
+          {AuthToken.expired() ? null : <Route path="/slips/packing" component={slips.packing} />}
           <Route path="/slips/bicycle" component={slips.bicycle} /> }
           <Route path="*" component={NotFound} />
         </Switch>

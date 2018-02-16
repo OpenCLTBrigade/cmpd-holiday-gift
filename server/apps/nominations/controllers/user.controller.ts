@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  Req,
-  UseGuards,
-  ValidationPipe
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../../common/guards/roles.guard';
@@ -97,10 +86,7 @@ export class UserController {
   @Roles('admin')
   @UseGuards(AuthGuard)
   async getNominationsStatus(@Param('id') id) {
-    const {
-      nominationLimit: limit,
-      households
-    } = await this.userService.getById(id);
+    const { nominationLimit: limit, households } = await this.userService.getById(id);
     const count = households.filter(row => !row.deleted).length;
 
     return { limit, count };

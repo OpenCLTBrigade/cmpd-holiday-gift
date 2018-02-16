@@ -6,9 +6,7 @@ import auth from '../lib/auth';
 import logger from '../lib/logger';
 import config from '../../config';
 
-const sendMail = require('../lib/mail')(
-  path.join(__dirname, '../auth/templates')
-);
+const sendMail = require('../lib/mail')(path.join(__dirname, '../auth/templates'));
 
 @Component()
 export class AccountService {
@@ -92,11 +90,7 @@ export class AccountService {
     try {
       let user = await User.findOneById(id);
 
-      if (
-        user.confirmationEmail &&
-        !user.emailVerified &&
-        confirmationCode !== user.confirmationCode
-      ) {
+      if (user.confirmationEmail && !user.emailVerified && confirmationCode !== user.confirmationCode) {
         throw new Error('confirmation code does not match');
       }
 
@@ -161,10 +155,7 @@ export class AccountService {
     try {
       let user = await User.findOneById(id);
 
-      if (
-        user.confirmationCode == null ||
-        user.confirmationCode !== confirmationCode
-      ) {
+      if (user.confirmationCode == null || user.confirmationCode !== confirmationCode) {
         return false;
       }
 

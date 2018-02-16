@@ -25,9 +25,7 @@ export default class PrivateRoute extends React.Component {
       this.state.authenticated === true ? (
         <Ch />
       ) : (
-        <Redirect
-          to={{ pathname: '/auth/login', state: { from: this.props.location } }}
-        />
+        <Redirect to={{ pathname: '/auth/login', state: { from: this.props.location } }} />
       );
 
     return TheComponent;

@@ -3,9 +3,7 @@ const TableApi = require('../../lib/tableApi');
 const auth = require('../../lib/auth');
 import * as path from 'path';
 
-const sendMail = require('../../lib/mail')(
-  path.join(__dirname, '../mail-templates')
-);
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
 
 const RELATED_MODELS = [
   { model: database.affiliation, as: 'affiliation' },
@@ -87,10 +85,7 @@ export default {
   getUser: async (req, res) => {
     let user = null;
     try {
-      if (
-        req.user.role !== 'admin' &&
-        req.user.id !== parseInt(req.params.id)
-      ) {
+      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
         throw new Error('User not found');
       }
       user = await database.user.findOne({
@@ -275,15 +270,13 @@ export default {
         email_verifed: true
       })
       .then(() => {
-        sendMail('user-account-approved', { to: existingUser.email }).then(
-          () => {
-            res.json({
-              data: true,
-              message: '',
-              error: null
-            });
-          }
-        );
+        sendMail('user-account-approved', { to: existingUser.email }).then(() => {
+          res.json({
+            data: true,
+            message: '',
+            error: null
+          });
+        });
       })
       .catch(err => {
         res.json({

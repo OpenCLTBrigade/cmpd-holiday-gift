@@ -1,14 +1,6 @@
 import db from '../../models';
 import { Router } from 'express';
-import {
-  Affiliation,
-  Household,
-  User,
-  Me,
-  Reports,
-  Slips,
-  Cmpd
-} from './controllers';
+import { Affiliation, Household, User, Me, Reports, Slips, Cmpd } from './controllers';
 import auth from '../lib/auth';
 
 const validators = require('./validators/household');

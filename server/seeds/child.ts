@@ -25,12 +25,7 @@ export default async (connection: Connection) => {
       clothesPantsSize: faker.random.arrayElement(config.clothesSizes),
       clothesCoatSize: faker.random.arrayElement(config.clothesSizes),
       shoeSize: faker.random.number({ min: 1, max: 9 }).toString(),
-      favouriteColor: faker.random.arrayElement([
-        'Red',
-        'Blue',
-        'Green',
-        'Orange'
-      ]),
+      favouriteColor: faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']),
       interests: faker.lorem.text(50),
       gender: faker.random.boolean()
     });

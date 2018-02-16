@@ -59,13 +59,7 @@ class TableApi<Row> {
     return { rows, count };
   } // Name of model to work with // Where clause - http://docs.sequelizejs.com/manual/tutorial/querying.html#where // Include related models
 
-  async fetchAndParse(
-    model: Model,
-    where = {},
-    include: IncludeSpec = null,
-    scope = '',
-    fieldWhitelist = null
-  ) {
+  async fetchAndParse(model: Model, where = {}, include: IncludeSpec = null, scope = '', fieldWhitelist = null) {
     // TODO: fill in type
     const results = await this.fetch(model, where, include, scope);
 
@@ -82,16 +76,8 @@ class TableApi<Row> {
   ) {
     const lastPage = Math.ceil(resultSet.count / this.itemsPerPage);
 
-    const nextPageNumber = TableApi.calculateNextPage(
-      resultSet,
-      this.page,
-      lastPage
-    );
-    const previousPageNumber = TableApi.calculatePreviousPage(
-      resultSet,
-      this.page,
-      lastPage
-    );
+    const nextPageNumber = TableApi.calculateNextPage(resultSet, this.page, lastPage);
+    const previousPageNumber = TableApi.calculatePreviousPage(resultSet, this.page, lastPage);
 
     let rows;
     if (fieldWhitelist != null) {
@@ -109,23 +95,15 @@ class TableApi<Row> {
       rows = resultSet.rows;
     }
 
-    logger.info(
-      rows.map(row => ({ name: row.name_last, deleted: row.deleted }))
-    );
+    logger.info(rows.map(row => ({ name: row.name_last, deleted: row.deleted })));
 
     return {
       totalSize: resultSet.count,
       per_page: this.itemsPerPage,
       page: this.page,
       last_page: lastPage,
-      next_page_url:
-        nextPageNumber != null
-          ? `${this.baseUrl}?page=${nextPageNumber}`
-          : null,
-      prev_page_url:
-        previousPageNumber != null
-          ? `${this.baseUrl}?page=${previousPageNumber}`
-          : null,
+      next_page_url: nextPageNumber != null ? `${this.baseUrl}?page=${nextPageNumber}` : null,
+      prev_page_url: previousPageNumber != null ? `${this.baseUrl}?page=${previousPageNumber}` : null,
       from: this.page,
       to: this.page - 1 + rows.length,
       items: rows

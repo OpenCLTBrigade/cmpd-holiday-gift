@@ -1,12 +1,5 @@
 import { handleErrors } from '../../../common/util/application-error';
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  NotFoundException,
-  InternalServerErrorException
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { AffiliationService } from '../service/affiliation.service';

@@ -25,12 +25,8 @@ const authRoutes = {
 })
 export class AppModule {
   configure(consumer: MiddlewaresConsumer): void {
-    consumer
-      .apply(auth.authMiddleware(config.jwtSecrets.auth))
-      .forRoutes(authRoutes);
-    consumer
-      .apply(auth.authMiddleware(config.jwtSecrets.nominations))
-      .forRoutes(nominationRoutes);
+    consumer.apply(auth.authMiddleware(config.jwtSecrets.auth)).forRoutes(authRoutes);
+    consumer.apply(auth.authMiddleware(config.jwtSecrets.nominations)).forRoutes(nominationRoutes);
     consumer.apply(auth.sessionMiddleware).forRoutes(allRoutes);
 
     consumer.apply(UploadMiddleware).forRoutes({

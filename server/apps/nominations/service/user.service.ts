@@ -5,12 +5,7 @@ import { createPagedResults } from '../../lib/table/table';
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import auth from '../../lib/auth';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
-import {
-  Component,
-  ForbiddenException,
-  InternalServerErrorException,
-  NotFoundException
-} from '@nestjs/common';
+import { Component, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -24,13 +19,7 @@ export enum ErrorCodes {
 
 @Component()
 export class UserService {
-  async query({
-    page,
-    search,
-    baseUrl = '',
-    whitelist = [],
-    query = { affiliationId: undefined }
-  }) {
+  async query({ page, search, baseUrl = '', whitelist = [], query = { affiliationId: undefined } }) {
     try {
       const searchQuery = search && {
         keys: ['lastName', 'firstName'],
@@ -152,9 +141,7 @@ export class UserService {
       return updated;
     } catch (error) {
       logger.error(error);
-      throw new InternalServerErrorException(
-        'Could not update user. Unknown error.'
-      );
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
     }
   }
 
@@ -171,9 +158,7 @@ export class UserService {
       return updated;
     } catch (error) {
       logger.error(error);
-      throw new InternalServerErrorException(
-        'Could not update user. Unknown error.'
-      );
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
     }
   }
 
@@ -191,9 +176,7 @@ export class UserService {
       return updated;
     } catch (error) {
       logger.error(error);
-      throw new InternalServerErrorException(
-        'Could not update user. Unknown error.'
-      );
+      throw new InternalServerErrorException('Could not update user. Unknown error.');
     }
   }
 }

@@ -5,22 +5,12 @@ import { baseUrl } from '../../lib/misc';
 
 import logger from '../../lib/logger';
 
-const related = [
-  { model: db['child'], as: 'children' },
-  { model: db['user'], as: 'nominator' }
-];
+const related = [{ model: db['child'], as: 'children' }, { model: db['user'], as: 'nominator' }];
 const path = require('path');
 const fs = require('fs-extra');
-const {
-  createAttachment,
-  createMainBucket,
-  getAttachmentUrl,
-  getAttachments
-} = require('../../lib/attachment');
+const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
 const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
-const sendMail = require('../../lib/mail')(
-  path.join(__dirname, '../../nominations/mail-templates')
-);
+const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
 
 import createTable from '../../lib/table';
 import { query as queryHouseholds } from '../service/household.service';
@@ -332,29 +322,18 @@ export default {
             numbers &&
             numbers.filter(
               entity =>
-                payload.phoneNumbers &&
-                payload.phoneNumbers.every(
-                  json => json.number !== entity.dataValues.number
-                )
+                payload.phoneNumbers && payload.phoneNumbers.every(json => json.number !== entity.dataValues.number)
             );
           const addedNumbers =
             (payload.phoneNumbers &&
               payload.phoneNumbers.filter(
-                json =>
-                  numbers &&
-                  numbers.every(
-                    entity => json.number !== entity.dataValues.number
-                  )
+                json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)
               )) ||
             [];
           const updatedNumbers =
             (payload.phoneNumbers &&
               payload.phoneNumbers.filter(
-                json =>
-                  numbers &&
-                  numbers.some(
-                    entity => json.number === entity.dataValues.number
-                  )
+                json => numbers && numbers.some(entity => json.number === entity.dataValues.number)
               )) ||
             [];
 
@@ -367,17 +346,13 @@ export default {
           for (const added of addedNumbers) {
             logger.info('adding number');
 
-            db['household_phone'].create(
-              Object.assign({}, added, { household_id: id })
-            );
+            db['household_phone'].create(Object.assign({}, added, { household_id: id }));
           }
 
           for (const updated of updatedNumbers) {
             logger.info('updating number');
 
-            const toUpdate = numbers.find(
-              number => updated.number === number.number
-            );
+            const toUpdate = numbers.find(number => updated.number === number.number);
             toUpdate.update(updated);
           }
 
@@ -390,26 +365,16 @@ export default {
             nominations.filter(
               entity =>
                 payload.nominations &&
-                payload.nominations.every(
-                  json => parseInt(json.id, 10) !== parseInt(entity.id, 10)
-                )
+                payload.nominations.every(json => parseInt(json.id, 10) !== parseInt(entity.id, 10))
             );
           const addedNominations =
-            (payload.nominations &&
-              payload.nominations.filter(
-                json => typeof json.id === 'undefined'
-              )) ||
-            [];
+            (payload.nominations && payload.nominations.filter(json => typeof json.id === 'undefined')) || [];
           const updatedNominations =
             (payload.nominations &&
               payload.nominations.filter(
                 json =>
                   nominations &&
-                  nominations.some(
-                    entity =>
-                      parseInt(json.id, 10) ===
-                      parseInt(entity.dataValues.id, 10)
-                  )
+                  nominations.some(entity => parseInt(json.id, 10) === parseInt(entity.dataValues.id, 10))
               )) ||
             [];
 
@@ -422,18 +387,14 @@ export default {
           for (const added of addedNominations) {
             logger.info('adding nomination', added);
 
-            db['child'].create(
-              Object.assign({}, childDefaults, added, { household_id: id })
-            );
+            db['child'].create(Object.assign({}, childDefaults, added, { household_id: id }));
           }
 
           for (const updated of updatedNominations) {
             logger.info('updating nomination');
             logger.info('updated nomination:', { id: updated.id });
 
-            const toUpdate = nominations.find(
-              nomination => nomination.id === updated.id
-            );
+            const toUpdate = nominations.find(nomination => nomination.id === updated.id);
             toUpdate.update(updated);
           }
         } catch (error) {
@@ -511,9 +472,7 @@ export default {
           for (const child of nominations) {
             logger.info('creating child');
 
-            const newChild = await db['child'].create(
-              Object.assign({}, childDefaults, child, { household_id: id })
-            );
+            const newChild = await db['child'].create(Object.assign({}, childDefaults, child, { household_id: id }));
 
             logger.info('created child', { id: newChild.id });
           }

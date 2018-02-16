@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  HelpBlock
-} from 'react-bootstrap';
+import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 import { Field } from 'neoform';
 import { FieldValidation } from 'neoform-validation';
@@ -45,9 +40,7 @@ class Input extends React.Component {
 
   render() {
     return (
-      <FormGroup
-        controlId={this.props.controlId}
-        validationState={getValidationState(this.props.validationStatus)}>
+      <FormGroup controlId={this.props.controlId} validationState={getValidationState(this.props.validationStatus)}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <FormControl
           value={this.props.value}
@@ -62,9 +55,7 @@ class Input extends React.Component {
           {...this.otherProps}>
           {this.props.children}
         </FormControl>
-        {this.props.validationStatus === false && (
-          <HelpBlock>{this.props.validationMessage}</HelpBlock>
-        )}
+        {this.props.validationStatus === false && <HelpBlock>{this.props.validationMessage}</HelpBlock>}
       </FormGroup>
     );
   }

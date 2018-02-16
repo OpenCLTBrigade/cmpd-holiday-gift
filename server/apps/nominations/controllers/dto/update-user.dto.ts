@@ -1,10 +1,4 @@
-import {
-  IsOptional,
-  IsNotEmpty,
-  IsNumber,
-  IsBoolean,
-  IsEmail
-} from 'class-validator';
+import { IsOptional, IsNotEmpty, IsNumber, IsBoolean, IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsSame } from '../../../../common/validators/is-same.validator';
 
