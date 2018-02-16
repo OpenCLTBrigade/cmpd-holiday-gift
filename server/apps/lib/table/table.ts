@@ -43,7 +43,7 @@ function parseResults({ results, totalSize, fieldWhitelist, page, itemsPerPage, 
   const nextPageNumber = calculateNextPage(page, lastPage);
   const previousPageNumber = calculatePreviousPage(page, lastPage);
 
-  const items = fieldWhitelist  && fieldWhitelist.length > 0 ? rows.map(record => pick(fieldWhitelist, record)) : rows;
+  const items = fieldWhitelist && fieldWhitelist.length > 0 ? rows.map(record => pick(fieldWhitelist, record)) : rows;
 
   return {
     totalSize,
@@ -67,7 +67,7 @@ async function fetch({ model, include = null, scope = '' }) {
   }
 
   logger.info('retrieving count', { opts });
-  logger.info(model)
+  logger.info(model);
   const rows = await model.scope(scope).findAll(opts);
 
   logger.info(`returning ${rows.count} results`);
@@ -81,23 +81,44 @@ const init = ({ model, baseUrl, fieldWhitelist = null }) => ({
 
     const list = where ? filter({ list: rows, ...where }) : rows;
 
-    return parseResults({ results: { rows: list }, totalSize: list.length, fieldWhitelist, page, itemsPerPage, baseUrl });
+    return parseResults({
+      results: { rows: list },
+      totalSize: list.length,
+      fieldWhitelist,
+      page,
+      itemsPerPage,
+      baseUrl
+    });
   }
 });
 
 type PageResultProps = {
-  results: any[],
-  page: number,
-  itemsPerPage?: number, 
-  query?: { keys: string[], search: string },
-  fieldWhitelist?: string[],
-  baseUrl: string
-}
+  results: any[];
+  page: number;
+  itemsPerPage?: number;
+  query?: { keys: string[]; search: string };
+  fieldWhitelist?: string[];
+  baseUrl: string;
+};
 
-export const createPagedResults = ({results, page = 1, itemsPerPage = 10, query = undefined, fieldWhitelist = undefined, baseUrl}: PageResultProps) => {
+export const createPagedResults = ({
+  results,
+  page = 1,
+  itemsPerPage = 10,
+  query = undefined,
+  fieldWhitelist = undefined,
+  baseUrl
+}: PageResultProps) => {
   const filtered = query ? filter({ list: results, ...query }) : results;
 
-  return parseResults({ results: { rows: filtered }, totalSize: filtered.length, fieldWhitelist, page, itemsPerPage, baseUrl });
-}
+  return parseResults({
+    results: { rows: filtered },
+    totalSize: filtered.length,
+    fieldWhitelist,
+    page,
+    itemsPerPage,
+    baseUrl
+  });
+};
 
 export default init;

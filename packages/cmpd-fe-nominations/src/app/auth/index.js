@@ -33,11 +33,7 @@ export default class Auth extends React.Component {
     return (
       <div className="auth-wrapper">
         <AuthHeader>
-          <img
-            src={logo}
-            title="CMPD Explorers Christmas Project"
-            alt="CMPD Explorers Christmas Project"
-          />
+          <img src={logo} title="CMPD Explorers Christmas Project" alt="CMPD Explorers Christmas Project" />
           <MadeBy>By Code for Charlotte</MadeBy>
         </AuthHeader>
         <Route exact path="/auth/login" component={Login} />

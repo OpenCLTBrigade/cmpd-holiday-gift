@@ -1,27 +1,24 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export default abstract class extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn() id: number;
 
-    @Column('text', {name: 'name_first'})
-    firstName: string
-  
-    @Column('text', {name: 'name_last'})
-    lastName: string
+  @Column('text', { name: 'name_first' })
+  firstName: string;
 
-    @Column('text')
-    email: string
+  @Column('text', { name: 'name_last' })
+  lastName: string;
 
-    @Column('text')
-    active: boolean
+  @Column('text') email: string;
 
-    @Column('text', {default: false})
-    approved: boolean
+  @Column('text') active: boolean;
 
-    @CreateDateColumn({ name: 'created_at' })
-    createdAt
-  
-    @UpdateDateColumn({ name: 'updated_at' })
-    updatedAt
+  @Column('text', { default: false })
+  approved: boolean;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt;
 }

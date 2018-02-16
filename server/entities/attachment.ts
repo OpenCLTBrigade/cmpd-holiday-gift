@@ -4,32 +4,30 @@ import User from './user';
 
 @Entity('household_attachments')
 export default class Attachment extends BaseEntity {
-    private constructor(props) {
-      super();
-  
-      Object.assign(this, props);
-    }
+  private constructor(props) {
+    super();
 
-    @PrimaryGeneratedColumn()
-    id: number
+    Object.assign(this, props);
+  }
 
-    @Column('text')
-    path: string
+  @PrimaryGeneratedColumn() id: number;
 
-    @Column({name: 'household_id'})
-    householdId: number
+  @Column('text') path: string;
 
-    @ManyToOne(() => Household)
-    @JoinColumn({ name: "household_id" })
-    household: Household
+  @Column({ name: 'household_id' })
+  householdId: number;
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: "owner_id" })
-    user: User
+  @ManyToOne(() => Household)
+  @JoinColumn({ name: 'household_id' })
+  household: Household;
 
-    static fromJSON(props) {
-      const entity = new Attachment(props);
-  
-      return entity;
-    }
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'owner_id' })
+  user: User;
+
+  static fromJSON(props) {
+    const entity = new Attachment(props);
+
+    return entity;
+  }
 }

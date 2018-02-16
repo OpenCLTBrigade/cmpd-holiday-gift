@@ -23,9 +23,7 @@ export default class Header extends React.Component {
         <Link to="/" className="logo">
           CMPD Explorers
         </Link>
-        <nav
-          className="navbar navbar-static-top"
-          onClick={this.toggleNavCollapsed}>
+        <nav className="navbar navbar-static-top" onClick={this.toggleNavCollapsed}>
           <a className="sidebar-toggle">
             <span className="sr-only">Toggle</span>
           </a>
@@ -35,8 +33,7 @@ export default class Header extends React.Component {
                 <a>
                   {user && (
                     <span className="hidden-xs">
-                      {user.name_first}{' '}
-                      {user.name_last.substring(0, 1).toUpperCase()}.
+                      {user.name_first} {user.name_last.substring(0, 1).toUpperCase()}.
                     </span>
                   )}
                 </a>

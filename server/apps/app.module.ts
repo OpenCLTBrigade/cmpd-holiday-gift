@@ -2,20 +2,23 @@ import { Module, MiddlewaresConsumer, RequestMethod } from '@nestjs/common';
 import { NominationsModule } from './nominations/nominations.module';
 import { AuthModule } from './auth/auth.module';
 import auth from './lib/auth';
-import config from '../config'
+import config from '../config';
 import { UploadMiddleware } from '../common/middlewares/upload.middleware';
 
 const allRoutes = {
-  path: '*', method: RequestMethod.ALL
-}
+  path: '*',
+  method: RequestMethod.ALL
+};
 
 const nominationRoutes = {
-  path: 'api/nominations/*', method: RequestMethod.ALL
-}
+  path: 'api/nominations/*',
+  method: RequestMethod.ALL
+};
 
 const authRoutes = {
-  path: 'api/auth/*', method: RequestMethod.ALL
-}
+  path: 'api/auth/*',
+  method: RequestMethod.ALL
+};
 
 @Module({
   modules: [AuthModule, NominationsModule]
@@ -28,7 +31,7 @@ export class AppModule {
 
     consumer.apply(UploadMiddleware).forRoutes({
       path: '/api/nominations/:id/upload',
-      method: RequestMethod.PUT,
+      method: RequestMethod.PUT
     });
   }
 }

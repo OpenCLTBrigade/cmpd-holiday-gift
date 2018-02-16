@@ -55,10 +55,7 @@ export default class DataTable extends React.Component {
 
     try {
       onFetch && onFetch(page, searchText);
-      const { items, totalSize, per_page: sizePerPage } = await fetch(
-        page,
-        searchText
-      );
+      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
 
       this.setState(() => ({
         items: items,
@@ -88,10 +85,7 @@ export default class DataTable extends React.Component {
     const options = {
       sizePerPage, // which size per page you want to locate as default
       onPageChange: this.handlePageChange,
-      onSearchChange:
-        this.props && this.props.search
-          ? this.handleSearchChange.bind(this)
-          : undefined,
+      onSearchChange: this.props && this.props.search ? this.handleSearchChange.bind(this) : undefined,
       page,
       ...defaultOptions
     };

@@ -1,7 +1,7 @@
 import Affiliation from './affiliation';
 import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import Household from './household';
-import AbstractUser from './abstract/user'
+import AbstractUser from './abstract/user';
 
 @Entity('users')
 export default class Nominator extends AbstractUser {
@@ -19,5 +19,5 @@ export default class Nominator extends AbstractUser {
   nominationLimit: number
 
   @OneToMany(() => Household, household => household.nominator)
-  households: Household[]
+  households: Household[];
 }

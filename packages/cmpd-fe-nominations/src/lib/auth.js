@@ -187,10 +187,7 @@ export const AppToken = (() => {
       AuthToken.logout();
       throw exc;
     }
-    if (
-      !token ||
-      jwt_decode(token).exp < Date.now() / 1000 - appTokenMinRemainingTime
-    ) {
+    if (!token || jwt_decode(token).exp < Date.now() / 1000 - appTokenMinRemainingTime) {
       tokens[app] = getToken(app);
       token = await tokens[app];
     }
@@ -213,11 +210,7 @@ export async function redirectPostWithAuth(app, path) {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const form = render(
-    <form
-      style={{ display: 'none' }}
-      method="POST"
-      action={`/api/${app}/${path}`}
-      target="_blank">
+    <form style={{ display: 'none' }} method="POST" action={`/api/${app}/${path}`} target="_blank">
       <input type="hidden" name="__authorization" value={authorization} />
     </form>,
     div
@@ -228,14 +221,7 @@ export async function redirectPostWithAuth(app, path) {
 // type RegisterResult = {| error: string |} | {| success: true |};
 
 // Registers user after user submits information for new user in registration form
-export async function register(
-  name_first,
-  name_last,
-  rank = '',
-  affiliation_id,
-  email,
-  password
-) {
+export async function register(name_first, name_last, rank = '', affiliation_id, email, password) {
   return await post('auth', 'register', {
     firstname: name_first,
     lastname: name_last,

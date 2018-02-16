@@ -32,10 +32,7 @@ const Household = ({
       onSubmit={e => {
         e.preventDefault();
 
-        validate(
-          data.household && data.household.id ? onUpdate : onSaveDraft,
-          onInvalid
-        );
+        validate(data.household && data.household.id ? onUpdate : onSaveDraft, onInvalid);
       }}>
       <HouseholdForm />
       <AddressForm onChange={onAddressChange} user={user} />
@@ -57,9 +54,7 @@ const Household = ({
             <Button type="submit" disabled={disabled}>
               {data.household && data.household.id ? 'Update' : 'Save Draft'}
             </Button>
-            {status === 1 && (
-              <Button onClick={onSubmit}>Submit Nomination</Button>
-            )}
+            {status === 1 && <Button onClick={onSubmit}>Submit Nomination</Button>}
           </ButtonToolbar>
         </Col>
       </Row>

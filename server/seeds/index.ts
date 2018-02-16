@@ -13,17 +13,7 @@ async function seed({ db: { dialect: type, storage: database } }) {
     type,
     database,
     synchronize: true,
-    entities: [
-      Affiliation,
-      Address,
-      Attachment,
-      Child,
-      PhoneNumber,
-      Household,
-      User, 
-      Session,
-      Nominator
-    ],
+    entities: [Affiliation, Address, Attachment, Child, PhoneNumber, Household, User, Session, Nominator],
     subscribers: [AutoEncryptSubscriber]
   });
 
@@ -38,9 +28,7 @@ async function seed({ db: { dialect: type, storage: database } }) {
         seq = seq.then(() => console.log(`* Seeding from ${file}`));
       }
       seq = seq.then(() => {
-        return import(path.join(__dirname, file)).then(({ default: seed }) =>
-          seed(connection, config.verboseSeed)
-        );
+        return import(path.join(__dirname, file)).then(({ default: seed }) => seed(connection, config.verboseSeed));
       });
     });
   await seq;

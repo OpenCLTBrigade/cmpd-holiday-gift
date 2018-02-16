@@ -5,10 +5,14 @@ import * as path from 'path';
 
 const sendMail = require('../../lib/mail')(path.join(__dirname, '../mail-templates'));
 
-
 const RELATED_MODELS = [
   { model: database.affiliation, as: 'affiliation' },
-  { model: database.household, as: 'nomination', where: {'deleted': false}, required: false }
+  {
+    model: database.household,
+    as: 'nomination',
+    where: { deleted: false },
+    required: false
+  }
 ];
 
 // TODO: Criteria that determines whether or not a user account is pending approval
@@ -17,7 +21,9 @@ const criteria = {
   LIVE: { active: true, approved: true }
 };
 
-const scope = { FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] }) };
+const scope = {
+  FILTERED_BY_USER: user => ({ method: ['filteredByUser', user] })
+};
 
 // TODO: move user endpoints to auth app
 
@@ -40,7 +46,12 @@ export default {
           ...criteria.LIVE
         };
       }
-      const result = await api.fetchAndParse(database.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(
+        database.user,
+        whereClause,
+        RELATED_MODELS,
+        scope.FILTERED_BY_USER(req.user)
+      );
 
       res.json(result);
     } catch (err) {
@@ -55,9 +66,16 @@ export default {
       // TODO: Confirm criteria for what makes a pending user
       let whereClause = criteria.PENDING;
       if (query.search != null) {
-        whereClause = Object.assign({}, whereClause, { name_last: { $like: `${query.search}%` } });
+        whereClause = Object.assign({}, whereClause, {
+          name_last: { $like: `${query.search}%` }
+        });
       }
-      const result = await api.fetchAndParse(database.user, whereClause, RELATED_MODELS, scope.FILTERED_BY_USER(req.user));
+      const result = await api.fetchAndParse(
+        database.user,
+        whereClause,
+        RELATED_MODELS,
+        scope.FILTERED_BY_USER(req.user)
+      );
       res.json(result);
     } catch (err) {
       res.json({ error: 'error fetching data' });
@@ -90,7 +108,9 @@ export default {
       res.status(404);
     }
 
-    const nomination_count = await database.household.count({ where: { 'nominator_id': user.id } });
+    const nomination_count = await database.household.count({
+      where: { nominator_id: user.id }
+    });
 
     user = user.toJSON();
     // delete user.password; // No longer needed courtesy GIFT-210
@@ -115,7 +135,9 @@ export default {
     }
     console.log('start');
     // Find existing user with that email address
-    const existingUser = await database.user.findOne({ where: { email: user.email } });
+    const existingUser = await database.user.findOne({
+      where: { email: user.email }
+    });
     if (existingUser) {
       res.status(400);
       res.json({
@@ -126,31 +148,34 @@ export default {
       return;
     }
 
-    database.user.create({
-      name_first: user.name_first,
-      name_last: user.name_last,
-      role: user.role,
-      rank: user.rank,
-      phone: user.phone,
-      email: user.email,
-      active: user.active,
-      nomination_limit: user.nomination_limit,
-      email_verifed: user.email_verifed,
-      approved: true,
-      password: auth.hashPassword(user.password),
-      affiliation_id: user.affiliation_id,
-      confirmation_email: false
-    }).then((createdUser) => {
-      console.log('made a user!', createdUser);
-      res.json({ data: { user: { id: createdUser.id } } });
-    }).catch(() => {
-      res.status(500);
-      res.json({
-        // TODO: log error
-        data: null,
-        message: 'Could not create user. Unknown error.'
+    database.user
+      .create({
+        name_first: user.name_first,
+        name_last: user.name_last,
+        role: user.role,
+        rank: user.rank,
+        phone: user.phone,
+        email: user.email,
+        active: user.active,
+        nomination_limit: user.nomination_limit,
+        email_verifed: user.email_verifed,
+        approved: true,
+        password: auth.hashPassword(user.password),
+        affiliation_id: user.affiliation_id,
+        confirmation_email: false
+      })
+      .then(createdUser => {
+        console.log('made a user!', createdUser);
+        res.json({ data: { user: { id: createdUser.id } } });
+      })
+      .catch(() => {
+        res.status(500);
+        res.json({
+          // TODO: log error
+          data: null,
+          message: 'Could not create user. Unknown error.'
+        });
       });
-    });
   },
 
   /**
@@ -171,7 +196,9 @@ export default {
     }
 
     // Find existing user with that id
-    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -202,16 +229,19 @@ export default {
       newData.role = existingUser.role;
     }
 
-    existingUser.update(newData).then(() => {
-      res.json({ data: true });
-    }).catch((err) => {
-      res.status(500);
-      res.json({
-        data: null,
-        message: 'Could not update user. Unknown error.',
-        error: err
+    existingUser
+      .update(newData)
+      .then(() => {
+        res.json({ data: true });
+      })
+      .catch(err => {
+        res.status(500);
+        res.json({
+          data: null,
+          message: 'Could not update user. Unknown error.',
+          error: err
+        });
       });
-    });
   },
 
   approveUser: async (req: any, res: any) => {
@@ -222,7 +252,9 @@ export default {
     }
 
     // Find existing user with that id
-    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -231,25 +263,28 @@ export default {
       });
     }
 
-    existingUser.update({
-      active: true,
-      approved: true,
-      email_verifed: true
-    }).then(() => {
-      sendMail('user-account-approved', { to: existingUser.email }).then(() => {
+    existingUser
+      .update({
+        active: true,
+        approved: true,
+        email_verifed: true
+      })
+      .then(() => {
+        sendMail('user-account-approved', { to: existingUser.email }).then(() => {
+          res.json({
+            data: true,
+            message: '',
+            error: null
+          });
+        });
+      })
+      .catch(err => {
         res.json({
-          data: true,
-          message: '',
-          error: null
+          data: false,
+          message: 'Could not update user.',
+          error: err
         });
       });
-    }).catch((err) => {
-      res.json({
-        data: false,
-        message: 'Could not update user.',
-        error: err
-      });
-    });
   },
 
   declineUser: async (req: any, res: any) => {
@@ -260,7 +295,9 @@ export default {
     }
 
     // Find existing user with that id
-    const existingUser = await database.user.findOne({ where: { id: req.params.id } });
+    const existingUser = await database.user.findOne({
+      where: { id: req.params.id }
+    });
     if (!existingUser) {
       res.status(404);
       res.json({
@@ -269,23 +306,26 @@ export default {
       });
     }
 
-    existingUser.update({
-      active: false,
-      approved: false,
-      email_verified: false,
-      confirmation_email: false
-    }).then(() => {
-      res.json({
-        data: true,
-        message: '',
-        error: null
+    existingUser
+      .update({
+        active: false,
+        approved: false,
+        email_verified: false,
+        confirmation_email: false
+      })
+      .then(() => {
+        res.json({
+          data: true,
+          message: '',
+          error: null
+        });
+      })
+      .catch(err => {
+        res.json({
+          data: false,
+          message: 'Could not update user.',
+          error: err
+        });
       });
-    }).catch((err) => {
-      res.json({
-        data: false,
-        message: 'Could not update user.',
-        error: err
-      });
-    });
   }
-}
+};

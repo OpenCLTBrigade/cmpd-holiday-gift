@@ -3,7 +3,6 @@ const geoData = require('../../data/CharlotteMecklenburg_Police_Response_Areas')
 import logger from '../../lib/logger';
 
 async function getAddressInfo(req, res) {
-
   const { lat, long } = req.query;
 
   try {
@@ -13,7 +12,6 @@ async function getAddressInfo(req, res) {
 
     const result = addressTool(geoData, [long, lat]);
     res.json({ data: result });
-
   } catch (err) {
     logger.info('cmpd getAddressInfo failed', err);
     res.json({ data: false });
@@ -22,4 +20,4 @@ async function getAddressInfo(req, res) {
 
 export default {
   getAddressInfo
-}
+};

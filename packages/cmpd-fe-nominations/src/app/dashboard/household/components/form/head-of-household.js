@@ -67,12 +67,7 @@ const HeadOfHousehold = () => {
             </Row>
             <Row>
               <Col md={4} xs={12}>
-                <Input
-                  label="Email"
-                  id="email"
-                  name="household.email"
-                  type="email"
-                />
+                <Input label="Email" id="email" name="household.email" type="email" />
               </Col>
               <Col md={4} xs={12}>
                 <Input
@@ -95,16 +90,10 @@ const HeadOfHousehold = () => {
                   placeholder="select"
                   validator={requiredValidator}>
                   <option value="">Select...</option>
-                  <option value="American Indian or Alaskan Native">
-                    American Indian or Alaskan Native
-                  </option>
-                  <option value="Asian">Asian</option>{' '}
-                  <option value="African American">African American</option>
+                  <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+                  <option value="Asian">Asian</option> <option value="African American">African American</option>
                   <option value="Hispanic">Hispanic</option>
-                  <option value="Pacific Islander">
-                    Pacific Islander
-                  </option>{' '}
-                  <option value="White">White</option>
+                  <option value="Pacific Islander">Pacific Islander</option> <option value="White">White</option>
                   <option value="White">Not Given</option>
                   <option value="Other">Other</option>
                 </Input>
