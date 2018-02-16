@@ -30,7 +30,6 @@
     "build",
     "server-notypes"
   ],
-  "main": "server/apps/serve.js",
   "devDependencies": {
     "@nestjs/testing": "^4.5.5",
     "@types/exceljs": "^0.5.2",
