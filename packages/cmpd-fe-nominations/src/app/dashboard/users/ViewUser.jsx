@@ -71,9 +71,7 @@ export default class ViewUser extends React.Component {
 
     const listItems = nominations.map(nomination => (
       <ListGroupItem>
-        <a href={`/dashboard/household/show/${nomination.id}`}>
-          {`${nomination.name_first} ${nomination.name_last}`}
-        </a>
+        <a href={`/dashboard/household/show/${nomination.id}`}>{`${nomination.firstName} ${nomination.lastName}`}</a>
       </ListGroupItem>
     ));
 
@@ -81,7 +79,7 @@ export default class ViewUser extends React.Component {
       <Grid>
         <Row>
           <Col xs={12}>
-            <Box title={`${user.name_first} ${user.name_last}`}>
+            <Box title={`${user.firstName} ${user.lastName}`}>
               <Row>
                 <Col xs={12}>
                   <ListGroup>
@@ -106,7 +104,7 @@ export default class ViewUser extends React.Component {
                     <ListGroupItem>
                       <strong>Nomination Limit</strong>
                       <br />
-                      {user.nomination_limit}
+                      {user.nominationLimit}
                       <br />
                     </ListGroupItem>
                     <ListGroupItem>
@@ -136,20 +134,16 @@ export default class ViewUser extends React.Component {
             </Col>
           </Row>
         )}
-        {user.email_verified === true &&
+        {user.emailVerified === true &&
           user.approved === false && (
             <Row>
               <Col xs={12}>
                 <Box title="Review pending account">
                   <div style={{ 'text-align': 'center' }}>
-                    <StyledButton
-                      className="btn btn-lg btn-success"
-                      onClick={this.onClickApprove}>
+                    <StyledButton className="btn btn-lg btn-success" onClick={this.onClickApprove}>
                       Approve
                     </StyledButton>
-                    <StyledButton
-                      className="btn btn-lg btn-danger"
-                      onClick={this.onClickDecline}>
+                    <StyledButton className="btn btn-lg btn-danger" onClick={this.onClickDecline}>
                       Decline
                     </StyledButton>
                   </div>

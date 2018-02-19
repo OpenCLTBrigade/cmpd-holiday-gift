@@ -8,22 +8,18 @@ export default class NewUser extends React.Component {
     super();
     this.state = {
       user: {
-        id: '',
-        name_first: '',
-        name_last: '',
+        firstName: '',
+        lastName: '',
         role: '',
         rank: '',
         phone: '',
         email: '',
         active: '',
-        nomination_limit: '',
-        email_verified: '',
-        approved: '',
-        createdAt: '',
-        updatedAt: '',
+        nominationLimit: '',
+        emailVerified: '',
         password: '',
-        affiliation_id: '',
-        password_confirmation: ''
+        affiliationId: '',
+        confirmationPassword: ''
       },
       saving: false
     };
@@ -72,12 +68,7 @@ export default class NewUser extends React.Component {
 
     return (
       <div>
-        <UserForm
-          data={this.state}
-          getValue={getValue}
-          onChange={this.onChange}
-          onSubmit={this.onSubmit}
-        />
+        <UserForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
       </div>
     );
   }

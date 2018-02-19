@@ -28,12 +28,13 @@ export default class UsersList extends React.Component {
   }
 
   countListFormatter(cell, row) {
-    return `${row.nomination.length}`;
+    return `${row.households.length}`;
   }
 
   async fetch(page, search) {
     const response = await getUserList(page, search);
     const { items, totalSize, per_page } = response;
+
     return { items, totalSize, per_page };
   }
 
@@ -46,10 +47,10 @@ export default class UsersList extends React.Component {
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
-              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_last">
+              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="lastName">
                 Last Name
               </TableHeaderColumn>
-              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_first">
+              <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="firstName">
                 First Name
               </TableHeaderColumn>
               <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="email">

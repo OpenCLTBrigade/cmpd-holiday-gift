@@ -1,4 +1,4 @@
-import { IsOptional, IsNotEmpty, IsNumber, IsBoolean, IsEmail } from 'class-validator';
+import { IsOptional, IsNotEmpty, IsNumberString, IsBooleanString, IsEmail } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsSame } from '../../../../common/validators/is-same.validator';
 
@@ -31,17 +31,17 @@ export class UpdateUserDto {
   readonly phone: string;
 
   @ApiModelProperty({ type: Boolean })
-  @IsBoolean()
+  @IsBooleanString()
   readonly active: boolean;
 
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
-  @IsNumber()
+  @IsNumberString()
   readonly nominationLimit: number;
 
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
-  @IsNumber()
+  @IsNumberString()
   readonly affiliationId: number;
 
   @ApiModelProperty({ type: Boolean })

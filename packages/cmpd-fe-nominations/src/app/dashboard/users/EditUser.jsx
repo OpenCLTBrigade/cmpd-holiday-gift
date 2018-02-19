@@ -9,21 +9,19 @@ export default class EditUser extends React.Component {
     this.state = {
       user: {
         id: '',
-        name_first: '',
-        name_last: '',
+        firstName: '',
+        lastName: '',
         role: '',
         rank: '',
         phone: '',
         email: '',
         active: '',
-        nomination_limit: '',
-        email_verified: '',
+        nominationLimit: '',
+        emailVerified: '',
         approved: '',
-        createdAt: '',
-        updatedAt: '',
         password: '',
-        affiliation_id: '',
-        password_confirmation: ''
+        affiliationId: '',
+        confirmationPassword: ''
       },
       saving: false
     };
@@ -31,8 +29,8 @@ export default class EditUser extends React.Component {
 
   componentDidMount() {
     getUser(this.props.match.params.user_id)
-      .then(response => {
-        this.setState({ user: response.data });
+      .then(user => {
+        this.setState({ user });
       })
       .catch(() => {
         window.location = '/dashboard/users';
@@ -67,8 +65,7 @@ export default class EditUser extends React.Component {
             alert('User has been updated');
           }
           this.setState({ saving: false }, () => {
-            window.location = `/dashboard/user?search=${this.state.user
-              .name_last || ''}`;
+            window.location = `/dashboard/user?search=${this.state.user.lastName || ''}`;
           });
         })
         .catch(() => {
@@ -82,14 +79,11 @@ export default class EditUser extends React.Component {
       return <div>Saving...</div>;
     }
 
+    console.log(this.state);
+
     return (
       <div>
-        <UserForm
-          data={this.state}
-          getValue={getValue}
-          onChange={this.onChange}
-          onSubmit={this.onSubmit}
-        />
+        <UserForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
       </div>
     );
   }

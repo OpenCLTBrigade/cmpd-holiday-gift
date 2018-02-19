@@ -13,7 +13,7 @@ export enum ErrorCodes {
 
 @Component()
 export class AffiliationService {
-  async query({ page, search, whitelist = ['id', 'type', 'name'] }) {
+  async query({ page, search, whitelist = [] }) {
     try {
       const query = search && {
         keys: ['name'],
@@ -21,6 +21,7 @@ export class AffiliationService {
       };
 
       let results = await getRepository(Affiliation).find();
+
       return createPagedResults({
         results,
         page,

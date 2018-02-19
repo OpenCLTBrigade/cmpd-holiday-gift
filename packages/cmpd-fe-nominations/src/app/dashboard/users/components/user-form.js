@@ -57,9 +57,9 @@ class UserForm extends React.Component {
               <Row>
                 <Col md={12}>
                   <Input
-                    value={'user.name_first'}
+                    value={'user.firstName'}
                     label="First Name"
-                    name={'user.name_first'}
+                    name={'user.firstName'}
                     id="firstName"
                     type="text"
                     validator={requiredValidator}
@@ -69,9 +69,9 @@ class UserForm extends React.Component {
               <Row>
                 <Col md={12}>
                   <Input
-                    value={'user.name_last'}
+                    value={'user.lastName'}
                     label="Last Name"
-                    name={'user.name_last'}
+                    name={'user.lastName'}
                     id="lastName"
                     type="text"
                     validator={requiredValidator}
@@ -115,9 +115,9 @@ class UserForm extends React.Component {
               <Row>
                 <Col md={12}>
                   <Input
-                    value={'user.nomination_limit'}
+                    value={'user.nominationLimit'}
                     label="Nomiation Limit(Yearly)"
-                    name={'user.nomination_limit'}
+                    name={'user.nominationLimit'}
                     id="nominationLimit"
                     type="number"
                     validator={requiredValidator}
@@ -151,9 +151,9 @@ class UserForm extends React.Component {
               <Row>
                 <Col md={12}>
                   <Input
-                    value={'user.email_verified'}
+                    value={'user.emailVerified'}
                     label="Confirmed Email Address"
-                    name={'user.email_verified'}
+                    name={'user.emailVerified'}
                     componentClass="select"
                     validator={requiredValidator}>
                     <option />
@@ -191,10 +191,10 @@ class UserForm extends React.Component {
               <Row>
                 <Col md={12}>
                   <Input
-                    value={'user.password_confirmation'}
+                    value={'user.confirmationPassword'}
                     label="Password Confirmation"
-                    name={'user.password_confirmation'}
-                    id="password_confirmation"
+                    name={'user.confirmationPassword'}
+                    id="confirmationPassword"
                     type="text"
                     validator={requiredValidator}
                   />

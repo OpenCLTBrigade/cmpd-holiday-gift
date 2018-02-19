@@ -21,11 +21,11 @@ export default class Affiliation extends React.Component {
       affiliation: {
         name: '',
         type: '',
-        address_street: '',
-        address_street2: null,
-        address_city: '',
-        address_state: '',
-        address_zip: '',
+        addressStreet: '',
+        addressStreet2: null,
+        addressCity: '',
+        addressState: '',
+        addressZip: '',
         phone: null
       }
     };
@@ -45,14 +45,7 @@ export default class Affiliation extends React.Component {
 
   render() {
     const { affiliation } = this.state;
-    const {
-      phone,
-      address_street,
-      address_street2,
-      address_city,
-      address_state,
-      address_zip
-    } = affiliation;
+    const { phone, addressStreet, addressStreet2, addressCity, addressState, addressZip } = affiliation;
     return (
       <div>
         <Row>
@@ -64,18 +57,12 @@ export default class Affiliation extends React.Component {
                     <ListGroupItem header="Name">
                       {affiliation.name} ({affiliation.type.toUpperCase()})
                     </ListGroupItem>
-                    {phone && (
-                      <ListGroupItem header="Phone Number">
-                        {phone}
-                      </ListGroupItem>
-                    )}
+                    {phone && <ListGroupItem header="Phone Number">{phone}</ListGroupItem>}
                     <ListGroupItem header="Address">
-                      {address_street}
-                      {address_street2 != null && (
-                        <span>{address_street2}</span>
-                      )}
+                      {addressStreet}
+                      {addressStreet2 != null && <span>{addressStreet2}</span>}
                       <br />
-                      {address_city}, {address_state}, {address_zip}
+                      {addressCity}, {addressState}, {addressZip}
                     </ListGroupItem>
                   </ListGroup>
                 </Col>
