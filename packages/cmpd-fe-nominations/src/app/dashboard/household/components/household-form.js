@@ -42,7 +42,7 @@ const Household = ({
         phoneNumbers={data.phoneNumbers}
       />
       <ChildForm
-        nominations={data.nominations}
+        childNominations={data.children}
         addChild={addChild}
         removeChild={removeChild}
         affiliations={affiliations}

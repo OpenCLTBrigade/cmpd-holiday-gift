@@ -1,18 +1,22 @@
 import * as React from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { flatten } from 'rambda';
 
-// type Props = {
-//     title: string,
-//     message: string,
-//     show: boolean,
-//     handleClose: () => void
-// }
+const ValidationError = ({ error }) => <li>{error}</li>;
+
+const ValidationErrorSummary = ({ errors = [] }) => {
+  const errorList = flatten(errors.map(({ constraints }) => Object.values(constraints)));
+
+  console.log(errorList);
+  return <ul>{errorList.map(error => <ValidationError error={error} />)}</ul>;
+};
 
 export default props => {
   const {
     show,
     title = 'Submission error',
     message = 'There was an issue submitting your form.',
+    validationErrors = [],
     handleClose
   } = props;
   return (
@@ -20,7 +24,10 @@ export default props => {
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{message}</Modal.Body>
+      <Modal.Body>
+        <h4>{message}</h4>
+        <ValidationErrorSummary errors={validationErrors} />
+      </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleClose} bsStyle="primary">
           Close

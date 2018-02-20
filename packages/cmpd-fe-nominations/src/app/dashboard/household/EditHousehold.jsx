@@ -30,8 +30,17 @@ const updateData = (oldData, newData) => {
   };
 };
 
-const getId = state =>
-  state.id || (state.data && state.data.household && state.data.household.id);
+const parseValidationErrors = (errors = [], parentProperty = '') => {
+  return errors.reduce((done, { children = [], property, constraints }) => {
+    if (Array.isArray(children) && children.length > 0) {
+      return done.concat(parseValidationErrors(children, property));
+    } else {
+      return done.concat({ property: [parentProperty, property].filter(Boolean).join('.'), constraints });
+    }
+  }, []);
+};
+
+const getId = state => state.id || (state.data && state.data.household && state.data.household.id);
 
 class NewHousehold extends React.Component {
   constructor() {
@@ -41,7 +50,7 @@ class NewHousehold extends React.Component {
       data: {
         household: {},
         address: {},
-        nominations: [],
+        children: [],
         schools: [],
         phoneNumbers: [],
         files: []
@@ -78,8 +87,8 @@ class NewHousehold extends React.Component {
 
   addChild() {
     this.setState(() => {
-      const nominations = this.state.data.nominations.concat({});
-      const data = updateData(this.state.data, { nominations });
+      const children = this.state.data.children.concat({});
+      const data = updateData(this.state.data, { children });
 
       return { data };
     });
@@ -87,10 +96,10 @@ class NewHousehold extends React.Component {
 
   removeChild() {
     this.setState(() => {
-      const nominations = this.state.data.nominations.slice();
-      nominations.pop();
+      const children = this.state.data.children.slice();
+      children.pop();
 
-      const data = updateData(this.state.data, { nominations });
+      const data = updateData(this.state.data, { children });
 
       return { data };
     });
@@ -143,22 +152,14 @@ class NewHousehold extends React.Component {
     this.setState(() => ({ schools }));
 
     if (household) {
-      const {
-        id,
-        children: nominations = [],
-        phoneNumbers = [],
-        address = {},
-        attachments: files = []
-      } = household;
+      const { id, children = [], phoneNumbers = [], address = {}, attachments: files = [] } = household;
 
-      const status = household.draft
-        ? HouseholdStatus.Draft
-        : HouseholdStatus.Submitted;
+      const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
 
       const newState = {
         data: {
           household,
-          nominations,
+          children,
           phoneNumbers,
           address,
           id,
@@ -184,7 +185,7 @@ class NewHousehold extends React.Component {
         data: {
           household: {},
           address: {},
-          nominations: [],
+          children: [],
           schools: [],
           phoneNumbers: [],
           files: []
@@ -210,13 +211,11 @@ class NewHousehold extends React.Component {
         this.setState({ status: HouseholdStatus.Draft, id: id });
       }
     } catch (error) {
-      console.log(error.response.status);
-      const errorMessage =
-        error.response.status === 403
-          ? 'Nomination limit reached'
-          : 'Something went wrong';
-      this.setState(() => ({ show: true, errorMessage }));
-      console.error(error);
+      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+
+      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
   }
 
@@ -224,28 +223,19 @@ class NewHousehold extends React.Component {
     const { history } = this.props;
 
     const { id } = this.state.data.household && this.state.data.household;
-    updateHousehold(id, this.state.data).then(() =>
-      history.push('/dashboard/household')
-    );
+    updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
   }
 
   async onSubmit() {
     const { history } = this.props;
 
-    const id =
-      this.state.id ||
-      (this.state.data &&
-        this.state.data.household &&
-        this.state.data.household.id);
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
 
     try {
       await submitNomination({ id });
 
       const redirectToList =
-        this.props.match &&
-        this.props.match.params &&
-        this.props.match &&
-        this.props.match.params.id;
+        this.props.match && this.props.match.params && this.props.match && this.props.match.params.id;
 
       if (redirectToList) {
         history.push('/dashboard/household');
@@ -254,9 +244,8 @@ class NewHousehold extends React.Component {
       }
     } catch (e) {
       const errorMessage =
-        e.response.status === 403
-          ? 'You must add at least one child to the household'
-          : 'Something went wrong';
+        e.response.status === 403 ? 'You must add at least one child to the household' : 'Something went wrong';
+
       this.setState(() => ({ show: true, errorMessage }));
     }
   }
@@ -265,11 +254,7 @@ class NewHousehold extends React.Component {
 
   onSavedReject = () => {
     const { history } = this.props;
-    const id =
-      this.state.id ||
-      (this.state.data &&
-        this.state.data.household &&
-        this.state.data.household.id);
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
 
     this.setState(
       () => {
@@ -287,8 +272,7 @@ class NewHousehold extends React.Component {
   };
 
   render() {
-    const handleClose = () =>
-      this.setState({ show: false, errorMessage: 'Something went wrong' });
+    const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
 
     return (
       <div>
@@ -318,6 +302,7 @@ class NewHousehold extends React.Component {
         <ErrorModal
           title="Oops - there's an error"
           message={this.state.errorMessage}
+          validationErrors={this.state.validationErrors}
           show={this.state.show}
           handleClose={handleClose}
         />

@@ -6,20 +6,20 @@ import requiredValidator from '../../../../../lib/validators/required.validator'
 import Checkbox from './checkbox';
 import { bikeSizeMap } from '../../../../../lib/constants/bike-size';
 
-const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
+const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) => {
   return (
     <div>
-      {nominations &&
-        nominations.map((row, idx) => {
+      {childNominations &&
+        childNominations.map((row, idx) => {
           return (
-            <Row key={`nominations${idx}`}>
+            <Row key={`children${idx}`}>
               <Col xs={12}>
                 <Box title={`Child #${idx + 1}`} bsStyle="success">
                   <Row>
                     <Col md={6} xs={12}>
                       <Input
                         label="First Name"
-                        name={`nominations[${idx}].name_first`}
+                        name={`children[${idx}].firstName`}
                         id="firstName"
                         type="text"
                         validator={requiredValidator}
@@ -28,7 +28,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={6} xs={12}>
                       <Input
                         label="Last Name"
-                        name={`nominations[${idx}].name_last`}
+                        name={`children[${idx}].lastName`}
                         id="lastName"
                         type="text"
                         validator={requiredValidator}
@@ -39,7 +39,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={3} xs={12}>
                       <Input
                         label="Gender"
-                        name={`nominations[${idx}].gender`}
+                        name={`children[${idx}].gender`}
                         componentClass="select"
                         placeholder="select"
                         validator={requiredValidator}>
@@ -51,7 +51,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={3} xs={12}>
                       <Input
                         label="Ethnicity"
-                        name={`nominations[${idx}].race`}
+                        name={`children[${idx}].race`}
                         componentClass="select"
                         placeholder="select"
                         validator={requiredValidator}>
@@ -67,7 +67,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={3} xs={12}>
                       <Input
                         label="Last four digits of SSN"
-                        name={`nominations[${idx}].last4ssn`}
+                        name={`children[${idx}].last4ssn`}
                         type="text"
                         pattern="[0-9]{4}"
                         validator={requiredValidator}
@@ -77,7 +77,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={3} xs={12}>
                       <Input
                         label="Child receives free or reduced lunch?"
-                        name={`nominations[${idx}].free_or_reduced_lunch`}
+                        name={`children[${idx}].freeOrReducedLunch`}
                         componentClass="select"
                         placeholder="select"
                         validator={requiredValidator}>
@@ -91,7 +91,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={6} xs={12}>
                       <Input
                         label="Date of Birth"
-                        name={`nominations[${idx}].dob`}
+                        name={`children[${idx}].dob`}
                         type="date"
                         validator={requiredValidator}
                       />
@@ -99,7 +99,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={6} xs={12}>
                       <Input
                         label="School Name"
-                        name={`nominations[${idx}].school_id`}
+                        name={`children[${idx}].schoolId`}
                         componentClass="select"
                         validator={requiredValidator}>
                         <option value="">Select...</option>
@@ -114,16 +114,16 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                   </Row>
                   <Row>
                     <Col xs={12}>
-                      <Checkbox name={`nominations[${idx}].bike_want`} label="Child wants bike?" />
+                      <Checkbox name={`children[${idx}].wantsBike`} label="Child wants bike?" />
                     </Col>
                   </Row>
-                  {nominations[idx] &&
-                    nominations[idx].bike_want && (
+                  {childNominations[idx] &&
+                    childNominations[idx].wantsBike && (
                       <Row>
                         <Col xs={12}>
                           <Input
                             label="Bike style"
-                            name={`nominations[${idx}].bike_style`}
+                            name={`children[${idx}].bikeStyle`}
                             componentClass="select"
                             placeholder="select"
                             validator={requiredValidator}>
@@ -136,7 +136,7 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                         <Col xs={12}>
                           <Input
                             label="Bike size"
-                            name={`nominations[${idx}].bike_size`}
+                            name={`children[${idx}].bikeSize`}
                             componentClass="select"
                             placeholder="select"
                             validator={requiredValidator}>
@@ -153,36 +153,36 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     )}
                   <Row>
                     <Col xs={12}>
-                      <Checkbox name={`nominations[${idx}].clothes_want`} label="Child wants clothes?" />
+                      <Checkbox name={`children[${idx}].wantsClothes`} label="Child wants clothes?" />
                     </Col>
                   </Row>
-                  {nominations[idx] &&
-                    nominations[idx].clothes_want && (
+                  {childNominations[idx] &&
+                    childNominations[idx].wantsClothes && (
                       <Row>
                         <Col xs={12}>
-                          <Input label="Shirt size" name={`nominations[${idx}].clothes_size_shirt`} />
+                          <Input label="Shirt size" name={`children[${idx}].clothesShirtSize`} />
                         </Col>
                         <Col xs={12}>
-                          <Input label="Pant size" name={`nominations[${idx}].clothes_size_pants`} />
+                          <Input label="Pant size" name={`children[${idx}].clothesPantsSize`} />
                         </Col>
                         <Col xs={12}>
-                          <Input label="Coat size" name={`nominations[${idx}].clothes_size_coat`} />
+                          <Input label="Coat size" name={`children[${idx}].clothesCoatSize`} />
                         </Col>
                         <Col xs={12}>
-                          <Input label="Shoe size" name={`nominations[${idx}].shoe_size`} />
+                          <Input label="Shoe size" name={`children[${idx}].shoeSize`} />
                         </Col>
                       </Row>
                     )}
                   <Row>
                     <Col xs={12}>
-                      <Input label="Favorite Color" name={`nominations[${idx}].favourite_colour`} type="text" />
+                      <Input label="Favorite Color" name={`children[${idx}].favouriteColor`} type="text" />
                     </Col>
                   </Row>
                   <Row>
                     <Col md={4} xs={12}>
                       <Input
                         label="Child's Interests"
-                        name={`nominations[${idx}].interests`}
+                        name={`children[${idx}].interests`}
                         componentClass="textarea"
                         placeholder=""
                       />
@@ -190,14 +190,14 @@ const ChildForm = ({ nominations, addChild, removeChild, affiliations }) => {
                     <Col md={4} xs={12}>
                       <Input
                         label="Additional Ideas"
-                        name={`nominations[${idx}].additional_ideas`}
+                        name={`children[${idx}].additionalIdeas`}
                         componentClass="textarea"
                       />
                     </Col>
                     <Col md={4} xs={12}>
                       <Input
                         label="Reason for nomination"
-                        name={`nominations[${idx}].reason_for_nomination`}
+                        name={`children[${idx}].reasonForNomination`}
                         componentClass="textarea"
                       />
                     </Col>

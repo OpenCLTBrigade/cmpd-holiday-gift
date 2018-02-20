@@ -5,17 +5,7 @@ import Box from '../../../components/box';
 import Input from '../../../../../app/components/input';
 import requiredValidator from '../../../../../lib/validators/required.validator';
 
-var places;
-
 class AddressForm extends React.Component {
-  //     placesRef: ?HTMLInputElement
-  //   addressRefs: {
-  //       address2?: ?HTMLInputElement,
-  //         city?: ?HTMLInputElement,
-  //         state?: ?HTMLInputElement,
-  //         zip?: ?HTMLInputElement
-  //     }
-
   constructor() {
     super();
     this.addressRefs = {};

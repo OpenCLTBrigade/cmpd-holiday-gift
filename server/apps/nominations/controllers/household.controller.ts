@@ -29,7 +29,7 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { HouseholdService, ErrorCodes } from '../service/household.service';
 import { baseUrl } from '../../lib/misc';
-import { CreateHouseholdDto } from './dto/create-household.dto';
+import { AddressDto, CreateHouseholdDto } from './dto/create-household.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import logger from '../../lib/logger';
@@ -43,7 +43,7 @@ type AuthedRequest = {
 const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
 
 const errorMap = {
-  [ErrorCodes.NoChildren]: NotFoundException,
+  [ErrorCodes.NoChildrenExists]: NotFoundException,
   default: InternalServerErrorException
 };
 

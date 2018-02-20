@@ -14,7 +14,7 @@ const HeadOfHousehold = () => {
               <Col md={6} xs={12}>
                 <Input
                   label="First Name"
-                  name="household.name_first"
+                  name="household.firstName"
                   id="firstName"
                   type="text"
                   validator={requiredValidator}
@@ -23,7 +23,7 @@ const HeadOfHousehold = () => {
               <Col md={6} xs={12}>
                 <Input
                   label="Last Name"
-                  name="household.name_last"
+                  name="household.lastName"
                   id="lastName"
                   type="text"
                   validator={requiredValidator}
@@ -72,7 +72,7 @@ const HeadOfHousehold = () => {
               <Col md={4} xs={12}>
                 <Input
                   label="Preferred Contact Method"
-                  name="household.preferred_contact_method"
+                  name="household.preferredContactMethod"
                   componentClass="select"
                   placeholder="select"
                   validator={requiredValidator}>

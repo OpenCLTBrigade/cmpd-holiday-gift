@@ -8,7 +8,7 @@ import PhoneNumber from '../../../entities/phone-number';
 
 const path = require('path');
 
-import logger from '../../lib/logger';
+import logger, { logStart, logEnd } from '../../../common/util/logger';
 import { createPagedResults } from '../../lib/table/table';
 import { CreateHouseholdDto } from '../controllers/dto/create-household.dto';
 import { UpdateHouseholdDto } from '../controllers/dto/update-household.dto';
@@ -55,7 +55,7 @@ export class HouseholdService {
     });
 
     if (household.children.length === 0) {
-      throw new ApplicationError('Must add children to this household', ErrorCodes.NoChildren);
+      throw new ApplicationError('Must add children to this household', ErrorCodes.NoChildrenExists);
     }
 
     household.draft = false;
@@ -96,81 +96,179 @@ export class HouseholdService {
     }
   }
 
-  async updateHousehold(id, updateHouseholdDto: UpdateHouseholdDto) {
-    logger.info('updateHousehold');
+  async updateHousehold(
+    id,
+    { household: householdDto, address, phoneNumbers: phoneNumbersDto, children: childrenDto }: UpdateHouseholdDto
+  ) {
+    logStart('updateHousehold');
+
+    logStart('saving household');
 
     const household = await Household.findOneById(id);
 
-    household.firstName = updateHouseholdDto.firstName;
-    household.lastName = updateHouseholdDto.lastName;
-    household.middleName = updateHouseholdDto.middleName || '';
-    household.dob = updateHouseholdDto.dob;
-    household.race = updateHouseholdDto.race;
-    household.gender = updateHouseholdDto.gender;
-    household.last4ssn = updateHouseholdDto.last4ssn;
-    household.email = updateHouseholdDto.email;
-    household.preferredContactMethod = updateHouseholdDto.preferredContactMethod;
+    household.firstName = householdDto.firstName;
+    household.lastName = householdDto.lastName;
+    household.dob = householdDto.dob;
+    household.race = householdDto.race;
+    household.gender = householdDto.gender;
+    household.last4ssn = householdDto.last4ssn;
+    household.email = householdDto.email;
+    household.preferredContactMethod = householdDto.preferredContactMethod;
 
-    const children = await Child.find({ where: { householdId: id } });
-    const phoneNumbers = await PhoneNumber.find({ where: { householdId: id } });
+    await household.save();
 
-    const newChildren = updateHouseholdDto.children.filter(row => !row.id);
-    const newPhones = updateHouseholdDto.phoneNumbers.filter(row => !row.id);
+    logEnd('saving household');
 
-    const updatedChildren = updateHouseholdDto.children.filter(row => !!row.id);
-    const updatedPhones = updateHouseholdDto.phoneNumbers.filter(row => !!row.id);
+    logStart('saving children');
 
-    const updatedChildIds = updatedChildren.map(row => row.id);
-    const updatedPhoneIds = updatedPhones.map(row => row.id);
+    await this.updateChildren(household, childrenDto);
 
-    const deletedChildIds = children.filter(child => !updatedChildIds.includes(child.id)).map(row => row.id);
-    const deletedPhoneIds = phoneNumbers.filter(number => !updatedPhoneIds.includes(number.id)).map(row => row.id);
+    logEnd('saving children');
 
-    await Child.updateById(deletedChildIds, { deleted: true });
-    await PhoneNumber.updateById(deletedPhoneIds, { deleted: true });
+    logStart('phone numbers');
 
-    newChildren.forEach(async child => {
-      const entity = Child.fromJSON(child);
-      entity.household = household;
-      await entity.save();
-    });
+    await this.updatePhoneNumbers(household, phoneNumbersDto);
 
-    newPhones.forEach(async number => {
-      const entity = PhoneNumber.fromJSON(number);
+    logEnd('phone numbers');
 
-      entity.household = household;
-      await entity.save();
-    });
+    logEnd('updateHousehold');
 
     return await this.getById(id);
   }
 
-  async createHousehold(createHouseholdDto: CreateHouseholdDto, { id: nominatorId }) {
-    logger.info('createHousehold');
+  private async updatePhoneNumbers(household: Household, phoneNumbersDto) {
+    logStart('updatePhoneNumbers');
+
+    const { id: householdId } = household;
+    const phoneNumbers = await PhoneNumber.find({ where: { householdId } });
+
+    const updatedPhoneIds = phoneNumbersDto.map(row => row.number);
+    const deletedPhoneIds = phoneNumbers.filter(number => !updatedPhoneIds.includes(number.number)).map(row => row.id);
+
+    logStart('deleting numbers');
+
+    await PhoneNumber.updateById(deletedPhoneIds, { deleted: true });
+
+    logEnd('deleting numbers');
+
+    logStart('updating numbers');
+
+    phoneNumbersDto.forEach(async ({ number, type }) => {
+      const entity = phoneNumbers.find(phoneNumber => phoneNumber.number === number);
+
+      if (entity) {
+        entity.number = number;
+        entity.type = type;
+
+        await entity.save();
+      } else {
+        const entity = PhoneNumber.fromJSON({ number, type });
+        entity.householdId = household.id;
+        await entity.save();
+      }
+    });
+
+    logEnd('updating numbers');
+
+    logEnd('updatePhoneNumbers');
+  }
+
+  private async updateChildren(household: Household, childrenDto) {
+    logStart('updateChildren');
+
+    const { id: householdId } = household;
+    const children = await Child.find({ where: { householdId } });
+
+    const updatedChildIds = childrenDto.map(row => row.last4ssn);
+    const deletedChildIds = children.filter(child => !updatedChildIds.includes(child.last4ssn)).map(row => row.id);
+
+    logStart('deleting children', deletedChildIds);
+
+    await Child.updateById(deletedChildIds, { deleted: true });
+
+    logStart('updating children');
+
+    childrenDto.forEach(async ({ ...rest }) => {
+      const entity = children.find(child => child.last4ssn === rest.last4ssn);
+
+      if (entity) {
+        entity.additionalIdeas = rest.additionalIdeas;
+        entity.bikeSize = rest.bikeSize;
+        entity.bikeStyle = rest.bikeStyle;
+        entity.clothesCoatSize = rest.clothesCoatSize;
+        entity.clothesPantsSize = rest.clothesPantsSize;
+        entity.clothesShirtSize = rest.clothesShirtSize;
+        entity.dob = rest.dob;
+        entity.favouriteColor = rest.favouriteColor;
+        entity.firstName = rest.firstName;
+        entity.freeOrReducedLunch = rest.freeOrReducedLunch;
+        entity.gender = rest.gender;
+        entity.interests = rest.interests;
+        entity.last4ssn = rest.last4ssn;
+        entity.lastName = rest.lastName;
+        entity.race = rest.race;
+        entity.reasonForNomination = rest.reasonForNomination;
+        entity.schoolId = rest.schoolId;
+        entity.shoeSize = rest.shoeSize;
+        entity.wantsClothes = rest.wantsClothes;
+
+        await entity.save();
+      } else {
+        const entity = Child.fromJSON(rest);
+        entity.household = household;
+        await entity.save();
+      }
+    });
+
+    logEnd('updateChildren');
+  }
+
+  async createHousehold(
+    { household: householdProps, address: addressProps, phoneNumbers, children }: CreateHouseholdDto,
+    { id: nominatorId }
+  ) {
+    logger.info('Start...', 'createHousehold');
 
     const household = Household.fromJSON({
       nominatorId,
-      ...createHouseholdDto
+      ...householdProps
     });
+
+    logStart('saving household');
 
     const created = await household.save();
 
-    createHouseholdDto.children.forEach(async child => {
+    logEnd('saving household', created.id);
+
+    logStart('saving children');
+
+    children.forEach(async child => {
       const entity = Child.fromJSON(child);
       entity.household = created;
       await entity.save();
     });
-    createHouseholdDto.phoneNumbers.forEach(async number => {
+
+    logEnd('saving children');
+
+    logStart('saving phone numbers');
+
+    phoneNumbers.forEach(async number => {
       const entity = PhoneNumber.fromJSON(number);
 
       entity.household = created;
       await entity.save();
     });
 
-    const address = Address.fromJSON(createHouseholdDto.address);
+    logEnd('saving phone numbers');
+
+    logStart('saving address');
+
+    const address = Address.fromJSON(addressProps);
     address.household = created;
 
     await address.save();
+
+    logEnd('saving address');
 
     return await this.getById(created.id);
   }
