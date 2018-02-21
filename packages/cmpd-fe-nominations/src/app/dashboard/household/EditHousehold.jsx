@@ -219,11 +219,19 @@ class NewHousehold extends React.Component {
     }
   }
 
-  onUpdate() {
+  async onUpdate() {
     const { history } = this.props;
 
     const { id } = this.state.data.household && this.state.data.household;
-    updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
+
+    try {
+      await updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
+    } catch (error) {
+      const errorMessage = 'Something went wrong';
+      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      this.setState(() => ({ show: true, errorMessage, validationErrors }));
+    }
   }
 
   async onSubmit() {
