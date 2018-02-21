@@ -3,36 +3,12 @@ import axios from 'axios';
 import { getAuthorization } from '../lib/auth';
 import { AuthToken } from './auth';
 
-// export type DataTableResponse<Item: Object> = {
-//   totalSize: number,
-//   per_page: number,
-//   page: number,
-//   last_page: number,
-//   next_page_url?: string,
-//   prev_page_url?: string,
-//   from: number,
-//   to: number,
-//   items: Array<Item>
-// };
-
-// Axios config object
-// type RequestConfigType = {
-//   baseURL?: string,
-//   headers?: Object,
-//   params?: Object,
-//   headers?: Object,
-//   url?: string,
-//   method?: string,
-//   params?: Object,
-//   data?: Object
-// };
-
 /**
  * Default axios config object
  * @type {RequestConfigType}
  */
 const defaultRequestConfig = {
-  baseURL: '/api/',
+  baseURL: process.env.API_URL || 'http://localhost:3001/api/',
   method: 'get'
 };
 
