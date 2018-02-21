@@ -7,7 +7,6 @@ const ValidationError = ({ error }) => <li>{error}</li>;
 const ValidationErrorSummary = ({ errors = [] }) => {
   const errorList = flatten(errors.map(({ constraints }) => Object.values(constraints)));
 
-  console.log(errorList);
   return <ul>{errorList.map(error => <ValidationError error={error} />)}</ul>;
 };
 
