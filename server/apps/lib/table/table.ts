@@ -25,7 +25,7 @@ function calculatePreviousPage(currentPage, lastPage) {
 
 function calcOffsets({ page, itemsPerPage }) {
   const start = (page - 1) * itemsPerPage;
-  const end = start + (itemsPerPage - 1);
+  const end = start + itemsPerPage;
 
   return {
     start,
