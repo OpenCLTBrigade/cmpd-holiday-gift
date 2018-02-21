@@ -33,7 +33,7 @@ export default class Header extends React.Component {
                 <a>
                   {user && (
                     <span className="hidden-xs">
-                      {user.name_first} {user.name_last.substring(0, 1).toUpperCase()}.
+                      {user.firstName} {user.lastName.substring(0, 1).toUpperCase()}.
                     </span>
                   )}
                 </a>
