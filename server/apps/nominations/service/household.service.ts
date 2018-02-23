@@ -29,7 +29,7 @@ export class HouseholdService {
         search
       };
 
-      let results = await Household.find();
+      let results = await Household.find({ where: active && { deleted: false } });
       return createPagedResults({
         results,
         page,
@@ -98,7 +98,12 @@ export class HouseholdService {
 
   async updateHousehold(
     id,
-    { household: householdDto, address, phoneNumbers: phoneNumbersDto, children: childrenDto }: UpdateHouseholdDto
+    {
+      household: householdDto,
+      address: addressDto,
+      phoneNumbers: phoneNumbersDto,
+      children: childrenDto
+    }: UpdateHouseholdDto
   ) {
     logStart('updateHousehold');
 
@@ -130,6 +135,9 @@ export class HouseholdService {
     await this.updatePhoneNumbers(household, phoneNumbersDto);
 
     logEnd('phone numbers');
+
+    const address = (await Address.findOne({ where: { householdId: id } })) || Address.create();
+    await Address.merge(address, addressDto, { householdId: id }).save();
 
     logEnd('updateHousehold');
 

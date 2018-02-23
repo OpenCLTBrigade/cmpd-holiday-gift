@@ -58,6 +58,8 @@ export default class List extends React.Component {
       deleteNomination(id).then(() => {
         this.setState({ isDeleting: false });
         this.refetch();
+
+        console.log('done');
       });
     });
   };
@@ -74,7 +76,7 @@ export default class List extends React.Component {
     }
     return (
       <Link to={`/dashboard/user/${row.nominator.id}`}>
-        {row.nominator.name_first} {row.nominator.name_last}
+        {row.nominator.firstName} {row.nominator.lastName}
       </Link>
     );
   }
@@ -130,14 +132,14 @@ export default class List extends React.Component {
         <TableHeaderColumn
           tdStyle={TD_STYLE}
           thStyle={TD_STYLE}
-          dataField="name_first"
-          dataFormat={(cell, row) => `${row.name_first} ${row.name_last}`}>
+          dataField="firstName"
+          dataFormat={(cell, row) => `${row.firstName} ${row.lastName}`}>
           Head of Household
         </TableHeaderColumn>
         <TableHeaderColumn
           tdStyle={TD_STYLE_XSMALL}
           thStyle={TD_STYLE_XSMALL}
-          dataField="name_first"
+          dataField="firstName"
           dataFormat={(cell, row) => (row.children ? `${row.children.length}` : 0)}>
           Children
         </TableHeaderColumn>

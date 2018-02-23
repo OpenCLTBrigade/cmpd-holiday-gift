@@ -17,20 +17,20 @@ class FeedbackModal extends React.Component {
     this.state = DEFAULT_STATE;
   }
 
-  handleFormSubmit = () => {
+  handleFormSubmit = async () => {
     const { approved, reason, message } = this.state.data;
 
-    reviewHousehold(this.props.household.id, {
-      approved,
-      reason,
-      message
-    }).then(response => {
-      if (response.data === true) {
-        this.handleClose({ approved, reason, message, reviewed: true });
-      } else {
-        alert('Could not review household. Please try again later.');
-      }
-    });
+    try {
+      await reviewHousehold(this.props.household.id, {
+        approved,
+        reason,
+        message
+      });
+
+      this.handleClose({ approved, reason, message, reviewed: true });
+    } catch (error) {
+      alert('Could not review household. Please try again later.');
+    }
   };
 
   handleClose = ({ approved, reason, message, reviewed } = {}) => {
@@ -58,8 +58,7 @@ class FeedbackModal extends React.Component {
         </Modal.Header>
         <Modal.Body>
           {household.address &&
-            (!household.address.cmpd_division ||
-              !household.address.cmpd_response_area) && (
+            (!household.address.cmpdDivision || !household.address.cmpdResponseArea) && (
               <span style={{ fontWeight: 'bold' }}>
                 Warning: Address is missing CMPD Division / Response Area<hr />
               </span>

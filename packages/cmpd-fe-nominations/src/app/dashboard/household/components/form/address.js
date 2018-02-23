@@ -114,7 +114,7 @@ class AddressForm extends React.Component {
                 <Col md={6} xs={12}>
                   <Input
                     label="CMPD Division"
-                    name="address.cmpd_division"
+                    name="address.cmpdDivision"
                     type="text"
                     disabled={this.props.user.role !== 'admin'}
                   />
@@ -122,7 +122,7 @@ class AddressForm extends React.Component {
                 <Col md={6} xs={12}>
                   <Input
                     label="CMPD Response Area"
-                    name="address.cmpd_response_area"
+                    name="address.cmpdResponseArea"
                     type="text"
                     disabled={this.props.user.role !== 'admin'}
                   />

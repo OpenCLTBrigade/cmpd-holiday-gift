@@ -120,24 +120,28 @@ class NewHousehold extends React.Component {
     }
   }
 
-  onAddressChange(name, value) {
+  async onAddressChange(name, value) {
     const latlng = { ...value.latlng };
     delete value.latlng;
     // console.log('latlng', latlng);
     // console.log('oooooo', value);
     // TODO: Get CMPD Address Info
-    getAddressInfo(latlng.lat, latlng.lng).then(response => {
+
+    try {
+      const response = getAddressInfo(latlng.lat, latlng.lng);
       if (!response || response.data === null) {
         console.log('CMPD Division / Address not found');
-        value.cmpd_division = '';
-        value.cmpd_response_area = '';
+        value.cmpdDivision = '';
+        value.cmpdResponseArea = '';
       } else {
-        value.cmpd_division = response.data.properties.DIVISION;
-        value.cmpd_response_area = response.data.properties.RA;
+        value.cmpdDivision = response.data.properties.DIVISION;
+        value.cmpdResponseArea = response.data.properties.RA;
       }
       value.type = this.state.data.address.type && this.state.data.address.type;
       this.onChange(name, value);
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   onChange(name, value) {
@@ -334,7 +338,7 @@ const fetchData = ({ id }) => async () => {
     household = await getHousehold(id);
   }
 
-  const { items: schools } = await getSchools();
+  const schools = await getSchools();
   const status = await getNominationStatus();
 
   return { household, schools, status };

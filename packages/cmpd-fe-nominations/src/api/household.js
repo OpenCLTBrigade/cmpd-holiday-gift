@@ -40,7 +40,7 @@ export function uploadAttachment({ id, file }) {
 
 export function reviewHousehold(id, payload) {
   const { approved, reason, message } = payload;
-  return post('nominations', `households/${id}/feedback`, {
+  return put('nominations', `households/${id}/feedback`, {
     approved,
     reason,
     message

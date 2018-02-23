@@ -13,10 +13,10 @@ import { UserList } from './components';
 // };
 
 export default class Affiliation extends React.Component {
-  // affiliation_id: ?number;
+  // affiliationId: ?number;
   constructor(props) {
     super(props);
-    this.affiliation_id = null;
+    this.affiliationId = null;
     this.state = {
       affiliation: {
         name: '',
@@ -32,9 +32,9 @@ export default class Affiliation extends React.Component {
   }
 
   componentDidMount() {
-    const { affiliation_id } = this.props.match.params;
-    this.affiliation_id = affiliation_id;
-    getAffiliation(affiliation_id)
+    const { affiliationId } = this.props.match.params;
+    this.affiliationId = affiliationId;
+    getAffiliation(affiliationId)
       .then(affiliation => {
         this.setState({ affiliation });
       })
@@ -73,7 +73,7 @@ export default class Affiliation extends React.Component {
         <Row>
           <Col xs={12}>
             <Box title={`Users in ${affiliation.name}`}>
-              <UserList affiliation_id={this.affiliation_id} />
+              <UserList affiliationId={this.affiliationId} />
             </Box>
           </Col>
         </Row>
