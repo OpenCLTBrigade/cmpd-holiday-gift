@@ -22,7 +22,10 @@ export enum ErrorCodes {
 
 @Component()
 export class HouseholdService {
-  async query({ page, search, active = true, nominator = undefined, baseUrl = '', whitelist = [] }) {
+  async getAll({ active = true } = {}) {
+    return await Household.find({ where: active && { deleted: false } });
+  }
+  async query({ page, search = undefined, active = true, nominator = undefined, baseUrl = '', whitelist = [] }) {
     try {
       const query = search && {
         keys: ['name_last', 'nominator.name_last'],
