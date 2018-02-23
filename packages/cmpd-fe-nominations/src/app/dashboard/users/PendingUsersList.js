@@ -95,8 +95,8 @@ export default class UsersList extends React.Component {
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="name_last">Last Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="name_first">First Name</TableHeaderColumn>
+              <TableHeaderColumn dataField="lastName">Last Name</TableHeaderColumn>
+              <TableHeaderColumn dataField="firstName">First Name</TableHeaderColumn>
               <TableHeaderColumn dataField="email">Email</TableHeaderColumn>
               <TableHeaderColumn dataField="phone">Phone</TableHeaderColumn>
               <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.type.toUpperCase()}>
