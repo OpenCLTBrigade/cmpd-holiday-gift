@@ -17,6 +17,8 @@ import ErrorModal from './components/ErrorModal';
 import ConfirmModal from './components/ConfirmModal';
 import withAsync from '../../components/withAsync';
 
+import { pathOr } from 'rambda';
+
 const HouseholdStatus = {
   New: 0,
   Draft: 1,
@@ -128,15 +130,14 @@ class NewHousehold extends React.Component {
     // TODO: Get CMPD Address Info
 
     try {
-      const response = getAddressInfo(latlng.lat, latlng.lng);
-      if (!response || response.data === null) {
-        console.log('CMPD Division / Address not found');
-        value.cmpdDivision = '';
-        value.cmpdResponseArea = '';
-      } else {
-        value.cmpdDivision = response.data.properties.DIVISION;
-        value.cmpdResponseArea = response.data.properties.RA;
-      }
+      const response = await getAddressInfo(latlng.lat, latlng.lng);
+
+      const cmpdDivision = pathOr('', 'data.properties.DIVISION', response);
+      const cmpdResponseArea = pathOr('', 'data.properties.RA', response);
+
+      value.cmpdDivision = response.data.properties.DIVISION;
+      value.cmpdResponseArea = response.data.properties.RA;
+
       value.type = this.state.data.address.type && this.state.data.address.type;
       this.onChange(name, value);
     } catch (error) {

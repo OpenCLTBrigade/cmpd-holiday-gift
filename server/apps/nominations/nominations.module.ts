@@ -6,9 +6,10 @@ import { AffiliationController } from './controllers/affiliation.controller';
 import { TrackingController } from './controllers/tracking.controller';
 import { AffiliationService } from './service/affiliation.service';
 import { HouseholdService } from './service/household.service';
+import { CmpdController } from './controllers/cmpd.controller';
 
 @Module({
-  controllers: [HouseholdController, UserController, TrackingController, AffiliationController],
+  controllers: [HouseholdController, UserController, TrackingController, AffiliationController, CmpdController],
   components: [AffiliationService, HouseholdService, UserService]
 })
 export class NominationsModule {}
