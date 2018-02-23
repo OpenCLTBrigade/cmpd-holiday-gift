@@ -2,10 +2,7 @@
   "name": "cmpd-fe-nominations",
   "version": "0.1.0",
   "private": true,
-  "cacheDirectories": [
-    "node_modules",
-    "../node_modules"
-  ],
+  "cacheDirectories": ["node_modules", "../node_modules"],
   "devDependencies": {
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -24,6 +21,7 @@
     "neoform-plain-object-helpers": "^0.1.0",
     "neoform-validation": "^0.3.0",
     "querystring": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz",
+    "rambdax": "^0.8.10",
     "ramda": "^0.25.0",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.5",
