@@ -1,4 +1,5 @@
-export { default as Cmpd } from './cmpd';
-export { default as User } from './user';
-export { default as Reports } from './reports';
-export { default as Slips } from './slips';
+export { CmpdController } from './cmpd.controller';
+export { HouseholdController } from './household.controller';
+export { AffiliationController } from './affiliation.controller';
+export { TrackingController } from './tracking.controller';
+export { UserController } from './user.controller';
