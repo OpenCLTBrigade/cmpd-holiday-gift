@@ -26,9 +26,9 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    getMe().then(response => {
+    getMe().then(user => {
       const s = { ...this.state };
-      s.user = response.data;
+      s.user = user;
       this.setState(s);
     });
   }
@@ -65,7 +65,7 @@ export default class Dashboard extends React.Component {
               <Route exact path="/dashboard/affiliation" render={rest => <AffiliationList user={user} {...rest} />} />
               <Route
                 exact
-                path="/dashboard/affiliation/:affiliation_id"
+                path="/dashboard/affiliation/:affiliationId"
                 render={rest => <Affiliation user={user} {...rest} />}
               />
               <Route exact path="/dashboard/user" render={rest => <UsersList user={user} {...rest} />} />
