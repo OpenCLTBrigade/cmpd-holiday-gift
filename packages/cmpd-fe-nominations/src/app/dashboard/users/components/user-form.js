@@ -3,7 +3,7 @@ import { Form } from 'neoform';
 import Input from '../../../../app/components/input';
 import Box from '../../components/box';
 import SelectList from './select-list';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 import { FormValidation } from 'neoform-validation';
 import { getAffiliationList } from '../../../../api/affiliation';
 import requiredValidator from '../../../../lib/validators/required.validator';
@@ -21,9 +21,13 @@ class UserForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initial = this.props.data.user;
+    this.state = { user: this.props.data.user, initial: {} };
+  }
 
-    this.state = { user: this.props.data.user };
+  componentWillReceiveProps({ data: { user } }) {
+    if (user.id !== this.state.initial.id) {
+      this.setState({ initial: user });
+    }
   }
 
   onReset = () => {
@@ -32,7 +36,12 @@ class UserForm extends React.Component {
   };
 
   render() {
-    const { onSubmit, validate, onInvalid } = this.props;
+    const { onSubmit, validate, onInvalid, isEdit = true, saving: disabled = false } = this.props;
+    const { user: { password, email } = {} } = this.props.data;
+    const { email: initialEmail } = this.state.initial;
+
+    const emailRequired = !isEdit || email !== initialEmail;
+    const passwordRequired = !isEdit || !!password;
 
     return (
       <form
@@ -148,20 +157,22 @@ class UserForm extends React.Component {
                   />
                 </Col>
               </Row>
-              <Row>
-                <Col md={12}>
-                  <Input
-                    value={'user.emailVerified'}
-                    label="Confirmed Email Address"
-                    name={'user.emailVerified'}
-                    componentClass="select"
-                    validator={requiredValidator}>
-                    <option />
-                    <option value="false">No</option>
-                    <option value="true">Yes-Confirmed</option>
-                  </Input>
-                </Col>
-              </Row>
+              {emailRequired && (
+                <Row>
+                  <Col md={12}>
+                    <Input
+                      value={'user.emailVerified'}
+                      label="Confirmed Email Address"
+                      name={'user.emailVerified'}
+                      componentClass="select"
+                      validator={requiredValidator}>
+                      <option />
+                      <option value="false">No</option>
+                      <option value="true">Yes-Confirmed</option>
+                    </Input>
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col md={12}>
                   <Input
@@ -184,31 +195,35 @@ class UserForm extends React.Component {
                     name={'user.password'}
                     id="password"
                     type="text"
-                    validator={requiredValidator}
+                    validator={passwordRequired && requiredValidator}
                   />
                 </Col>
               </Row>
-              <Row>
-                <Col md={12}>
-                  <Input
-                    value={'user.confirmationPassword'}
-                    label="Password Confirmation"
-                    name={'user.confirmationPassword'}
-                    id="confirmationPassword"
-                    type="text"
-                    validator={requiredValidator}
-                  />
-                </Col>
-              </Row>
+              {passwordRequired && (
+                <Row>
+                  <Col md={12}>
+                    <Input
+                      value={'user.confirmationPassword'}
+                      label="Password Confirmation"
+                      name={'user.confirmationPassword'}
+                      id="confirmationPassword"
+                      type="text"
+                      validator={requiredValidator}
+                    />
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col xs={12}>
-                  <Button bsStyle="info" type="submit">
-                    Save
-                  </Button>
-                  <span />
-                  <Button bsStyle="warning" onClick={() => this.onReset()}>
-                    Reset
-                  </Button>
+                  <ButtonToolbar>
+                    <Button bsStyle="info" type="submit" disabled={disabled}>
+                      Save
+                    </Button>
+                    <span />
+                    <Button bsStyle="warning" onClick={() => this.onReset()}>
+                      Reset
+                    </Button>
+                  </ButtonToolbar>
                 </Col>
               </Row>
             </Box>

@@ -28,7 +28,7 @@ export function createUser(user) {
   return post('nominations', 'users', user);
 }
 
-export function updateUser(user) {
+export function updateUser({ households, ...user }) {
   return put('nominations', `users/${user.id}`, user);
 }
 
