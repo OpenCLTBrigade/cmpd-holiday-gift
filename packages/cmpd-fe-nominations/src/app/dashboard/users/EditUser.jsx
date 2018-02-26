@@ -34,7 +34,8 @@ export default class EditUser extends React.Component {
       .then(user => {
         this.setState({ user });
       })
-      .catch(() => {
+      .catch(e => {
+        console.error(e);
         window.location = '/dashboard/users';
         alert('User could not be found.');
       });

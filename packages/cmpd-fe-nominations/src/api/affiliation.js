@@ -15,6 +15,10 @@ export function getAffiliationList(pageNumber = 1, search) {
   });
 }
 
+export function getAllAffiliations() {
+  return get('nominations', 'affiliations');
+}
+
 export function getSchools() {
   return get('nominations', 'affiliations', { type: 'cms' });
 }

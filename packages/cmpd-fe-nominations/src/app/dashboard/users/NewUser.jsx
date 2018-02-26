@@ -68,7 +68,7 @@ export default class NewUser extends React.Component {
 
     return (
       <div>
-        <UserForm data={this.state} getValue={getValue} onChange={this.onChange} onSubmit={this.onSubmit} />
+        <UserForm data={this.state} onSubmit={this.onSubmit} isEdit={false} />
       </div>
     );
   }

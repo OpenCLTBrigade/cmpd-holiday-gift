@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Input from '../../../../app/components/input';
-import requiredValidator from '../../../../lib/validators/required.validator';
+import FormField from '../../../../app/components/form/FormField';
 
 // type Item = {
 //   id: number,
@@ -26,16 +25,14 @@ export default class SelectList extends React.Component {
   }
 
   fetchData() {
-    //console.log('fetchData');
     this.props.fetchAll().then(data => {
-      //console.log('In Fetch:', data);
       this.setState({ items: data });
     });
   }
 
   render() {
     return (
-      <Input label="Affilation" name={'user.affiliationId'} componentClass="select" validator={requiredValidator}>
+      <FormField label="Affilation" name={'user.affiliationId'} componentClass="select" required>
         <option />
         {this.state.items.length === 0 ? (
           <option disabled>Loading...</option>
@@ -46,7 +43,7 @@ export default class SelectList extends React.Component {
             </option>
           ))
         )}
-      </Input>
+      </FormField>
     );
   }
 }
