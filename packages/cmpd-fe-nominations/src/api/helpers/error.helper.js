@@ -7,3 +7,20 @@ export const parseValidationErrors = (errors = [], parentProperty = '') => {
     }
   }, []);
 };
+
+export function missingProperty(param, { throwError, defaultVal }) {
+  const message = `Missing property, "${param}" is missing.`;
+
+  console.warn(message);
+
+  if (throwError) {
+    const missingPropertyError = new Error(message);
+    // preserve original stack trace
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(requiredParamError, requiredParam);
+    }
+    throw missingPropertyError;
+  }
+
+  return defaultVal;
+}

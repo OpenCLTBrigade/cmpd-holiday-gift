@@ -3,23 +3,7 @@ import styled from 'styled-components';
 
 import { getPackingSlipData } from '../../api/slips';
 import { descFromValue } from '../../lib/constants/bike-size';
-
-function missingProperty(param, { throwError, defaultVal }) {
-  const message = `Missing property, "${param}" is missing.`;
-
-  console.warn(message);
-
-  if (throwError) {
-    const missingPropertyError = new Error(message);
-    // preserve original stack trace
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(requiredParamError, requiredParam);
-    }
-    throw missingPropertyError;
-  }
-
-  return defaultVal;
-}
+import { missingProperty } from '../../api/helpers/error.helper';
 
 const moment = require('moment');
 
