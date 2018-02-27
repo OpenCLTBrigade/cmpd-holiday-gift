@@ -2,6 +2,8 @@ import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
 import UserForm from './components/user-form.js';
 import { createUser } from '../../../api/user';
+import { parseValidationErrors } from '../../../api/helpers/error.helper';
+import ErrorModal from '../components/ErrorModal';
 
 export default class NewUser extends React.Component {
   constructor() {
@@ -36,39 +38,34 @@ export default class NewUser extends React.Component {
     console.log('onInvalid');
   }
 
-  onSubmit = () => {
-    if (this.state.saving === true) {
-      return;
-    }
+  onSubmit = async ({ user }) => {
+    try {
+      await createUser(user);
+      alert('User has been created');
+      window.location = '/dashboard/user';
+    } catch (error) {
+      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+      const validationErrors = parseValidationErrors(error.response.data.message);
 
-    this.setState({ saving: true }, () => {
-      createUser(this.state.user)
-        .then(response => {
-          if (response.data == null) {
-            alert(response.message);
-          } else {
-            alert('User has been created');
-          }
-          this.setState({ saving: false }, () => {
-            window.location = '/dashboard/user';
-          });
-        })
-        .catch(() => {
-          alert(
-            'Could not save user. An unknown error has occured. Perhaps a user with that email address already exists in the database?'
-          );
-        });
-    });
+      this.setState(() => ({ showErrorModal: true, errorMessage, validationErrors }));
+    }
   };
 
   render() {
-    if (this.state.saving) {
-      return <div>Saving...</div>;
-    }
+    const { showErrorModal = false, errorMessage, validationErrors } = this.state;
+    const handleClose = () => this.setState({ showErrorModal: false, errorMessage: 'Something went wrong' });
 
     return (
       <div>
         <UserForm data={this.state} onSubmit={this.onSubmit} isEdit={false} />
+
+        <ErrorModal
+          title="Oops - there's an error"
+          message={errorMessage}
+          validationErrors={validationErrors}
+          show={showErrorModal}
+          handleClose={handleClose}
+        />
       </div>
     );
   }

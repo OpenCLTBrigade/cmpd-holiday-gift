@@ -77,8 +77,7 @@ export default class UserForm extends React.Component {
                     <Row>
                       <Col md={12}>
                         <FormField
-                          value={'user.nominationLimit'}
-                          label="Nomiation Limit(Yearly)"
+                          label="Nomiation Limit (Yearly)"
                           name={'user.nominationLimit'}
                           id="nominationLimit"
                           type="number"

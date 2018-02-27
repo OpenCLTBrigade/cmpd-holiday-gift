@@ -52,16 +52,13 @@ export default class EditUser extends React.Component {
     console.log('onInvalid');
   }
 
-  onSubmit = async () => {
+  onSubmit = async ({ user }) => {
     try {
       this.setState({ saving: true });
-      const response = await updateUser(this.state.user);
+      const response = await updateUser(user);
 
-      if (response.data == null) {
-        alert(response.message);
-      } else {
-        alert('User has been updated');
-      }
+      alert('User has been updated');
+
       this.setState({ saving: false }, () => {
         window.location = `/dashboard/user?search=${this.state.user.lastName || ''}`;
       });
