@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 import { Field } from 'react-final-form';
+import { isNil } from 'rambda';
 
-const requiredValidator = value => (value ? undefined : 'Required');
+const requiredValidator = value => (!isNil(value) ? undefined : 'Required');
 
 const getValidationState = ({ error, touched }) => {
   if (error && touched) {
@@ -23,6 +24,8 @@ export default class FormField extends React.PureComponent {
     const {
       name,
       label,
+      parse,
+      format,
       controlId,
       required = false,
       validators = required ? [requiredValidator] : [],
@@ -31,7 +34,7 @@ export default class FormField extends React.PureComponent {
     } = this.props;
 
     return (
-      <Field name={name} validate={composeValidators(...validators)}>
+      <Field name={name} parse={parse} format={format} validate={composeValidators(...validators)}>
         {({ input, meta }) => (
           <FormGroup controlId={controlId} validationState={getValidationState(meta)}>
             <ControlLabel>{label}</ControlLabel>

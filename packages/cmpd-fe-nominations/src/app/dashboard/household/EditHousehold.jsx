@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Alert } from 'react-bootstrap';
 
 import HouseholdForm from './components/household-form';
-import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from '../../../api/affiliation';
 import {
   createHousehold,
@@ -55,56 +54,18 @@ class NewHousehold extends React.Component {
         children: [],
         schools: [],
         phoneNumbers: [],
+        childNominations: [],
         files: []
       },
       status: HouseholdStatus.New,
       errorMessage: ''
     };
-    this.onChange = this.onChange.bind(this);
+    // this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onSaveDraft = this.onSaveDraft.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
-  }
-
-  addPhoneNumber() {
-    this.setState(() => {
-      //TODO: Should really clean this up by using reselect
-      const phoneNumbers = this.state.data.phoneNumbers.concat({});
-      const data = updateData(this.state.data, { phoneNumbers });
-
-      return { data };
-    });
-  }
-
-  removePhoneNumber() {
-    this.setState(() => {
-      const phoneNumbers = this.state.data.phoneNumbers.slice();
-      phoneNumbers.pop();
-      const data = updateData(this.state.data, { phoneNumbers });
-
-      return { data };
-    });
-  }
-
-  addChild() {
-    this.setState(() => {
-      const children = this.state.data.children.concat({});
-      const data = updateData(this.state.data, { children });
-
-      return { data };
-    });
-  }
-
-  removeChild() {
-    this.setState(() => {
-      const children = this.state.data.children.slice();
-      children.pop();
-
-      const data = updateData(this.state.data, { children });
-
-      return { data };
-    });
+    this.onSave = this.onSave.bind(this);
   }
 
   async onFileChange(file) {
@@ -139,16 +100,10 @@ class NewHousehold extends React.Component {
       value.cmpdResponseArea = response.data.properties.RA;
 
       value.type = this.state.data.address.type && this.state.data.address.type;
-      this.onChange(name, value);
+      // this.onChange(name, value);
     } catch (error) {
       console.error(error);
     }
-  }
-
-  onChange(name, value) {
-    this.setState(({ data }) => {
-      return { data: setValue(data, name, value) };
-    });
   }
 
   componentDidMount() {
@@ -157,14 +112,20 @@ class NewHousehold extends React.Component {
     this.setState(() => ({ schools }));
 
     if (household) {
-      const { id, children = [], phoneNumbers = [], address = {}, attachments: files = [] } = household;
+      const {
+        id,
+        children: childNominations = [],
+        phoneNumbers = [],
+        address = {},
+        attachments: files = []
+      } = household;
 
       const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
 
       const newState = {
         data: {
           household,
-          children,
+          childNominations,
           phoneNumbers,
           address,
           id,
@@ -200,18 +161,20 @@ class NewHousehold extends React.Component {
     });
   }
 
-  onInvalid() {
-    console.log('onInvalid');
+  async onSave({ childNominations: children, ...data }) {
+    data.household.id ? this.onUpdate({ children, ...data }) : this.onSaveDraft({ children, ...data });
   }
 
-  async onSaveDraft() {
+  async onSaveDraft(data) {
+    console.log('onSaveDraft');
+
     try {
       const id = getId(this.state);
 
       if (id) {
-        await updateHousehold(id, this.state.data);
+        await updateHousehold(id, data);
       } else {
-        const { id } = await createHousehold(this.state.data);
+        const { id } = await createHousehold(data);
 
         this.setState({ status: HouseholdStatus.Draft, id: id });
       }
@@ -224,13 +187,13 @@ class NewHousehold extends React.Component {
     }
   }
 
-  async onUpdate() {
+  async onUpdate(data) {
+    console.log('onUpdate');
     const { history } = this.props;
-
     const { id } = this.state.data.household && this.state.data.household;
 
     try {
-      await updateHousehold(id, this.state.data).then(() => history.push('/dashboard/household'));
+      await updateHousehold(id, data).then(() => history.push('/dashboard/household'));
     } catch (error) {
       const errorMessage = 'Something went wrong';
       const validationErrors = parseValidationErrors(error.response.data.message);
@@ -296,15 +259,8 @@ class NewHousehold extends React.Component {
         )}
         <HouseholdForm
           data={this.state.data}
-          getValue={getValue}
-          onChange={this.onChange}
           onSubmit={this.onSubmit}
-          onUpdate={this.onUpdate}
-          onSaveDraft={this.onSaveDraft}
-          addChild={this.addChild.bind(this)}
-          removeChild={this.removeChild.bind(this)}
-          removePhoneNumber={this.removePhoneNumber.bind(this)}
-          addPhoneNumber={this.addPhoneNumber.bind(this)}
+          onSave={this.onSave}
           onFileChange={this.onFileChange}
           affiliations={this.state.schools}
           onAddressChange={address => this.onAddressChange('address', address)}

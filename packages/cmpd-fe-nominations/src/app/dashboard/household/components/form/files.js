@@ -24,7 +24,7 @@ class Files extends React.PureComponent {
           <Row>
             <Col xs={12}>
               <p>Save as Draft before uploading form.</p>
-              <p class="text-danger">Reminder: Nominations are not eligible for approval WITHOUT uploaded form.</p>
+              <p className="text-danger">Reminder: Nominations are not eligible for approval WITHOUT uploaded form.</p>
             </Col>
           </Row>
           {/* Re-used this box in ShowHousehold */}

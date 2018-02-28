@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
-import UserForm from './components/user-form.js';
+import UserForm from './components/UserForm';
 import { createUser } from '../../../api/user';
 import { parseValidationErrors } from '../../../api/helpers/error.helper';
 import ErrorModal from '../components/ErrorModal';

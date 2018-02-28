@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import Box from '../../../components/box';
-import Input from '../../../../../app/components/input';
 import requiredValidator from '../../../../../lib/validators/required.validator';
+import FormField from '../../../../components/form/FormField';
 
 class AddressForm extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class AddressForm extends React.Component {
 
   componentDidMount() {
     const { onChange } = this.props;
+    console.log(this.placesRef);
     var placesAutocomplete = places({
       container: this.placesRef,
       type: 'address',
@@ -39,70 +40,70 @@ class AddressForm extends React.Component {
             <Box title="Delivery Address" bsStyle="danger">
               <Row>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="Type"
                     controlId="formControlsSelect"
                     name="address.type"
                     componentClass="select"
                     placeholder="select"
-                    validator={requiredValidator}>
+                    required>
                     <option value="">Select...</option>
                     <option value="home">Home</option>
                     <option value="work">Work</option>
-                  </Input>
+                  </FormField>
                 </Col>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="Street Address"
                     id="streetAddress"
                     name="address.street"
                     type="search"
                     inputRef={input => (this.placesRef = input)}
-                    validator={requiredValidator}
+                    required
                     autoComplete="shipping address-line1"
                   />
                 </Col>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="Street Address 2"
                     id="streetAddress"
                     name="address.street2"
                     type="text"
-                    ref={input => (this.addressRefs.address2 = input)}
+                    ref={FormField => (this.addressRefs.address2 = FormField)}
                     autoComplete="shipping address-line2"
                   />
                 </Col>
               </Row>
               <Row>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="City"
                     id="city"
                     name="address.city"
                     type="text"
-                    validator={requiredValidator}
+                    required
                     autoComplete="shipping locality city"
                     ref={el => (this.addressRefs.city = el)}
                   />
                 </Col>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="State"
                     id="state"
                     name="address.state"
                     type="text"
-                    validator={requiredValidator}
+                    required
                     autoComplete="shipping region state"
                     ref={el => (this.addressRefs.state = el)}
                   />
                 </Col>
                 <Col md={4} xs={12}>
-                  <Input
+                  <FormField
                     label="Zip Code"
                     id="zip"
                     name="address.zip"
                     type="text"
-                    validator={requiredValidator}
+                    required
                     pattern="(\d{5}([\-]\d{4})?)"
                     maxLength="5"
                     autoComplete="shipping postal-code"
@@ -112,7 +113,7 @@ class AddressForm extends React.Component {
               </Row>
               <Row>
                 <Col md={6} xs={12}>
-                  <Input
+                  <FormField
                     label="CMPD Division"
                     name="address.cmpdDivision"
                     type="text"
@@ -120,7 +121,7 @@ class AddressForm extends React.Component {
                   />
                 </Col>
                 <Col md={6} xs={12}>
-                  <Input
+                  <FormField
                     label="CMPD Response Area"
                     name="address.cmpdResponseArea"
                     type="text"

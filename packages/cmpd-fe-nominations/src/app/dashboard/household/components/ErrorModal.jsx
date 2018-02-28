@@ -7,7 +7,7 @@ const ValidationError = ({ error }) => <li>{error}</li>;
 const ValidationErrorSummary = ({ errors = [] }) => {
   const errorList = flatten(errors.map(({ constraints }) => Object.values(constraints)));
 
-  return <ul>{errorList.map(error => <ValidationError error={error} />)}</ul>;
+  return <ul>{errorList.map((error, idx) => <ValidationError key={`err-${idx}`} error={error} />)}</ul>;
 };
 
 export default props => {

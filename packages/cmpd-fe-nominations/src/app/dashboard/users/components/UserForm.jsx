@@ -1,9 +1,11 @@
 import * as React from 'react';
-import FormField from '../../../../app/components/form/FormField';
+import FormField from '../../../components/form/FormField';
+
 import Box from '../../components/box';
-import SelectList from './select-list';
+import SelectList from './SelectList';
 import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 import { getAllAffiliations } from '../../../../api/affiliation';
+
 import { Form } from 'react-final-form';
 
 async function fetchAffiliations() {
