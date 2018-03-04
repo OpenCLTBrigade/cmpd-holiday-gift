@@ -11,9 +11,10 @@ export default abstract class extends BaseEntity {
 
   @Column('text') email: string;
 
-  @Column() active: boolean;
+  @Column('boolean', { default: true })
+  active: boolean;
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   approved: boolean;
 
   @Column('text', { nullable: true })

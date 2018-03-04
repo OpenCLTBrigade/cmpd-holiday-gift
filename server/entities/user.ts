@@ -34,10 +34,10 @@ export default class User extends AbstractUser {
   @Column('int', { name: 'nomination_limit', default: 5 })
   nominationLimit: number;
 
-  @Column({ name: 'email_verified', default: false })
+  @Column('boolean', { name: 'email_verified', default: false })
   emailVerified: boolean;
 
-  @Column({ name: 'confirmation_email', default: false })
+  @Column('boolean', { name: 'confirmation_email', default: false })
   confirmationEmail: boolean;
 
   @Column('text', { name: 'confirmation_code', nullable: true })

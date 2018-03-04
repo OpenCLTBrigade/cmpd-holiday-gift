@@ -8,7 +8,7 @@ export default async (connection: Connection) => {
   // Add 25 children to the DB
   for (let i = 0; i < 5; i++) {
     const child = Child.fromJSON({
-      householdId: faker.random.number(25) + 1,
+      householdId: faker.random.number(20) + 1,
       firstName: faker.name.firstName(),
       middleName: faker.name.firstName(),
       lastName: faker.name.lastName(),
