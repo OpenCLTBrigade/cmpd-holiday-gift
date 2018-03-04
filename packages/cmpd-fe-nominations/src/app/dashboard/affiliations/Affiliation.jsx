@@ -13,28 +13,28 @@ import { UserList } from './components';
 // };
 
 export default class Affiliation extends React.Component {
-  // affiliation_id: ?number;
+  // affiliationId: ?number;
   constructor(props) {
     super(props);
-    this.affiliation_id = null;
+    this.affiliationId = null;
     this.state = {
       affiliation: {
         name: '',
         type: '',
-        address_street: '',
-        address_street2: null,
-        address_city: '',
-        address_state: '',
-        address_zip: '',
+        addressStreet: '',
+        addressStreet2: null,
+        addressCity: '',
+        addressState: '',
+        addressZip: '',
         phone: null
       }
     };
   }
 
   componentDidMount() {
-    const { affiliation_id } = this.props.match.params;
-    this.affiliation_id = affiliation_id;
-    getAffiliation(affiliation_id)
+    const { affiliationId } = this.props.match.params;
+    this.affiliationId = affiliationId;
+    getAffiliation(affiliationId)
       .then(affiliation => {
         this.setState({ affiliation });
       })
@@ -45,14 +45,7 @@ export default class Affiliation extends React.Component {
 
   render() {
     const { affiliation } = this.state;
-    const {
-      phone,
-      address_street,
-      address_street2,
-      address_city,
-      address_state,
-      address_zip
-    } = affiliation;
+    const { phone, addressStreet, addressStreet2, addressCity, addressState, addressZip } = affiliation;
     return (
       <div>
         <Row>
@@ -64,18 +57,12 @@ export default class Affiliation extends React.Component {
                     <ListGroupItem header="Name">
                       {affiliation.name} ({affiliation.type.toUpperCase()})
                     </ListGroupItem>
-                    {phone && (
-                      <ListGroupItem header="Phone Number">
-                        {phone}
-                      </ListGroupItem>
-                    )}
+                    {phone && <ListGroupItem header="Phone Number">{phone}</ListGroupItem>}
                     <ListGroupItem header="Address">
-                      {address_street}
-                      {address_street2 != null && (
-                        <span>{address_street2}</span>
-                      )}
+                      {addressStreet}
+                      {addressStreet2 != null && <span>{addressStreet2}</span>}
                       <br />
-                      {address_city}, {address_state}, {address_zip}
+                      {addressCity}, {addressState}, {addressZip}
                     </ListGroupItem>
                   </ListGroup>
                 </Col>
@@ -86,7 +73,7 @@ export default class Affiliation extends React.Component {
         <Row>
           <Col xs={12}>
             <Box title={`Users in ${affiliation.name}`}>
-              <UserList affiliation_id={this.affiliation_id} />
+              <UserList affiliationId={this.affiliationId} />
             </Box>
           </Col>
         </Row>

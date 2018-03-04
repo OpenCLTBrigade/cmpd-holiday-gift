@@ -6,6 +6,8 @@ import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import auth from '../../lib/auth';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
 import { Component, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { isEmpty } from 'ramda';
+import { ApplicationError } from '../../../common/util/application-error';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -17,16 +19,23 @@ export enum ErrorCodes {
   NoUserExists = 'NoUserExists'
 }
 
-@Component()
-export class UserService {
-  async query({ page, search, baseUrl = '', whitelist = [], query = { affiliationId: undefined } }) {
-    try {
-      const searchQuery = search && {
+const determineSearchQuery = search =>
+  isEmpty(search)
+    ? undefined
+    : {
         keys: ['lastName', 'firstName'],
         search
       };
 
-      let sqlQuery = Nominator.createQueryBuilder('user');
+@Component()
+export class UserService {
+  async query({ page, search, baseUrl = '', whitelist = [], query = { affiliationId: undefined } }) {
+    try {
+      const searchQuery = determineSearchQuery(search);
+
+      let sqlQuery = Nominator.createQueryBuilder('user')
+        .leftJoinAndSelect('user.affiliation', 'affiliation')
+        .leftJoinAndSelect('user.households', 'households');
       if (query.affiliationId) {
         sqlQuery = sqlQuery.where('user.affiliation_id = :affiliation_id', {
           affiliation_id: query.affiliationId
@@ -41,7 +50,6 @@ export class UserService {
       }
 
       const results = await sqlQuery.getMany();
-      console.log(results);
 
       return createPagedResults({
         results,
@@ -97,14 +105,19 @@ export class UserService {
   async create({ password, ...rest }: CreateUserDto) {
     logger.info('create user');
 
-    const user = User.fromJSON({
-      password: auth.hashPassword(password),
-      ...rest
-    });
+    try {
+      const user = User.fromJSON({
+        password: auth.hashPassword(password),
+        ...rest
+      });
 
-    const { password: omit, ...created } = await user.save();
+      const { password: omit, ...created } = await user.save();
 
-    return created;
+      return created;
+    } catch (error) {
+      logger.error(error);
+      throw new ApplicationError(error.message);
+    }
   }
 
   async update({ id, password, ...rest }: UpdateUserDto, currentUser) {

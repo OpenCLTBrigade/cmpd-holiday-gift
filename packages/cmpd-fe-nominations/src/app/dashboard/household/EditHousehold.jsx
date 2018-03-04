@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Alert } from 'react-bootstrap';
 
 import HouseholdForm from './components/household-form';
-import { setValue, getValue } from 'neoform-plain-object-helpers';
 import { getSchools } from '../../../api/affiliation';
 import {
   createHousehold,
@@ -17,6 +16,8 @@ import ErrorModal from './components/ErrorModal';
 import ConfirmModal from './components/ConfirmModal';
 import withAsync from '../../components/withAsync';
 
+import { pathOr } from 'rambda';
+
 const HouseholdStatus = {
   New: 0,
   Draft: 1,
@@ -30,8 +31,17 @@ const updateData = (oldData, newData) => {
   };
 };
 
-const getId = state =>
-  state.id || (state.data && state.data.household && state.data.household.id);
+const parseValidationErrors = (errors = [], parentProperty = '') => {
+  return errors.reduce((done, { children = [], property, constraints }) => {
+    if (Array.isArray(children) && children.length > 0) {
+      return done.concat(parseValidationErrors(children, property));
+    } else {
+      return done.concat({ property: [parentProperty, property].filter(Boolean).join('.'), constraints });
+    }
+  }, []);
+};
+
+const getId = state => state.id || (state.data && state.data.household && state.data.household.id);
 
 class NewHousehold extends React.Component {
   constructor() {
@@ -41,59 +51,21 @@ class NewHousehold extends React.Component {
       data: {
         household: {},
         address: {},
-        nominations: [],
+        children: [],
         schools: [],
         phoneNumbers: [],
+        childNominations: [],
         files: []
       },
       status: HouseholdStatus.New,
       errorMessage: ''
     };
-    this.onChange = this.onChange.bind(this);
+    // this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onSaveDraft = this.onSaveDraft.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
-  }
-
-  addPhoneNumber() {
-    this.setState(() => {
-      //TODO: Should really clean this up by using reselect
-      const phoneNumbers = this.state.data.phoneNumbers.concat({});
-      const data = updateData(this.state.data, { phoneNumbers });
-
-      return { data };
-    });
-  }
-
-  removePhoneNumber() {
-    this.setState(() => {
-      const phoneNumbers = this.state.data.phoneNumbers.slice();
-      phoneNumbers.pop();
-      const data = updateData(this.state.data, { phoneNumbers });
-
-      return { data };
-    });
-  }
-
-  addChild() {
-    this.setState(() => {
-      const nominations = this.state.data.nominations.concat({});
-      const data = updateData(this.state.data, { nominations });
-
-      return { data };
-    });
-  }
-
-  removeChild() {
-    this.setState(() => {
-      const nominations = this.state.data.nominations.slice();
-      nominations.pop();
-
-      const data = updateData(this.state.data, { nominations });
-
-      return { data };
-    });
+    this.onSave = this.onSave.bind(this);
   }
 
   async onFileChange(file) {
@@ -111,30 +83,27 @@ class NewHousehold extends React.Component {
     }
   }
 
-  onAddressChange(name, value) {
+  async onAddressChange(name, value) {
     const latlng = { ...value.latlng };
     delete value.latlng;
     // console.log('latlng', latlng);
     // console.log('oooooo', value);
     // TODO: Get CMPD Address Info
-    getAddressInfo(latlng.lat, latlng.lng).then(response => {
-      if (!response || response.data === null) {
-        console.log('CMPD Division / Address not found');
-        value.cmpd_division = '';
-        value.cmpd_response_area = '';
-      } else {
-        value.cmpd_division = response.data.properties.DIVISION;
-        value.cmpd_response_area = response.data.properties.RA;
-      }
-      value.type = this.state.data.address.type && this.state.data.address.type;
-      this.onChange(name, value);
-    });
-  }
 
-  onChange(name, value) {
-    this.setState(({ data }) => {
-      return { data: setValue(data, name, value) };
-    });
+    try {
+      const response = await getAddressInfo(latlng.lat, latlng.lng);
+
+      const cmpdDivision = pathOr('', 'data.properties.DIVISION', response);
+      const cmpdResponseArea = pathOr('', 'data.properties.RA', response);
+
+      value.cmpdDivision = response.data.properties.DIVISION;
+      value.cmpdResponseArea = response.data.properties.RA;
+
+      value.type = this.state.data.address.type && this.state.data.address.type;
+      // this.onChange(name, value);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   componentDidMount() {
@@ -145,20 +114,18 @@ class NewHousehold extends React.Component {
     if (household) {
       const {
         id,
-        children: nominations = [],
+        children: childNominations = [],
         phoneNumbers = [],
         address = {},
         attachments: files = []
       } = household;
 
-      const status = household.draft
-        ? HouseholdStatus.Draft
-        : HouseholdStatus.Submitted;
+      const status = household.draft ? HouseholdStatus.Draft : HouseholdStatus.Submitted;
 
       const newState = {
         data: {
           household,
-          nominations,
+          childNominations,
           phoneNumbers,
           address,
           id,
@@ -184,7 +151,7 @@ class NewHousehold extends React.Component {
         data: {
           household: {},
           address: {},
-          nominations: [],
+          children: [],
           schools: [],
           phoneNumbers: [],
           files: []
@@ -194,58 +161,57 @@ class NewHousehold extends React.Component {
     });
   }
 
-  onInvalid() {
-    console.log('onInvalid');
+  async onSave({ childNominations: children, ...data }) {
+    data.household.id ? this.onUpdate({ children, ...data }) : this.onSaveDraft({ children, ...data });
   }
 
-  async onSaveDraft() {
+  async onSaveDraft(data) {
+    console.log('onSaveDraft');
+
     try {
       const id = getId(this.state);
 
       if (id) {
-        await updateHousehold(id, this.state.data);
+        await updateHousehold(id, data);
       } else {
-        const { id } = await createHousehold(this.state.data);
+        const { id } = await createHousehold(data);
 
         this.setState({ status: HouseholdStatus.Draft, id: id });
       }
     } catch (error) {
-      console.log(error.response.status);
-      const errorMessage =
-        error.response.status === 403
-          ? 'Nomination limit reached'
-          : 'Something went wrong';
-      this.setState(() => ({ show: true, errorMessage }));
-      console.error(error);
+      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+
+      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
   }
 
-  onUpdate() {
+  async onUpdate(data) {
+    console.log('onUpdate');
     const { history } = this.props;
-
     const { id } = this.state.data.household && this.state.data.household;
-    updateHousehold(id, this.state.data).then(() =>
-      history.push('/dashboard/household')
-    );
+
+    try {
+      await updateHousehold(id, data).then(() => history.push('/dashboard/household'));
+    } catch (error) {
+      const errorMessage = 'Something went wrong';
+      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      this.setState(() => ({ show: true, errorMessage, validationErrors }));
+    }
   }
 
   async onSubmit() {
     const { history } = this.props;
 
-    const id =
-      this.state.id ||
-      (this.state.data &&
-        this.state.data.household &&
-        this.state.data.household.id);
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
 
     try {
       await submitNomination({ id });
 
       const redirectToList =
-        this.props.match &&
-        this.props.match.params &&
-        this.props.match &&
-        this.props.match.params.id;
+        this.props.match && this.props.match.params && this.props.match && this.props.match.params.id;
 
       if (redirectToList) {
         history.push('/dashboard/household');
@@ -254,9 +220,8 @@ class NewHousehold extends React.Component {
       }
     } catch (e) {
       const errorMessage =
-        e.response.status === 403
-          ? 'You must add at least one child to the household'
-          : 'Something went wrong';
+        e.response.status === 403 ? 'You must add at least one child to the household' : 'Something went wrong';
+
       this.setState(() => ({ show: true, errorMessage }));
     }
   }
@@ -265,11 +230,7 @@ class NewHousehold extends React.Component {
 
   onSavedReject = () => {
     const { history } = this.props;
-    const id =
-      this.state.id ||
-      (this.state.data &&
-        this.state.data.household &&
-        this.state.data.household.id);
+    const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
 
     this.setState(
       () => {
@@ -287,8 +248,7 @@ class NewHousehold extends React.Component {
   };
 
   render() {
-    const handleClose = () =>
-      this.setState({ show: false, errorMessage: 'Something went wrong' });
+    const handleClose = () => this.setState({ show: false, errorMessage: 'Something went wrong' });
 
     return (
       <div>
@@ -299,15 +259,8 @@ class NewHousehold extends React.Component {
         )}
         <HouseholdForm
           data={this.state.data}
-          getValue={getValue}
-          onChange={this.onChange}
           onSubmit={this.onSubmit}
-          onUpdate={this.onUpdate}
-          onSaveDraft={this.onSaveDraft}
-          addChild={this.addChild.bind(this)}
-          removeChild={this.removeChild.bind(this)}
-          removePhoneNumber={this.removePhoneNumber.bind(this)}
-          addPhoneNumber={this.addPhoneNumber.bind(this)}
+          onSave={this.onSave}
           onFileChange={this.onFileChange}
           affiliations={this.state.schools}
           onAddressChange={address => this.onAddressChange('address', address)}
@@ -318,6 +271,7 @@ class NewHousehold extends React.Component {
         <ErrorModal
           title="Oops - there's an error"
           message={this.state.errorMessage}
+          validationErrors={this.state.validationErrors}
           show={this.state.show}
           handleClose={handleClose}
         />
@@ -341,7 +295,7 @@ const fetchData = ({ id }) => async () => {
     household = await getHousehold(id);
   }
 
-  const { items: schools } = await getSchools();
+  const schools = await getSchools();
   const status = await getNominationStatus();
 
   return { household, schools, status };

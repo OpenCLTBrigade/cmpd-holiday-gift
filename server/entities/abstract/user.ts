@@ -11,10 +11,13 @@ export default abstract class extends BaseEntity {
 
   @Column('text') email: string;
 
-  @Column('text') active: boolean;
+  @Column() active: boolean;
 
-  @Column('text', { default: false })
+  @Column({ default: false })
   approved: boolean;
+
+  @Column('text', { nullable: true })
+  role: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt;

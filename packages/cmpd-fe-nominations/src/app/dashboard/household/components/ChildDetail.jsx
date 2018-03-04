@@ -17,63 +17,52 @@ const LabelText = styled.span`
 const ValueText = styled.span`
   display: block;
 `;
-const age = (age, dob) =>
-  age || moment().diff(moment(dob).format('LL'), 'years');
+const age = (age, dob) => age || moment().diff(moment(dob).format('LL'), 'years');
 
 export default function ChildDetail({ child, school }) {
   return (
     <Row key={`childRow${child.id}`}>
       <Col xs={12}>
-        <h2>{`${child.name_first} ${child.name_last}`}</h2>
+        <h2>{`${child.firstName} ${child.lastName}`}</h2>
         <ListGroup>
-          <LineItem
-            label="Name"
-            text={`${child.name_first} ${child.name_last}`}
-          />
+          <LineItem label="Name" text={`${child.firstName} ${child.lastName}`} />
           <LineItem label="Child #" text={`${child.id}`} />
           <LineItem label="Gender" text={child.gender} />
           <LineItem label="Age" text={age(child.age, child.dob)} />
           <LineItem label="DOB" text={moment(child.dob).format('LL')} />
           <LineItem label="Race" text={child.race} />
           <LineItem label="Last 4 SSN" text={child.last4ssn} />
-          <LineItem
-            label="Free or Reduced Lunch?"
-            text={child.free_or_reduced_lunch ? 'Yes' : 'No'}
-          />
-          <LineItem
-            label="Reason for Nomination"
-            text={child.reason_for_nomination}
-          />
+          <LineItem label="Free or Reduced Lunch?" text={child.freeOrReducedLunch ? 'Yes' : 'No'} />
+          <LineItem label="Reason for Nomination" text={child.reasonForNomination} />
           <LineItem label="School" text={school && school.name} />
           <ListGroupItem>
             <LabelText>Bicycle</LabelText>
             <ValueText>
-              {child.bike_want ? 'Yes' : 'No'}
+              {child.wantsBike ? 'Yes' : 'No'}
               <br />
-              {child.bike_want && `Bike Style: ${child.bike_style}`}
+              {child.wantsBike && `Bike Style: ${child.bikeStyle}`}
               <br />
-              {child.bike_want &&
-                `Bike Size: ${descFromValue(child.bike_size)}`}
+              {child.wantsBike && `Bike Size: ${descFromValue(child.bikeSize)}`}
               <br />
             </ValueText>
           </ListGroupItem>
           <ListGroupItem>
             <LabelText>Clothing</LabelText>
             <ValueText>
-              {child.clothes_want ? 'Yes' : 'No'}
+              {child.wantsClothes ? 'Yes' : 'No'}
               <br />
-              {child.clothes_want && `Shirt Size: ${child.clothes_size_shirt}`}
+              {child.wantsClothes && `Shirt Size: ${child.clothesShirtSize}`}
               <br />
-              {child.clothes_want && `Pants Size: ${child.clothes_size_pants}`}
+              {child.wantsClothes && `Pants Size: ${child.clothesPantsSize}`}
               <br />
-              {child.clothes_want && `Coat Size: ${child.clothes_size_coat}`}
+              {child.wantsClothes && `Coat Size: ${child.clothesCoatSize}`}
               <br />
-              {child.clothes_want && `Shoe Size: ${child.shoe_size}`}
+              {child.wantsClothes && `Shoe Size: ${child.shoeSize}`}
             </ValueText>
           </ListGroupItem>
-          <LineItem label="Favorite Color" text={child.favourite_colour} />
+          <LineItem label="Favorite Color" text={child.favouriteColor} />
           <LineItem label="Interests" text={child.interests} />
-          <LineItem label="Additional Ideas" text={child.additional_ideas} />
+          <LineItem label="Additional Ideas" text={child.additionalIdeas} />
         </ListGroup>
       </Col>
     </Row>

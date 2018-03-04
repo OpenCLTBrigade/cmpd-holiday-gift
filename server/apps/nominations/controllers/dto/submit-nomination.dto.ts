@@ -7,7 +7,7 @@ export class SubmitNominationDto {
   readonly reason: string = '';
 
   @ApiModelProperty({ type: String })
-  @IsNotEmpty()
+  @IsOptional()
   readonly message: string;
 
   @ApiModelProperty({ type: Boolean })

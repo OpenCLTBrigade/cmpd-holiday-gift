@@ -12,9 +12,9 @@ function wrap(asyncSlip) {
 
     componentDidMount() {
       const qs = querystring.parse();
-      const household_id = qs.household_id ? parseInt(qs.household_id, 10) : null;
+      const householdId = qs.householdId ? parseInt(qs.householdId, 10) : null;
 
-      asyncSlip(household_id)
+      asyncSlip(householdId)
         .then(content => {
           this.setState({ content });
         })

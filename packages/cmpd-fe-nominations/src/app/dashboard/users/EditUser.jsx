@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { setValue, getValue } from 'neoform-plain-object-helpers';
-import UserForm from './components/user-form.js';
+import UserForm from './components/UserForm';
 import { getUser, updateUser } from '../../../api/user';
+import { parseValidationErrors } from '../../../api/helpers/error.helper';
+import ErrorModal from '../components/ErrorModal';
 
 export default class EditUser extends React.Component {
   constructor() {
@@ -9,21 +11,19 @@ export default class EditUser extends React.Component {
     this.state = {
       user: {
         id: '',
-        name_first: '',
-        name_last: '',
+        firstName: '',
+        lastName: '',
         role: '',
         rank: '',
         phone: '',
         email: '',
         active: '',
-        nomination_limit: '',
-        email_verified: '',
+        nominationLimit: '',
+        emailVerified: '',
         approved: '',
-        createdAt: '',
-        updatedAt: '',
         password: '',
-        affiliation_id: '',
-        password_confirmation: ''
+        affiliationId: '',
+        confirmationPassword: ''
       },
       saving: false
     };
@@ -31,10 +31,11 @@ export default class EditUser extends React.Component {
 
   componentDidMount() {
     getUser(this.props.match.params.user_id)
-      .then(response => {
-        this.setState({ user: response.data });
+      .then(user => {
+        this.setState({ user });
       })
-      .catch(() => {
+      .catch(e => {
+        console.error(e);
         window.location = '/dashboard/users';
         alert('User could not be found.');
       });
@@ -51,44 +52,54 @@ export default class EditUser extends React.Component {
     console.log('onInvalid');
   }
 
-  onSubmit = () => {
+  onSubmit = async ({ user }) => {
+    try {
+      this.setState({ saving: true });
+      const response = await updateUser(user);
+
+      alert('User has been updated');
+
+      this.setState({ saving: false }, () => {
+        window.location = `/dashboard/user?search=${this.state.user.lastName || ''}`;
+      });
+    } catch (error) {
+      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+
+      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      this.setState(() => ({ showErrorModal: true, errorMessage, validationErrors }));
+    }
     // TODO
     // e.preventDefault();
-    if (this.state.saving === true) {
-      return;
-    }
+    // if (this.state.saving === true) {
+    //   return;
+    // }
 
-    this.setState({ saving: true }, () => {
-      updateUser(this.state.user)
-        .then(response => {
-          if (response.data == null) {
-            alert(response.message);
-          } else {
-            alert('User has been updated');
-          }
-          this.setState({ saving: false }, () => {
-            window.location = `/dashboard/user?search=${this.state.user
-              .name_last || ''}`;
-          });
-        })
-        .catch(() => {
-          alert('Could not save user. An unknown error has occured.');
-        });
-    });
+    // this.setState({ saving: true }, async () => {
+
+    // });
   };
 
   render() {
-    if (this.state.saving) {
-      return <div>Saving...</div>;
-    }
+    const { showErrorModal = false, errorMessage, validationErrors } = this.state;
+    const handleClose = () => this.setState({ showErrorModal: false, errorMessage: 'Something went wrong' });
 
     return (
       <div>
         <UserForm
+          saving={this.state.saving}
           data={this.state}
           getValue={getValue}
           onChange={this.onChange}
           onSubmit={this.onSubmit}
+        />
+
+        <ErrorModal
+          title="Oops - there's an error"
+          message={errorMessage}
+          validationErrors={validationErrors}
+          show={showErrorModal}
+          handleClose={handleClose}
         />
       </div>
     );

@@ -23,6 +23,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AnyExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.enableCors();
 
   const port = process.env.PORT || config.port;
   await app.listen(port, () => {

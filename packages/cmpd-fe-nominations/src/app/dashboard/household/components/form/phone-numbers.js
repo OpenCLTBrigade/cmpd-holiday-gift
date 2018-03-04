@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import Box from '../../../components/box';
-import Input from '../../../../../app/components/input';
 import requiredValidator from '../../../../../lib/validators/required.validator';
+import FormField from '../../../../components/form/FormField';
+import { FieldArray } from 'react-final-form-arrays';
 
 // type PhoneNumber = {
 //     // TODO
@@ -19,37 +20,44 @@ class PhoneNumbersForm extends React.PureComponent {
         <Row>
           <Col xs={12}>
             <Box title="Phone Numbers" bsStyle="danger">
-              {phoneNumbers &&
-                phoneNumbers.map((phoneNumber, idx) => {
+              <FieldArray name="phoneNumbers">
+                {({ fields }) => {
                   return (
-                    <Row key={`phoneNumber-${idx}`}>
-                      <Col md={6} xs={12}>
-                        <Input
-                          label="Type"
-                          name={`phoneNumbers[${idx}].type`}
-                          componentClass="select"
-                          placeholder="select"
-                          validator={requiredValidator}>
-                          <option value="">Select...</option>
-                          <option value="home">Home</option>
-                          <option value="work">Work</option>
-                          <option value="mobile">Mobile</option>
-                        </Input>
-                      </Col>
-                      <Col md={6} xs={12}>
-                        <Input
-                          label="Phone"
-                          id="phone"
-                          name={`phoneNumbers[${idx}].number`}
-                          type="tel"
-                          required
-                          autoComplete="tel"
-                          validator={requiredValidator}
-                        />
-                      </Col>
-                    </Row>
+                    <div>
+                      {fields.map((name, idx) => {
+                        return (
+                          <Row key={name}>
+                            <Col md={6} xs={12}>
+                              <FormField
+                                label="Type"
+                                name={`${name}.type`}
+                                componentClass="select"
+                                placeholder="select"
+                                required>
+                                <option value="">Select...</option>
+                                <option value="home">Home</option>
+                                <option value="work">Work</option>
+                                <option value="mobile">Mobile</option>
+                              </FormField>
+                            </Col>
+                            <Col md={6} xs={12}>
+                              <FormField
+                                label="Phone"
+                                id="phone"
+                                name={`${name}.number`}
+                                type="tel"
+                                required
+                                autoComplete="tel"
+                                required
+                              />
+                            </Col>
+                          </Row>
+                        );
+                      })}
+                    </div>
                   );
-                })}
+                }}
+              </FieldArray>
 
               <Row>
                 <Col xs={12}>

@@ -4,7 +4,7 @@ import { get, post, put, delete_ } from '../lib/apiService';
 // export type HouseholdType = {
 //   id: number,
 //   children: Object[],
-//   name_first: string,
+//   firstName: string,
 //   nominator: Object,
 //   surname: string,
 //   phoneNumbers: Object[],
@@ -13,7 +13,7 @@ import { get, post, put, delete_ } from '../lib/apiService';
 // };
 
 export function getHousehold(householdId) {
-  return get('nominations', `/households/${householdId}`);
+  return get('nominations', `households/${householdId}`);
 }
 
 export function getHouseholdList(pageNumber = 1, search) {
@@ -29,7 +29,7 @@ export function updateHousehold(id, json) {
 }
 
 export function submitNomination({ id }) {
-  return post('nominations', 'households/submit', { id });
+  return put('nominations', `households/${id}/submit`, { id });
 }
 
 export function uploadAttachment({ id, file }) {
@@ -40,7 +40,7 @@ export function uploadAttachment({ id, file }) {
 
 export function reviewHousehold(id, payload) {
   const { approved, reason, message } = payload;
-  return post('nominations', `households/${id}/feedback`, {
+  return put('nominations', `households/${id}/feedback`, {
     approved,
     reason,
     message
@@ -48,7 +48,7 @@ export function reviewHousehold(id, payload) {
 }
 
 export function getNominationStatus() {
-  return get('nominations', 'me/limit/status');
+  return get('nominations', 'users/me/status');
 }
 
 export function deleteNomination(id) {

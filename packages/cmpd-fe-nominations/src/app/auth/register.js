@@ -80,19 +80,19 @@ export default class Register extends React.Component {
             <FormGroup className="form-group has-feedback">
               <Label>
                 First Name
-                <input className="form-control" name="name_first" type="text" />
+                <input className="form-control" name="firstName" type="text" />
               </Label>
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Last Name
-                <input className="form-control" name="name_last" type="text" />
+                <input className="form-control" name="lastName" type="text" />
               </Label>
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Affiliation
-                <select className="form-control" name="affiliation_id" type="text">
+                <select className="form-control" name="affiliationId" type="text">
                   <option>{this.AFFILIATION_PLACEHOLDER}</option>
                   {this.state.affiliationList}
                 </select>
@@ -149,14 +149,14 @@ export default class Register extends React.Component {
     );
   }
 
-  async onSubmit({ name_first, name_last, affiliation_id, rank, phone, email, password, password_confirm }) {
+  async onSubmit({ firstName, lastName, affiliationId, rank, phone, email, password, password_confirm }) {
     const validName = name => name != null && name !== '' && name.match('[a-zA-Z.-]{2,}');
     let error = null;
-    if (!validName(name_first)) {
+    if (!validName(firstName)) {
       error = 'First Name must be at least two characters and only contain letters, dashes, or periods';
-    } else if (!validName(name_last)) {
+    } else if (!validName(lastName)) {
       error = 'Last Name must be at least two characters and only contain letters, dashes, or periods';
-    } else if (affiliation_id === this.AFFILIATION_PLACEHOLDER) {
+    } else if (affiliationId === this.AFFILIATION_PLACEHOLDER) {
       error = 'Affiliation is required';
     } else if (phone == null || phone === '') {
       error = 'Phone number is required';
@@ -176,7 +176,7 @@ export default class Register extends React.Component {
     }
 
     try {
-      const result = await register(name_first, name_last, rank, affiliation_id, email, password);
+      const result = await register(firstName, lastName, rank, affiliationId, email, password);
       if (result.success) {
         this.props.history.replace('/auth/login?justRegistered=true');
       } else {

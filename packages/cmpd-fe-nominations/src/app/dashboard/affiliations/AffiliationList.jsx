@@ -44,28 +44,20 @@ export default class AffiliationList extends React.Component {
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
-              <TableHeaderColumn
-                tdStyle={TD_STYLE}
-                thStyle={TD_STYLE}
-                dataField="name">
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="name">
                 Name
               </TableHeaderColumn>
-              <TableHeaderColumn
-                tdStyle={TD_STYLE}
-                thStyle={TD_STYLE}
-                dataField="phone">
+              <TableHeaderColumn tdStyle={TD_STYLE} thStyle={TD_STYLE} dataField="phone">
                 Phone
               </TableHeaderColumn>
               <TableHeaderColumn
                 tdStyle={TD_STYLE}
                 thStyle={TD_STYLE}
-                dataField="address_street"
+                dataField="addressStreet"
                 dataFormat={(cell, row) =>
-                  `${row.address_street} ${
-                    row.address_street2 != null ? row.address_street2 : ''
-                  }<br/> ${row.address_city}, ${row.address_state}, ${
-                    row.address_zip
-                  }`
+                  `${row.addressStreet} ${row.addressStreet2 != null ? row.addressStreet2 : ''}<br/> ${
+                    row.addressCity
+                  }, ${row.addressState}, ${row.addressZip}`
                 }>
                 Address
               </TableHeaderColumn>

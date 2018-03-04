@@ -221,12 +221,12 @@ export async function redirectPostWithAuth(app, path) {
 // type RegisterResult = {| error: string |} | {| success: true |};
 
 // Registers user after user submits information for new user in registration form
-export async function register(name_first, name_last, rank = '', affiliation_id, email, password) {
+export async function register(firstName, lastName, rank = '', affiliationId, email, password) {
   return await post('auth', 'register', {
-    firstname: name_first,
-    lastname: name_last,
+    firstname: firstName,
+    lastname: lastName,
     rank: rank,
-    affiliation: affiliation_id,
+    affiliation: affiliationId,
     email: email,
     password: password
   });

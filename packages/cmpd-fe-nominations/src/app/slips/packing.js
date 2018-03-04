@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { getPackingSlipData } from '../../api/slips';
 import { descFromValue } from '../../lib/constants/bike-size';
+import { missingProperty } from '../../api/helpers/error.helper';
 
 const moment = require('moment');
 
@@ -40,13 +41,17 @@ const Page = styled.div`
   width: 7.3in;
 `;
 
-async function packingSlip(household_id) {
-  const data = await getPackingSlipData(household_id);
+async function packingSlip(householdId) {
+  const data = await getPackingSlipData(householdId);
 
   return (
     <Pages>
       {data.households.map(household => {
-        const { address } = household;
+        const {
+          address,
+          children = missingProperty('household.children', { defaultVal: [] }),
+          phones = missingProperty('household.phones', { defaultVal: [] })
+        } = household;
 
         let cmpd_division = 'x';
         let cmpd_response_area = 'x';
@@ -92,7 +97,7 @@ async function packingSlip(household_id) {
                 {familyNumber}
               </div>
               <br />
-              <b>Bicycles requested:</b> {household.children.filter(child => child.bike_want).length}
+              <b>Bicycles requested:</b> {children.filter(child => child.wantsBike).length}
               <br />
               <br />
               <b>Bicycles assigned:</b> ____<br />
@@ -103,7 +108,7 @@ async function packingSlip(household_id) {
                 <tr>
                   <td width="50%">
                     <b>Name (First, Last)</b>
-                    <br />&nbsp;{household.name_last}, {household.name_first}
+                    <br />&nbsp;{household.lastName}, {household.firstName}
                   </td>
                   <td width="50%" rowSpan="2">
                     <b>Address</b>
@@ -127,7 +132,7 @@ async function packingSlip(household_id) {
                 <tr>
                   <td>
                     <b>Phone Numbers</b>
-                    {household.phones.map(phone => (
+                    {phones.map(phone => (
                       <span key={phone.id}>
                         <br />&nbsp;{phone.number} ({phone.type})
                       </span>
@@ -194,14 +199,14 @@ async function packingSlip(household_id) {
                     <b>Notes</b>
                   </td>
                 </tr>
-                {household.children.map(child => (
+                {children.map(child => (
                   <tr key={child.id}>
                     <td>{child.id}</td>
-                    <td>{child.name_first}</td>
+                    <td>{child.firstName}</td>
                     <td>{child.gender}</td>
                     {/* //TODO Not sure why Virtual field child.age is not working in model. Copied this logic from Nomination Report view.*/}
                     <td>{moment().diff(moment(child.dob).format('LL'), 'years')}</td>
-                    <td>{child.bike_want ? `${descFromValue(child.bike_size)}\n${child.bike_style}` : 'no'}</td>
+                    <td>{child.wantsBike ? `${descFromValue(child.bikeSize)}\n${child.bikeStyle}` : 'no'}</td>
                     <td>
                       <div
                         style={{
@@ -209,15 +214,15 @@ async function packingSlip(household_id) {
                           overflow: 'hidden',
                           fontSize: '0.9em'
                         }}>
-                        {!child.clothes_want
+                        {!child.wantsClothes
                           ? null
                           : `
-                    Shirt size: ${child.clothes_size_shirt},
-                    Pants size: ${child.clothes_size_pants},
-                    Coat size: ${child.clothes_size_coat},
-                    Shoe size: ${child.shoe_size}
+                    Shirt size: ${child.clothesShirtSize},
+                    Pants size: ${child.clothesPantsSize},
+                    Coat size: ${child.clothesCoatSize},
+                    Shoe size: ${child.shoeSize}
                   `}
-                        {!child.favourite_colour ? null : ` Favorite color: ${child.favourite_colour}`}
+                        {!child.favouriteColor ? null : ` Favorite color: ${child.favouriteColor}`}
                         {!child.interests ? null : ` Interests: ${child.interests}`}
                         {!child.ideas ? null : ` Ideas: ${child.ideas}`}
                       </div>
@@ -244,12 +249,12 @@ async function packingSlip(household_id) {
   );
 }
 
-async function bicycleSlip(household_id) {
-  let data = await getPackingSlipData(household_id);
+async function bicycleSlip(householdId) {
+  let data = await getPackingSlipData(householdId);
 
   data = data.households.filter(household => {
     const children = household.children.filter(child => {
-      return child.bike_want;
+      return child.wantsBike;
     });
     return children.length > 0;
   });
@@ -299,9 +304,9 @@ async function bicycleSlip(household_id) {
                   </tr>
                   <tr>
                     <td>
-                      <b>Child (Last, First):</b> {child.name_last} {child.name_first}
+                      <b>Child (Last, First):</b> {child.lastName} {child.firstName}
                       <br />
-                      <b>Family (Last, First):</b> {household.name_last}, {household.name_first}
+                      <b>Family (Last, First):</b> {household.lastName}, {household.firstName}
                     </td>
                   </tr>
                 </tbody>
@@ -323,8 +328,8 @@ async function bicycleSlip(household_id) {
                   </tr>
 
                   <tr>
-                    <td>{child.bike_size}</td>
-                    <td>{child.bike_style}</td>
+                    <td>{child.bikeSize}</td>
+                    <td>{child.bikeStyle}</td>
                   </tr>
                 </tbody>
               </table>

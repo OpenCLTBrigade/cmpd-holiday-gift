@@ -13,11 +13,13 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const user = req.user;
-    const userRoles = pathOr(undefined, ['user', 'roles'], user) || [pathOr('none', ['user', 'role'], user)];
+    const { role = 'none', roles: userRoles = [role] } = req.user;
 
     const hasRole = () => !!userRoles.find(role => !!roles.find(item => item === role));
 
-    return user && user.roles && hasRole();
+    console.log(userRoles);
+    console.log(hasRole());
+
+    return hasRole();
   }
 }

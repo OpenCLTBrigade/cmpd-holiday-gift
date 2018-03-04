@@ -1,4 +1,10 @@
 import * as pino from 'pino';
-const level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
+const isProduction = process.env.NODE_ENV === 'production';
+const level = isProduction ? 'info' : 'debug';
 
-export default pino({ level, prettyPrint: true });
+const logger = pino({ level, prettyPrint: isProduction ? false : true });
+
+export default logger;
+
+export const logStart = (...args) => logger.debug('Start...', ...args);
+export const logEnd = (...args) => logger.debug('End...', ...args);

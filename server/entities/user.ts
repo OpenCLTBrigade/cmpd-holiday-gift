@@ -1,3 +1,4 @@
+import bool from '../common/util/converters/boolean';
 import {
   Entity,
   BeforeInsert,
@@ -23,9 +24,6 @@ export default class User extends AbstractUser {
   }
 
   @Column('text', { nullable: true })
-  role: string;
-
-  @Column('text', { nullable: true })
   rank: string;
 
   @Column('text', { nullable: true })
@@ -36,10 +34,10 @@ export default class User extends AbstractUser {
   @Column('int', { name: 'nomination_limit', default: 5 })
   nominationLimit: number;
 
-  @Column('text', { name: 'email_verified', default: false })
+  @Column({ name: 'email_verified', default: false })
   emailVerified: boolean;
 
-  @Column('text', { name: 'confirmation_email', default: false })
+  @Column({ name: 'confirmation_email', default: false })
   confirmationEmail: boolean;
 
   @Column('text', { name: 'confirmation_code', nullable: true })
@@ -58,8 +56,15 @@ export default class User extends AbstractUser {
   @JoinColumn({ name: 'affiliation_id' })
   affiliation: Affiliation;
 
-  static fromJSON(props) {
+  static fromJSON({ active, emailVerified, affiliationId, nominationLimit, ...props }) {
     const entity = new User(props);
+
+    entity.active = bool(active);
+    entity.emailVerified = bool(emailVerified);
+    entity.approved = true;
+
+    entity.affiliationId = Number(affiliationId);
+    entity.nominationLimit = Number(nominationLimit);
 
     return entity;
   }

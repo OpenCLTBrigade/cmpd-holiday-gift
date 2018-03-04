@@ -5,6 +5,7 @@ import { getUser } from '../../../api/user';
 import styled from 'styled-components';
 import { approveUser, declineUser } from '../../../api/user';
 // import type {UserType, AffiliationType} from 'api/user';
+import { pathOr } from 'rambda';
 
 const StyledButton = styled.button`
   margin-right: 10px;
@@ -22,7 +23,7 @@ export default class ViewUser extends React.Component {
 
   getUser() {
     getUser(this.props.match.params.user_id).then(user => {
-      this.setState({ user: user.data });
+      this.setState({ user });
     });
   }
 
@@ -60,20 +61,21 @@ export default class ViewUser extends React.Component {
 
   render() {
     const { user } = this.state;
+    console.log('render', user);
 
     if (user == null) {
       return null;
     }
 
-    const nominations = user.nomination.filter(nomination => {
+    const { households: nominations = [] } = user;
+
+    const activeNominations = nominations.filter(nomination => {
       return nomination.deleted === false;
     });
 
-    const listItems = nominations.map(nomination => (
+    const listItems = activeNominations.map(nomination => (
       <ListGroupItem>
-        <a href={`/dashboard/household/show/${nomination.id}`}>
-          {`${nomination.name_first} ${nomination.name_last}`}
-        </a>
+        <a href={`/dashboard/household/show/${nomination.id}`}>{`${nomination.firstName} ${nomination.lastName}`}</a>
       </ListGroupItem>
     ));
 
@@ -81,7 +83,7 @@ export default class ViewUser extends React.Component {
       <Grid>
         <Row>
           <Col xs={12}>
-            <Box title={`${user.name_first} ${user.name_last}`}>
+            <Box title={`${user.firstName} ${user.lastName}`}>
               <Row>
                 <Col xs={12}>
                   <ListGroup>
@@ -106,7 +108,7 @@ export default class ViewUser extends React.Component {
                     <ListGroupItem>
                       <strong>Nomination Limit</strong>
                       <br />
-                      {user.nomination_limit}
+                      {user.nominationLimit}
                       <br />
                     </ListGroupItem>
                     <ListGroupItem>
@@ -127,7 +129,7 @@ export default class ViewUser extends React.Component {
             </Box>
           </Col>
         </Row>
-        {user.nomination.length > 0 && (
+        {activeNominations.length > 0 && (
           <Row>
             <Col xs={12}>
               <Box title="Nominations">
@@ -136,20 +138,16 @@ export default class ViewUser extends React.Component {
             </Col>
           </Row>
         )}
-        {user.email_verified === true &&
+        {user.emailVerified === true &&
           user.approved === false && (
             <Row>
               <Col xs={12}>
                 <Box title="Review pending account">
                   <div style={{ 'text-align': 'center' }}>
-                    <StyledButton
-                      className="btn btn-lg btn-success"
-                      onClick={this.onClickApprove}>
+                    <StyledButton className="btn btn-lg btn-success" onClick={this.onClickApprove}>
                       Approve
                     </StyledButton>
-                    <StyledButton
-                      className="btn btn-lg btn-danger"
-                      onClick={this.onClickDecline}>
+                    <StyledButton className="btn btn-lg btn-danger" onClick={this.onClickDecline}>
                       Decline
                     </StyledButton>
                   </div>

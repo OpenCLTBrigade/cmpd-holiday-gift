@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import Box from '../../../components/box';
 import Input from '../../../../../app/components/input';
 import requiredValidator from '../../../../../lib/validators/required.validator';
+import FormField from '../../../../components/form/FormField';
 
 const HeadOfHousehold = () => {
   return (
@@ -12,83 +13,66 @@ const HeadOfHousehold = () => {
           <Box title="Head of Household Information" bsStyle="primary">
             <Row>
               <Col md={6} xs={12}>
-                <Input
-                  label="First Name"
-                  name="household.name_first"
-                  id="firstName"
-                  type="text"
-                  validator={requiredValidator}
-                />
+                <FormField label="First Name" name="household.firstName" id="firstName" type="text" required />
               </Col>
               <Col md={6} xs={12}>
-                <Input
-                  label="Last Name"
-                  name="household.name_last"
-                  id="lastName"
-                  type="text"
-                  validator={requiredValidator}
-                />
+                <FormField label="Last Name" name="household.lastName" id="lastName" type="text" required />
               </Col>
             </Row>
             <Row>
               <Col md={4} xs={12}>
-                <Input
-                  label="Gender"
-                  name="household.gender"
-                  componentClass="select"
-                  placeholder="select"
-                  validator={requiredValidator}>
+                <FormField label="Gender" name="household.gender" componentClass="select" placeholder="select" required>
                   <option value="select">Select...</option>
                   <option value="M">Male</option>
                   <option value="F">Female</option>
-                </Input>
+                </FormField>
               </Col>
               <Col md={4} xs={12}>
-                <Input
+                <FormField
                   label="Date of Birth"
                   id="dob"
                   name="household.dob"
                   type="date"
                   autoComplete="dob"
-                  validator={requiredValidator}
+                  required
                 />
               </Col>
               <Col md={4} xs={12}>
-                <Input
+                <FormField
                   label="Last four digits of SSN"
                   id="ssn"
                   name="household.last4ssn"
                   type="text"
                   pattern="[0-9]{4}"
-                  validator={requiredValidator}
+                  required
                   maxLength="4"
                 />
               </Col>
             </Row>
             <Row>
               <Col md={4} xs={12}>
-                <Input label="Email" id="email" name="household.email" type="email" />
+                <FormField label="Email" id="email" name="household.email" type="email" />
               </Col>
               <Col md={4} xs={12}>
-                <Input
+                <FormField
                   label="Preferred Contact Method"
-                  name="household.preferred_contact_method"
+                  name="household.preferredContactMethod"
                   componentClass="select"
                   placeholder="select"
-                  validator={requiredValidator}>
+                  required>
                   <option value="">Select...</option>
                   <option value="email">Email</option>
                   <option value="text">Text</option>
                   <option value="phone">Phone</option>
-                </Input>
+                </FormField>
               </Col>
               <Col md={4} xs={12}>
-                <Input
+                <FormField
                   label="Ethnicity"
                   name="household.race"
                   componentClass="select"
                   placeholder="select"
-                  validator={requiredValidator}>
+                  required>
                   <option value="">Select...</option>
                   <option value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
                   <option value="Asian">Asian</option> <option value="African American">African American</option>
@@ -96,7 +80,7 @@ const HeadOfHousehold = () => {
                   <option value="Pacific Islander">Pacific Islander</option> <option value="White">White</option>
                   <option value="White">Not Given</option>
                   <option value="Other">Other</option>
-                </Input>
+                </FormField>
               </Col>
             </Row>
           </Box>

@@ -13,21 +13,26 @@ export enum ErrorCodes {
 
 @Component()
 export class AffiliationService {
-  async query({ page, search, whitelist = ['id', 'type', 'name'] }) {
+  async query({ type, search, page, whitelist = [] }) {
     try {
       const query = search && {
         keys: ['name'],
         search
       };
 
-      let results = await getRepository(Affiliation).find();
-      return createPagedResults({
-        results,
-        page,
-        query,
-        baseUrl: '',
-        fieldWhitelist: whitelist
-      });
+      let results = await getRepository(Affiliation).find({ where: type && { type } });
+
+      if (search || page) {
+        return createPagedResults({
+          results,
+          page,
+          query,
+          baseUrl: '',
+          fieldWhitelist: whitelist
+        });
+      }
+
+      return results;
     } catch (error) {
       logger.error(error);
       throw new ApplicationError(error.message);
