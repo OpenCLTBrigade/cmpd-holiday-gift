@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import HouseholdForm from './form/head-of-household';
+import HeadOfHousehold from './form/head-of-household';
 import AddressForm from './form/address';
 import PhoneNumbers from './form/phone-numbers';
 import Child from './form/child';
@@ -44,7 +44,7 @@ const Household = ({
 
         return (
           <form onSubmit={handleSubmit}>
-            <HouseholdForm />
+            <HeadOfHousehold />
             <AddressForm onChange={onAddressChange} user={user} />
             <PhoneNumbers
               removePhoneNumber={() => pop('phoneNumbers')}

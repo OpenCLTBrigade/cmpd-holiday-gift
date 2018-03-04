@@ -60,50 +60,6 @@ class NewHousehold extends React.Component {
       status: HouseholdStatus.New,
       errorMessage: ''
     };
-    // this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onSaveDraft = this.onSaveDraft.bind(this);
-    this.onFileChange = this.onFileChange.bind(this);
-    this.onUpdate = this.onUpdate.bind(this);
-    this.onSave = this.onSave.bind(this);
-  }
-
-  async onFileChange(file) {
-    const id = getId(this.state);
-
-    if (id) {
-      const saved = await uploadAttachment({ id, file });
-
-      this.setState(() => {
-        const files = this.state.data.files.concat(saved);
-        const data = updateData(this.state.data, { files });
-
-        return { data };
-      });
-    }
-  }
-
-  async onAddressChange(name, value) {
-    const latlng = { ...value.latlng };
-    delete value.latlng;
-    // console.log('latlng', latlng);
-    // console.log('oooooo', value);
-    // TODO: Get CMPD Address Info
-
-    try {
-      const response = await getAddressInfo(latlng.lat, latlng.lng);
-
-      const cmpdDivision = pathOr('', 'data.properties.DIVISION', response);
-      const cmpdResponseArea = pathOr('', 'data.properties.RA', response);
-
-      value.cmpdDivision = response.data.properties.DIVISION;
-      value.cmpdResponseArea = response.data.properties.RA;
-
-      value.type = this.state.data.address.type && this.state.data.address.type;
-      // this.onChange(name, value);
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   componentDidMount() {
@@ -144,6 +100,44 @@ class NewHousehold extends React.Component {
 
   componentWillReceiveProps({ household, schools }) {}
 
+  onFileChange = async file => {
+    const id = getId(this.state);
+
+    if (id) {
+      const saved = await uploadAttachment({ id, file });
+
+      this.setState(() => {
+        const files = this.state.data.files.concat(saved);
+        const data = updateData(this.state.data, { files });
+
+        return { data };
+      });
+    }
+  };
+
+  async onAddressChange(name, value) {
+    const latlng = { ...value.latlng };
+    delete value.latlng;
+    // console.log('latlng', latlng);
+    // console.log('oooooo', value);
+    // TODO: Get CMPD Address Info
+
+    try {
+      const response = await getAddressInfo(latlng.lat, latlng.lng);
+
+      const cmpdDivision = pathOr('', 'data.properties.DIVISION', response);
+      const cmpdResponseArea = pathOr('', 'data.properties.RA', response);
+
+      value.cmpdDivision = response.data.properties.DIVISION;
+      value.cmpdResponseArea = response.data.properties.RA;
+
+      value.type = this.state.data.address.type && this.state.data.address.type;
+      // this.onChange(name, value);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   reset() {
     this.setState(() => {
       return {
@@ -161,11 +155,11 @@ class NewHousehold extends React.Component {
     });
   }
 
-  async onSave({ childNominations: children, ...data }) {
+  onSave = async ({ childNominations: children, ...data }) => {
     data.household.id ? this.onUpdate({ children, ...data }) : this.onSaveDraft({ children, ...data });
-  }
+  };
 
-  async onSaveDraft(data) {
+  onSaveDraft = async data => {
     console.log('onSaveDraft');
 
     try {
@@ -185,9 +179,9 @@ class NewHousehold extends React.Component {
 
       this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
-  }
+  };
 
-  async onUpdate(data) {
+  onUpdate = async data => {
     console.log('onUpdate');
     const { history } = this.props;
     const { id } = this.state.data.household && this.state.data.household;
@@ -200,9 +194,9 @@ class NewHousehold extends React.Component {
 
       this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
-  }
+  };
 
-  async onSubmit() {
+  onSubmit = async () => {
     const { history } = this.props;
 
     const id = this.state.id || (this.state.data && this.state.data.household && this.state.data.household.id);
@@ -224,7 +218,7 @@ class NewHousehold extends React.Component {
 
       this.setState(() => ({ show: true, errorMessage }));
     }
-  }
+  };
 
   showConfirmation = () => this.setState(() => ({ showConfirm: true }));
 
