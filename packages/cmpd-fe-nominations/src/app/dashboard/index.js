@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './header';
 import Sidebar from './sidebar';
 import Home from './home';
-import HouseholdIndex from './household/householdIndex.js';
+import HouseholdIndex from './household/householdIndex';
 import EditHousehold from './household/EditHousehold';
 import ShowHousehold from './household/ShowHousehold';
 import { AffiliationList, Affiliation } from './affiliations';
