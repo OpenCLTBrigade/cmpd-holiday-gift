@@ -45,7 +45,7 @@ export default async (connection: Connection, verbose = true) => {
     active: true,
     approved: true,
     role: 'admin'
-  });
+  } as any);
 
   await developer.save();
 
