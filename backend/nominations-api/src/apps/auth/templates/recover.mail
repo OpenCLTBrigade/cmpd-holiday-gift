@@ -1,0 +1,10 @@
+Subject: Lost Password
+
+<p>Hello {{user.name_first}} {{user.name_last}}</p>
+
+<p>
+  <a href="{{recover_url}}?id={{user.id}}&confirmation_code={{confirmation_code}}">
+    Click here
+  </a>
+  to reset your password.
+</p>

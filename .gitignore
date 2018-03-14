@@ -6,6 +6,7 @@ launch.json
 /env.js
 /coverage
 /build
+/*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
