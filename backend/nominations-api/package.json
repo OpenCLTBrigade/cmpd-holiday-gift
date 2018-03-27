@@ -1,0 +1,20 @@
+{
+  "name": "cmpd-nominations-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "npm-run-all -p watch start-server",
+    "start-server": "nodemon --watch dist dist/server.js",
+    "build": "parcel build src/server.ts --target node",
+    "watch": "parcel src/server.ts --target node",
+    "seed": "ts-node src/seeds"
+  },
+  "engines": {
+    "node": ">=8.9.x"
+  },
+  "dependencies": {
+    "cmpd-common-api": "^1.0.0"
+  }
+}

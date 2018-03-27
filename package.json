@@ -3,17 +3,14 @@
   "version": "2017.1.0",
   "private": true,
   "scripts": {
-    "start": "npm-run-all -p watch-server start-server",
-    "start-client": "cd packages/cmpd-fe-nominations && parcel public/index.html",
-    "build-client": "cd packages/cmpd-fe-nominations && parcel build public/index.html --detailed-report",
-    "build-server": "parcel build server/server.ts --target node",
-    "start-server": "nodemon --watch dist dist/server.js",
-    "watch-server": "parcel server/server.ts --target node",
-    "predebug-server": "npm run build-server",
+    "start": "lerna run start --parallel",
+    "start-client": "lerna run start --parallel --scope cmpd-fe-*",
+    "build-client": "lerna run build --parallel --scope cmpd-fe-*",
+    "start-server": "lerna run start --parallel --scope *-api",
+    "build-server": "lerna run build --parallel --scope *-api",
+    "watch-server": "lerna run watch --parallel --scope *-api",
     "precommit": "pretty-quick --staged",
-    "debug-server": "",
-    "test-server": "",
-    "seed": "rimraf run/db.development.sqlite && ts-node server/seeds",
+    "seed": "rimraf run/db.development.sqlite && lerna run seed --stream",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "bootstrap": "lerna bootstrap",
@@ -109,7 +106,7 @@
     "typeorm": "^0.1.8",
     "typeorm-encrypted": "^0.5.0"
   },
-  "workspaces": ["packages/*"],
+  "workspaces": ["packages/*", "backend/*"],
   "proxy": {
     "/api": {
       "target": "http://localhost:3001",
