@@ -15,6 +15,7 @@ on the dependencies we use.
 
 * Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
 * If using nvm, run `nvm use` to ensure you're using the appropriate Node version for the project.
+* Install lerna globally `yarn global add lerna`
 * Run `yarn bootstrap` to install the dependencies. This will take a few minutes and it may look like the command has locked up.
 * In the root project directory, copy `env.example.js` to `env.js`. You _don't_ need to make any changes just yet.
 * Run `yarn start-client` to start the front-end in development mode. Access the application at http://localhost:3000.
