@@ -42,8 +42,7 @@ export default class ConfirmEmail extends React.Component {
       <CenteredContainer>
         {!valid && (
           <h3>
-            Invalid entry point.{' '}
-            <a href="/">Click here to go back to the log in screen.</a>
+            Invalid entry point. <a href="/">Click here to go back to the log in screen.</a>
           </h3>
         )}
         {valid && loading && <h3>Working...</h3>}
@@ -51,15 +50,10 @@ export default class ConfirmEmail extends React.Component {
           finished && (
             <h3>
               Thanks for confirming your email.<br />
-              You will be notified when an administrator has approved your
-              account.
+              You will be notified when an administrator has approved your account.
             </h3>
           )}
-        {valid &&
-          !loading &&
-          !finished && (
-            <h3>An error occured while confirming your email address.</h3>
-          )}
+        {valid && !loading && !finished && <h3>An error occured while confirming your email address.</h3>}
       </CenteredContainer>
     );
   }

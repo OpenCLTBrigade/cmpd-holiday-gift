@@ -3,9 +3,7 @@
   "env": {
     "browser": true
   },
-  "extends": [
-    "plugin:react/recommended"
-  ],
+  "extends": ["plugin:react/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -16,7 +14,5 @@
     "no-console": 0,
     "no-duplicate-imports": 0
   },
-  "plugins": [
-    "react"
-  ]
+  "plugins": ["react"]
 }

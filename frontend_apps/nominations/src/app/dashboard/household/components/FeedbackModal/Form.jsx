@@ -30,10 +30,7 @@ class Form extends React.Component {
         <Row>
           <Col xs={12}>
             <label>Approved?</label>
-            <select
-              className="form-control"
-              name="approved"
-              onChange={this.updateApproved}>
+            <select className="form-control" name="approved" onChange={this.updateApproved}>
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
@@ -44,10 +41,7 @@ class Form extends React.Component {
             <Row>
               <Col xs={12}>
                 <label>Reason for rejection</label>
-                <select
-                  className="form-control"
-                  name="approved"
-                  onChange={this.updateReason}>
+                <select className="form-control" name="approved" onChange={this.updateReason}>
                   <option>Duplicate Submission</option>
                   <option>Need additional information</option>
                   <option>Referred to third party</option>
@@ -56,14 +50,8 @@ class Form extends React.Component {
             </Row>
             <Row>
               <Col xs={12}>
-                <label>
-                  Message to be sent to nominator (If blank, no email
-                  notification will be sent)
-                </label>
-                <textarea
-                  className="form-control"
-                  onChange={this.updateMessage}
-                />
+                <label>Message to be sent to nominator (If blank, no email notification will be sent)</label>
+                <textarea className="form-control" onChange={this.updateMessage} />
               </Col>
             </Row>
           </div>

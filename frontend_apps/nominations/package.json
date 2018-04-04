@@ -1,5 +1,5 @@
 {
-  "name": "cmpd-fe-nominations",
+  "name": "cmpd-fe-nominations-app",
   "version": "0.1.0",
   "private": true,
   "cacheDirectories": ["node_modules", "../node_modules"],

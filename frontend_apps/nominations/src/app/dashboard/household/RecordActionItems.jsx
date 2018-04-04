@@ -19,9 +19,7 @@ class RecordActionItems extends React.Component {
   render() {
     const { isDeleting } = this.state;
     const deleteTextValues = ['Delete', 'Click again to delete', 'Deleting...'];
-    const deleteConfirmIconClass = `fa fa-${
-      isDeleting ? 'circle-o-notch fa-spin' : ' '
-    }`;
+    const deleteConfirmIconClass = `fa fa-${isDeleting ? 'circle-o-notch fa-spin' : ' '}`;
     const { householdId } = this.props;
 
     return (

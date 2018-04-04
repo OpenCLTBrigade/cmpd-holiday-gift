@@ -45,22 +45,14 @@ export default class Recover extends React.Component {
             <FormGroup className="form-group has-feedback">
               <Label>
                 New Password
-                <input
-                  className="form-control"
-                  name="password"
-                  type="password"
-                />
+                <input className="form-control" name="password" type="password" />
               </Label>
               <Icon className="fa fa-key form-control-feedback" />
             </FormGroup>
             <FormGroup className="form-group has-feedback">
               <Label>
                 Confirm Password
-                <input
-                  className="form-control"
-                  name="password_confirm"
-                  type="password"
-                />
+                <input className="form-control" name="password_confirm" type="password" />
               </Label>
               <Icon className="fa fa-key form-control-feedback" />
             </FormGroup>
@@ -75,9 +67,7 @@ export default class Recover extends React.Component {
               </FooterLink>
             </div>
             <div className="col-xs-6">
-              <FooterLink
-                className="btn btn-link pull-right"
-                to="/auth/register">
+              <FooterLink className="btn btn-link pull-right" to="/auth/register">
                 <i className="fa fa-user-plus" />
                 <span> Register</span>
               </FooterLink>
@@ -110,9 +100,7 @@ export default class Recover extends React.Component {
         alert('Your password has been reset! Please log in.');
         this.props.history.replace('/auth/login');
       } else {
-        this.box.flashErrorMessage(
-          'An issue occurred while trying to reset your password. Maybe a bad reset link?'
-        );
+        this.box.flashErrorMessage('An issue occurred while trying to reset your password. Maybe a bad reset link?');
       }
     } catch (exc) {
       this.box.flashErrorMessage('Account recovery failed: unknown error');

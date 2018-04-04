@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "lerna run start --parallel",
-    "start-client": "lerna run start --parallel --scope cmpd-fe-*",
-    "build-client": "lerna run build --parallel --scope cmpd-fe-*",
+    "start-client": "lerna run start --parallel --scope cmpd-fe-*-app",
+    "build-client": "lerna run build --parallel --scope cmpd-fe-*-app",
     "start-server": "lerna run start --parallel --scope *-api",
     "build-server": "lerna run build --parallel --scope *-api",
     "watch-server": "lerna run watch --parallel --scope *-api",
@@ -106,7 +106,7 @@
     "typeorm": "^0.1.8",
     "typeorm-encrypted": "^0.5.0"
   },
-  "workspaces": ["frontend/*", "backend/*"],
+  "workspaces": ["frontend_apps/*", "frontend_modules/*", "backend/*"],
   "proxy": {
     "/api": {
       "target": "http://localhost:3001",

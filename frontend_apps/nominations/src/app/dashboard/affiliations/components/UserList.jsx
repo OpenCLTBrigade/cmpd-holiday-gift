@@ -41,28 +41,16 @@ export default class UserList extends React.Component {
         <TableHeaderColumn dataField="id" hidden isKey>
           Id
         </TableHeaderColumn>
-        <TableHeaderColumn
-          thStyle={TD_STYLE}
-          tdStyle={TD_STYLE}
-          dataField="name_last">
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_last">
           Last Name
         </TableHeaderColumn>
-        <TableHeaderColumn
-          thStyle={TD_STYLE}
-          tdStyle={TD_STYLE}
-          dataField="name_first">
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="name_first">
           First Name
         </TableHeaderColumn>
-        <TableHeaderColumn
-          thStyle={TD_STYLE}
-          tdStyle={TD_STYLE}
-          dataField="email">
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="email">
           Email
         </TableHeaderColumn>
-        <TableHeaderColumn
-          thStyle={TD_STYLE}
-          tdStyle={TD_STYLE}
-          dataField="phone">
+        <TableHeaderColumn thStyle={TD_STYLE} tdStyle={TD_STYLE} dataField="phone">
           Phone
         </TableHeaderColumn>
         <TableHeaderColumn dataField="id" dataFormat={this.actionCellFormatter}>

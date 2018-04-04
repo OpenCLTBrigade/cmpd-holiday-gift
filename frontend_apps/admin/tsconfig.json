@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es5",
+    "lib": ["es6", "dom", "es5"],
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "rootDir": "./src"
+  },
+  "exclude": ["node_modules", "build", "scripts", "webpack", "jest"],
+  "include": ["./src/**/*"]
+}
