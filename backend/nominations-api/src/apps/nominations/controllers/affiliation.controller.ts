@@ -17,7 +17,7 @@ export class AffiliationController {
   constructor(private readonly affiliationService: AffiliationService) {}
   //TODO: GraphQL probably better here.
   @Get()
-  async getAll(@Query('search') search = '', @Query('page') page = '', @Query('type') type = '') {
+  async getAll(@Query('search') search = '', @Query('page') page = 1, @Query('type') type = '') {
     const results = await this.affiliationService.query({
       search,
       type,
