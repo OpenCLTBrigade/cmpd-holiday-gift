@@ -1,11 +1,8 @@
-import { ApplicationError } from '../../../common/util/application-error';
+import { ApplicationError } from '../common/util/application-error';
 import { getRepository } from 'typeorm';
 import { Component } from '@nestjs/common';
 
-import { Affiliation } from 'cmpd-common-api';
-
-import logger from '../../lib/logger';
-import { createPagedResults } from '../../lib/table/table';
+import { Affiliation, logger, createPagedResults } from 'cmpd-common-api';
 
 export enum ErrorCodes {
   NoAffiliationExists = 'NoAffiliationExists'

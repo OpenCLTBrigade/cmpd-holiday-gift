@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { AffiliationController } from './affiliation.controller';
-import { AffiliationService } from '../service/affiliation.service';
+import { AffiliationService } from './affiliation.service';
 
 describe('AffiliationController', () => {
   let controller: AffiliationController;

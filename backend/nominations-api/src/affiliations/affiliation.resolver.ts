@@ -1,5 +1,5 @@
 import { ResolveProperty, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { AffiliationService } from './service/affiliation.service';
+import { AffiliationService } from './affiliation.service';
 
 @Resolver('Affiliation')
 export class AffiliationsResolver {

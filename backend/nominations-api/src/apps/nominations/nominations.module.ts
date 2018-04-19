@@ -1,16 +1,10 @@
 import { UserService } from './service/user.service';
 import { Module } from '@nestjs/common';
 
-import {
-  HouseholdController,
-  UserController,
-  AffiliationController,
-  TrackingController,
-  CmpdController
-} from './controllers';
-import { AffiliationService } from './service/affiliation.service';
+import { HouseholdController, UserController, TrackingController, CmpdController } from './controllers';
+
+import { AffiliationController, AffiliationService, AffiliationsResolver } from '../../affiliations';
 import { HouseholdService } from './service/household.service';
-import { AffiliationsResolver } from './affiliation.resolver';
 
 @Module({
   controllers: [HouseholdController, UserController, TrackingController, AffiliationController, CmpdController],

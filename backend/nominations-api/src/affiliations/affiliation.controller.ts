@@ -1,8 +1,8 @@
-import { handleErrors } from '../../../common/util/application-error';
+import { handleErrors } from '../common/util/application-error';
 import { Controller, Get, Param, Query, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
-import { AffiliationService } from '../service/affiliation.service';
+import { AffiliationService } from './affiliation.service';
 import logger from '../../lib/logger';
 
 const errorMap = {
