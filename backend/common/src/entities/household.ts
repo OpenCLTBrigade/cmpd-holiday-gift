@@ -15,7 +15,7 @@ import Child from './child';
 import PhoneNumber from './phone-number';
 import Attachment from './attachment';
 
-import encOptions from '../common/util/encryption-options';
+import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 

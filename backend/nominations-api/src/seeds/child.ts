@@ -2,7 +2,7 @@ const faker = require('faker');
 
 import config from '../config';
 import { Connection } from 'typeorm';
-import { Child } from '../entities';
+import { Child } from 'cmpd-common-api';
 
 export default async (connection: Connection) => {
   // Add 25 children to the DB

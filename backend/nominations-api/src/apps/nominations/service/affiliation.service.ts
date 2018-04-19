@@ -2,7 +2,7 @@ import { ApplicationError } from '../../../common/util/application-error';
 import { getRepository } from 'typeorm';
 import { Component } from '@nestjs/common';
 
-import Affiliation from '../../../entities/affiliation';
+import { Affiliation } from 'cmpd-common-api';
 
 import logger from '../../lib/logger';
 import { createPagedResults } from '../../lib/table/table';
@@ -13,7 +13,7 @@ export enum ErrorCodes {
 
 @Component()
 export class AffiliationService {
-  async query({ type, search, page, whitelist = [] }) {
+  async query({ type = '', search = '', page = 1, whitelist = [] } = {}) {
     try {
       const query = search && {
         keys: ['name'],
@@ -22,17 +22,13 @@ export class AffiliationService {
 
       let results = await getRepository(Affiliation).find({ where: type && { type } });
 
-      if (search || page) {
-        return createPagedResults({
-          results,
-          page,
-          query,
-          baseUrl: '',
-          fieldWhitelist: whitelist
-        });
-      }
-
-      return results;
+      return createPagedResults({
+        results,
+        page,
+        query,
+        baseUrl: '',
+        fieldWhitelist: whitelist
+      });
     } catch (error) {
       logger.error(error);
       throw new ApplicationError(error.message);

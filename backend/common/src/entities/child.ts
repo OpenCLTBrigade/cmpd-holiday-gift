@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEnti
 import * as moment from 'moment';
 import Household from './household';
 
-import encOptions from '../common/util/encryption-options';
+import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 

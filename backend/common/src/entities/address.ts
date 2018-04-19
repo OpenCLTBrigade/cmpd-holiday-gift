@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntit
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 import Household from './household';
-import encOptions from '../common/util/encryption-options';
+import encOptions from '../util/encryption-options';
 
 @Entity('household_addresses')
 export default class HouseholdAddress extends BaseEntity {

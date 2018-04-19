@@ -1,4 +1,4 @@
-import bool from '../common/util/converters/boolean';
+import bool from '../util/converters/boolean';
 import {
   Entity,
   BeforeInsert,

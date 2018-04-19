@@ -1,6 +1,6 @@
 import { Connection } from 'typeorm';
 
-import { Affiliation } from '../entities';
+import { Affiliation } from 'cmpd-common-api';
 
 /*eslint no-console: "off", max-lines: "off" */
 

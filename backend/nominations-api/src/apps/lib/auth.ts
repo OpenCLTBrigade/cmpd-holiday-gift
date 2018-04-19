@@ -4,7 +4,8 @@ import * as crypto from 'crypto';
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
 import config from '../../config';
-import { Session, User } from '../../entities';
+import { User, Session } from 'cmpd-common-api';
+
 import logger from '../../common/util/logger';
 
 // TODO: import from model

@@ -1,10 +1,7 @@
 import { ApplicationError } from '../../../common/util/application-error';
 import { Component } from '@nestjs/common';
-import Household from '../../../entities/household';
-import Attachment from '../../../entities/attachment';
-import Address from '../../../entities/address';
-import Child from '../../../entities/child';
-import PhoneNumber from '../../../entities/phone-number';
+
+import { Household, Attachment, Address, Child, PhoneNumber } from 'cmpd-common-api';
 
 const path = require('path');
 

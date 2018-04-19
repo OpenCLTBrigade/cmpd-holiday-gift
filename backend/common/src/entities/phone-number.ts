@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import Household from './household';
 
-import encOptions from '../common/util/encryption-options';
+import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 

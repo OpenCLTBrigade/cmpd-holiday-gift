@@ -1,7 +1,7 @@
 import { Component } from '@nestjs/common';
 import * as path from 'path';
 
-import User from '../../entities/user';
+import { User } from 'cmpd-common-api';
 import auth from '../lib/auth';
 import logger from '../lib/logger';
 import config from '../../config';

@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm';
-import User from '../../entities/user';
+import { User } from 'cmpd-common-api';
 
 export const authProviders = [
   {

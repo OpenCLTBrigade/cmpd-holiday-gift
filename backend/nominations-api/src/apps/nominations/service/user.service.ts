@@ -1,4 +1,4 @@
-import { Nominator, User } from '../../../entities';
+import { Nominator, User } from 'cmpd-common-api';
 
 import logger from '../../lib/logger';
 import { createPagedResults } from '../../lib/table/table';
