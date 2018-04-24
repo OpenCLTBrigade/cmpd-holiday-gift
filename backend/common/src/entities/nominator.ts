@@ -1,10 +1,10 @@
-import Affiliation from './affiliation';
+import { Affiliation } from './affiliation';
 import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
-import Household from './household';
+import { Household } from './household';
 import AbstractUser from './abstract/user';
 
 @Entity('users')
-export default class Nominator extends AbstractUser {
+export class Nominator extends AbstractUser {
   private constructor(props) {
     super();
 

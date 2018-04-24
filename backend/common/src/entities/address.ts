@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
-import Household from './household';
+import { Household } from './household';
 import encOptions from '../util/encryption-options';
 
 @Entity('household_addresses')
-export default class HouseholdAddress extends BaseEntity {
+export class Address extends BaseEntity {
   private constructor(props) {
     super();
 
@@ -45,7 +45,7 @@ export default class HouseholdAddress extends BaseEntity {
   household: Household;
 
   static fromJSON(props) {
-    const entity = new HouseholdAddress(props);
+    const entity = new Address(props);
 
     return entity;
   }

@@ -9,18 +9,18 @@ import {
   BaseEntity
 } from 'typeorm';
 
-import Address from './address';
-import User from './nominator';
-import Child from './child';
-import PhoneNumber from './phone-number';
-import Attachment from './attachment';
+import { Address } from './address';
+import { Nominator as User } from './nominator';
+import { Child } from './child';
+import { PhoneNumber } from './phone-number';
+import { Attachment } from './attachment';
 
 import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('households')
-export default class Household extends BaseEntity {
+export class Household extends BaseEntity {
   private constructor(props) {
     super();
 

@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import * as moment from 'moment';
-import Household from './household';
+import { Household } from './household';
 
 import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('children')
-export default class Child extends BaseEntity {
+export class Child extends BaseEntity {
   private constructor(props) {
     super();
 

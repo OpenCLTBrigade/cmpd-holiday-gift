@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
-import Household from './household';
+import { Household } from './household';
 
 import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('household_phones')
-export default class PhoneNumber extends BaseEntity {
+export class PhoneNumber extends BaseEntity {
   private constructor(props) {
     super();
 

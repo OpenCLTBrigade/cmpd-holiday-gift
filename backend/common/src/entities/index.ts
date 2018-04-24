@@ -1,9 +1,9 @@
-export { default as Address } from './address';
-export { default as Affiliation } from './affiliation';
-export { default as User } from './user';
-export { default as Household } from './household';
-export { default as PhoneNumber } from './phone-number';
-export { default as Child } from './child';
-export { default as Attachment } from './attachment';
-export { default as Session } from './session';
-export { default as Nominator } from './nominator';
+export { Address } from './address';
+export { Affiliation } from './affiliation';
+export { User } from './user';
+export { Household } from './household';
+export { PhoneNumber } from './phone-number';
+export { Child } from './child';
+export { Attachment } from './attachment';
+export { Session } from './session';
+export { Nominator } from './nominator';

@@ -10,10 +10,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import User from './user';
+import { User } from './user';
 
 @Entity('sessions')
-export default class Session extends BaseEntity {
+export class Session extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
 
   @CreateDateColumn({ name: 'created_at' })

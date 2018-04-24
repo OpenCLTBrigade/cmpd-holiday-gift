@@ -11,12 +11,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import Affiliation from './affiliation';
-import Household from './household';
+import { Affiliation } from './affiliation';
+import { Household } from './household';
 import AbstractUser from './abstract/user';
 
 @Entity('users')
-export default class User extends AbstractUser {
+export class User extends AbstractUser {
   private constructor(props) {
     super();
 
@@ -56,7 +56,15 @@ export default class User extends AbstractUser {
   @JoinColumn({ name: 'affiliation_id' })
   affiliation: Affiliation;
 
-  static fromJSON({ active, emailVerified, affiliationId, nominationLimit, ...props }) {
+  static fromJSON({
+    active = 'false',
+    emailVerified = 'false',
+    affiliationId,
+    nominationLimit,
+    ...props
+  }: {
+    [x: string]: any;
+  }) {
     const entity = new User(props);
 
     entity.active = bool(active);
@@ -64,6 +72,7 @@ export default class User extends AbstractUser {
     entity.approved = true;
 
     entity.affiliationId = Number(affiliationId);
+
     entity.nominationLimit = Number(nominationLimit);
 
     return entity;

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity('affiliations')
-export default class Affiliation extends BaseEntity {
+export class Affiliation extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
 
   @Column('text') type: string;

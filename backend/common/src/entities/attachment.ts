@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
-import Household from './household';
-import User from './user';
+import { Household } from './household';
+import { User } from './user';
 
 @Entity('household_attachments')
-export default class Attachment extends BaseEntity {
+export class Attachment extends BaseEntity {
   private constructor(props) {
     super();
 
