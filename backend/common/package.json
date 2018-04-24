@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "tsc"
+    "preinstall": "yarn run build",
+    "build": "tsc -p tsconfig.build.json"
   }
 }
