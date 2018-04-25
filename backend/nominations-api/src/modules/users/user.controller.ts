@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+  ValidationPipe,
+  NotFoundException
+} from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -44,7 +56,11 @@ export class UserController {
   @Get('/:id')
   @UseGuards(AuthGuard)
   async getById(@Param('id') id) {
-    return await this.userService.getById(id);
+    const user = await this.userService.getById(id);
+
+    if (!user) throw new NotFoundException();
+
+    return user;
   }
 
   @Post()

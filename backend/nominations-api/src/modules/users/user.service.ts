@@ -6,7 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import auth from '../lib/auth';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Component, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { isEmpty } from 'ramda';
+import { isNil } from 'rambda';
 import { ApplicationError } from '../../common/util/application-error';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
@@ -20,7 +20,7 @@ export enum ErrorCodes {
 }
 
 const determineSearchQuery = search =>
-  isEmpty(search)
+  isNil(search)
     ? undefined
     : {
         keys: ['lastName', 'firstName'],
