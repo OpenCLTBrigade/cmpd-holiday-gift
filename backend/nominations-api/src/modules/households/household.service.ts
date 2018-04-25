@@ -25,7 +25,7 @@ export class HouseholdService {
   async query({ page, search = undefined, active = true, nominator = undefined, baseUrl = '', whitelist = [] }) {
     try {
       const query = search && {
-        keys: ['name_last', 'nominator.name_last'],
+        keys: ['lastName', 'nominator.lastName'],
         search
       };
 
