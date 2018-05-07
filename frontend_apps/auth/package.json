@@ -1,0 +1,30 @@
+{
+  "name": "cmpd-fe-auth-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "alias": {
+    "react": "preact-compat",
+    "react-dom": "preact-compat"
+  },
+  "dependencies": {
+    "classcat": "^3.0.2",
+    "emotion": "^9.1.2",
+    "final-form": "^4.6.1",
+    "firebase": "^4.13.1",
+    "picostyle": "^1.0.2",
+    "preact-emotion": "^9.1.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-emotion": "^9.1.3",
+    "react-final-form": "^3.4.0",
+    "react-router": "^4.2.0",
+    "react-text-mask": "^5.4.0",
+    "text-mask": "^0.0.2",
+    "unistore": "^3.0.5"
+  }
+}
