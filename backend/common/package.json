@@ -1,7 +1,11 @@
 {
   "name": "cmpd-common-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "preinstall": "yarn run build",
+    "build": "tsc -p tsconfig.build.json"
+  }
 }

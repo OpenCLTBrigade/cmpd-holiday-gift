@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm';
-import { PhoneNumber } from '../entities';
+import { PhoneNumber } from 'cmpd-common-api';
 
 const faker = require('faker');
 

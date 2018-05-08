@@ -4,7 +4,7 @@ const faker = require('faker');
 
 import auth from '../apps/lib/auth';
 
-import { User } from '../entities';
+import { User } from 'cmpd-common-api';
 
 const fullName = compose(join(' '), props(['firstName', 'lastName']));
 
@@ -13,6 +13,7 @@ const createUser = (props = {}) => ({
   lastName: faker.name.lastName(),
   affiliationId: faker.random.number({ min: 1, max: 57 }),
   email: faker.internet.email(),
+  emailVerified: true,
   password: auth.hashPassword('admin'),
   nominationLimit: 5,
   active: true,
@@ -53,6 +54,7 @@ export default async (connection: Connection, verbose = true) => {
     firstName: 'Nominator',
     lastName: 'Account',
     affiliationId: 2,
+    emailVerified: true,
     email: 'nominator@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nominationLimit: 5,
@@ -67,6 +69,7 @@ export default async (connection: Connection, verbose = true) => {
     firstName: 'NotYetApproved',
     lastName: 'Account',
     affiliationId: 1,
+    emailVerified: true,
     email: 'notyetapproved@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nominationLimit: 5,
@@ -81,6 +84,7 @@ export default async (connection: Connection, verbose = true) => {
     firstName: 'Unapproved',
     lastName: 'Account',
     affiliationId: 1,
+    emailVerified: true,
     email: 'unapproved@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nominationLimit: 5,
@@ -95,6 +99,7 @@ export default async (connection: Connection, verbose = true) => {
     firstName: 'Deactivated',
     lastName: 'Account',
     affiliationId: 1,
+    emailVerified: true,
     email: 'deactivated@codeforcharlotte.org',
     password: auth.hashPassword('admin'),
     nominationLimit: 5,

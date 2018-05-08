@@ -3,7 +3,17 @@
 const fs = require('fs');
 const path = require('path');
 import config from '../config';
-import { Affiliation, Address, Attachment, Child, PhoneNumber, Household, User, Session, Nominator } from '../entities';
+import {
+  Affiliation,
+  Address,
+  Attachment,
+  Child,
+  PhoneNumber,
+  Household,
+  User,
+  Session,
+  Nominator
+} from 'cmpd-common-api';
 
 import { createConnection } from 'typeorm';
 import { AutoEncryptSubscriber } from 'typeorm-encrypted';

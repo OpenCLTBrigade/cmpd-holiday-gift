@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm';
-import { Household } from '../entities';
+import { Household } from 'cmpd-common-api';
 
 const faker = require('faker');
 
