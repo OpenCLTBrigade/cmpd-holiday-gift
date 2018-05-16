@@ -1,4 +1,7 @@
 import firebase from '../firebase';
+import { formatNumber } from '../util/formatters';
+
+const authUrl = 'http://localhost:3002/api/v2/auth';
 
 declare global {
   interface Window {
@@ -6,19 +9,11 @@ declare global {
   }
 }
 
-const actionCodeSettings = {
-  // URL you want to redirect back to. The domain (www.example.com) for this
-  // URL must be whitelisted in the Firebase Console.
-  url: 'http://localhost:58455/authenticate',
-  // This must be true.
-  handleCodeInApp: true
-};
+export const sendEmailVerification = async () => {
+  const user = firebase.auth().currentUser;
 
-export const loginWithEmail = async email => {
-  if (email) {
-    await firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings);
-
-    window.localStorage.setItem('emailForSignIn', email);
+  if (user) {
+    await user.sendEmailVerification();
   }
 };
 
@@ -36,7 +31,38 @@ export const loginWithCode = async code => {
   }
 };
 
-export const registerWithPhone = async phone => {
+export const verifyPhoneNumber = async phone => {
+  try {
+    if (phone) {
+      const response = await fetch(`${authUrl}/verify/${phone}`);
+      return response.status === 200;
+    }
+  } catch (error) {
+    console.log(error);
+
+    return false;
+  }
+};
+
+export const register = async ({ name, displayName = name, phoneNumber, ...registerData }) => {
+  try {
+    if (registerData) {
+      const response = await fetch(`${authUrl}/register`, {
+        body: JSON.stringify({ name, displayName, phoneNumber: formatNumber(phoneNumber), ...registerData }),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        method: 'POST'
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    return false;
+  }
+};
+
+export const login = async phone => {
   try {
     if (phone) {
       await firebase

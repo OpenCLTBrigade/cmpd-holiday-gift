@@ -5,13 +5,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "cross-env API_URL=http://localhost:3002 parcel src/index.html --port 58455"
   },
   "alias": {
     "react": "preact-compat",
     "react-dom": "preact-compat"
   },
   "dependencies": {
+    "@types/node": "^10.0.4",
     "classcat": "^3.0.2",
     "emotion": "^9.1.2",
     "final-form": "^4.6.1",
@@ -26,5 +27,8 @@
     "react-text-mask": "^5.4.0",
     "text-mask": "^0.0.2",
     "unistore": "^3.0.5"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4"
   }
 }

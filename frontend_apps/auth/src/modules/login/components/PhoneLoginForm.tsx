@@ -3,9 +3,9 @@ import { Component } from 'react';
 import { Button } from '../../components/Button';
 
 import firebase from '../../common/firebase';
-import { loginWithCode, registerWithPhone } from '../../common/services/login';
+import { loginWithCode, login, verifyPhoneNumber } from '../../common/services/login';
+import { formatNumber } from '../../common/util/formatters';
 
-const formatNumber = phoneNumber => `+1${phoneNumber.replace('-', '').replace(' ', '')}`;
 const verificationCodeMask = [/[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 const phoneNumberMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -14,7 +14,7 @@ const labelStyle = {
   display: 'block'
 };
 
-export class PhoneLoginForm extends Component<{ onSubmit }, { phone; codeReceived; verificationCode }> {
+export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeReceived; verificationCode }> {
   state = {
     phone: '',
     verificationCode: '',
@@ -34,6 +34,23 @@ export class PhoneLoginForm extends Component<{ onSubmit }, { phone; codeReceive
     });
   };
 
+  onVerificationCodeInput = e => this.setState({ verificationCode: (e.target as HTMLInputElement).value });
+
+  onSubmitLoginForm = async e => {
+    e.preventDefault();
+    const { onSubmit, history } = this.props;
+
+    await loginWithCode(this.state.verificationCode.replace('-', ''));
+
+    const exists = await verifyPhoneNumber(formatNumber(this.state.phone));
+
+    if (exists) {
+      onSubmit();
+    } else {
+      history.push(`register/${this.state.phone}`);
+    }
+  };
+
   renderLoginForm({ onSubmit }) {
     return (
       <form>
@@ -45,39 +62,37 @@ export class PhoneLoginForm extends Component<{ onSubmit }, { phone; codeReceive
               type="text"
               placeholder="Verification code"
               value={this.state.verificationCode}
-              onInput={e => this.setState({ verificationCode: (e.target as HTMLInputElement).value })}
+              onInput={this.onVerificationCodeInput}
             />
           </label>
         </div>
         <div className="row">
-          <Button
-            type="submit"
-            text="Login"
-            disabled={!!this.state.verificationCode}
-            onClick={() => loginWithCode(this.state.verificationCode.replace('-', '')).then(onSubmit)}
-          />
+          <Button type="submit" text="Login" disabled={!this.state.verificationCode} onClick={this.onSubmitLoginForm} />
         </div>
       </form>
     );
   }
 
-  renderRegisterForm() {
+  onSubmitRequestTokenForm = async e => {
+    e.preventDefault();
+    await login(formatNumber(this.state.phone));
+  };
+
+  onPhoneInput = e => this.setState({ phone: (e.target as HTMLInputElement).value });
+
+  renderRequestTokenForm() {
     return (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          registerWithPhone(formatNumber(this.state.phone));
-        }}>
+      <form onSubmit={this.onSubmitRequestTokenForm}>
         <div className="row">
           <div className="6 col">
             <label style={labelStyle}>
               Phone #
               <input
-                type="phone"
+                type="tel"
                 className="card w-100"
                 placeholder="Enter your phone number"
                 value={this.state.phone}
-                onInput={e => this.setState({ phone: (e.target as HTMLInputElement).value })}
+                onInput={this.onPhoneInput}
               />
             </label>
           </div>
@@ -92,7 +107,7 @@ export class PhoneLoginForm extends Component<{ onSubmit }, { phone; codeReceive
   render() {
     const { onSubmit } = this.props;
     return (
-      <section>{this.state.codeReceived ? this.renderLoginForm({ onSubmit }) : this.renderRegisterForm()}</section>
+      <section>{this.state.codeReceived ? this.renderLoginForm({ onSubmit }) : this.renderRequestTokenForm()}</section>
     );
   }
 }
