@@ -10,8 +10,6 @@
     "noLib": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "lib": ["es2016"]
   },
   "include": ["src/**/*"],
