@@ -1,0 +1,10 @@
+{
+  "extends": "../../frontend_apps/tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "dist"
+  },
+  "jsx": "react",
+  "exclude": [".storybook", "stories", "node_modules", "dist", "build", "scripts", "webpack", "jest"],
+  "include": ["./src"]
+}

@@ -4,17 +4,13 @@
     "target": "es5",
     "lib": ["es6", "dom", "es5"],
     "jsx": "react",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "sourceMap": true,
-    "allowJs": false,
     "forceConsistentCasingInFileNames": false,
     "noImplicitReturns": true,
     "noImplicitThis": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "plugins": [
       {

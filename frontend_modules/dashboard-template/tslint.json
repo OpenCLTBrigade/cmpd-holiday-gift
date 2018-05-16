@@ -1,0 +1,3 @@
+{
+  "extends": ["../../frontend_apps/tslint.base.json"]
+}
