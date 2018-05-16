@@ -5,21 +5,37 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "npm-run-all -p watch start-server",
+    "start": "ts-node-dev --respawn --type-check src/server.ts",
     "start-server": "nodemon --watch dist dist/server.js",
     "build": "parcel build src/server.ts --target node",
     "watch": "parcel src/server.ts --target node",
-    "seed": "ts-node src/seeds"
+    "seed": "ts-node src/seeds --no-cache"
   },
   "engines": {
     "node": ">=8.9.x"
   },
   "dependencies": {
+    "@nestjs/common": "^5.0.0-rc.1",
+    "@nestjs/core": "^5.0.0-rc.1",
     "@nestjs/graphql": "^2.0.0",
-    "@nestjs/websockets": "^4.6.6",
+    "@nestjs/passport": "^1.0.5",
+    "@nestjs/swagger": "^1.1.4",
+    "@nestjs/websockets": "^5.0.0-rc.1",
     "apollo-server-express": "^1.3.5",
+    "class-transformer": "^0.1.9",
     "cmpd-common-api": "^1.0.0",
+    "firebase-admin": "^5.12.0",
     "graphql": "^0.13.2",
-    "graphql-tools": "^2.24.0"
+    "graphql-tools": "^2.24.0",
+    "jsonwebtoken": "^8.2.1",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
+    "pug": "^2.0.3",
+    "rxjs": "6.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^5.0.0-rc.1",
+    "ts-node-dev": "^1.0.0-pre.21"
   }
 }
