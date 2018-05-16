@@ -1,13 +1,12 @@
+import { Injectable } from '@nestjs/common';
+import { Affiliation, ApplicationError, createPagedResults, logger } from 'cmpd-common-api';
 import { getRepository } from 'typeorm';
-import { Component } from '@nestjs/common';
-
-import { Affiliation, logger, createPagedResults, ApplicationError } from 'cmpd-common-api';
 
 export enum ErrorCodes {
   NoAffiliationExists = 'NoAffiliationExists'
 }
 
-@Component()
+@Injectable()
 export class AffiliationService {
   async query({ type = '', search = '', page = 1, whitelist = [] } = {}) {
     try {

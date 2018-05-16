@@ -1,13 +1,13 @@
-import { Guard, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Guard } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { pathOr } from 'ramda';
 
 @Guard()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
-  canActivate(req, context: ExecutionContext): boolean {
-    const { handler } = context;
+  canActivate(context: ExecutionContext): boolean {
+    const handler = context.getHandler();
+    const [req] = context.getArgs();
     const roles = this.reflector.get<string[]>('roles', handler);
     if (!roles) {
       return true;

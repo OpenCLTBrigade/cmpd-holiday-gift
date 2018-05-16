@@ -1,17 +1,16 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { IsSame } from '../../../common/validators/is-same.validator';
 
 export class UpdateUserDto {
   uid: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
-  readonly firstName: string;
+  readonly displayName: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
-  readonly lastName: string;
+  readonly name: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
@@ -28,10 +27,7 @@ export class UpdateUserDto {
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
-  readonly phone: string;
-
-  @ApiModelProperty({ type: Boolean })
-  readonly active: boolean;
+  readonly phoneNumber: string;
 
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
@@ -44,16 +40,4 @@ export class UpdateUserDto {
   @ApiModelProperty({ type: Boolean })
   @IsOptional()
   readonly emailVerified: boolean;
-
-  @ApiModelProperty({ type: String })
-  @IsOptional()
-  readonly password: string;
-
-  @ApiModelProperty({ type: String })
-  @IsOptional()
-  @IsSame('password')
-  readonly confirmationPassword: string;
-
-  readonly approved = true;
-  readonly confirmationEmail = false;
 }

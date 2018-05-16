@@ -1,17 +1,18 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { IsSame } from '../../../common/validators/is-same.validator';
+import { IsBooleanString, IsEmail, IsNotEmpty, IsNumberString, IsOptional } from 'class-validator';
 
-export class UpdateUserDto {
-  uid: string;
+export class CreateUserDto {
+  @ApiModelProperty({ type: String })
+  @IsNotEmpty()
+  readonly phoneNumber: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
-  readonly firstName: string;
+  readonly displayName: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
-  readonly lastName: string;
+  readonly name: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
@@ -30,30 +31,17 @@ export class UpdateUserDto {
   @IsNotEmpty()
   readonly phone: string;
 
-  @ApiModelProperty({ type: Boolean })
-  readonly active: boolean;
-
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
+  @IsNumberString()
   readonly nominationLimit: number;
 
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
+  @IsNumberString()
   readonly affiliationId: number;
 
   @ApiModelProperty({ type: Boolean })
   @IsOptional()
   readonly emailVerified: boolean;
-
-  @ApiModelProperty({ type: String })
-  @IsOptional()
-  readonly password: string;
-
-  @ApiModelProperty({ type: String })
-  @IsOptional()
-  @IsSame('password')
-  readonly confirmationPassword: string;
-
-  readonly approved = true;
-  readonly confirmationEmail = false;
 }

@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Web app settings
-config.port = 3001;
+config.port = 3002;
 config.useCompression = true;
 
 // Verbosity

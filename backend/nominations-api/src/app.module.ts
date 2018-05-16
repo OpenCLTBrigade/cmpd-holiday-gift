@@ -1,51 +1,48 @@
-import { MiddlewaresConsumer, Module, RequestMethod } from '@nestjs/common';
-import { GraphQLFactory, GraphQLModule } from '@nestjs/graphql';
-// import { graphqlExpress } from 'apollo-server-express';
-// import { mergeSchemas } from 'graphql-tools';
-import { UploadMiddleware } from './common/middlewares/upload.middleware';
-import config from './config';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 // import { typeDefs } from './modules/affiliations';
 import { AffiliationsModule } from './modules/affiliations';
 import { AuthModule } from './modules/auth';
-import auth from './modules/lib/auth';
+import { CmpdModule } from './modules/cmpd/cmpd.module';
 import { HouseholdsModule } from './modules/households';
 import { TrackingModule } from './modules/tracking';
 import { UsersModule } from './modules/users/users.module';
-import { CmpdModule } from './modules/cmpd/cmpd.module';
+import { AppController } from './app.controller';
 
-const allRoutes = {
-  path: '*',
-  method: RequestMethod.ALL
-};
+// const allRoutes = {
+//   path: '*',
+//   method: RequestMethod.ALL
+// };
 
-const nominationRoutes = {
-  path: 'api/nominations/*',
-  method: RequestMethod.ALL
-};
+// const nominationRoutes = {
+//   path: 'api/nominations/*',
+//   method: RequestMethod.ALL
+// };
 
-const authRoutes = {
-  path: 'api/auth/*',
-  method: RequestMethod.ALL
-};
+// const authRoutes = {
+//   path: 'api/auth/*',
+//   method: RequestMethod.ALL
+// };
 
 @Module({
-  modules: [GraphQLModule, AuthModule, HouseholdsModule, AffiliationsModule, TrackingModule, UsersModule, CmpdModule]
+  modules: [GraphQLModule, AuthModule, HouseholdsModule, AffiliationsModule, TrackingModule, UsersModule, CmpdModule],
+  controllers: [AppController]
 })
 export class AppModule {
-  constructor(private readonly graphQLFactory: GraphQLFactory) {}
+  constructor() {}
 
-  configure(consumer: MiddlewaresConsumer): void {
-    consumer.apply(auth.authMiddleware(config.jwtSecrets.auth)).forRoutes(authRoutes);
-    consumer.apply(auth.authMiddleware(config.jwtSecrets.nominations)).forRoutes(nominationRoutes);
-    consumer.apply(auth.sessionMiddleware).forRoutes(allRoutes);
-    consumer.apply(UploadMiddleware).forRoutes({
-      path: '/api/nominations/:id/upload',
-      method: RequestMethod.PUT
-    });
+  configure(consumer: MiddlewareConsumer): void {
+    // consumer.apply(auth.authMiddleware(config.jwtSecrets.auth)).forRoutes(authRoutes);
+    // consumer.apply(auth.authMiddleware(config.jwtSecrets.nominations)).forRoutes(nominationRoutes);
+    // consumer.apply(auth.sessionMiddleware).forRoutes(allRoutes);
+    // consumer.apply(UploadMiddleware).forRoutes({
+    //   path: '/api/nominations/:id/upload',
+    //   method: RequestMethod.PUT
+    // });
     this.setupGraphQl(consumer);
   }
 
-  setupGraphQl(consumer: MiddlewaresConsumer) {
+  setupGraphQl(_: MiddlewareConsumer) {
     // const localSchema = this.graphQLFactory.createSchema({ typeDefs });
     // const delegates = this.graphQLFactory.createDelegates();
     // const schema = mergeSchemas({
