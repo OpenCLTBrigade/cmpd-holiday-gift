@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './apps/app.module';
+import { AppModule } from './app.module';
 import config from './config';
-import logger from './apps/lib/logger';
+import logger from './modules/lib/logger';
 import { AnyExceptionFilter } from './common/filters/any-exception.filter';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';

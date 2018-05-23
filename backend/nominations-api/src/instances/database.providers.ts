@@ -1,9 +1,17 @@
+import {
+  Address,
+  Affiliation,
+  Attachment,
+  Child,
+  Household,
+  Nominator,
+  PhoneNumber,
+  Session,
+  User
+} from 'cmpd-common-api';
 import { createConnection } from 'typeorm';
 import { AutoEncryptSubscriber } from 'typeorm-encrypted';
-
 import config from '../config';
-
-import { Affiliation, Attachment, Household, PhoneNumber, Address, Child, Session, User, Nominator } from '../entities';
 
 const { db: { dialect: type, storage: database } } = config;
 
