@@ -27,16 +27,14 @@ class Sidebar extends React.Component<any, any> {
     return (
       <div id="sidebar" className="sidebar" data-color="black">
         <div className="sidebar-background" style={sidebarBackground} />
-        {/* <div className="logo">
-          <a href="https://www.creative-tim.com" className="simple-text logo-mini">
+        <div className="logo">
+          <a href="#" className="simple-text logo-mini">
             <div className="logo-img">
-              <img src={logo} alt="logo_image" />
+              <img src={'https://avatars1.githubusercontent.com/u/4162073?s=60&v=4'} alt="logo_image" />
             </div>
           </a>
-          <a href="https://www.creative-tim.com" className="simple-text logo-normal">
-            Creative Tim
-          </a>
-        </div> */}
+          <span className="simple-text logo-normal">CMPD Explorers</span>
+        </div>
         <div className="sidebar-wrapper">
           <ul className="nav">
             {this.state.width <= 991 ? <HeaderLinks /> : null}
