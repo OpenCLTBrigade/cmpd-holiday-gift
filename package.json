@@ -16,8 +16,8 @@
     "test": "lerna run test",
     "jest": "jest --config=jest.json",
     "dist:watch": "lerna run --parallel dist:watch",
-    "clean": "rimraf packages/**/dist",
-    "reset": "rimraf packages/**/node_modules"
+    "clean": "rimraf frontend/**/dist backend/**/dist",
+    "reset": "rimraf frontend/**/node_modules backend/**/node_modules"
   },
   "cacheDirectories": ["node_modules", "packages/cmpd-fe-nomiantions/node_modules"],
   "engines": {
@@ -106,7 +106,7 @@
     "typeorm-encrypted": "^0.5.0"
   },
   "workspaces": {
-    "packages": ["frontend_apps/*", "frontend_modules/*", "backend/*"],
+    "packages": ["frontend/*", "backend/*"],
     "nohoist": ["**/typescript*", "**/jest*", "**/ts-*", "**/tslint*"]
   },
   "proxy": {
