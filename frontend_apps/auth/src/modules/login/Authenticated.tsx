@@ -1,8 +1,10 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 
-export const Authenticated = () => (
-  <div>
-    <h1>Login successful</h1>
-    <p>You have successfully been logged in.</p>
-  </div>
+export const Authenticated = ({ location }) => (
+  <Redirect
+    to={{
+      pathname: location.referrer
+    }}
+  />
 );
