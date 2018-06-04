@@ -109,18 +109,18 @@ export class AccountService {
     }
   }
 
-  async approveUser(approveUserDto: ApproveUserDto) {
+  async approveUser({ uid, role, nominationLimit }: ApproveUserDto) {
     try {
-      await admin.auth().updateUser(approveUserDto.uid, {
+      await admin.auth().updateUser(uid, {
         disabled: false
       });
-      await admin.auth().setCustomUserClaims(approveUserDto.uid, { [approveUserDto.role]: true });
+      await admin.auth().setCustomUserClaims(uid, { app: { [role]: true } });
 
-      const nominator = await Nominator.findOneById(approveUserDto.uid);
+      const nominator = await Nominator.findOneById(uid);
+
       nominator.disabled = false;
-
-      nominator.role = approveUserDto.role;
-      nominator.nominationLimit = approveUserDto.nominationLimit;
+      nominator.role = role;
+      nominator.nominationLimit = nominationLimit;
     } catch (error) {
       throw new ApplicationError(error.message);
     }
