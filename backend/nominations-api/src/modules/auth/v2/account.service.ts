@@ -147,6 +147,8 @@ export class AccountService {
       const user = await Nominator.findOneById(firebaseUser.uid);
 
       if (!user || !firebaseUser) throw new ApplicationError('user not found', ErrorCodes.UserNotFound);
+      const { disabled, emailVerified } = user;
+      return { disabled, emailVerified };
     } catch (error) {
       throw new ApplicationError(error.message, ErrorCodes.UserNotFound);
     }
