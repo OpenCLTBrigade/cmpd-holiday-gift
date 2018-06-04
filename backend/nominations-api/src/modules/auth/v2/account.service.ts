@@ -57,9 +57,9 @@ export class AccountService {
     }
 
     try {
-      const { phoneNumber, displayName } = rest;
+      const { phoneNumber, displayName, email, emailVerified } = rest;
       const user = await Nominator.findOneById(uid);
-      const userRecord = await admin.auth().updateUser(uid, { phoneNumber, displayName });
+      const userRecord = await admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
       if (!user) throw new NotFoundException();
 
