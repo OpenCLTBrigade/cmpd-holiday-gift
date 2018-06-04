@@ -8,9 +8,6 @@ import { Register } from './modules/register/Register';
 import { Registered } from './modules/register/Registered';
 import { Authenticated } from './modules/login/Authenticated';
 
-const ProtectedRoute = ({ component: Component, accountStatus, path, ...rest }) =>
-  accountStatus === true ? <Component {...rest} /> : <Redirect to="/login" />;
-
 const AppRouter = connect('accountStatus')(({ accountStatus }) => (
   <Router>
     <div>

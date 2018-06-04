@@ -40,7 +40,6 @@ export class AuthController {
 
   @Get('/verify/:phoneNumber')
   async verifyUser(@Param('phoneNumber') phoneNumber) {
-    console.log(phoneNumber);
     return this.authService.verifyUser(phoneNumber);
   }
 }
