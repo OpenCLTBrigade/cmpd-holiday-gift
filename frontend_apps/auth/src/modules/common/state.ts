@@ -1,13 +1,15 @@
 import createStore, { Store } from 'unistore';
 import { connect } from 'unistore/react';
 import { register, sendEmailVerification } from './services/login';
+import firebase from './firebase';
 
 type State = {
   count: number;
-  accountStatus: 'authenticated' | 'registered';
+  accountStatus: 'unauthenticated' | 'authenticated' | 'registered';
+  idToken?: string;
 };
 
-export const store = createStore({
+export const store = createStore<State>({
   count: 0,
   accountStatus: null
 });
@@ -29,5 +31,15 @@ export const actions = (store: Store<State>) => ({
 
     console.log('step 3: update account status');
     return { accountStatus: 'registered' };
+  }
+});
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (user && user.emailVerified) {
+    const idToken: string = await firebase.auth().currentUser.getIdToken(true);
+
+    store.setState({ accountStatus: 'authenticated', idToken });
+  } else {
+    store.setState({ accountStatus: 'unauthenticated' });
   }
 });
