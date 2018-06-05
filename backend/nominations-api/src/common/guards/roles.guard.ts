@@ -1,25 +1,23 @@
 import { CanActivate, ExecutionContext, Guard } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { AccountService } from '../../modules/auth/v2/account.service';
 
 @Guard()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  canActivate(context: ExecutionContext) {
     const handler = context.getHandler();
     const [req] = context.getArgs();
     const roles = this.reflector.get<string[]>('roles', handler);
+
     if (!roles) {
       return true;
     }
 
-    const { role = 'none', roles: userRoles = [role] } = req.user;
+    const { user } = req;
+    const hasClaim = roles.some(role => user[role]);
 
-    const hasRole = () => !!userRoles.find(role => !!roles.find(item => item === role));
-
-    console.log(userRoles);
-    console.log(hasRole());
-
-    return hasRole();
+    return hasClaim;
   }
 }
