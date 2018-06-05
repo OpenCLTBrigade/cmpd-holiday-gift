@@ -10,7 +10,7 @@ export const Login = connect('accountStatus', actions)(
   ({ loginWithToken, history, accountStatus }) =>
     accountStatus === 'authenticated' ? (
       <Redirect to="/authenticated" />
-    ) : (
+    ) : accountStatus === 'unauthenticated' ? (
       <PhoneLoginForm history={history} onSubmit={token => loginWithToken(token)} />
-    )
+    ) : null
 );
