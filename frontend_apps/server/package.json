@@ -1,0 +1,13 @@
+{
+  "name": "explorer-web-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "serve public"
+  },
+  "dependencies": {
+    "serve": "^8.1.1"
+  }
+}
