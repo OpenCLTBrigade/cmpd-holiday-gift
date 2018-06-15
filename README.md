@@ -1,4 +1,4 @@
-# CMPD Explorers Christmas Project 2017
+# CMPD Explorers Christmas Project 2018
 
 This application, developed by [Code for Charlotte], helps automate
 the [CMPD Explorers Christmas Project].
