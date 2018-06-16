@@ -9,7 +9,7 @@ import { Registered } from './modules/register/Registered';
 import { Authenticated } from './modules/login/Authenticated';
 
 const AppRouter = connect('accountStatus')(({ accountStatus }) => (
-  <Router>
+  <Router basename="/auth">
     <div>
       <Route path="/" exact component={Login} />
       <Route path="/authenticated" component={Authenticated} />
