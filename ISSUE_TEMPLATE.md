@@ -1,9 +1,10 @@
 <!--- Provide a general summary of the issue in the Title above -->
 
 **I'm submitting a:**
-<!-- (check one with "x") -->
-- [ ] bug report
-- [ ] feature request
+<!-- (Keep the line that matches) -->
+- bug report
+- feature request
+- question or suggestion
 
 **Expected behavior:**
 <!--- If you're describing a bug, tell us what should happen -->

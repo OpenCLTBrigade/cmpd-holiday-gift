@@ -1,6 +1,6 @@
 {
   "lerna": "2.8.0",
-  "packages": ["frontend_apps/*", "frontend_modules/*", "backend/*"],
+  "packages": ["frontend/*", "backend/*"],
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true
