@@ -2,7 +2,10 @@
   "name": "cmpd-fe-nominations-app",
   "version": "0.1.0",
   "private": true,
-  "cacheDirectories": ["node_modules", "../node_modules"],
+  "cacheDirectories": [
+    "node_modules",
+    "../node_modules"
+  ],
   "devDependencies": {
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -36,11 +39,13 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.0.14",
     "rxjs": "^5.5.6",
-    "styled-components": "^2.1.0"
+    "styled-components": "^2.1.0",
+    "unistore": "^3.0.6"
   },
   "scripts": {
     "start": "parcel public/index.html --open",
-    "build": "parcel build public/index.html --detailed-report"
+    "build": "parcel build public/index.html --detailed-report",
+    "watch": "parcel watch public/index.html --out-dir ../server/public/nominations --public-url /nominations/"
   },
   "proxy": "http://localhost:3001"
 }
