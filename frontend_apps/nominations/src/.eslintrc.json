@@ -14,5 +14,5 @@
     "no-console": 0,
     "no-duplicate-imports": 0
   },
-  "plugins": ["react"]
+  "plugins": [""]
 }
