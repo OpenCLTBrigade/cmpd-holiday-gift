@@ -15,12 +15,14 @@
     "babel-preset-stage-2": "^6.24.1"
   },
   "dependencies": {
+    "@firebase/app-types": "^0.3.2",
     "admin-lte": "^2.3.11",
     "axios": "^0.16.2",
     "babel": "^6.23.0",
     "bootstrap": "^3.3.7",
     "final-form": "^4.2.1",
     "final-form-arrays": "^1.0.4",
+    "firebase": "^5.1.0",
     "font-awesome": "^4.7.0",
     "neoform": "^0.2.0",
     "neoform-plain-object-helpers": "^0.1.0",
@@ -31,7 +33,7 @@
     "react": "^16.3.0",
     "react-bootstrap": "^0.31.5",
     "react-bootstrap-table": "^4.2.0",
-    "react-dom": "^15.5.4",
+    "react-dom": "^16.4.1",
     "react-final-form": "^3.1.0",
     "react-final-form-arrays": "^1.0.4",
     "react-inline-confirm": "^2.1.1",
