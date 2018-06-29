@@ -510,6 +510,10 @@
   version "0.12.6"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.12.6.tgz#3d619198585fcabe5f4e1adfb5cf5f3388c66c13"
 
+"@types/history@*":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
+
 "@types/jest@^22.1.2":
   version "22.2.3"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-22.2.3.tgz#0157c0316dc3722c43a7b71de3fdf3acbccef10d"
@@ -550,6 +554,34 @@
 "@types/range-parser@*":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.2.tgz#fa8e1ad1d474688a757140c91de6dace6f4abc8d"
+
+"@types/react-dom@^16.0.0":
+  version "16.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.6.tgz#f1a65a4e7be8ed5d123f8b3b9eacc913e35a1a3c"
+  dependencies:
+    "@types/node" "*"
+    "@types/react" "*"
+
+"@types/react-router-dom@^4.2.3":
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.2.7.tgz#9d36bfe175f916dd8d7b6b0237feed6cce376b4c"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*", "@types/react-router@^4.0.22":
+  version "4.0.27"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.27.tgz#553f54df7c4b09d6046b0201ce9b91c46b2940e3"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
+"@types/react@*", "@types/react@^16.4.5":
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.5.tgz#98a00fdd2c512ed5d7399d3f2660ce9d6152bce6"
+  dependencies:
+    csstype "^2.2.0"
 
 "@types/request@^2.47.0":
   version "2.47.1"
@@ -3739,7 +3771,7 @@ cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
   dependencies:
     cssom "0.3.x"
 
-csstype@^2.5.2:
+csstype@^2.2.0, csstype@^2.5.2:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.5.tgz#4125484a3d42189a863943f23b9e4b80fedfa106"
 
@@ -10488,9 +10520,9 @@ rambda@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/rambda/-/rambda-1.1.5.tgz#8ac65f7396f20cc122ba01fb6a4fb3ceb3befd20"
 
-"rambda@git+https://github.com/selfrefactor/rambda.git#1.1.0":
+"rambda@https://github.com/selfrefactor/rambda#1.1.0":
   version "1.0.9"
-  resolved "git+https://github.com/selfrefactor/rambda.git#ee04b4005da84b29d166364100d50e2a9be56a60"
+  resolved "https://github.com/selfrefactor/rambda#ee04b4005da84b29d166364100d50e2a9be56a60"
 
 rambdax@^0.8.10:
   version "0.8.10"
