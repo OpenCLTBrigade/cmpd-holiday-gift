@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es5",
-    "lib": ["es6", "dom", "es5"],
+    "lib": ["es6", "dom", "es5", "esnext.asynciterable"],
     "jsx": "react",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": false,
