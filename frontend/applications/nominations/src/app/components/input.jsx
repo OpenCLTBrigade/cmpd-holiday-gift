@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 
-import { Field } from 'neoform';
-import { FieldValidation } from 'neoform-validation';
+import { field } from 'neoform';
+import { fieldValidation } from 'neoform-validation';
 
 const getValidationState = validationStatus => {
   if (validationStatus === false) {
@@ -61,4 +61,4 @@ class Input extends React.Component {
   }
 }
 
-export default Field(FieldValidation(Input));
+export default field(fieldValidation(Input));
