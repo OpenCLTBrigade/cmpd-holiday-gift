@@ -16,14 +16,20 @@
     "test": "lerna run test",
     "jest": "jest --config=jest.json",
     "dist:watch": "lerna run --parallel dist:watch",
-    "clean": "rimraf frontend/**/dist backend/**/dist",
+    "clean": "lerna clean && rimraf frontend/**/dist backend/**/dist",
     "reset": "rimraf frontend/**/node_modules backend/**/node_modules"
   },
-  "cacheDirectories": ["node_modules", "packages/cmpd-fe-nomiantions/node_modules"],
+  "cacheDirectories": [
+    "node_modules",
+    "packages/cmpd-fe-nomiantions/node_modules"
+  ],
   "engines": {
     "node": ">=8.9.x"
   },
-  "files": ["build", "server-notypes"],
+  "files": [
+    "build",
+    "server-notypes"
+  ],
   "devDependencies": {
     "@types/exceljs": "^0.5.2",
     "@types/express": "^4.0.39",
@@ -36,6 +42,7 @@
     "faker": "^4.1.0",
     "husky": "^0.14.3",
     "jasmine": "^2.6.0",
+    "jest": "^23.2.0",
     "lerna": "^2.8.0",
     "nodemon": "^1.14.12",
     "npm-run-all": "^4.1.2",
@@ -102,8 +109,16 @@
     "typeorm-encrypted": "^0.5.0"
   },
   "workspaces": {
-    "packages": ["frontend/**/*", "backend/*"],
-    "nohoist": ["**/typescript*", "**/jest*", "**/ts-*", "**/tslint*"]
+    "packages": [
+      "frontend/**/*",
+      "backend/*"
+    ],
+    "nohoist": [
+      "**/typescript*",
+      "**/jest*",
+      "**/ts-*",
+      "**/tslint*"
+    ]
   },
   "proxy": {
     "/api": {
