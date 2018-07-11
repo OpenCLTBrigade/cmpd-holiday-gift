@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "parcel build src/server.ts --target node",
-    "dist:watch": "parcel src/server.ts --target node"
+    "build": "parcel build src/module.ts --target node",
+    "dist:watch": "parcel src/module.ts --target node"
   },
   "engines": {
     "node": ">=8.9.x"
@@ -17,7 +17,6 @@
     "@nestjs/swagger": "^1.1.4",
     "@nestjs/websockets": "^5.0.0-rc.1",
     "class-transformer": "^0.1.9",
-    "cmpd-common-api": "^1.0.0",
     "jsonwebtoken": "^8.2.1",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
@@ -27,6 +26,7 @@
     "rxjs": "6.0.0"
   },
   "devDependencies": {
+    "cmpd-common-api": "^1.0.0",
     "@nestjs/testing": "^5.0.0-rc.1",
     "ts-node-dev": "^1.0.0-pre.21"
   }
