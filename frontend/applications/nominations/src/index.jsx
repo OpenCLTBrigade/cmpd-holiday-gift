@@ -23,7 +23,7 @@ import 'babel-polyfill';
 
 // Our React Components that this component uses
 import Dashboard from './app/dashboard';
-import Auth from './app/auth';
+
 import Restricted from './app/components/restricted';
 import NotFound from './notFound';
 import * as slips from './app/slips';
@@ -31,15 +31,25 @@ import * as slips from './app/slips';
 import { AuthToken } from './lib/auth';
 import { store } from './lib/state';
 
+//TODO: use lerna to grab this dep.
+import Auth from '../../auth/src/App';
 const Routes = connect('loginStatus')(({ loginStatus }) => {
   //TODO: Need to check registration status & add referrer logic
+
   if (loginStatus === 'unauthenticated') {
-    window.location = '/auth';
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/auth" />} />
+          <Route path="/auth" component={Auth} />
+        </Switch>
+      </Router>
+    );
   }
 
   return (
     loginStatus === 'authenticated' && (
-      <Router basename="/nominations/">
+      <Router>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
           <Route path="/dashboard" component={Dashboard} />
