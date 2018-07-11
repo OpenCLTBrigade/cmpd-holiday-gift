@@ -1,10 +1,10 @@
+import { User } from 'cmpd-common-api';
 import { Connection } from 'typeorm';
-import { Nominator } from 'cmpd-common-api';
 
 export const authProviders = [
   {
     provide: 'UserRepositoryToken',
-    useFactory: (connection: Connection) => connection.getRepository(Nominator),
+    useFactory: (connection: Connection) => connection.getRepository(User),
     inject: ['DbConnectionToken']
   }
 ];

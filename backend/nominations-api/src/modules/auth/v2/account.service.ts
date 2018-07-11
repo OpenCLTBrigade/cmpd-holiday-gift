@@ -1,10 +1,10 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ApplicationError, User } from 'cmpd-common-api';
 import admin from '../../../common/services/firebase';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { ApproveUserDto } from './dto/approve-user.dto';
-import { Nominator, ApplicationError } from 'cmpd-common-api';
 import { sendApproval } from '../../lib/registration';
+import { ApproveUserDto } from './dto/approve-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 export enum ErrorCodes {
@@ -29,7 +29,7 @@ export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const user = await admin.auth().getUser(decodedToken.uid);
-    const nominator = await Nominator.findOneById(decodedToken.uid);
+    const nominator = await User.findOneById(decodedToken.uid);
 
     return nominator;
   }
@@ -38,7 +38,7 @@ export class AccountService {
     try {
       const { phoneNumber, displayName } = createUserDto;
       const userRecord = await admin.auth().createUser({ disabled: false, phoneNumber, displayName });
-      const nominator = Nominator.fromJSON(createUserDto);
+      const nominator = User.fromJSON(createUserDto);
 
       nominator.disabled = false;
       nominator.id = userRecord.uid;
@@ -58,7 +58,7 @@ export class AccountService {
 
     try {
       const { phoneNumber, displayName, email, emailVerified } = rest;
-      const user = await Nominator.findOneById(uid);
+      const user = await User.findOneById(uid);
       const userRecord = await admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
       if (!user) throw new NotFoundException();
@@ -92,7 +92,7 @@ export class AccountService {
 
       await admin.auth().updateUser(firebaseUser.uid, { displayName, disabled: false, email: registerUserDto.email });
 
-      const nominator = Nominator.fromJSON(registerUserDto);
+      const nominator = User.fromJSON(registerUserDto);
 
       nominator.disabled = true;
       nominator.id = firebaseUser.uid;
@@ -116,7 +116,7 @@ export class AccountService {
       });
       await admin.auth().setCustomUserClaims(uid, { app: { [role]: true } });
 
-      const nominator = await Nominator.findOneById(uid);
+      const nominator = await User.findOneById(uid);
 
       nominator.disabled = false;
       nominator.role = role;
@@ -132,7 +132,7 @@ export class AccountService {
         disabled: true
       });
 
-      const user = await Nominator.findOneById(uid);
+      const user = await User.findOneById(uid);
       user.disabled = true;
     } catch (error) {
       throw new ApplicationError(error.message);
@@ -144,7 +144,7 @@ export class AccountService {
   async verifyUser(phoneNumber: string) {
     try {
       const firebaseUser = await admin.auth().getUserByPhoneNumber(phoneNumber);
-      const user = await Nominator.findOneById(firebaseUser.uid);
+      const user = await User.findOneById(firebaseUser.uid);
 
       if (!user || !firebaseUser) throw new ApplicationError('user not found', ErrorCodes.UserNotFound);
       const { disabled, emailVerified } = user;

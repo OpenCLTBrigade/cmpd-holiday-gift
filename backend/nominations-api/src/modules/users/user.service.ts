@@ -1,13 +1,18 @@
-import { ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { Nominator } from 'cmpd-common-api';
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+  } from '@nestjs/common';
+import { User } from 'cmpd-common-api';
 import { isNil } from 'rambda';
+import admin from '../../common/services/firebase';
 import { ApplicationError } from '../../common/util/application-error';
 import auth from '../lib/auth';
 import logger from '../lib/logger';
 import { createPagedResults } from '../lib/table/table';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import admin from '../../common/services/firebase';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
@@ -33,7 +38,7 @@ export class UserService {
     try {
       const searchQuery = determineSearchQuery(search);
 
-      let sqlQuery = Nominator.createQueryBuilder('user')
+      let sqlQuery = User.createQueryBuilder('user')
         .leftJoinAndSelect('user.affiliation', 'affiliation')
         .leftJoinAndSelect('user.households', 'households');
       if (query.affiliationId) {
@@ -71,7 +76,7 @@ export class UserService {
         search
       };
 
-      let sqlQuery = Nominator.createQueryBuilder('user');
+      let sqlQuery = User.createQueryBuilder('user');
 
       sqlQuery = sqlQuery
         .where('user.email_verified = :email_verified', {
@@ -97,7 +102,7 @@ export class UserService {
   }
 
   async getById(id) {
-    return await Nominator.findOneById(id, {
+    return await User.findOneById(id, {
       relations: ['households', 'affiliation']
     });
   }

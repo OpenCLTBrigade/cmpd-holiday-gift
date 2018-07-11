@@ -10999,9 +10999,9 @@ rambda@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/rambda/-/rambda-1.1.5.tgz#8ac65f7396f20cc122ba01fb6a4fb3ceb3befd20"
 
-"rambda@git+https://github.com/selfrefactor/rambda.git#1.1.0":
+"rambda@https://github.com/selfrefactor/rambda#1.1.0":
   version "1.0.9"
-  resolved "git+https://github.com/selfrefactor/rambda.git#ee04b4005da84b29d166364100d50e2a9be56a60"
+  resolved "https://github.com/selfrefactor/rambda#ee04b4005da84b29d166364100d50e2a9be56a60"
 
 rambdax@^0.8.10:
   version "0.8.10"

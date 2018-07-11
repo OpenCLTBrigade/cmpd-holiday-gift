@@ -1,12 +1,11 @@
-import { props, join, compose } from 'ramda';
+import { User } from 'cmpd-common-api';
+import { compose, join, props } from 'ramda';
 import { Connection } from 'typeorm';
 const faker = require('faker');
 
-import { Nominator } from 'cmpd-common-api';
-
 const fullName = compose(join(' '), props(['firstName', 'lastName']));
 
-const createUser = (props = {}): Partial<Nominator> => ({
+const createUser = (props = {}): Partial<User> => ({
   id: faker.random.uuid(),
   name: faker.name.firstName(),
   phoneNumber: faker.phone.phoneNumber(),
@@ -22,7 +21,7 @@ export default async (_: Connection, verbose = true) => {
   for (let i = 0; i < 5; i++) {
     const user = createUser();
 
-    const entity = Nominator.fromJSON(user);
+    const entity = User.fromJSON(user);
 
     await entity.save();
 
@@ -31,7 +30,7 @@ export default async (_: Connection, verbose = true) => {
     }
   }
 
-  const developer = Nominator.fromJSON({
+  const developer = User.fromJSON({
     id: faker.random.uuid(),
     name: 'Developer',
     phoneNumber: '+15555555555',
@@ -44,7 +43,7 @@ export default async (_: Connection, verbose = true) => {
 
   await developer.save();
 
-  const nominator = Nominator.fromJSON({
+  const nominator = User.fromJSON({
     id: 'abc1234',
     name: 'Nominator',
     phoneNumber: '+15555555555',
@@ -57,7 +56,7 @@ export default async (_: Connection, verbose = true) => {
 
   await nominator.save();
 
-  const notApproved = Nominator.fromJSON({
+  const notApproved = User.fromJSON({
     id: faker.random.uuid(),
     name: 'NotYetApproved',
     phoneNumber: '+15555555555',
@@ -71,7 +70,7 @@ export default async (_: Connection, verbose = true) => {
 
   await notApproved.save();
 
-  const denied = Nominator.fromJSON({
+  const denied = User.fromJSON({
     id: faker.random.uuid(),
     name: 'Unapproved',
     phoneNumber: '+15555555555',

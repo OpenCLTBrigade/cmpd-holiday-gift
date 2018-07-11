@@ -1,8 +1,16 @@
 import { Affiliation, Household } from 'cmpd-common-api';
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn
+  } from 'typeorm';
 
 @Entity('nominators')
-export class Nominator extends BaseEntity {
+export class User extends BaseEntity {
   private constructor(props) {
     super();
     Object.assign(this, props);
@@ -45,7 +53,7 @@ export class Nominator extends BaseEntity {
   households: Household[];
 
   static fromJSON(props) {
-    const entity = new Nominator(props);
+    const entity = new User(props);
 
     return entity;
   }
