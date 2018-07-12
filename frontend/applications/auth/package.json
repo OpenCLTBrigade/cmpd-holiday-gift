@@ -1,0 +1,36 @@
+{
+  "name": "cmpd-fe-auth-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "cross-env API_URL=http://localhost:3002 parcel src/index.html --port 58455",
+    "watch": "parcel watch src/index.html"
+  },
+  "dependencies": {
+    "@firebase/app-types": "^0.3.2",
+    "@types/node": "^10.0.4",
+    "classcat": "^3.0.2",
+    "emotion": "^9.1.2",
+    "final-form": "^4.6.1",
+    "firebase": "^4.13.1",
+    "picostyle": "^1.0.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-emotion": "^9.1.3",
+    "react-final-form": "^3.4.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-text-mask": "^5.4.0",
+    "text-mask": "^0.0.2",
+    "unistore": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.0",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-router": "^4.0.27",
+    "@types/react-router-dom": "^4.2.7",
+    "cross-env": "^5.1.4"
+  }
+}

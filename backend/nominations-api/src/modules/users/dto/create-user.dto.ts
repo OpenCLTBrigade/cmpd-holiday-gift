@@ -5,6 +5,14 @@ import { IsSame } from '../../../common/validators/is-same.validator';
 export class CreateUserDto {
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
+  readonly phoneNumber: string;
+
+  @ApiModelProperty({ type: String })
+  @IsNotEmpty()
+  readonly displayName: string;
+
+  @ApiModelProperty({ type: String })
+  @IsNotEmpty()
   readonly firstName: string;
 
   @ApiModelProperty({ type: String })

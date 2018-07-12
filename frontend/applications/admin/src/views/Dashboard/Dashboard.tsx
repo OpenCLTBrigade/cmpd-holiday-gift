@@ -15,16 +15,16 @@ import {
   optionsSales,
   responsiveBar,
   responsiveSales
-  } from '../../variables/Variables';
+} from '../../variables/Variables';
 
 class Dashboard extends React.Component<any, any> {
   createLegend(json) {
     var legend = [];
-    for (var i = 0; i < json['names'].length; i++) {
-      var type = 'fa fa-circle text-' + json['types'][i];
+    for (var i = 0; i < json.names.length; i++) {
+      var type = 'fa fa-circle text-' + json.types[i];
       legend.push(<i className={type} key={i} />);
       legend.push(' ');
-      legend.push(json['names'][i]);
+      legend.push(json.names[i]);
     }
     return legend;
   }

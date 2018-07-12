@@ -9,7 +9,7 @@ import { props, join, compose } from 'ramda';
 const fullName = compose(join(' '), props(['firstName', 'lastName']));
 
 const createHousehold = i => ({
-  nominatorId: 1,
+  nominatorId: 'abc1234',
   firstName: faker.name.firstName(),
   middleName: faker.name.firstName(),
   lastName: faker.name.lastName(),

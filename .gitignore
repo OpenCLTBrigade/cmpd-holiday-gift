@@ -17,3 +17,4 @@ yarn-error.log*
 nodemon.sh
 .cache
 dist/
+service-account-key.json

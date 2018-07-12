@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
 import config from '../../config';
-import { User, Session } from 'cmpd-common-api';
+import { Nominator, Session } from 'cmpd-common-api';
 
 import logger from '../../common/util/logger';
 
@@ -82,7 +82,7 @@ async function sessionMiddleware(req, res, next) {
       }
     } else if (req.user.id != null) {
       // When used by an application service
-      user = await User.findOneById(req.user.id);
+      user = await Nominator.findOneById(req.user.id);
       req.user = user;
     }
   }

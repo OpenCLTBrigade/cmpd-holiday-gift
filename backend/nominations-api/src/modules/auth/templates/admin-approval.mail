@@ -4,6 +4,6 @@ Subject: A new user needs approval
 
 A new user requires approval.
 
-Name: {{user.name_first}} {{user.name_last}}
+Name: {{user.name}} 
 
 Navigate to {{url}} to active the user.

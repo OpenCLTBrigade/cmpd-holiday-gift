@@ -9,6 +9,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const options = new DocumentBuilder()
     .setTitle('CMPD Explorers')
     .setDescription('The CMPD API specification')
@@ -21,7 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/swagger', app, document);
 
-  app.useGlobalFilters(new AnyExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.enableCors();
 
@@ -30,13 +30,6 @@ async function bootstrap() {
   await app.listen(port, () => {
     if (config.verbose) {
       logger.info('Express server listening on port ' + port);
-    }
-
-    if (process.send) {
-      process.send({
-        port,
-        dbPath: config.db.storage
-      });
     }
   });
 }

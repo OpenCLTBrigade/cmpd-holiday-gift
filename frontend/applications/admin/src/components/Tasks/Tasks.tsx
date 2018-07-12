@@ -23,13 +23,13 @@ export class Tasks extends React.Component<any, any> {
       'Unfollow 5 enemies from twitter'
     ];
     var tasks = [];
-    var number;
+    var id;
     for (var i = 0; i < tasksTitle.length; i++) {
-      number = 'checkbox' + i;
+      id = 'checkbox' + i;
       tasks.push(
         <tr key={i}>
           <td>
-            <Checkbox number={number} isChecked={i === 1 || i === 2 ? true : false} />
+            <Checkbox number={id} isChecked={i === 1 || i === 2 ? true : false} />
           </td>
           <td>{tasksTitle[i]}</td>
           <td className="td-actions text-right">

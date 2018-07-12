@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormGroup, ControlLabel, FormControl, Row } from 'react-bootstrap';
 
-function FieldGroup({ label, ...props }) {
+function FieldGroup({ label, ...props }: any) {
   return (
     <FormGroup>
       <ControlLabel>{label}</ControlLabel>

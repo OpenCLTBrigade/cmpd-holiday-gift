@@ -10,7 +10,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { User } from './user';
+import { Nominator } from '.';
 
 @Entity('sessions')
 export class Session extends BaseEntity {
@@ -25,7 +25,7 @@ export class Session extends BaseEntity {
   @Column('int', { name: 'user_id' })
   userId: number;
 
-  @OneToOne(() => User, { eager: true })
+  @OneToOne(() => Nominator, { eager: true })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: Nominator;
 }

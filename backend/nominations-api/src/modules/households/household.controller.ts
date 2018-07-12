@@ -20,7 +20,6 @@ import { Request, Response } from 'express';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { AuthGuard } from '../../common/guards/auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { handleErrors } from '../../common/util/application-error';
 import { createAttachment, createMainBucket, getAttachmentUrl } from '../lib/attachment';
@@ -30,6 +29,7 @@ import { ErrorCodes, HouseholdService } from './household.service';
 import { CreateHouseholdDto } from './dto/create-household.dto';
 import { SubmitNominationDto } from './dto/submit-nomination.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 type AuthedRequest = {
   user: { id };
@@ -53,7 +53,7 @@ export class HouseholdController {
 
   //TODO: Explore using graphql here
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async getAll(@Query('search') search, @Query('page') page, @Req() req) {
     const results = await this.householdService.query({
       page,
@@ -65,7 +65,7 @@ export class HouseholdController {
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async getById(@Param('id') id) {
     const household = await this.householdService.getById(id);
 
@@ -75,7 +75,7 @@ export class HouseholdController {
   }
 
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async createHousehold(
     @Req() { user: { id } },
     @Body(new ValidationPipe())
@@ -87,7 +87,7 @@ export class HouseholdController {
   }
 
   @Put('/:id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async updateHousehold(
     @Param('id') id,
     @Body(new ValidationPipe())
@@ -97,13 +97,13 @@ export class HouseholdController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async removeHousehold(@Param('id') id) {
     return await this.householdService.removeHousehold(id);
   }
 
   @Put(':id/upload')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async createAttachments(
     @Req() { user: { id: userId }, files }: AuthedRequest,
     @Res() res: Response,
@@ -162,7 +162,7 @@ export class HouseholdController {
   }
 
   @Put('/:id/submit')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async submitNomination(@Param('id') id, @Res() res: Response) {
     try {
       await this.householdService.submitNomination(id);
@@ -175,7 +175,7 @@ export class HouseholdController {
 
   @Roles('admin')
   @Put(':id/feedback')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard('bearer'))
   async submitFeedback(
     @Param('id') id,
     @Res() res,

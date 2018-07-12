@@ -1,14 +1,12 @@
+import { Injectable } from '@nestjs/common';
+import { Address, Attachment, Child, Household, PhoneNumber } from 'cmpd-common-api';
 import { ApplicationError } from '../../common/util/application-error';
-import { Component } from '@nestjs/common';
-
-import { Household, Attachment, Address, Child, PhoneNumber } from 'cmpd-common-api';
-
-const path = require('path');
-
-import logger, { logStart, logEnd } from '../../common/util/logger';
+import logger, { logEnd, logStart } from '../../common/util/logger';
 import { createPagedResults } from '../lib/table/table';
 import { CreateHouseholdDto } from './dto/create-household.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
+
+const path = require('path');
 
 const sendMail = require('../lib/mail')(path.join(__dirname, './mail-templates'));
 
@@ -17,7 +15,7 @@ export enum ErrorCodes {
   NoHouseholdExists = 'NoHouseholdExists'
 }
 
-@Component()
+@Injectable()
 export class HouseholdService {
   async getAll({ active = true } = {}) {
     return await Household.find({ where: active && { deleted: false } });

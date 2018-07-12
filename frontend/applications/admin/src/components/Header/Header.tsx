@@ -4,14 +4,14 @@ import dashboardRoutes from '../../routes/dashboard';
 import HeaderLinks from './HeaderLinks';
 
 class Header extends React.Component<any, any> {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.mobileSidebarToggle = this.mobileSidebarToggle.bind(this);
     this.state = {
       sidebarExists: false
     };
   }
-  mobileSidebarToggle(e) {
+  mobileSidebarToggle(e: Event) {
     if (this.state.sidebarExists === false) {
       this.setState({
         sidebarExists: true

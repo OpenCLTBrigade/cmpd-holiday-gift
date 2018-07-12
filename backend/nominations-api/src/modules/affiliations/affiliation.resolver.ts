@@ -6,7 +6,7 @@ export class AffiliationsResolver {
   constructor(private readonly affiliationService: AffiliationService) {}
 
   @Query('affiliation')
-  async getAffiliation(obj, args, context, info) {
+  async getAffiliation(obj, args) {
     const affiliation = await this.affiliationService.getAffiliation(args.id);
 
     return affiliation;

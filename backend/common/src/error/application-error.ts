@@ -12,9 +12,10 @@ export const handleErrors = errorMap => (error: Error) => {
 
   if (error instanceof ApplicationError) {
     const { code = 'default' } = error;
+
     const ErrorToThrow = errorMap[code];
 
-    throw new ErrorToThrow();
+    throw ErrorToThrow ? new ErrorToThrow() : error;
   }
 
   throw error;

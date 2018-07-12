@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import { Household } from './household';
-import { User } from './user';
+import { Nominator } from './nominator';
 
 @Entity('household_attachments')
 export class Attachment extends BaseEntity {
@@ -21,9 +21,9 @@ export class Attachment extends BaseEntity {
   @JoinColumn({ name: 'household_id' })
   household: Household;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => Nominator)
   @JoinColumn({ name: 'owner_id' })
-  user: User;
+  user: Nominator;
 
   static fromJSON(props) {
     const entity = new Attachment(props);

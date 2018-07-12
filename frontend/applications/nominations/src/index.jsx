@@ -6,19 +6,12 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Provider, connect } from 'unistore/react';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.css';
 import 'admin-lte/dist/css/skins/skin-blue.css';
-
-// Font Awesome
-import 'font-awesome/css/font-awesome.css';
-import 'font-awesome/fonts/fontawesome-webfont.eot';
-import 'font-awesome/fonts/fontawesome-webfont.ttf';
-import 'font-awesome/fonts/fontawesome-webfont.woff';
-import 'font-awesome/fonts/fontawesome-webfont.woff2';
-// import 'font-awesome/fonts/FontAwesome.otf';
 
 // Import core stylesheet
 import './index.css';
@@ -30,29 +23,50 @@ import 'babel-polyfill';
 
 // Our React Components that this component uses
 import Dashboard from './app/dashboard';
-import Auth from './app/auth';
+
 import Restricted from './app/components/restricted';
 import NotFound from './notFound';
 import * as slips from './app/slips';
 
 import { AuthToken } from './lib/auth';
+import { store } from './lib/state';
 
-class Routes extends React.Component {
-  render() {
+//TODO: use lerna to grab this dep.
+import Auth from '../../auth/src/App';
+const Routes = connect('loginStatus')(({ loginStatus }) => {
+  //TODO: Need to check registration status & add referrer logic
+
+  if (loginStatus === 'unauthenticated') {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-          <Route path="/dashboard" component={Restricted(Dashboard)} />
+          <Route exact path="/" render={() => <Redirect to="/auth" />} />
           <Route path="/auth" component={Auth} />
+        </Switch>
+      </Router>
+    );
+  }
+
+  return (
+    loginStatus === 'authenticated' && (
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+          <Route path="/dashboard" component={Dashboard} />
           {AuthToken.expired() ? null : <Route path="/slips/packing" component={slips.packing} />}
           <Route path="/slips/bicycle" component={slips.bicycle} /> }
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
-    );
-  }
-}
+    )
+  );
+});
 
-ReactDOM.render(<Routes />, document.getElementById('root'));
+const App = () => (
+  <Provider store={store}>
+    <Routes />
+  </Provider>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { IsSame } from '../../../common/validators/is-same.validator';
 
 export class UpdateUserDto {
-  id: number;
+  uid: string;
 
   @ApiModelProperty({ type: String })
   @IsNotEmpty()
