@@ -1,12 +1,17 @@
 import React from 'react';
 import cc from 'classcat';
-import picostyle from 'picostyle';
-import { css } from 'emotion';
+import styled from '../../../../../../node_modules/react-emotion';
 
-const style = css({
-  ':not(:first-of-type)': {
-    marginLeft: '5px'
-  }
+const ButtonStyle = styled('button')({
+  cursor: 'pointer',
+  padding: '1em',
+  letterSpacing: '.1em',
+  textTransform: 'uppercase',
+  background: '#fff',
+  border: 'solid',
+  font: '.7em',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
 });
 
 type Props = {
@@ -17,14 +22,12 @@ type Props = {
 };
 
 export const Button = ({ text, primary = false, onClick, ...rest }: Props) => (
-  <button
+  <ButtonStyle
     className={cc({
-      style: true,
-      btn: true,
-      primary: primary
+      style: true
     })}
     onClick={onClick}
     {...rest}>
     {text}
-  </button>
+  </ButtonStyle>
 );

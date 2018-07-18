@@ -2,6 +2,8 @@ import React from 'react';
 import { Button } from '../../components/Button';
 import { Form, Field } from 'react-final-form';
 import styled from 'react-emotion';
+import Input from '../../components/Input';
+import { Span } from '../../components/Text';
 
 const Label = styled('a')({
   maxWidth: '300px',
@@ -12,13 +14,15 @@ const LabelError = styled('span')({
   color: 'red'
 });
 
+const FieldGroup = styled('div')({});
+
 const TextField = ({ label, name, placeholder, disabled = false }) => (
   <Field name={name}>
     {({ input, meta }) => (
       <div>
         <Label>
-          {label}
-          <input className="card w-100" type="text" placeholder={placeholder} disabled={disabled} {...input} />
+          <Span>{label}</Span>
+          <Input className="" type="text" placeholder={placeholder} disabled={disabled} {...input} />
         </Label>
         {meta.error && meta.touched && <LabelError>{meta.error}</LabelError>}
       </div>
@@ -60,27 +64,27 @@ export const RegistrationForm = ({ onSubmit, phoneNumber }) => (
     render={({ handleSubmit, reset, submitting, pristine, values }) => (
       <form onSubmit={handleSubmit}>
         <h1>Register</h1>
-        <div className="row">
+        <FieldGroup>
           <TextField label="Name" name="name" placeholder="Name" />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <TextField label="Email" name="email" placeholder="Email" />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <TextField label="Confirm email" name="confirmEmail" placeholder="Confirm emal address" />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <TextField name="affiliation" placeholder="Affiliation" label="Affiliation" />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <TextField label="Rank" name="rank" placeholder="Rank" />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <TextField name="phoneNumber" placeholder="Phone #" label="Phone #" disabled />
-        </div>
-        <div className="row">
+        </FieldGroup>
+        <FieldGroup>
           <Button type="submit" text="Register" disabled={submitting} />
-        </div>
+        </FieldGroup>
       </form>
     )}
   />

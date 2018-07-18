@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env API_URL=http://localhost:3002 parcel src/index.html --port 58455",
-    "watch": "parcel watch src/index.html --out-dir ../server/public/auth --public-url /auth/"
+    "watch": "parcel watch src/index.html"
   },
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
