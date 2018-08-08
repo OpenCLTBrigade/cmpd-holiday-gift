@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 
+//TODO: Redirect back to correct path
 export const Authenticated = ({ location }) =>
   location.referrer !== location.url ? (
     <Redirect
