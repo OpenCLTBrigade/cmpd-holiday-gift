@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
+import firebase from '../../lib/firebase';
+
 import './header.css';
 
 export default class Header extends React.Component {
@@ -30,18 +32,12 @@ export default class Header extends React.Component {
           <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
               <li className="user">
-                <a>
-                  {user && (
-                    <span className="hidden-xs">
-                      {user.firstName} {user.lastName.substring(0, 1).toUpperCase()}.
-                    </span>
-                  )}
-                </a>
+                <a>{user && <span className="hidden-xs">{user.name}</span>}</a>
               </li>
               <li className="dropdown user user-menu">
-                <Link to="/auth/logout">
+                <a href="#" onClick={() => firebase.auth().signOut()}>
                   <i className="fa fa-sign-out" />Logout
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
