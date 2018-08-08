@@ -8,7 +8,7 @@ import { AuthToken } from './auth';
  * @type {RequestConfigType}
  */
 const defaultRequestConfig = {
-  baseURL: process.env.API_URL || 'http://localhost:3001/api/',
+  baseURL: process.env.API_URL || 'http://localhost:3002/api/',
   method: 'get'
 };
 
@@ -49,7 +49,7 @@ const makeRequest = async function(method, app, path, data, config = {}) {
   // console.log('url', requestConfig.url);
 
   // Add an authorization header to the request if a token is available
-  const authorization = await getAuthorization(app);
+  const authorization = `Bearer ${localStorage.getItem('authToken')}`;
   if (authorization) {
     if (!requestConfig.headers) {
       requestConfig.headers = {};
