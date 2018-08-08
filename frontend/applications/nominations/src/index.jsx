@@ -40,8 +40,8 @@ const Routes = connect('loginStatus')(({ loginStatus }) => {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" render={() => <Redirect to="/auth" />} />
           <Route path="/auth" component={Auth} />
+          <Route path="*" component={() => <Redirect to="/auth" />} />
         </Switch>
       </Router>
     );
