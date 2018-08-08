@@ -28,7 +28,6 @@ const determineCode = (code: string) => {
 export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const user = await admin.auth().getUser(decodedToken.uid);
     const nominator = await Nominator.findOneById(decodedToken.uid);
 
     return nominator;
@@ -73,8 +72,6 @@ export class AccountService {
 
       if (currentUser.role === 'admin') {
         await admin.auth().setCustomUserClaims(uid, { [rest.role]: true });
-
-        user.role = rest.role;
       }
 
       return await user.save();
@@ -119,7 +116,6 @@ export class AccountService {
       const nominator = await Nominator.findOneById(uid);
 
       nominator.disabled = false;
-      nominator.role = role;
       nominator.nominationLimit = nominationLimit;
     } catch (error) {
       throw new ApplicationError(error.message);
