@@ -52,7 +52,7 @@ export default class Sidebar extends React.Component {
     if (!user) {
       return null;
     }
-    const isAdmin = user && user.role.toLowerCase() === 'admin';
+    const isAdmin = user && user.role && user.role.toLowerCase() === 'admin';
 
     return (
       <aside className="main-sidebar">
