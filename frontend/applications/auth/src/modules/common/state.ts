@@ -37,6 +37,7 @@ export const actions = (store: Store<State>) => ({
 firebase.auth().onAuthStateChanged(async user => {
   if (user && user.emailVerified) {
     const idToken: string = await firebase.auth().currentUser.getIdToken(true);
+    localStorage.setItem('authToken', idToken);
 
     store.setState({ accountStatus: 'authenticated', idToken });
   } else {
