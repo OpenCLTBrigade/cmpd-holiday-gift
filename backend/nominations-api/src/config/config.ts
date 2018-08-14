@@ -8,6 +8,11 @@ const env = envalid.cleanEnv(process.env, {
 });
 
 export default {
+  authTokenLifetime: '',
+  jwtSecrets: {
+    auth: ''
+  },
+  enableHotReload: false,
   mode: env.NODE_ENV,
   isProduction: env.isProduction,
   port: 3002,
@@ -20,7 +25,9 @@ export default {
   email: {
     fromAddress: 'noreply@codeforcharlotte.org',
     fromName: 'noreply', // TODO: nicer from_name?
-    adminAddress: 'info@codeforcharlotte.org'
+    adminAddress: 'info@codeforcharlotte.org',
+    ses: '',
+    smtp: ''
   },
   db: {
     dialect: 'sqlite',
