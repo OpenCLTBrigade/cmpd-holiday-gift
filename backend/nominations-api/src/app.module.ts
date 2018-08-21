@@ -8,6 +8,7 @@ import { HouseholdsModule } from './modules/households';
 import { TrackingModule } from './modules/tracking';
 import { UsersModule } from './modules/users/users.module';
 import { AppController } from './app.controller';
+import { AdoptionModule } from 'cmpd-adoption-api-module';
 
 // const allRoutes = {
 //   path: '*',
@@ -25,7 +26,7 @@ import { AppController } from './app.controller';
 // };
 
 @Module({
-  modules: [GraphQLModule, AuthModule, HouseholdsModule, AffiliationsModule, TrackingModule, UsersModule, CmpdModule],
+  modules: [GraphQLModule, AuthModule, HouseholdsModule, AffiliationsModule, TrackingModule, UsersModule, CmpdModule, AdoptionModule],
   controllers: [AppController]
 })
 export class AppModule {
