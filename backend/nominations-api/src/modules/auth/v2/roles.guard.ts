@@ -20,7 +20,7 @@ const getToken = req => {
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector, private readonly accountService: AccountService) {}
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext) {
     const handler = context.getHandler();
     const roles = this.reflector.get<string[]>('roles', handler);
     const request = context.switchToHttp().getRequest();
@@ -29,8 +29,9 @@ export class RolesGuard implements CanActivate {
       return true;
     }
     const token = getToken(request);
-    const user = this.accountService.validateUser(token);
-    const hasClaim = roles.some(role => user[role]);
+    const user = await this.accountService.validateUser(token);
+
+    const hasClaim = roles.some(role => user.claims.nominations[role]);
 
     return hasClaim;
   }

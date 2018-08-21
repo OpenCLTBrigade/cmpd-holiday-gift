@@ -49,7 +49,7 @@ const createFirebaseUser = async account => {
     const user = await firebase.auth().getUserByPhoneNumber(account.phoneNumber);
 
     if (user) {
-      console.log('Updating existing user', account);
+      console.log('Updating existing user');
       await firebase.auth().updateUser(user.uid, {
         displayName: account.name,
         email: account.email,
@@ -57,9 +57,7 @@ const createFirebaseUser = async account => {
         emailVerified: true
       });
       await firebase.auth().setCustomUserClaims(user.uid, {
-        [account.role]: true,
-        admin: { [account.role]: true },
-        nominations: { [account.role]: true }
+        claims: { admin: { [account.role]: true }, nominations: { [account.role]: true } }
       });
     }
 

@@ -34,8 +34,7 @@ export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await this.admin.auth().verifyIdToken(idToken);
     const nominator = await Nominator.findOneById(decodedToken.uid);
-
-    return nominator;
+    return { ...nominator, claims: decodedToken.claims };
   }
 
   async createUser(createUserDto: CreateUserDto) {
@@ -63,7 +62,7 @@ export class AccountService {
     try {
       const { phoneNumber, displayName, email, emailVerified } = rest;
       const user = await Nominator.findOneById(uid);
-      const userRecord = await this.admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
+      await this.admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
       if (!user) throw new NotFoundException();
 
@@ -76,7 +75,7 @@ export class AccountService {
       user.affiliationId = rest.affiliationId;
 
       if (currentUser.role === 'admin') {
-        await this.admin.auth().setCustomUserClaims(uid, { [rest.role]: true });
+        await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [rest.role]: true } } });
       }
 
       return await user.save();
@@ -118,7 +117,7 @@ export class AccountService {
       await this.admin.auth().updateUser(uid, {
         disabled: false
       });
-      await this.admin.auth().setCustomUserClaims(uid, { app: { [role]: true } });
+      await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [role]: true } } });
 
       const nominator = await Nominator.findOneById(uid);
 
