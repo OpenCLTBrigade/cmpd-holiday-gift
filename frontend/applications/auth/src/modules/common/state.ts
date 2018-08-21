@@ -34,6 +34,12 @@ export const actions = (store: Store<State>) => ({
   }
 });
 
+store.subscribe(state => {
+  if (state.accountStatus === 'authenticated' && window.location.href.includes('auth')) {
+    window.location.replace('/');
+  }
+});
+
 firebase.auth().onAuthStateChanged(async user => {
   if (user && user.emailVerified) {
     const idToken: string = await firebase.auth().currentUser.getIdToken(true);

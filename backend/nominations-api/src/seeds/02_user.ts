@@ -3,8 +3,10 @@ import { Connection } from 'typeorm';
 const faker = require('faker');
 
 import { Nominator, Household } from 'cmpd-common-api';
-import firebase from '../common/services/firebase';
+import makeFirebaseService from '../common/services/firebase';
 import config from '../config';
+
+const firebase = makeFirebaseService();
 
 const fullName = compose(join(' '), props(['firstName', 'lastName']));
 const specialAccounts = [
@@ -21,7 +23,7 @@ const specialAccounts = [
   {
     id: faker.random.uuid(),
     name: 'Nominator',
-    phoneNumber: '+19999999999',
+    phoneNumber: '+10009999999',
     email: 'nominator@codeforcharlotte.org',
     affiliationId: 2,
     nominationLimit: 5,
@@ -44,15 +46,43 @@ const createUser = (props = {}): Partial<Nominator & { role? }> => ({
 
 const createFirebaseUser = async account => {
   try {
-    return await firebase.auth().getUserByEmail(account.email);
+    const user = await firebase.auth().getUserByPhoneNumber(account.phoneNumber);
+
+    if (user) {
+      console.log('Updating existing user', account);
+      await firebase.auth().updateUser(user.uid, {
+        displayName: account.name,
+        email: account.email,
+        disabled: false,
+        emailVerified: true
+      });
+      await firebase.auth().setCustomUserClaims(user.uid, {
+        [account.role]: true,
+        admin: { [account.role]: true },
+        nominations: { [account.role]: true }
+      });
+    }
+
+    return user;
   } catch (error) {
+    console.log('Creating new user in firebase');
+
     const { name, email, phoneNumber, role } = account;
 
-    return await firebase.auth().createUser({ displayName: name, email, phoneNumber, emailVerified: true });
+    const user = await firebase.auth().createUser({ displayName: name, email, phoneNumber, emailVerified: true });
+    await firebase.auth().setCustomUserClaims(user.uid, {
+      [role]: true,
+      admin: { [role]: true },
+      nominations: { [role]: true }
+    });
+
+    return user;
   }
 };
 
 const seedSpecialAccounts = async () => {
+  console.log('Seed special accounts');
+
   const accounts = [];
   for (const account of specialAccounts) {
     if (config.seedFirebase) {
