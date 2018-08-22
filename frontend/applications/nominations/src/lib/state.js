@@ -19,7 +19,7 @@ export const actions = _ => ({
 });
 
 firebase.auth().onAuthStateChanged(async user => {
-  if (user) {
+  if (user && user.emailVerified) {
     const currentUser = await firebase.auth().currentUser;
     store.setState({ loginStatus: LoginStatus.Authenticated, currentUser });
   } else {

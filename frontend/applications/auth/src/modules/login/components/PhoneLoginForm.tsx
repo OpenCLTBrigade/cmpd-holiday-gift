@@ -49,7 +49,7 @@ export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; co
     if (exists) {
       onSubmit();
     } else {
-      history.push(`auth/register/${this.state.phone}`);
+      history.push(`register/${this.state.phone}`);
     }
   };
 
