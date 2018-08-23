@@ -5,7 +5,7 @@ import { getPackingSlipData } from '../../api/slips';
 import { descFromValue } from '../../lib/constants/bike-size';
 import { missingProperty } from '../../api/helpers/error.helper';
 
-const moment = require('moment');
+import * as moment from 'moment';
 
 const Pages = styled.div`
   @page {

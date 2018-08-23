@@ -1,10 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-
-import firebase from './modules/common/firebase';
-import { Provider, connect } from 'unistore/react';
-import { store } from './modules/common/state';
+import { connect, Provider } from 'unistore/react';
 import App from './App';
+import firebase from './modules/common/firebase';
+import { baseStore as store } from './modules/common/state';
 
 declare global {
   interface Window {

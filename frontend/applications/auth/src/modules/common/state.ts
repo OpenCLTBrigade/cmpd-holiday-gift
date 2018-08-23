@@ -1,7 +1,7 @@
 import createStore, { Store } from 'unistore';
 import { connect } from 'unistore/react';
-import { register, sendEmailVerification } from './services/login';
 import firebase from './firebase';
+import { register, sendEmailVerification } from './services/login';
 
 type State = {
   count: number;
@@ -9,7 +9,7 @@ type State = {
   idToken?: string;
 };
 
-export const store = createStore<State>({
+export const baseStore = createStore<State>({
   count: 0,
   accountStatus: null
 });
@@ -34,7 +34,7 @@ export const actions = (store: Store<State>) => ({
   }
 });
 
-store.subscribe(state => {
+baseStore.subscribe(state => {
   if (state.accountStatus === 'authenticated' && window.location.href.includes('auth')) {
     window.location.replace('/');
   }
@@ -45,8 +45,8 @@ firebase.auth().onAuthStateChanged(async user => {
     const idToken: string = await firebase.auth().currentUser.getIdToken(true);
     localStorage.setItem('authToken', idToken);
 
-    store.setState({ accountStatus: 'authenticated', idToken });
+    baseStore.setState({ accountStatus: 'authenticated', idToken });
   } else {
-    store.setState({ accountStatus: 'unauthenticated' });
+    baseStore.setState({ accountStatus: 'unauthenticated' });
   }
 });

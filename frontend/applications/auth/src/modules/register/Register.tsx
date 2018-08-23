@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button } from '../components/Button';
 import { Redirect } from 'react-router-dom';
-
-import { RegistrationForm } from './components/RegistrationForm';
-import { actions } from '../common/state';
 import { connect } from 'unistore/react';
+import { actions } from '../common/state';
+import { Button } from '../components/Button';
+import { RegistrationForm } from './components/RegistrationForm';
 
 export const Register = connect('accountStatus', actions)(({ accountStatus, registerUser, match: { params } }) => {
   return accountStatus === 'registered' ? (
@@ -12,4 +11,4 @@ export const Register = connect('accountStatus', actions)(({ accountStatus, regi
   ) : (
     <RegistrationForm phoneNumber={params.phoneNumber} onSubmit={registerUser} />
   );
-});
+}) as any;

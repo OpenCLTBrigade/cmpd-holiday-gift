@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env API_URL=http://localhost:3002 parcel src/index.html --port 58455",
+    "start": "react-scripts-ts start --port 58455",
     "watch": "parcel watch src/index.html"
   },
   "dependencies": {
@@ -14,7 +14,7 @@
     "classcat": "^3.0.2",
     "emotion": "^9.1.2",
     "final-form": "^4.6.1",
-    "firebase": "^4.13.1",
+    "firebase": "^5.4.0",
     "picostyle": "^1.0.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
@@ -31,6 +31,7 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-router": "^4.0.27",
     "@types/react-router-dom": "^4.2.7",
-    "cross-env": "^5.1.4"
+    "cross-env": "^5.1.4",
+    "react-scripts-ts": "2.13.0"
   }
 }
