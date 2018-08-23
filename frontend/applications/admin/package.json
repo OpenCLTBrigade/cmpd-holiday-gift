@@ -55,10 +55,7 @@
     "@types/react-router": "^4.0.22",
     "@types/react-router-dom": "^4.2.3",
     "react-scripts-ts": "2.13.0",
-    "typescript": "^2.7.1"
-  },
-  "peerDependencies": {
-    "typescript": "2.x"
+    "typescript": "^3.0.1"
   },
   "optionalDependencies": {
     "fsevents": "^1.1.3"
