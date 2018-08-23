@@ -16,8 +16,8 @@
     "test": "lerna run test",
     "jest": "jest --config=jest.json",
     "dist:watch": "lerna run --parallel dist:watch",
-    "clean": "lerna clean && rimraf frontend/**/dist backend/**/dist",
-    "reset": "rimraf frontend/**/node_modules backend/**/node_modules"
+    "clean": "lerna clean --yes && rimraf frontend/**/dist backend/**/dist && yarn bootstrap",
+    "reset": "yarn clean"
   },
   "cacheDirectories": [
     "node_modules",
@@ -56,7 +56,7 @@
     "ts-jest": "^22.0.4",
     "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.8.3"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "@google/maps": "^0.4.3",

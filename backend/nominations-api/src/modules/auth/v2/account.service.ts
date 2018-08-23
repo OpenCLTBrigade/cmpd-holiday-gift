@@ -1,5 +1,5 @@
 import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
-import admin from '../../../common/services/firebase';
+import makeFirebaseService, { Admin } from '../../../common/services/firebase';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ApproveUserDto } from './dto/approve-user.dto';
 import { Nominator, ApplicationError } from 'cmpd-common-api';
@@ -26,18 +26,21 @@ const determineCode = (code: string) => {
 
 @Injectable()
 export class AccountService {
-  async validateUser(idToken: string) {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const user = await admin.auth().getUser(decodedToken.uid);
-    const nominator = await Nominator.findOneById(decodedToken.uid);
+  admin: Admin;
 
-    return nominator;
+  constructor() {
+    this.admin = makeFirebaseService();
+  }
+  async validateUser(idToken: string) {
+    const decodedToken = await this.admin.auth().verifyIdToken(idToken);
+    const nominator = await Nominator.findOneById(decodedToken.uid);
+    return { ...nominator, claims: decodedToken.claims };
   }
 
   async createUser(createUserDto: CreateUserDto) {
     try {
       const { phoneNumber, displayName } = createUserDto;
-      const userRecord = await admin.auth().createUser({ disabled: false, phoneNumber, displayName });
+      const userRecord = await this.admin.auth().createUser({ disabled: false, phoneNumber, displayName });
       const nominator = Nominator.fromJSON(createUserDto);
 
       nominator.disabled = false;
@@ -59,7 +62,7 @@ export class AccountService {
     try {
       const { phoneNumber, displayName, email, emailVerified } = rest;
       const user = await Nominator.findOneById(uid);
-      const userRecord = await admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
+      await this.admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
       if (!user) throw new NotFoundException();
 
@@ -72,9 +75,7 @@ export class AccountService {
       user.affiliationId = rest.affiliationId;
 
       if (currentUser.role === 'admin') {
-        await admin.auth().setCustomUserClaims(uid, { [rest.role]: true });
-
-        user.role = rest.role;
+        await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [rest.role]: true } } });
       }
 
       return await user.save();
@@ -86,11 +87,13 @@ export class AccountService {
   async registerUser(registerUserDto: RegisterUserDto, app: string) {
     try {
       const { phoneNumber, displayName } = registerUserDto;
-      const firebaseUser = await admin.auth().getUserByPhoneNumber(phoneNumber);
+      const firebaseUser = await this.admin.auth().getUserByPhoneNumber(phoneNumber);
 
       if (!firebaseUser) throw new Error('User does not exist');
 
-      await admin.auth().updateUser(firebaseUser.uid, { displayName, disabled: false, email: registerUserDto.email });
+      await this.admin
+        .auth()
+        .updateUser(firebaseUser.uid, { displayName, disabled: false, email: registerUserDto.email });
 
       const nominator = Nominator.fromJSON(registerUserDto);
 
@@ -111,15 +114,14 @@ export class AccountService {
 
   async approveUser({ uid, role, nominationLimit }: ApproveUserDto) {
     try {
-      await admin.auth().updateUser(uid, {
+      await this.admin.auth().updateUser(uid, {
         disabled: false
       });
-      await admin.auth().setCustomUserClaims(uid, { app: { [role]: true } });
+      await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [role]: true } } });
 
       const nominator = await Nominator.findOneById(uid);
 
       nominator.disabled = false;
-      nominator.role = role;
       nominator.nominationLimit = nominationLimit;
     } catch (error) {
       throw new ApplicationError(error.message);
@@ -128,7 +130,7 @@ export class AccountService {
 
   async disableUser(uid) {
     try {
-      await admin.auth().updateUser(uid, {
+      await this.admin.auth().updateUser(uid, {
         disabled: true
       });
 
@@ -143,7 +145,10 @@ export class AccountService {
 
   async verifyUser(phoneNumber: string) {
     try {
-      const firebaseUser = await admin.auth().getUserByPhoneNumber(phoneNumber);
+      console.log(phoneNumber);
+      const firebaseUser = await this.admin.auth().getUserByPhoneNumber(phoneNumber);
+      console.log(firebaseUser);
+
       const user = await Nominator.findOneById(firebaseUser.uid);
 
       if (!user || !firebaseUser) throw new ApplicationError('user not found', ErrorCodes.UserNotFound);

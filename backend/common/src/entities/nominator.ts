@@ -17,8 +17,8 @@ export class Nominator extends BaseEntity {
   @Column('text', { nullable: true })
   rank: string;
 
-  @Column('text', { nullable: true })
-  role: string;
+  // @Column('text', { nullable: true })
+  // role: string;
 
   @Column('text', { nullable: true })
   phone: string;

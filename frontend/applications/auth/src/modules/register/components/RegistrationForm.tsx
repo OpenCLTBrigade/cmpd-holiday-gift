@@ -71,7 +71,7 @@ export const RegistrationForm = ({ onSubmit, phoneNumber }) => (
           <TextField label="Email" name="email" placeholder="Email" />
         </FieldGroup>
         <FieldGroup>
-          <TextField label="Confirm email" name="confirmEmail" placeholder="Confirm emal address" />
+          <TextField label="Confirm email" name="confirmEmail" placeholder="Confirm email address" />
         </FieldGroup>
         <FieldGroup>
           <TextField name="affiliation" placeholder="Affiliation" label="Affiliation" />

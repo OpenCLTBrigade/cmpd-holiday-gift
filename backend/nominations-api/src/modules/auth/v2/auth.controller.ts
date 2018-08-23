@@ -38,6 +38,12 @@ export class AuthController {
     return this.authService.approveUser(approveUserDto);
   }
 
+  @Get('/account')
+  @UseGuards(AuthGuard('bearer'))
+  account(@Req() request) {
+    return request.user;
+  }
+
   @Get('/verify/:phoneNumber')
   async verifyUser(@Param('phoneNumber') phoneNumber) {
     return this.authService.verifyUser(phoneNumber);

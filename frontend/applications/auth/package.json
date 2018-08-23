@@ -4,10 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "start": "cross-env API_URL=http://localhost:3002 parcel src/index.html --port 58455",
-    "watch": "parcel watch src/index.html"
-  },
+  "scripts": {},
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
     "@types/node": "^10.0.4",

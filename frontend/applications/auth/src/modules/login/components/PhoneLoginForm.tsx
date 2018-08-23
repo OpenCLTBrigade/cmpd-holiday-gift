@@ -53,7 +53,7 @@ export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; co
     }
   };
 
-  renderLoginForm({ onSubmit }) {
+  renderTokenVerificationForm({ onSubmit }) {
     return (
       <form>
         <div className="">
@@ -110,7 +110,9 @@ export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; co
   render() {
     const { onSubmit } = this.props;
     return (
-      <section>{this.state.codeReceived ? this.renderLoginForm({ onSubmit }) : this.renderRequestTokenForm()}</section>
+      <section>
+        {this.state.codeReceived ? this.renderTokenVerificationForm({ onSubmit }) : this.renderRequestTokenForm()}
+      </section>
     );
   }
 }

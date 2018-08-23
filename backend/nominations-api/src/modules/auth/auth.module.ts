@@ -10,6 +10,7 @@ import { AuthController } from './v2/auth.controller';
 @Module({
   modules: [DatabaseModule],
   controllers: [AuthController],
+  exports: [HttpStrategy, ...authProviders, AccountService],
   components: [...authProviders, HttpStrategy, AccountService]
 })
 export class AuthModule {}

@@ -2,12 +2,12 @@ import firebase from 'firebase';
 
 // Initialize Firebase
 const config = {
-  apiKey: 'AIzaSyBpY3AtAAZDGGYKiVgyBAzaOhD4G1uhr9I',
-  authDomain: 'passwordless-auth-a5939.firebaseapp.com',
-  databaseURL: 'https://passwordless-auth-a5939.firebaseio.com',
-  projectId: 'passwordless-auth-a5939',
-  storageBucket: 'passwordless-auth-a5939.appspot.com',
-  messagingSenderId: '1077907127009'
+  apiKey: 'AIzaSyD1RrSZga3qhleSUf9uiweZWkyK7zZspic',
+  authDomain: 'cmpd-explorers-christmas.firebaseapp.com',
+  databaseURL: 'https://cmpd-explorers-christmas.firebaseio.com',
+  projectId: 'cmpd-explorers-christmas',
+  storageBucket: 'cmpd-explorers-christmas.appspot.com',
+  messagingSenderId: '575635321245'
 };
 firebase.initializeApp(config);
 
