@@ -1,23 +1,23 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BaseEntity,
   Column,
+  Entity,
   JoinColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
-  BaseEntity
-} from 'typeorm';
-
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+  } from 'typeorm';
+import { ExtendedColumnOptions } from 'typeorm-encrypted';
+import encOptions from '../util/encryption-options';
 import { Address } from './address';
-import { Nominator as User } from './nominator';
+import { Attachment } from './attachment';
 import { Child } from './child';
 import { PhoneNumber } from './phone-number';
-import { Attachment } from './attachment';
+import { User } from './user';
 
-import encOptions from '../util/encryption-options';
 
-import { ExtendedColumnOptions } from 'typeorm-encrypted';
+
 
 @Entity('households')
 export class Household extends BaseEntity {

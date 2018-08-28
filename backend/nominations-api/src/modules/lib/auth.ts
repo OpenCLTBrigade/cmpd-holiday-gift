@@ -1,12 +1,11 @@
 import * as bcrypt from 'bcrypt-nodejs';
+import { Session, User } from 'cmpd-common-api';
 import * as crypto from 'crypto';
+import logger from '../../common/util/logger';
+import config from '../../config';
 
 const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
-import config from '../../config';
-import { Nominator, Session } from 'cmpd-common-api';
-
-import logger from '../../common/util/logger';
 
 // TODO: import from model
 export type UserType = {
@@ -82,7 +81,7 @@ async function sessionMiddleware(req, res, next) {
       }
     } else if (req.user.id != null) {
       // When used by an application service
-      user = await Nominator.findOneById(req.user.id);
+      user = await User.findOneById(req.user.id);
       req.user = user;
     }
   }

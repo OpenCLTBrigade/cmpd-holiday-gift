@@ -5,4 +5,4 @@ export { PhoneNumber } from './phone-number';
 export { Child } from './child';
 export { Attachment } from './attachment';
 export { Session } from './session';
-export { Nominator } from './nominator';
+export { User } from './user';

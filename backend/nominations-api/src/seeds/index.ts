@@ -1,11 +1,19 @@
+import {
+  Address,
+  Affiliation,
+  Attachment,
+  Child,
+  Household,
+  PhoneNumber,
+  Session,
+  User
+  } from 'cmpd-common-api';
+import { createConnection } from 'typeorm';
+import { AutoEncryptSubscriber } from 'typeorm-encrypted';
+import config from '../config';
 /* eslint no-console: "off" */
 import * as fs from 'fs';
 const path = require('path');
-import config from '../config';
-import { Affiliation, Address, Attachment, Child, PhoneNumber, Household, Session, Nominator } from 'cmpd-common-api';
-
-import { createConnection } from 'typeorm';
-import { AutoEncryptSubscriber } from 'typeorm-encrypted';
 
 async function seed({ db: { dialect: type, storage: database } }) {
   try {
@@ -13,7 +21,7 @@ async function seed({ db: { dialect: type, storage: database } }) {
       type,
       database,
       synchronize: true,
-      entities: [Nominator, Affiliation, Address, Attachment, Child, PhoneNumber, Household, Session],
+      entities: [User, Affiliation, Address, Attachment, Child, PhoneNumber, Household, Session],
       subscribers: [AutoEncryptSubscriber]
     });
 

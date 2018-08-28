@@ -1,16 +1,16 @@
+import { User } from '.';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  JoinColumn,
   BaseEntity,
   BeforeInsert,
   BeforeUpdate,
+  Column,
   CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
   UpdateDateColumn
-} from 'typeorm';
-import { Nominator } from '.';
+  } from 'typeorm';
 
 @Entity('sessions')
 export class Session extends BaseEntity {
@@ -25,7 +25,7 @@ export class Session extends BaseEntity {
   @Column('int', { name: 'user_id' })
   userId: number;
 
-  @OneToOne(() => Nominator, { eager: true })
+  @OneToOne(() => User, { eager: true })
   @JoinColumn({ name: 'user_id' })
-  user: Nominator;
+  user: User;
 }
