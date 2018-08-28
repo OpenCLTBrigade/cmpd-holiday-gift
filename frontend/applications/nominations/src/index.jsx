@@ -6,7 +6,6 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { Provider, connect } from 'unistore/react';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -23,49 +22,51 @@ import 'babel-polyfill';
 
 // Our React Components that this component uses
 import Dashboard from './app/dashboard';
-
-import Restricted from './app/components/restricted';
 import NotFound from './notFound';
+
 import * as slips from './app/slips';
 
 import { AuthToken } from './lib/auth';
-import { store } from './lib/state';
 
 //TODO: use lerna to grab this dep.
 import Auth from '../../auth/src/App';
-const Routes = connect('loginStatus')(({ loginStatus }) => {
-  //TODO: Need to check registration status & add referrer logic
+import { AuthConsumer, AuthProvider } from '../../auth/src/modules/common/contexts';
 
-  if (loginStatus === 'unauthenticated') {
-    return (
-      <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/auth" />} />
-          <Route path="/auth" component={Auth} />
-        </Switch>
-      </Router>
-    );
-  }
+const AppRouter = () => (
+  <AuthConsumer>
+    {({ accountStatus }) => {
+      if (['registered', 'unauthenticated', 'unregistered'].includes(accountStatus)) {
+        return (
+          <Router>
+            <Switch>
+              <Route path="/auth" component={Auth} />
+              <Route path="*" component={() => <Redirect to="/auth" />} />
+            </Switch>
+          </Router>
+        );
+      }
 
-  return (
-    loginStatus === 'authenticated' && (
-      <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-          <Route path="/dashboard" component={Dashboard} />
-          {AuthToken.expired() ? null : <Route path="/slips/packing" component={slips.packing} />}
-          <Route path="/slips/bicycle" component={slips.bicycle} /> }
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </Router>
-    )
-  );
-});
+      return (
+        accountStatus === 'authenticated' && (
+          <Router>
+            <Switch>
+              <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+              <Route path="/dashboard" component={Dashboard} />
+              {AuthToken.expired() ? null : <Route path="/slips/packing" component={slips.packing} />}
+              <Route path="/slips/bicycle" component={slips.bicycle} /> }
+              <Route path="*" component={NotFound} />
+            </Switch>
+          </Router>
+        )
+      );
+    }}
+  </AuthConsumer>
+);
 
 const App = () => (
-  <Provider store={store}>
-    <Routes />
-  </Provider>
+  <AuthProvider>
+    <AppRouter />
+  </AuthProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -3,7 +3,7 @@ const s3 = new AWS.S3({ region: process.env.AWS_REGION || 'us-west-2', signature
 
 import logger from './logger';
 
-const createMainBucket = async name => {
+export const createMainBucket = async name => {
   // Create the parameters for calling createBucket
   const bucketParams = { Bucket: name };
 
@@ -21,7 +21,7 @@ const createMainBucket = async name => {
   }
 };
 
-const createAttachment = async ({ name, filename, fileBuffer }) => {
+export const createAttachment = async ({ name, filename, fileBuffer }) => {
   const params = {
     Bucket: name,
     Key: `${filename}`,
@@ -43,7 +43,7 @@ const createAttachment = async ({ name, filename, fileBuffer }) => {
   }
 };
 
-const getAttachmentUrl = async ({ name, filename }) => {
+export const getAttachmentUrl = async ({ name, filename }) => {
   logger.info('getAttachmentUrl', { name, filename });
 
   const params = {
@@ -54,7 +54,7 @@ const getAttachmentUrl = async ({ name, filename }) => {
   return await s3.getSignedUrl('getObject', params);
 };
 
-const getAttachments = async ({ name, owner }) => {
+export const getAttachments = async ({ name, owner }) => {
   logger.info('getAttachments', { name, owner });
 
   const params = { Bucket: name, Prefix: `${owner}/` };

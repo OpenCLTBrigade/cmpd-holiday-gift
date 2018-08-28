@@ -19,7 +19,7 @@ export const databaseProviders = [
     provide: 'DbConnectionToken',
     useFactory: async () =>
       await createConnection({
-        type,
+        type: type as any,
         database,
         entities: [Affiliation, User, Session, Attachment, Household, PhoneNumber, Address, Child],
         subscribers: [AutoEncryptSubscriber]

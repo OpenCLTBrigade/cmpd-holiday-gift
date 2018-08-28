@@ -5,7 +5,7 @@ export function getUser(id) {
 }
 
 export function getMe() {
-  return get('nominations', 'users/me/profile');
+  return get('v2', 'auth/account');
 }
 
 export function getUserList(pageNumber = 1, search, affiliationId) {
