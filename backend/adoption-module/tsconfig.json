@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "target": "es2017",
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules", "dist", "build", "scripts", "webpack", "jest", "src/setupTests.ts", "src/**/*.test.ts*"],
+  "include": ["./src/**/*"]
+}
