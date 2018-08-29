@@ -1,1 +1,0 @@
-web: cp env.heroku.js env.js && npm start
