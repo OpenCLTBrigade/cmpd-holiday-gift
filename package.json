@@ -9,7 +9,7 @@
     "start-server": "lerna run start --parallel --scope *-api",
     "build-server": "lerna run build --parallel --scope *-api",
     "watch-server": "lerna run watch --parallel --scope *-api",
-    "seed": "rimraf run/db.development.sqlite && lerna run seed",
+    "seed": "rimraf run/db.development.sqlite && lerna run seed --stream",
     "prepack": "npm run build-client && npm run build-server",
     "lint": "eslint -f unix --fix --ext js --ext jsx server src env.js env.example.js",
     "bootstrap": "lerna bootstrap",
