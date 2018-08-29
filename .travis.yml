@@ -6,4 +6,5 @@ before_script:
   - 'yarn global add lerna'
 script:
   - yarn build-server
+  - yarn seed
   - cd frontend/applications/nominations && yarn build
