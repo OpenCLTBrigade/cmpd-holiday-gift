@@ -1,13 +1,14 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-// import { typeDefs } from './modules/affiliations';
+import { AdoptionModule } from 'cmpd-adoption-api';
+import { AppController } from './app.controller';
 import { AffiliationsModule } from './modules/affiliations';
 import { AuthModule } from './modules/auth';
 import { CmpdModule } from './modules/cmpd/cmpd.module';
 import { HouseholdsModule } from './modules/households';
 import { TrackingModule } from './modules/tracking';
 import { UsersModule } from './modules/users/users.module';
-import { AppController } from './app.controller';
+// import { typeDefs } from './modules/affiliations';
 
 // const allRoutes = {
 //   path: '*',
@@ -25,7 +26,16 @@ import { AppController } from './app.controller';
 // };
 
 @Module({
-  modules: [GraphQLModule, AuthModule, HouseholdsModule, AffiliationsModule, TrackingModule, UsersModule, CmpdModule],
+  modules: [
+    GraphQLModule,
+    AuthModule,
+    HouseholdsModule,
+    AdoptionModule,
+    AffiliationsModule,
+    TrackingModule,
+    UsersModule,
+    CmpdModule
+  ],
   controllers: [AppController]
 })
 export class AppModule {
