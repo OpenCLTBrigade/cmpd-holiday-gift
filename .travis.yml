@@ -5,6 +5,7 @@ before_install:
 before_script:
   - 'yarn global add lerna'
 script:
+  - mv backend/nominations-api/service-account-key.example.json backend/nominations-api/service-account-key.json
   - yarn build-server
   - yarn seed
   - cd frontend/applications/nominations && yarn build
