@@ -8,7 +8,8 @@
     "emitDecoratorMetadata": true,
     "lib": ["esnext", "dom"],
     "paths": {
-      "cmpd-common-api": ["./common/src"]
+      "cmpd-common-api": ["./common/src"],
+      "cmpd-adoption-api": ["./adoption-module/src"]
     }
   }
 }
