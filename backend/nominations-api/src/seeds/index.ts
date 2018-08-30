@@ -1,13 +1,22 @@
-/* eslint no-console: "off" */
+import {
+  Address,
+  Affiliation,
+  Attachment,
+  Child,
+  Household,
+  Nominator,
+  PhoneNumber,
+  Session
+  } from 'cmpd-common-api';
 import * as fs from 'fs';
-const path = require('path');
-import config from '../config';
-import { Affiliation, Address, Attachment, Child, PhoneNumber, Household, Session, Nominator } from 'cmpd-common-api';
-
 import { createConnection } from 'typeorm';
 import { AutoEncryptSubscriber } from 'typeorm-encrypted';
+import config from '../config';
+/* eslint no-console: "off" */
+const path = require('path');
 
-async function seed({ db: { dialect: type, storage: database } }) {
+
+async function seed({ db: { dialect: type, storage: database } }: any) {
   try {
     const connection = await createConnection({
       type,
