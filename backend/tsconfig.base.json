@@ -9,7 +9,7 @@
     "lib": ["esnext", "dom"],
     "paths": {
       "cmpd-common-api": ["./common/src"],
-      "cmpd-adoption-api-module": ["./adoption-module/src"]
+      "cmpd-adoption-api": ["./adoption-module/src"]
     }
   }
 }
