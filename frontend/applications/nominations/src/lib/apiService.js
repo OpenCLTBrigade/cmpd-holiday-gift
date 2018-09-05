@@ -1,84 +1,8 @@
-import axios from 'axios';
+import wretch from 'wretch';
 
-import { getAuthorization } from '../lib/auth';
-import { AuthToken } from './auth';
-
-/**
- * Default axios config object
- * @type {RequestConfigType}
- */
-const defaultRequestConfig = {
-  baseURL: process.env.API_URL || 'http://localhost:3002/api/',
-  method: 'get'
-};
-
-/**
- * What to do with the request before handing it back to the calling object
- * @param  {Object}   response Request response
- * @param  {Function} next     resolve(data)
- */
-const preProcessResponse = function(response, next) {
-  next(response.data);
-};
-
-/**
- * What to do with the error before handing it back to the calling object
- * @param  {Object}   err
- * @param  {Function} next     reject(error)
- */
-const preProcessError = function(err, next) {
-  next(err);
-};
-
-/**
- * [description]
- * @param  {String} method HTTP Verb
- * @param  {String} url    Endpoint to hit. No starting slash
- * @param  {Object} data   URL parameters OR post body to be sent
- * @param  {Object} config Axios configuration object
- * @return {Promise}       Promise with response.data OR error
- */
-const makeRequest = async function(method, app, path, data, config = {}) {
-  // Combine our passed configuration with the base configuration
-  const requestConfig = Object.assign({}, defaultRequestConfig, config);
-
-  requestConfig.url = `${app}/${path}`;
-  requestConfig.method = method.toLowerCase();
-
-  // console.log('authtoken', AuthToken.token);
-  // console.log('url', requestConfig.url);
-
-  // Add an authorization header to the request if a token is available
-  const authorization = `Bearer ${localStorage.getItem('authToken')}`;
-  if (authorization) {
-    if (!requestConfig.headers) {
-      requestConfig.headers = {};
-    }
-    requestConfig.headers.Authorization = authorization;
-  }
-
-  // Set data to the post body or query string
-  if (data != null) {
-    if (requestConfig.method === 'get' || config.method === 'delete') {
-      requestConfig.params = data;
-    } else {
-      requestConfig.data = data;
-    }
-  }
-
-  return new Promise((resolve, reject) => {
-    axios
-      .request(requestConfig)
-      .then(response => {
-        // Pre-process the response before handing it back to the calling controller
-        preProcessResponse(response, resolve);
-      })
-      .catch(err => {
-        // Pre-process the response before handing it back to the calling controller
-        preProcessError(err, reject);
-      });
-  });
-};
+const api = wretch()
+  .url(process.env.API_URL || 'http://localhost:3002/api')
+  .auth(`Bearer ${localStorage.getItem('authToken')}`);
 
 /*
  * Exported methods shouldn't be used directly from a component; use
@@ -86,17 +10,30 @@ const makeRequest = async function(method, app, path, data, config = {}) {
  */
 
 export function get(app, path, data = null, config = {}) {
-  return makeRequest('get', app, path, data, config);
+  return api
+    .url(`/${app}/${path}`)
+    .query(data)
+    .get()
+    .json();
 }
 
 export function post(app, path, data = null, config = {}) {
-  return makeRequest('post', app, path, data, config);
+  return api
+    .url(`/${app}/${path}`)
+    .post(data)
+    .json();
 }
 
 export function put(app, path, data = null, config = {}) {
-  return makeRequest('put', app, path, data, config);
+  return api
+    .url(`/${app}/${path}`)
+    .put(data)
+    .json();
 }
 
 export function delete_(app, path, data = null, config = {}) {
-  return makeRequest('delete', app, path, data, config);
+  return api
+    .url(`/${app}/${path}`)
+    .delete(data)
+    .json();
 }

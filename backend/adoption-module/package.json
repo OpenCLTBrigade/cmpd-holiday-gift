@@ -1,10 +1,11 @@
 {
   "name": "cmpd-adoption-api",
   "version": "1.0.0",
-  "main": "dist/module.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "private": true,
   "scripts": {
+    "preinstall": "yarn run build",
     "build": "tsc -p tsconfig.build.json"
   },
   "engines": {
