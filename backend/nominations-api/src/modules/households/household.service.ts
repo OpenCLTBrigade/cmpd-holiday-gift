@@ -248,6 +248,7 @@ export class HouseholdService {
 
     logStart('saving children');
 
+    //FIXME: Validation errors for required fields not returning an error.
     children.forEach(async child => {
       const entity = Child.fromJSON(child);
       entity.household = created;
