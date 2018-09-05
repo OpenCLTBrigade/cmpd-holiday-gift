@@ -17,13 +17,7 @@ export class AffiliationService {
 
       let results = await getRepository(Affiliation).find({ where: type && { type } });
 
-      return createPagedResults({
-        results,
-        page,
-        query,
-        baseUrl: '',
-        fieldWhitelist: whitelist
-      });
+      return results;
     } catch (error) {
       logger.error(error);
       throw new ApplicationError(error.message);
