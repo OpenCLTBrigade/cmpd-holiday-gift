@@ -14,8 +14,6 @@ export class AffiliationsResolver {
 
   @Query('affiliations')
   async getAffiliations(obj, args, context, info) {
-    const { totalSize, per_page: perPage, last_page: lastPage, page, items } = await this.affiliationService.query();
-
-    return { totalSize, perPage, lastPage, page, items };
+    return await this.affiliationService.query();
   }
 }
