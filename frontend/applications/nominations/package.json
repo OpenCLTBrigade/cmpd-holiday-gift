@@ -21,7 +21,6 @@
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
     "admin-lte": "^2.3.11",
-    "axios": "^0.16.2",
     "babel": "^6.23.0",
     "bootstrap": "^3.3.7",
     "final-form": "^4.2.1",
