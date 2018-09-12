@@ -32,10 +32,8 @@ export const FaqView: React.SFC<{}> = _props => {
           {FAQ_LIST.map((question, index) => (
             <Card key={index}>
               <CardBody>
-                <CardTitle id={`faq${index}`}>{question.title}</CardTitle>
-                <UncontrolledCollapse toggler={`faq${index}`}>
+                <CardTitle>{question.title}</CardTitle>
                   <div dangerouslySetInnerHTML={{ __html: question.content }} />
-                </UncontrolledCollapse>
               </CardBody>
             </Card>
           ))}

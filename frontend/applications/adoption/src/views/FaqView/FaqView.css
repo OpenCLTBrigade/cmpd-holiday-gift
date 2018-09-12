@@ -3,11 +3,5 @@
 }
 
 #page-faq h5.card-title {
-  margin-bottom: 0px;
-  cursor: pointer;
-}
-
-#page-faq div.collapse.show,
-#page-faq div.collapsing {
-  padding-top: 10px;
+  margin-bottom: 10px;
 }

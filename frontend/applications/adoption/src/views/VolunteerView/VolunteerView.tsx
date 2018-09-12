@@ -7,24 +7,50 @@ import {
   } from 'reactstrap';
 import './VolunteerView.css';
 
+const VolunteerInfoContent = [
+  {
+    title: 'Volunteer at the Warehouse',
+    content: 'Sample text',
+    buttonTitle: 'Apply Now',
+    imageSource: 'http://placehold.it/700x300',
+    linkTo: 'about:blank'
+  },
+  {
+    title: 'Volunteer at the Warehouse',
+    content: 'Sample text',
+    buttonTitle: 'Apply Now',
+    imageSource: 'http://placehold.it/700x300',
+    linkTo: 'about:blank'
+  },
+  {
+    title: 'Volunteer at the Warehouse',
+    content: 'Sample text',
+    buttonTitle: 'Apply Now',
+    imageSource: 'http://placehold.it/700x300',
+    linkTo: 'about:blank'
+  }
+];
 const VolunteerView: React.SFC<{}> = _props => {
   return (
     <Container id="page-volunteer">
-      <Row>
-        <Col md={4}>
-          <a href="#">
-            <img className="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="" />
-          </a>
-        </Col>
-        <Col md={8}>
-          <h3>Heading</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, odit velit cumque vero doloremque repellendus
-            distinctio maiores rem expedita a nam vitae modi quidem similique ducimus!
-          </p>
-          <Button color={`primary`}>Sign up</Button>
-        </Col>
-      </Row>
+      {VolunteerInfoContent.map((content, index) => {
+        return (
+          <Row className="volunteer-option-row" key={index}>
+            <Col md={4}>
+              <a href="#">
+                <img className="img-fluid rounded mb-3 mb-md-0" src={content.imageSource} alt="" />
+              </a>
+            </Col>
+            <Col md={8}>
+              <h3>{content.title}</h3>
+              <p>{content.content}</p>
+              <a className="btn btn-primary" href={content.linkTo}>
+                {content.buttonTitle}
+              </a>
+            </Col>
+          </Row>
+        );
+      })}
     </Container>
   );
 };
