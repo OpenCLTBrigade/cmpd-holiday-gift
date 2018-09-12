@@ -7,7 +7,6 @@
   "scripts": {},
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
-    "@types/node": "^10.0.4",
     "classcat": "^3.0.2",
     "emotion": "^9.1.2",
     "final-form": "^4.6.1",
