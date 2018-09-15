@@ -83,7 +83,7 @@ export default class ViewUser extends React.Component {
       <Grid>
         <Row>
           <Col xs={12}>
-            <Box title={`${user.firstName} ${user.lastName}`}>
+            <Box title={`${user.name}`}>
               <Row>
                 <Col xs={12}>
                   <ListGroup>

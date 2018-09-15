@@ -98,10 +98,6 @@ export class Household extends BaseEntity {
   @JoinColumn({ name: 'nominator_id' })
   nominator: User;
 
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
-
   static fromJSON(props) {
     const entity = new Household(props);
 

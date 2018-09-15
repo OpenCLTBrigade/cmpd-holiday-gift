@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 const PAGE_TITLE = 'Active Users';
 
 const TD_STYLE = {
-  'min-width': '150px',
+  minWidth: '150px',
   width: '150px'
 };
 export default class UsersList extends React.Component {

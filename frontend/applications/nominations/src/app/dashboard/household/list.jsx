@@ -10,21 +10,21 @@ import RecordActionItems from './RecordActionItems';
 // import type { HouseholdType } from 'api/household';
 
 const TD_STYLE_LARGE = {
-  'min-width': '175px',
+  minWidth: '175px',
   width: '175px'
 };
 
 const TD_STYLE = {
-  'min-width': '150px',
+  minWidth: '150px',
   width: '150px'
 };
 
 const TD_STYLE_SMALL = {
-  'min-width': '75px',
+  minWidth: '75px',
   width: '75px'
 };
 const TD_STYLE_XSMALL = {
-  'min-width': '50px',
+  minWidth: '50px',
   width: '50px'
 };
 
@@ -70,15 +70,11 @@ export default class List extends React.Component {
   }
 
   nominatorCellFormatter(cell, row) {
-    if (!row.nominator) {
+    if (!row.nominatorId) {
       console.log('NOPE', row);
       return null;
     }
-    return (
-      <Link to={`/dashboard/user/${row.nominator.id}`}>
-        {row.nominator.firstName} {row.nominator.lastName}
-      </Link>
-    );
+    return <Link to={`/dashboard/user/${row.nominatorId}`}>{row.nominatedBy}</Link>;
   }
 
   submittedCellFormatter = (cell, row) => {
@@ -102,6 +98,7 @@ export default class List extends React.Component {
   async fetch(page, search) {
     this.currentPage = page; // Used for refreshing list when submitting feedback
     const response = await getHouseholdList(page, search);
+
     return {
       items: response.items,
       totalSize: response.totalSize,
@@ -133,7 +130,7 @@ export default class List extends React.Component {
           tdStyle={TD_STYLE}
           thStyle={TD_STYLE}
           dataField="firstName"
-          dataFormat={(cell, row) => `${row.firstName} ${row.lastName}`}>
+          dataFormat={(cell, row) => `${row.fullName}`}>
           Head of Household
         </TableHeaderColumn>
         <TableHeaderColumn

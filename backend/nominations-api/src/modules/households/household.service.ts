@@ -27,14 +27,25 @@ export class HouseholdService {
         search
       };
 
-      let results = await Household.find({ where: active && { deleted: false } });
-      return createPagedResults({
+      const results = (await Household.find({
+        where: active && { deleted: false },
+        relations: ['children', 'nominator']
+      })).map(household => ({
+        fullName: `${household.firstName} ${household.lastName}`,
+        childCount: household.children.length,
+        nominatedBy: household.nominator && household.nominator.email,
+        ...household
+      }));
+
+      const pagedResults = createPagedResults({
         results,
         page,
         query,
         baseUrl,
         fieldWhitelist: whitelist
       });
+
+      return pagedResults;
     } catch (error) {
       logger.error(error);
       return undefined;
@@ -248,6 +259,7 @@ export class HouseholdService {
 
     logStart('saving children');
 
+    //FIXME: Validation errors for required fields not returning an error.
     children.forEach(async child => {
       const entity = Child.fromJSON(child);
       entity.household = created;
