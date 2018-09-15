@@ -1,12 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthConsumer, AuthProvider } from './modules/common/contexts';
+import Container from './modules/components/Container';
 import { Login } from './modules/login/Login';
-
 import { Register } from './modules/register/Register';
 import { Registered } from './modules/register/Registered';
-import Container from './modules/components/Container';
-import { AuthProvider, AuthConsumer } from './modules/common/contexts';
 
 const AppRouter = () => (
   <AuthConsumer>

@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
-import { register, sendEmailVerification } from '../../services/login';
 import firebase from '../../firebase';
+import { register, sendEmailVerification } from '../../services/login';
 
 export type AuthContextProps = {
   accountStatus?: 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered';

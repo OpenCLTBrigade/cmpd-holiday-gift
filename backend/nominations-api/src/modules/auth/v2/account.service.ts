@@ -1,10 +1,10 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ApplicationError, Nominator } from 'cmpd-common-api';
 import makeFirebaseService, { Admin } from '../../../common/services/firebase';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { ApproveUserDto } from './dto/approve-user.dto';
-import { Nominator, ApplicationError } from 'cmpd-common-api';
 import { sendApproval } from '../../lib/registration';
+import { ApproveUserDto } from './dto/approve-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 export enum ErrorCodes {
@@ -34,6 +34,7 @@ export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await this.admin.auth().verifyIdToken(idToken);
     const nominator = await Nominator.findOneById(decodedToken.uid);
+    console.log('hmmm', nominator);
     return { ...nominator, claims: decodedToken.claims };
   }
 
@@ -64,7 +65,9 @@ export class AccountService {
       const user = await Nominator.findOneById(uid);
       await this.admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
-      if (!user) throw new NotFoundException();
+      if (!user) {
+        throw new NotFoundException();
+      }
 
       user.name = rest.name;
       user.rank = rest.rank;
@@ -89,7 +92,9 @@ export class AccountService {
       const { phoneNumber, displayName } = registerUserDto;
       const firebaseUser = await this.admin.auth().getUserByPhoneNumber(phoneNumber);
 
-      if (!firebaseUser) throw new Error('User does not exist');
+      if (!firebaseUser) {
+        throw new Error('User does not exist');
+      }
 
       await this.admin
         .auth()
@@ -106,7 +111,9 @@ export class AccountService {
       return nominator;
     } catch (error) {
       console.log(error);
-      if (error.code) throw new ApplicationError('Validation error', determineCode(error.code));
+      if (error.code) {
+        throw new ApplicationError('Validation error', determineCode(error.code));
+      }
 
       throw new ApplicationError(error.message);
     }
@@ -151,7 +158,9 @@ export class AccountService {
 
       const user = await Nominator.findOneById(firebaseUser.uid);
 
-      if (!user || !firebaseUser) throw new ApplicationError('user not found', ErrorCodes.UserNotFound);
+      if (!user || !firebaseUser) {
+        throw new ApplicationError('user not found', ErrorCodes.UserNotFound);
+      }
       const { disabled, emailVerified } = user;
       return { disabled, emailVerified };
     } catch (error) {

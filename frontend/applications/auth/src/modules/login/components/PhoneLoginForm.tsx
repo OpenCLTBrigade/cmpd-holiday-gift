@@ -6,6 +6,7 @@ import { login, loginWithCode, verifyPhoneNumber } from '../../common/services/l
 import { formatNumber } from '../../common/util/formatters';
 import { Button } from '../../components/Button';
 import Input from '../../components/Input';
+import Loader from '../../components/Loader';
 import { Span, Text } from '../../components/Text';
 
 const logoUrl = require('../../../assets/logo.jpg');
@@ -18,11 +19,15 @@ const labelStyle = {
   display: 'block'
 };
 
-class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeReceived; verificationCode }> {
+class PhoneLoginForm extends Component<
+  { onSubmit; history },
+  { phone; codeReceived; verificationCode; loading: boolean }
+> {
   state = {
     phone: '',
     verificationCode: '',
-    codeReceived: false
+    codeReceived: false,
+    loading: false
   };
 
   componentDidMount() {
@@ -44,11 +49,20 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
     e.preventDefault();
     const { onSubmit, history } = this.props;
 
+    this.setState({ loading: true });
     await loginWithCode(this.state.verificationCode.replace('-', ''));
 
     const exists = await verifyPhoneNumber(formatNumber(this.state.phone));
-
+    this.setState({ loading: false });
     if (exists) {
+      const { currentUser } = firebase.auth();
+      if (currentUser && !currentUser.emailVerified) {
+        alert(
+          'Please check your inbox for a verification email. After you have been verified a program manager needs to approve your account.'
+        );
+        window.location.reload();
+        return;
+      }
       onSubmit();
     } else {
       history.push(`register/${this.state.phone}`);
@@ -56,6 +70,7 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
   };
 
   renderTokenVerificationForm({ onSubmit }) {
+    const { loading } = this.state;
     return (
       <div>
         <form>
@@ -77,11 +92,13 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
             </label>
           </div>
           <div className="">
+            <Loader style={{ display: !loading ? 'none' : 'block' }} />
             <Button
               type="submit"
               text="Continue"
               disabled={!this.state.verificationCode}
               onClick={this.onSubmitLoginForm}
+              style={{ display: loading ? 'none' : 'block' }}
             />
           </div>
         </form>
@@ -91,12 +108,18 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
 
   onSubmitRequestTokenForm = async e => {
     e.preventDefault();
-    await login(formatNumber(this.state.phone));
+    this.setState({ loading: true }, async () => {
+      await login(formatNumber(this.state.phone));
+      this.setState({
+        loading: false
+      });
+    });
   };
 
   onPhoneInput = e => this.setState({ phone: (e.target as HTMLInputElement).value });
 
   renderRequestTokenForm() {
+    const { loading } = this.state;
     return (
       <form onSubmit={this.onSubmitRequestTokenForm}>
         <div className="">
@@ -120,7 +143,8 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
           </div>
         </div>
         <div className="">
-          <Button text="Send verification code" id="sign-in-button" />
+          <Loader style={{ display: !loading ? 'none' : 'block' }} />
+          <Button text="Send verification code" id="sign-in-button" style={{ display: loading ? 'none' : 'block' }} />
         </div>
       </form>
     );

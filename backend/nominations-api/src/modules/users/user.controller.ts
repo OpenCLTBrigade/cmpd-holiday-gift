@@ -2,25 +2,23 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
   Query,
   Req,
   UseGuards,
-  ValidationPipe,
-  NotFoundException
-} from '@nestjs/common';
+  ValidationPipe
+  } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags } from '@nestjs/swagger';
-
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { UserService } from './user.service';
-import { baseUrl } from '../lib/misc';
-
 import { Roles } from '../../common/decorators/roles.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { baseUrl } from '../lib/misc';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { UserService } from './user.service';
 
 @UseGuards(RolesGuard)
 @Controller('api/nominations/users')
@@ -58,7 +56,9 @@ export class UserController {
   async getById(@Param('id') id) {
     const user = await this.userService.getById(id);
 
-    if (!user) throw new NotFoundException();
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     return user;
   }
@@ -101,8 +101,8 @@ export class UserController {
   @Get('/me/status')
   @Roles('admin')
   @UseGuards(AuthGuard('bearer'))
-  async getNominationsStatus(@Req() { user: { id } }) {
-    const { nominationLimit: limit, households } = await this.userService.getById(id);
+  async getNominationsStatus(@Req() request) {
+    const { nominationLimit: limit, households } = await this.userService.getById(request.user.id);
     const count = households.filter(row => !row.deleted).length;
 
     return { limit, count };
