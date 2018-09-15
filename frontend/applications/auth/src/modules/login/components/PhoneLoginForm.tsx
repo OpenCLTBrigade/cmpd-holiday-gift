@@ -8,6 +8,8 @@ import { Button } from '../../components/Button';
 import Input from '../../components/Input';
 import { Span, Text } from '../../components/Text';
 
+const logoUrl = require('../../../assets/logo.jpg');
+
 const verificationCodeMask = [/[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 const phoneNumberMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -55,24 +57,35 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
 
   renderTokenVerificationForm({ onSubmit }) {
     return (
-      <form>
-        <div className="">
-          <label style={labelStyle}>
-            <Span>Verification #</Span>
+      <div>
+        <form>
+          <div className="">
+            <div style={{ textAlign: 'center' }}>
+              Please enter the verification code that we texted to the phone number you entered.
+              <hr />
+            </div>
+            <label style={labelStyle}>
+              <Span>Verification #</Span>
 
-            <Input
-              className=""
-              type="text"
-              placeholder="Verification code"
-              value={this.state.verificationCode}
-              onInput={this.onVerificationCodeInput}
+              <Input
+                className=""
+                type="text"
+                placeholder="Verification code"
+                value={this.state.verificationCode}
+                onInput={this.onVerificationCodeInput}
+              />
+            </label>
+          </div>
+          <div className="">
+            <Button
+              type="submit"
+              text="Continue"
+              disabled={!this.state.verificationCode}
+              onClick={this.onSubmitLoginForm}
             />
-          </label>
-        </div>
-        <div className="">
-          <Button type="submit" text="Login" disabled={!this.state.verificationCode} onClick={this.onSubmitLoginForm} />
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     );
   }
 
@@ -87,9 +100,15 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
     return (
       <form onSubmit={this.onSubmitRequestTokenForm}>
         <div className="">
+          <div style={{ textAlign: 'center' }}>
+            This year we're using cellphone-based authentication to make things easier for our participants. Please
+            enter your cellphone number in the form below to register or log in. We will text you a confirmation code
+            that you will enter on the next screen to proceed.
+          </div>
+          <hr />
           <div className="">
             <label style={labelStyle}>
-              <Span>Phone #</Span>
+              <Span>Mobile phone #</Span>
               <Input
                 width="full"
                 type="tel"
@@ -101,7 +120,7 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
           </div>
         </div>
         <div className="">
-          <Button text="Request Code" id="sign-in-button" />
+          <Button text="Send verification code" id="sign-in-button" />
         </div>
       </form>
     );
@@ -111,10 +130,14 @@ class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeRecei
     const { onSubmit } = this.props;
     return (
       <section>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <img src={logoUrl} style={{ maxWidth: '200px' }} />
+          <hr />
+        </div>
         {this.state.codeReceived ? this.renderTokenVerificationForm({ onSubmit }) : this.renderRequestTokenForm()}
       </section>
     );
   }
 }
 
-export default withRouter(PhoneLoginForm);
+export default withRouter(PhoneLoginForm as any) as any;
