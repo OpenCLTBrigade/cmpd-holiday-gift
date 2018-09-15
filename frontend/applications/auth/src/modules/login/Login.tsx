@@ -1,7 +1,7 @@
 import React from 'react';
-
-import { PhoneLoginForm } from './components/PhoneLoginForm';
 import { AuthConsumer } from '../common/contexts';
+import PhoneLoginForm from './components/PhoneLoginForm';
+
 
 export const Login = () => (
   <AuthConsumer>

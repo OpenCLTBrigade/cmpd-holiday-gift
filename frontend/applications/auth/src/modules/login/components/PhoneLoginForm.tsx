@@ -1,12 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
-import { Button } from '../../components/Button';
-
+import { withRouter } from 'react-router-dom';
 import firebase from '../../common/firebase';
-import { loginWithCode, login, verifyPhoneNumber } from '../../common/services/login';
+import { login, loginWithCode, verifyPhoneNumber } from '../../common/services/login';
 import { formatNumber } from '../../common/util/formatters';
+import { Button } from '../../components/Button';
 import Input from '../../components/Input';
-import { Text, Span } from '../../components/Text';
+import { Span, Text } from '../../components/Text';
 
 const verificationCodeMask = [/[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 const phoneNumberMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -16,7 +16,7 @@ const labelStyle = {
   display: 'block'
 };
 
-export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeReceived; verificationCode }> {
+class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; codeReceived; verificationCode }> {
   state = {
     phone: '',
     verificationCode: '',
@@ -116,3 +116,5 @@ export class PhoneLoginForm extends Component<{ onSubmit; history }, { phone; co
     );
   }
 }
+
+export default withRouter(PhoneLoginForm);
