@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Get, ValidationPipe, Req, Res, Param } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get, ValidationPipe, Req, Res, Param, Put } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 import { RolesGuard } from '../../../common/guards';
 import { AccountService } from './account.service';
@@ -30,7 +30,8 @@ export class AuthController {
     }
   }
 
-  @Post('/approve')
+  @Put('/approve')
+  @UseGuards(AuthGuard('bearer'))
   approveUser(
     @Body(new ValidationPipe({ transform: false }))
     approveUserDto: ApproveUserDto
