@@ -33,6 +33,7 @@ export function updateUser({ households, ...user }) {
 }
 
 export function approveUser(id) {
+  //TODO: Should allow user to edit role / nomination limit
   return put('v2', `auth/approve`, {
     uid: id,
     app: 'nominations',

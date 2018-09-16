@@ -48,6 +48,7 @@ export class UserService {
 
       const results = await sqlQuery.getMany();
 
+      //TODO: Revisit if we need paging
       return {
         items: results,
         page,
