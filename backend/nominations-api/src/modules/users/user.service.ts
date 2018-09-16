@@ -11,8 +11,8 @@ import admin from '../../common/services/firebase';
 
 // TODO: Criteria that determines whether or not a user account is pending approval
 const Criteria = {
-  PENDING: { emailVerified: true, approved: false },
-  LIVE: { active: true, approved: true }
+  PENDING: { emailVerified: false, disabled: true },
+  LIVE: { disabled: false }
 };
 
 export enum ErrorCodes {
@@ -36,28 +36,26 @@ export class UserService {
       let sqlQuery = Nominator.createQueryBuilder('user')
         .leftJoinAndSelect('user.affiliation', 'affiliation')
         .leftJoinAndSelect('user.households', 'households');
+
       if (query.affiliationId) {
         sqlQuery = sqlQuery.where('user.affiliation_id = :affiliation_id', {
           affiliation_id: query.affiliationId
         });
       } else {
         // TODO: why search only live users?
-        sqlQuery = sqlQuery
-          .where('user.active = :active', { active: Criteria.LIVE.active })
-          .andWhere('user.approved = :approved', {
-            approved: Criteria.LIVE.approved
-          });
+        sqlQuery = sqlQuery.where('user.disabled = :disabled', { disabled: Criteria.LIVE.disabled });
       }
 
       const results = await sqlQuery.getMany();
 
-      return createPagedResults({
-        results,
+      //TODO: Revisit if we need paging
+      return {
+        items: results,
         page,
-        query: searchQuery,
         baseUrl,
-        fieldWhitelist: whitelist
-      });
+        totalSize: results.length,
+        per_page: results.length
+      };
     } catch (error) {
       logger.error(error);
       return undefined;
@@ -71,25 +69,27 @@ export class UserService {
         search
       };
 
-      let sqlQuery = Nominator.createQueryBuilder('user');
+      let sqlQuery = Nominator.createQueryBuilder('user').leftJoinAndSelect('user.affiliation', 'affiliation');
 
       sqlQuery = sqlQuery
-        .where('user.email_verified = :email_verified', {
-          active: Criteria.PENDING.emailVerified
+        .where('user.disabled = :disabled', {
+          disabled: Criteria.PENDING.disabled
         })
-        .andWhere('user.approved = :approved', {
-          approved: Criteria.PENDING.approved
-        });
+        .orWhere('user.email_verified = :email_verified', {
+          email_verified: Criteria.PENDING.emailVerified
+        })
+        .skip((page - 1) * 10)
+        .take(10);
 
       const results = await sqlQuery.getMany();
 
-      return createPagedResults({
-        results,
+      return {
+        items: results,
         page,
-        query: searchQuery,
         baseUrl,
-        fieldWhitelist: whitelist
-      });
+        totalSize: results.length,
+        per_page: results.length
+      };
     } catch (error) {
       logger.error(error);
       return undefined;
