@@ -33,7 +33,12 @@ export function updateUser({ households, ...user }) {
 }
 
 export function approveUser(id) {
-  return post('nominations', `users/${id}/approve`);
+  return put('v2', `auth/approve`, {
+    uid: id,
+    app: 'nominations',
+    role: 'nominator',
+    nominationLimit: 10
+  });
 }
 
 export function declineUser(id) {
