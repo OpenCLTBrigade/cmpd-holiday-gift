@@ -43,18 +43,18 @@ export class UserService {
         });
       } else {
         // TODO: why search only live users?
-        sqlQuery = sqlQuery.where('user.disabled = :disabled', { active: Criteria.LIVE.disabled });
+        sqlQuery = sqlQuery.where('user.disabled = :disabled', { disabled: Criteria.LIVE.disabled });
       }
 
       const results = await sqlQuery.getMany();
 
-      return createPagedResults({
-        results,
+      return {
+        items: results,
         page,
-        query: searchQuery,
         baseUrl,
-        fieldWhitelist: whitelist
-      });
+        totalSize: results.length,
+        per_page: results.length
+      };
     } catch (error) {
       logger.error(error);
       return undefined;
@@ -85,7 +85,9 @@ export class UserService {
       return {
         items: results,
         page,
-        baseUrl
+        baseUrl,
+        totalSize: results.length,
+        per_page: results.length
       };
     } catch (error) {
       logger.error(error);
