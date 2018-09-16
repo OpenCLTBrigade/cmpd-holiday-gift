@@ -7,6 +7,8 @@ import { getPendingUserList as getUserList } from '../../../api/user';
 import { approveUser, declineUser } from '../../../api/user';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { pathOr } from 'rambda';
+
 // import type { UserType } from 'api/user';
 
 const PAGE_TITLE = 'Pending Users';
@@ -20,7 +22,7 @@ const StyledLink = styled(Link)`
 `;
 
 const TD_STYLE_LG = {
-  'min-width': '200px',
+  minWidth: '200px',
   width: '200px'
 };
 
@@ -95,14 +97,13 @@ export default class UsersList extends React.Component {
               <TableHeaderColumn dataField="id" hidden isKey>
                 Id
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="lastName">Last Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="firstName">First Name</TableHeaderColumn>
+              <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
               <TableHeaderColumn dataField="email">Email</TableHeaderColumn>
-              <TableHeaderColumn dataField="phone">Phone</TableHeaderColumn>
-              <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.type.toUpperCase()}>
+              <TableHeaderColumn dataField="phoneNumber">Phone</TableHeaderColumn>
+              <TableHeaderColumn dataField="affiliation" dataFormat={cell => pathOr('', 'type', cell).toUpperCase()}>
                 Affiliation
               </TableHeaderColumn>
-              <TableHeaderColumn dataField="affiliation" dataFormat={cell => cell.name}>
+              <TableHeaderColumn dataField="affiliation" dataFormat={cell => pathOr('', 'name', cell)}>
                 Location
               </TableHeaderColumn>
               <TableHeaderColumn
