@@ -24,5 +24,5 @@ export class RegisterUserDto {
 
   @ApiModelProperty({ type: Number })
   @IsNotEmpty()
-  readonly affiliation: number;
+  readonly affiliationId: number;
 }
