@@ -122,7 +122,8 @@ export class AccountService {
   async approveUser({ uid, role, nominationLimit }: ApproveUserDto) {
     try {
       await this.admin.auth().updateUser(uid, {
-        disabled: false
+        disabled: false,
+        emailVerified: true
       });
       await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [role]: true } } });
 
@@ -130,6 +131,9 @@ export class AccountService {
 
       nominator.disabled = false;
       nominator.nominationLimit = nominationLimit;
+      nominator.emailVerified = true;
+
+      await nominator.save();
     } catch (error) {
       throw new ApplicationError(error.message);
     }
