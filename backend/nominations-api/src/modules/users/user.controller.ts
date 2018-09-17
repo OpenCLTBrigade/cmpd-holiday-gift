@@ -10,7 +10,7 @@ import {
   Req,
   UseGuards,
   ValidationPipe
-  } from '@nestjs/common';
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -99,9 +99,10 @@ export class UserController {
   }
 
   @Get('/me/status')
-  @Roles('admin')
+  @Roles('admin', 'nominator')
   @UseGuards(AuthGuard('bearer'))
   async getNominationsStatus(@Req() request) {
+    console.log({ user: request.user });
     const { nominationLimit: limit, households } = await this.userService.getById(request.user.id);
     const count = households.filter(row => !row.deleted).length;
 
