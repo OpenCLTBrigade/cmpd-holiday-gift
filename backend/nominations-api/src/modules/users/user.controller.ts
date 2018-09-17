@@ -102,7 +102,6 @@ export class UserController {
   @Roles('admin', 'nominator')
   @UseGuards(AuthGuard('bearer'))
   async getNominationsStatus(@Req() request) {
-    console.log({ user: request.user });
     const { nominationLimit: limit, households } = await this.userService.getById(request.user.id);
     const count = households.filter(row => !row.deleted).length;
 
