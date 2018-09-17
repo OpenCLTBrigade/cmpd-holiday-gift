@@ -20,7 +20,8 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
             <div>
               {fields.map((name, idx) => {
                 const dob = pathOr(new Date(), 'dob', fields.value[idx]);
-                const isTooOld = moment(dob).diff(moment().subtract(warningAge, 'years'), 'years') <= 0;
+                const isTooOld =
+                  moment(dob).diff(moment('Dec 25', 'MMM DD').subtract(warningAge, 'years'), 'days') <= 0;
 
                 return (
                   <Row key={name}>
