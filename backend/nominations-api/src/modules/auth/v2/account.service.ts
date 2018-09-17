@@ -34,7 +34,6 @@ export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await this.admin.auth().verifyIdToken(idToken);
     const nominator = await Nominator.findOneById(decodedToken.uid);
-    console.log('hmmm', nominator);
     return { ...nominator, claims: decodedToken.claims };
   }
 
