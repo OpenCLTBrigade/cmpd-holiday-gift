@@ -221,14 +221,6 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
                               componentClass="textarea"
                             />
                           </Col>
-                          <Col md={4} xs={12}>
-                            <FormField
-                              label="Reason for nomination"
-                              name={`${name}.reasonForNomination`}
-                              componentClass="textarea"
-                              required
-                            />
-                          </Col>
                         </Row>
                         <Row>
                           <Col xs={12}>

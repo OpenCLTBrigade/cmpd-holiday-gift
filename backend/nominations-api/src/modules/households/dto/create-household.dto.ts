@@ -67,6 +67,10 @@ class HouseholdDto {
   @ApiModelProperty({ type: String })
   @IsNotEmpty({ message: 'Head of household preferred contact method is required' })
   readonly preferredContactMethod: string;
+
+  @IsNotEmpty({ message: 'Head of household reason for nomination is required' })
+  @ApiModelProperty({ type: String })
+  readonly reasonForNomination: string;
 }
 
 //TODO: Validate nomination limit

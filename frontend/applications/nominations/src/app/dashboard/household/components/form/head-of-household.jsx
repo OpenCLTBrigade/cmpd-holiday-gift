@@ -82,6 +82,14 @@ const HeadOfHousehold = () => {
                   <option value="Other">Other</option>
                 </FormField>
               </Col>
+              <Col md={8} xs={12}>
+                <FormField
+                  label="Reason for nomination"
+                  name="household.reasonForNomination"
+                  componentClass="textarea"
+                  required
+                />
+              </Col>
             </Row>
           </Box>
         </Col>
