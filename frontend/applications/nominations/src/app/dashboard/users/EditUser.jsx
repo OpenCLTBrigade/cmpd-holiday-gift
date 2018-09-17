@@ -63,21 +63,11 @@ export default class EditUser extends React.Component {
         window.location = `/dashboard/user?search=${this.state.user.lastName || ''}`;
       });
     } catch (error) {
-      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
-
-      const validationErrors = parseValidationErrors(error.response.data.message);
+      const errorMessage = 'Something went wrong';
+      const validationErrors = parseValidationErrors(error.validationErrors);
 
       this.setState(() => ({ showErrorModal: true, errorMessage, validationErrors }));
     }
-    // TODO
-    // e.preventDefault();
-    // if (this.state.saving === true) {
-    //   return;
-    // }
-
-    // this.setState({ saving: true }, async () => {
-
-    // });
   };
 
   render() {

@@ -44,8 +44,8 @@ export default class NewUser extends React.Component {
       alert('User has been created');
       window.location = '/dashboard/user';
     } catch (error) {
-      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
-      const validationErrors = parseValidationErrors(error.response.data.message);
+      const errorMessage = 'Something went wrong';
+      const validationErrors = parseValidationErrors(error.validationErrors);
 
       this.setState(() => ({ showErrorModal: true, errorMessage, validationErrors }));
     }
