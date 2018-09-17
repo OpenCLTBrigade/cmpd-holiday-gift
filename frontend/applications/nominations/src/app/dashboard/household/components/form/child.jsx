@@ -208,7 +208,7 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
                         <Row>
                           <Col md={4} xs={12}>
                             <FormField
-                              label="Child's Interests"
+                              label="Child's Interests*"
                               name={`${name}.interests`}
                               componentClass="textarea"
                               placeholder=""
@@ -216,13 +216,18 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
                           </Col>
                           <Col md={4} xs={12}>
                             <FormField
-                              label="Additional Ideas"
+                              label="Additional Ideas*"
                               name={`${name}.additionalIdeas`}
                               componentClass="textarea"
                             />
                           </Col>
                         </Row>
                         <Row>
+                          <Col xs={12}>
+                            <p>
+                              *Limit to toys that are <strong>under</strong> $50.
+                            </p>
+                          </Col>
                           <Col xs={12}>
                             <Button bsStyle="danger" onClick={() => removeChild(idx)}>
                               Remove Child
