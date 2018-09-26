@@ -20,13 +20,13 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(async user => {
       if (user && user.emailVerified) {
+        const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
+
+        localStorage.setItem('authToken', idTokenResult.token);
+
         if (window.location.pathname.includes('auth')) {
           window.location.href = '/';
         } else {
-          const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-
-          localStorage.setItem('authToken', idTokenResult.token);
-
           this.setState({
             accountStatus: 'authenticated',
             idToken: idTokenResult.token,
@@ -34,6 +34,8 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
           });
         }
       } else {
+        localStorage.removeItem('authToken');
+
         this.setState({ accountStatus: 'unauthenticated' });
       }
     });
