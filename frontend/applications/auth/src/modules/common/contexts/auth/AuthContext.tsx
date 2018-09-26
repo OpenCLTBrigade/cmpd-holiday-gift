@@ -27,8 +27,11 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
 
           localStorage.setItem('authToken', idTokenResult.token);
 
-          this.setState({ accountStatus: 'authenticated', idToken: idTokenResult.token });
-          this.setState({ accountStatus: 'authenticated', claims: idTokenResult.claims });
+          this.setState({
+            accountStatus: 'authenticated',
+            idToken: idTokenResult.token,
+            claims: idTokenResult.claims.claims
+          });
         }
       } else {
         this.setState({ accountStatus: 'unauthenticated' });
