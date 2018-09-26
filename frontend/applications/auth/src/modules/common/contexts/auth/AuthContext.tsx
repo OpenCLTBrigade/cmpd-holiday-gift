@@ -21,7 +21,7 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
     firebase.auth().onAuthStateChanged(async user => {
       if (user && user.emailVerified) {
         if (window.location.pathname.includes('auth')) {
-          window.location.replace('/');
+          window.location.href = '/';
         } else {
           const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
 
