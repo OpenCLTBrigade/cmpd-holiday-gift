@@ -32,16 +32,30 @@ import { AuthToken } from './lib/auth';
 //TODO: use lerna to grab this dep.
 import Auth from '../../auth/src/App';
 import { AuthConsumer, AuthProvider } from '../../auth/src/modules/common/contexts';
+import { NotApproved } from '../../auth/src/modules/register/NotApproved';
 
 const AppRouter = () => (
   <AuthConsumer>
-    {({ accountStatus }) => {
+    {({ accountStatus, claims }) => {
+      const isApproved = claims && claims.nominations && claims.nominations.approved;
+
       if (['registered', 'unauthenticated', 'unregistered'].includes(accountStatus)) {
         return (
           <Router>
             <Switch>
               <Route path="/auth" component={Auth} />
               <Route path="*" component={() => <Redirect to="/auth" />} />
+            </Switch>
+          </Router>
+        );
+      }
+
+      if (!isApproved) {
+        return (
+          <Router>
+            <Switch>
+              <Route path="/" component={NotApproved} />
+              <Route path="*" component={() => <Redirect to="/" />} />
             </Switch>
           </Router>
         );
