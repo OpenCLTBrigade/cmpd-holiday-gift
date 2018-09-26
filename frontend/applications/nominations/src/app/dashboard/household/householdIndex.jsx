@@ -3,21 +3,26 @@ import List from './list';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../components/box';
 import { FeedbackModal } from './components/FeedbackModal';
+import { pathOr } from 'ramda';
 
 export default class HouseholdIndex extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { householdInReview: null, listPageNumber: null };
+    this.state = { householdInReview: null };
   }
 
+  getCurrentPageNumber = () => {
+    const qs = querystring.parse();
+    return pathOr(1, ['page'], qs);
+  };
+
   openHouseholdReview = (householdInReview, listPageNumber) => {
-    console.log('hm', householdInReview, 'd', listPageNumber);
-    this.setState({ householdInReview, listPageNumber });
+    this.setState({ householdInReview });
   };
 
   closeHouseholdReview = () => {
-    this.setState({ householdInReview: null, listPageNumber: null });
-    this.listComponent.handlePageChange(this.state.listPageNumber);
+    this.setState({ householdInReview: null });
+    this.listComponent.handlePageChange(this.getCurrentPageNumber());
   };
 
   render() {

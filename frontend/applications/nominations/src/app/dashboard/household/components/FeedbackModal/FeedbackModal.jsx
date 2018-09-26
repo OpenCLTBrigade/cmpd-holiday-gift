@@ -26,10 +26,10 @@ class FeedbackModal extends React.Component {
         reason,
         message
       });
-
-      this.handleClose({ approved, reason, message, reviewed: true });
     } catch (error) {
       alert('Could not review household. Please try again later.');
+    } finally {
+      this.handleClose({ approved, reason, message, reviewed: true });
     }
   };
 
