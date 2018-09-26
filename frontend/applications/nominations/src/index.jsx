@@ -50,6 +50,8 @@ const AppRouter = () => (
         );
       }
 
+      if (!claims) return null;
+
       if (!isApproved) {
         return (
           <Router>
