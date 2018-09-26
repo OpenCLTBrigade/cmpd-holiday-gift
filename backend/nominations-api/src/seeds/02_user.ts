@@ -57,7 +57,10 @@ const createFirebaseUser = async account => {
         emailVerified: true
       });
       await firebase.auth().setCustomUserClaims(user.uid, {
-        claims: { admin: { [account.role]: true }, nominations: { [account.role]: true } }
+        claims: {
+          admin: { [account.role]: true, approved: true },
+          nominations: { [account.role]: true, approved: true }
+        }
       });
     }
 
@@ -69,9 +72,11 @@ const createFirebaseUser = async account => {
 
     const user = await firebase.auth().createUser({ displayName: name, email, phoneNumber, emailVerified: true });
     await firebase.auth().setCustomUserClaims(user.uid, {
-      [role]: true,
-      admin: { [role]: true },
-      nominations: { [role]: true }
+      claims: {
+        [role]: true,
+        admin: { [role]: true },
+        nominations: { [role]: true }
+      }
     });
 
     return user;
