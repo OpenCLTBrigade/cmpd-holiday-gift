@@ -5,6 +5,7 @@ import { register, sendEmailVerification } from '../../services/login';
 export type AuthContextProps = {
   accountStatus?: 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered';
   idToken?: string;
+  claims?: { [x: string]: any };
   registerUser(userData): void;
   loginWithToken(token): void;
 };
@@ -13,7 +14,7 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthConsumer = AuthContext.Consumer;
 
-type Keys = 'accountStatus' | 'idToken';
+type Keys = 'accountStatus' | 'idToken' | 'claims';
 
 export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Keys>> {
   componentDidMount = () => {
@@ -22,10 +23,12 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
         if (window.location.pathname.includes('auth')) {
           window.location.replace('/');
         } else {
-          const idToken: string = await firebase.auth().currentUser.getIdToken(true);
-          localStorage.setItem('authToken', idToken);
+          const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
 
-          this.setState({ accountStatus: 'authenticated', idToken });
+          localStorage.setItem('authToken', idTokenResult.token);
+
+          this.setState({ accountStatus: 'authenticated', idToken: idTokenResult.token });
+          this.setState({ accountStatus: 'authenticated', claims: idTokenResult.claims });
         }
       } else {
         this.setState({ accountStatus: 'unauthenticated' });
