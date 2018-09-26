@@ -55,11 +55,7 @@ export default class UsersList extends React.Component {
   onClickApprove = user => {
     approveUser(user.id)
       .then(response => {
-        if (response.data === true) {
           this.table.handlePageChange(1);
-        } else {
-          alert('An error occured while approving the user. Please try again.');
-        }
       })
       .catch(err => {
         alert('An error occured while approving the user. Please try again.');

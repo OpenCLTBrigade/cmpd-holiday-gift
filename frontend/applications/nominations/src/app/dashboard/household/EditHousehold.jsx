@@ -17,6 +17,7 @@ import ConfirmModal from './components/ConfirmModal';
 import withAsync from '../../components/withAsync';
 
 import { pathOr } from 'rambda';
+import { parseValidationErrors } from '../../../api/helpers/error.helper';
 
 const HouseholdStatus = {
   New: 0,
@@ -29,16 +30,6 @@ const updateData = (oldData, newData) => {
     ...oldData,
     ...newData
   };
-};
-
-const parseValidationErrors = (errors = [], parentProperty = '') => {
-  return errors.reduce((done, { children = [], property, constraints }) => {
-    if (Array.isArray(children) && children.length > 0) {
-      return done.concat(parseValidationErrors(children, property));
-    } else {
-      return done.concat({ property: [parentProperty, property].filter(Boolean).join('.'), constraints });
-    }
-  }, []);
 };
 
 const getId = state => state.id || (state.data && state.data.household && state.data.household.id);
@@ -173,10 +164,9 @@ class NewHousehold extends React.Component {
         this.setState({ status: HouseholdStatus.Draft, id: id });
       }
     } catch (error) {
-      const errorMessage = error.response.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
+      const errorMessage = error.status === 403 ? 'Nomination limit reached' : 'Something went wrong';
 
-      const validationErrors = parseValidationErrors(error.response.data.message);
-
+      const validationErrors = parseValidationErrors(error.validationErrors);
       this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
   };
@@ -190,7 +180,8 @@ class NewHousehold extends React.Component {
       await updateHousehold(id, data).then(() => history.push('/dashboard/household'));
     } catch (error) {
       const errorMessage = 'Something went wrong';
-      const validationErrors = parseValidationErrors(error.response.data.message);
+
+      const validationErrors = parseValidationErrors(error.validationErrors);
 
       this.setState(() => ({ show: true, errorMessage, validationErrors }));
     }
