@@ -5,6 +5,7 @@ const authUrl = 'http://localhost:3002/api/v2/auth';
 
 declare global {
   interface Window {
+    recaptchaVerifier: any;
     confirmationResult: firebase.auth.ConfirmationResult;
   }
 }
