@@ -110,6 +110,7 @@ export class HouseholdController {
     @Param('id') id: number
   ) {
     const fileResults = [];
+    const year = new Date().getFullYear();
     const owner = `household-${id}`;
     const uploadDir = path.join(process.cwd(), 'uploads');
 
@@ -133,7 +134,7 @@ export class HouseholdController {
           const fileBuffer = await fs.readFile(path);
           await createAttachment({
             name: bucketName,
-            filename: `${owner}/${filename}`,
+            filename: `${year}/${owner}/${filename}`,
             fileBuffer
           });
 
@@ -148,7 +149,7 @@ export class HouseholdController {
 
           const url = await getAttachmentUrl({
             name: bucketName,
-            filename: `${owner}/${filename}`
+            filename: `${year}/${owner}/${filename}`
           });
           fileResults.push({ url, filename });
         }
