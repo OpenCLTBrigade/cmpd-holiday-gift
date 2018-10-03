@@ -1,9 +1,12 @@
 import React, { createContext } from 'react';
 import firebase from '../../firebase';
 import { register, sendEmailVerification } from '../../services/login';
+import { pathOr } from 'rambda';
+
+type AccountStatus = 'unknown' | 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered' | 'not_verified';
 
 export type AuthContextProps = {
-  accountStatus?: 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered';
+  accountStatus?: AccountStatus;
   idToken?: string;
   claims?: { [x: string]: any };
   registerUser(userData): void;
@@ -15,11 +18,25 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 export const AuthConsumer = AuthContext.Consumer;
 
 type Keys = 'accountStatus' | 'idToken' | 'claims';
+type State = Pick<AuthContextProps, Keys>;
 
-export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Keys>> {
+export class AuthProvider extends React.Component<{}, State> {
+  state = {
+    accountStatus: 'unknown' as AccountStatus
+  };
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(async user => {
-      if (user && user.emailVerified) {
+      const isEmailVerified = pathOr(false, ['emailVerified'], user);
+      const isRegistered = pathOr(false, ['email'], user);
+
+      //FIXME: This seems like it can be simplified
+      if (!user) {
+        localStorage.removeItem('authToken');
+
+        this.setState({ accountStatus: 'unauthenticated' });
+      } else if (!isRegistered) {
+        this.setState({ accountStatus: 'unauthenticated' });
+      } else if (user && isEmailVerified) {
         const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
 
         localStorage.setItem('authToken', idTokenResult.token);
@@ -33,10 +50,8 @@ export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Key
             claims: idTokenResult.claims.claims
           });
         }
-      } else {
-        localStorage.removeItem('authToken');
-
-        this.setState({ accountStatus: 'unauthenticated' });
+      } else if (user && !isEmailVerified) {
+        this.setState({ accountStatus: 'not_verified' });
       }
     });
   };

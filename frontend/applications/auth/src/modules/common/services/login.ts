@@ -93,7 +93,7 @@ export const logout = () =>
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log(user.email);
+    console.log('logged in');
   } else {
     console.log('not logged in');
   }
