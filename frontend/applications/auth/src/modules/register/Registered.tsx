@@ -1,4 +1,5 @@
 import React from 'react';
+import { logout } from '../common/services/login';
 
 export const Registered = () => (
   <div>
@@ -13,5 +14,8 @@ export const Registered = () => (
       program manager will have to review and approve your account. You will receive an email once your account has been
       approved.
     </p>
+    <a href="#" onClick={logout}>
+      Back to login
+    </a>
   </div>
 );
