@@ -7,7 +7,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
+import { pathOr } from 'rambda';
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.css';
@@ -37,7 +37,9 @@ import { NotApproved } from '../../auth/src/modules/register/NotApproved';
 const AppRouter = () => (
   <AuthConsumer>
     {({ accountStatus, claims }) => {
-      const isApproved = claims && claims.nominations && claims.nominations.approved;
+      if (accountStatus === 'unknown') return null;
+
+      const isApproved = pathOr(false, 'nominations.approved', claims);
 
       if (['registered', 'unauthenticated', 'unregistered'].includes(accountStatus)) {
         return (
@@ -50,9 +52,7 @@ const AppRouter = () => (
         );
       }
 
-      if (!claims) return null;
-
-      if (!isApproved) {
+      if (accountStatus === 'not_verified' || !isApproved) {
         return (
           <Router>
             <Switch>
