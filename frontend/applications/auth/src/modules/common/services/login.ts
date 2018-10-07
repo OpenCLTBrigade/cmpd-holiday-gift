@@ -5,6 +5,7 @@ const authUrl = 'http://localhost:3002/api/v2/auth';
 
 declare global {
   interface Window {
+    recaptchaVerifier: any;
     confirmationResult: firebase.auth.ConfirmationResult;
   }
 }
@@ -92,7 +93,7 @@ export const logout = () =>
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log(user.email);
+    console.log('logged in');
   } else {
     console.log('not logged in');
   }

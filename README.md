@@ -22,6 +22,7 @@ on the dependencies we use.
 * In a separate terminal (re-run `nvm use` if needed) run `yarn start` to start the back-end in development mode. The back end runs on port 3001 and the development mode front-end server will act as a reverse proxy for it. If you get an error
   saying you need to install sqlite3 manually, run `yarn add sqlite3`.
 * Run `yarn seed` to generate sample data.
+  * **IMPORTANT**: If you plan on testing authentication, run `SEED_FIREBASE=true yarn seed`
 
 Read [Front end development notes here](#front-end-development).
 
@@ -63,7 +64,7 @@ Optionally, set up a [mailtrap.io] account if you are working on
 emails. Put your account info in `env.js` (see `env.example.js` for an
 example).
 
-Seed database: `node seed`
+Seed database: `yarn seed`
 
 Run tests: `yarn test-server`
 

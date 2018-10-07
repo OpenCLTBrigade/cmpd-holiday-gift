@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { ApplicationError, Nominator } from 'cmpd-common-api';
+import { ApplicationError, Nominator, logger } from 'cmpd-common-api';
 import makeFirebaseService, { Admin } from '../../../common/services/firebase';
 import { sendApproval } from '../../lib/registration';
 import { ApproveUserDto } from './dto/approve-user.dto';
@@ -34,6 +34,11 @@ export class AccountService {
   async validateUser(idToken: string) {
     const decodedToken = await this.admin.auth().verifyIdToken(idToken);
     const nominator = await Nominator.findOneById(decodedToken.uid);
+
+    if (!nominator) {
+      logger.warn('The user could not be found in the database.');
+    }
+
     return { ...nominator, claims: decodedToken.claims };
   }
 
@@ -65,6 +70,8 @@ export class AccountService {
       await this.admin.auth().updateUser(uid, { phoneNumber, displayName, email, emailVerified });
 
       if (!user) {
+        logger.warn('The user could not be found in the database.');
+
         throw new NotFoundException();
       }
 
@@ -92,6 +99,8 @@ export class AccountService {
       const firebaseUser = await this.admin.auth().getUserByPhoneNumber(phoneNumber);
 
       if (!firebaseUser) {
+        logger.warn('The user could not be found in firebase.');
+
         throw new Error('User does not exist');
       }
 
@@ -109,7 +118,6 @@ export class AccountService {
       sendApproval(app, nominator.name);
       return nominator;
     } catch (error) {
-      console.log(error);
       if (error.code) {
         throw new ApplicationError('Validation error', determineCode(error.code));
       }
@@ -118,13 +126,16 @@ export class AccountService {
     }
   }
 
-  async approveUser({ uid, role, nominationLimit }: ApproveUserDto) {
+  async approveUser({ uid, nominationLimit }: ApproveUserDto) {
     try {
       await this.admin.auth().updateUser(uid, {
         disabled: false,
         emailVerified: true
       });
-      await this.admin.auth().setCustomUserClaims(uid, { claims: { nominations: { [role]: true } } });
+
+      await this.admin
+        .auth()
+        .setCustomUserClaims(uid, { claims: { nominations: { nominator: true, approved: true } } });
 
       const nominator = await Nominator.findOneById(uid);
 
@@ -162,6 +173,8 @@ export class AccountService {
       const user = await Nominator.findOneById(firebaseUser.uid);
 
       if (!user || !firebaseUser) {
+        logger.warn('The user could not be found in the database or firebase.');
+
         throw new ApplicationError('user not found', ErrorCodes.UserNotFound);
       }
       const { disabled, emailVerified } = user;

@@ -99,7 +99,6 @@ export class UserController {
   }
 
   @Get('/me/status')
-  @Roles('admin', 'nominator')
   @UseGuards(AuthGuard('bearer'))
   async getNominationsStatus(@Req() request) {
     const { nominationLimit: limit, households } = await this.userService.getById(request.user.id);

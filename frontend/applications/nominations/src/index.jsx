@@ -7,7 +7,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
+import { pathOr } from 'rambda';
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.css';
@@ -32,16 +32,32 @@ import { AuthToken } from './lib/auth';
 //TODO: use lerna to grab this dep.
 import Auth from '../../auth/src/App';
 import { AuthConsumer, AuthProvider } from '../../auth/src/modules/common/contexts';
+import { NotApproved } from '../../auth/src/modules/register/NotApproved';
 
 const AppRouter = () => (
   <AuthConsumer>
-    {({ accountStatus }) => {
+    {({ accountStatus, claims }) => {
+      if (accountStatus === 'unknown') return null;
+
+      const isApproved = pathOr(false, 'nominations.approved', claims);
+
       if (['registered', 'unauthenticated', 'unregistered'].includes(accountStatus)) {
         return (
           <Router>
             <Switch>
               <Route path="/auth" component={Auth} />
               <Route path="*" component={() => <Redirect to="/auth" />} />
+            </Switch>
+          </Router>
+        );
+      }
+
+      if (accountStatus === 'not_verified' || !isApproved) {
+        return (
+          <Router>
+            <Switch>
+              <Route path="/" component={NotApproved} />
+              <Route path="*" component={() => <Redirect to="/" />} />
             </Switch>
           </Router>
         );

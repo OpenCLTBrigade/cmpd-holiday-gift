@@ -1,10 +1,14 @@
 import React, { createContext } from 'react';
 import firebase from '../../firebase';
 import { register, sendEmailVerification } from '../../services/login';
+import { pathOr } from 'rambda';
+
+type AccountStatus = 'unknown' | 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered' | 'not_verified';
 
 export type AuthContextProps = {
-  accountStatus?: 'unauthenticated' | 'authenticated' | 'unregistered' | 'registered';
+  accountStatus?: AccountStatus;
   idToken?: string;
+  claims?: { [x: string]: any };
   registerUser(userData): void;
   loginWithToken(token): void;
 };
@@ -13,22 +17,41 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthConsumer = AuthContext.Consumer;
 
-type Keys = 'accountStatus' | 'idToken';
+type Keys = 'accountStatus' | 'idToken' | 'claims';
+type State = Pick<AuthContextProps, Keys>;
 
-export class AuthProvider extends React.Component<{}, Pick<AuthContextProps, Keys>> {
+export class AuthProvider extends React.Component<{}, State> {
+  state = {
+    accountStatus: 'unknown' as AccountStatus
+  };
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(async user => {
-      if (user && user.emailVerified) {
-        if (window.location.pathname.includes('auth')) {
-          window.location.replace('/');
-        } else {
-          const idToken: string = await firebase.auth().currentUser.getIdToken(true);
-          localStorage.setItem('authToken', idToken);
+      const isEmailVerified = pathOr(false, ['emailVerified'], user);
+      const isRegistered = pathOr(false, ['email'], user);
 
-          this.setState({ accountStatus: 'authenticated', idToken });
-        }
-      } else {
+      //FIXME: This seems like it can be simplified
+      if (!user) {
+        localStorage.removeItem('authToken');
+
         this.setState({ accountStatus: 'unauthenticated' });
+      } else if (!isRegistered) {
+        this.setState({ accountStatus: 'unauthenticated' });
+      } else if (user && isEmailVerified) {
+        const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
+
+        localStorage.setItem('authToken', idTokenResult.token);
+
+        if (window.location.pathname.includes('auth')) {
+          window.location.href = '/';
+        } else {
+          this.setState({
+            accountStatus: 'authenticated',
+            idToken: idTokenResult.token,
+            claims: idTokenResult.claims.claims
+          });
+        }
+      } else if (user && !isEmailVerified) {
+        this.setState({ accountStatus: 'not_verified' });
       }
     });
   };
