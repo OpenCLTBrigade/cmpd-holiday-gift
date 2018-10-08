@@ -43,7 +43,7 @@ const AppRouter = () => (
 
       if (['registered', 'unauthenticated', 'unregistered'].includes(accountStatus)) {
         return (
-          <Router>
+          <Router basename={`/nominations`}>
             <Switch>
               <Route path="/auth" component={Auth} />
               <Route path="*" component={() => <Redirect to="/auth" />} />

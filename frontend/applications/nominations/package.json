@@ -49,7 +49,7 @@
     "wretch": "^1.4.1"
   },
   "scripts": {
-    "start": "parcel public/index.html --open",
+    "start": "parcel public/index.html --open --public-url /nominations/",
     "build": "parcel build public/index.html --detailed-report",
     "watch": "parcel watch public/index.html --out-dir ../server/public/nominations --public-url /nominations/"
   },
