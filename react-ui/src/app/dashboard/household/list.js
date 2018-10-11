@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getHouseholdList, deleteNomination } from 'api/household';
 import RecordActionItems from './RecordActionItems';
+import * as querystring from '../../../lib/queryString';
 
 import type { HouseholdType } from 'api/household';
 
@@ -40,7 +41,7 @@ export default class List extends React.Component<{}> {
       isDeleting: false
     };
 
-    this.refetch.bind(this)
+    this.refetch.bind(this);
   }
 
   uploadedFormFormatter(cell: any, row: HouseholdType): React.Node {
@@ -67,7 +68,7 @@ export default class List extends React.Component<{}> {
 
   refetch() {
     const { page, searchText } = this.state;
-    this.table.fetchData(page, searchText);
+    this.table.fetchData({ page, searchText, nominator_id: this.getNominatorId() });
   }
 
   nominatorCellFormatter(cell, row) {
@@ -80,6 +81,11 @@ export default class List extends React.Component<{}> {
         {row.nominator.name_first} {row.nominator.name_last}
       </Link>
     );
+  }
+
+  getNominatorId = () => {
+    const qs = querystring.parse();
+    return qs && qs.nominator_id ? qs.nominator_id : undefined;
   }
 
   submittedCellFormatter = (cell, row) => {
@@ -104,8 +110,10 @@ export default class List extends React.Component<{}> {
     page: number,
     search: ?string
   ): Promise<{ items: HouseholdType[], totalSize: number, sizePerPage: number }> {
+    
+
     this.currentPage = page; // Used for refreshing list when submitting feedback
-    const response: Object = await getHouseholdList(page, search);
+    const response: Object = await getHouseholdList(page, search, this.getNominatorId());
     return { items: response.items, totalSize: response.totalSize, per_page: response.per_page };
   }
 

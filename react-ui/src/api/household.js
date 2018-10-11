@@ -19,9 +19,10 @@ export function getHousehold(householdId: number): Promise<{household: Household
 
 export function getHouseholdList(
   pageNumber: number = 1,
-  search: ?string
+  search: ?string,
+  nominator_id: ?number
 ): Promise<{response: DataTableResponse<HouseholdType>}> {
-  return get('nominations', 'households', { page: pageNumber, search: search });
+  return get('nominations', 'households', { page: pageNumber, search, nominator_id });
 }
 
 export function createHousehold(json) {

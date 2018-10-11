@@ -54,20 +54,36 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
   }
 
   async componentDidMount() {
-    await this.fetchData();
+    const qs = querystring.parse();
+    await this.fetchData(qs);
   }
 
-  async fetchData(page: number = this.state.page, searchText: string = ''): Promise<void> {
+  updateQueryString = (qs: any) => {
+    let newQs = {...qs};
+    Object.keys(newQs).forEach(key => {
+      if (key.length === 0 || Array.isArray(newQs[key])) {
+        delete newQs[key];
+      }
+    });
+    if (newQs.search === undefined) {
+      delete newQs.search;
+    }
+    querystring.update(newQs);
+  }
 
-    querystring.update({ page, search: searchText });
+  async fetchData(qs): Promise<void> {
+    const page = this.state.page;
+    const browserQs = querystring.parse();
+    const search = qs.search;
+    this.updateQueryString({ ...qs, ...browserQs, page, search });
     const { fetch, onFetch } = this.props;
 
     try {
 
-      onFetch && onFetch(page, searchText);
-      const { items, totalSize, per_page: sizePerPage } = await fetch(page, searchText);
+      onFetch && onFetch(page, search);
+      const { items, totalSize, per_page: sizePerPage } = await fetch(page, search);
 
-      this.setState(() => ({ items: items, totalSize, page, sizePerPage, searchText }));
+      this.setState(() => ({ items: items, totalSize, page, sizePerPage, search }));
     } catch (error) {
       console.error(error);
     }
@@ -77,10 +93,10 @@ export default class DataTable<Row> extends React.Component<PropType<Row>, *> {
     const qs = querystring.parse();
     const search = qs.search;
 
-    await this.fetchData(page, search);
+    await this.fetchData({ page, search });
   }
 
-  handleSearchChange = async (searchText?: string) => await this.fetchData(1, searchText);
+  handleSearchChange = async (searchText?: string) => await this.fetchData({ page: 1, search: searchText });
 
   render() {
     const { items, totalSize, page, sizePerPage } = this.state;
