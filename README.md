@@ -1,6 +1,6 @@
 # CMPD Explorers 2017
 
-This application, developed by [Code for Charlotte], helps automate
+This application, developed by [Open Charlotte Brigade], helps automate
 the [CMPD Explorers Christmas Project].
 
 # Getting Started
@@ -11,9 +11,9 @@ easily switch between Node versions on a per-project basis.
 See [Dependencies Documentation](#dependencies-documentation) below for more information
 on the dependencies we use.
 
-* Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
-* Run `npm install` to install the dependencies.
-* Run `npm run seed-server` to generate sample data.
+- Clone from github: `git clone https://github.com/CodeForCharlotte/cmpd-holiday-gift.git && cd cmpd-holiday-gift`
+- Run `npm install` to install the dependencies.
+- Run `npm run seed-server` to generate sample data.
 
 Then run `npm run start-client` to start the front-end in development mode. Access
 the application on http://localhost:3000.
@@ -50,15 +50,14 @@ Start the production-mode server with `NODE_ENV=production npm run start-server`
 
 Static assets are in `public/`. The react app is in `src/`.
 
-All front-end dependencies should be added using `npm install
---save-dev`. They will be bundled into `build/` in production mode.
+All front-end dependencies should be added using `npm install --save-dev`. They will be bundled into `build/` in production mode.
 
 ## Front-end configuration
 
 To test features that require Google Maps:
 
-* Acquire an API key from https://developers.google.com/maps/documentation/javascript/get-api-key
-* Add `REACT_APP_GOOGLE_MAPS_API_KEY=your-api-key` to `.env.local`
+- Acquire an API key from https://developers.google.com/maps/documentation/javascript/get-api-key
+- Add `REACT_APP_GOOGLE_MAPS_API_KEY=your-api-key` to `.env.local`
 
 # Back end development
 
@@ -101,10 +100,10 @@ The `encrypt: true` property causes the field to be encrypted before storing it 
 Before pushing your code or sending a pull request, make sure the
 tests pass and let [ESLint] clean up your code.
 
-* To test the front-end: `npm run test-client`
-* To test the back-end: `npm run test-server`
-* To run eslint: `npm run lint`. 
-* To run the [flow] type-checker: `npm run flow`
+- To test the front-end: `npm run test-client`
+- To test the back-end: `npm run test-server`
+- To run eslint: `npm run lint`.
+- To run the [flow] type-checker: `npm run flow`
 
 # Dependencies Documentation
 
@@ -131,33 +130,32 @@ Coding style is enforced by [eslint].
 
 # Contact
 
-* Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
-* Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
-* Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
+- Slack account registration: https://codeforclt.typeform.com/to/wcYsrE
+- Slack channel: https://codeforclt.slack.com/messages/C0A7A7C6L/
+- Issue tracker: https://codeforcharlotte.atlassian.net/wiki/display/GIFT/CMPD+Winter+Gift+Project
 
-
-[Code for Charlotte]: http://www.codeforcharlotte.org/
-[CMPD Explorers Christmas Project]: http://charlottenc.gov/CMPD/Organization/Pages/SupportSvcs/Explorer_XmasProject.aspx
-[Node]: https://nodejs.org/dist/latest-v6.x/docs/api/
-[Express]: https://expressjs.com/en/4x/api.html
-[ES6 features]: https://github.com/lukehoban/es6features
+[open charlotte brigade]: https://brigade.opencharlotte.org/
+[cmpd explorers christmas project]: http://charlottenc.gov/CMPD/Organization/Pages/SupportSvcs/Explorer_XmasProject.aspx
+[node]: https://nodejs.org/dist/latest-v6.x/docs/api/
+[express]: https://expressjs.com/en/4x/api.html
+[es6 features]: https://github.com/lukehoban/es6features
 [express-jwt]: https://github.com/auth0/express-jwt
 [node-jsonwebtoken]: https://github.com/auth0/node-jsonwebtoken
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
-[Sqlite]: https://sqlite.org/docs.html
-[Sequelize]: http://docs.sequelizejs.com/en/v3/
+[sqlite]: https://sqlite.org/docs.html
+[sequelize]: http://docs.sequelizejs.com/en/v3/
 [sequelize-encrpyted]: https://github.com/defunctzombie/sequelize-encrypted
 [mailtrap.io]: https://mailtrap.io
 [nodemailer]: https://nodemailer.com/
-[React]: https://facebook.github.io/react/
+[react]: https://facebook.github.io/react/
 [react-bootstrap]: https://react-bootstrap.github.io/
 [styled-components]: https://github.com/styled-components/styled-components
 [create-react-app]: https://github.com/facebookincubator/create-react-app
-[AdminLTE]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
-[Bootstrap 3]: http://getbootstrap.com/getting-started/
-[Jasmine]: https://jasmine.github.io/1.3/introduction
+[adminlte]: https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html
+[bootstrap 3]: http://getbootstrap.com/getting-started/
+[jasmine]: https://jasmine.github.io/1.3/introduction
 [eslint]: http://eslint.org/docs/user-guide/getting-started
-[NodeJS 7]: https://nodejs.org/en/download/current/
-[Mustache]: https://www.npmjs.com/package/mustache
-[ESLint]: https://eslint.org/docs/user-guide/getting-started
+[nodejs 7]: https://nodejs.org/en/download/current/
+[mustache]: https://www.npmjs.com/package/mustache
+[eslint]: https://eslint.org/docs/user-guide/getting-started
 [flow]: https://flow.org/en/docs/
