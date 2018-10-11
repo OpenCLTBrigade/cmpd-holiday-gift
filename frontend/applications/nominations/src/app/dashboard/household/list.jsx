@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getHouseholdList, deleteNomination } from '../../../api/household';
 import RecordActionItems from './RecordActionItems';
+import { path } from 'rambda';
 
 // import type { HouseholdType } from 'api/household';
 
@@ -114,6 +115,8 @@ export default class List extends React.Component {
       return null;
     }
 
+    const isAdmin = path('claims.nominations.admin', user);
+
     return (
       <DataTable
         onFetch={(page, searchText) => this.setState(() => ({ page, searchText }))}
@@ -156,18 +159,17 @@ export default class List extends React.Component {
           dataAlign="center">
           Form
         </TableHeaderColumn>
-        {user &&
-          user.role !== 'admin' && (
-            <TableHeaderColumn
-              tdStyle={TD_STYLE_SMALL}
-              thStyle={TD_STYLE_SMALL}
-              dataField="draft"
-              dataFormat={this.submittedCellFormatter}>
-              <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">
-                Submitted
-              </acronym>
-            </TableHeaderColumn>
-          )}
+        {isAdmin && (
+          <TableHeaderColumn
+            tdStyle={TD_STYLE_SMALL}
+            thStyle={TD_STYLE_SMALL}
+            dataField="draft"
+            dataFormat={this.submittedCellFormatter}>
+            <acronym title="If there isn't a check in this column you need to edit the nomination and select Submit at the bottom.">
+              Submitted
+            </acronym>
+          </TableHeaderColumn>
+        )}
         <TableHeaderColumn
           tdStyle={TD_STYLE_LARGE}
           thStyle={TD_STYLE_LARGE}
@@ -175,16 +177,15 @@ export default class List extends React.Component {
           dataFormat={this.actionCellFormatter.bind(this)}>
           Actions
         </TableHeaderColumn>
-        {user &&
-          user.role === 'admin' && (
-            <TableHeaderColumn
-              tdStyle={TD_STYLE_SMALL}
-              thStyle={TD_STYLE_SMALL}
-              dataField="surname"
-              dataFormat={this.reviewCellFormatter}>
-              Review
-            </TableHeaderColumn>
-          )}
+        {isAdmin && (
+          <TableHeaderColumn
+            tdStyle={TD_STYLE_SMALL}
+            thStyle={TD_STYLE_SMALL}
+            dataField="surname"
+            dataFormat={this.reviewCellFormatter}>
+            Review
+          </TableHeaderColumn>
+        )}
       </DataTable>
     );
   }

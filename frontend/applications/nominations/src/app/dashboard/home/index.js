@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Box from '../components/box';
 import { redirectPostWithAuth } from '../../../lib/auth';
+import { path } from 'rambda';
 
 function getReport(name) {
   return _event => {
@@ -15,8 +16,9 @@ function getReport(name) {
 export default class Home extends React.Component {
   render() {
     const { user } = this.props;
+    const isAdmin = path('claims.nominations.admin', user);
 
-    if (!user || user.role !== 'admin') {
+    if (!user || !isAdmin) {
       return (
         <div>
           <Row>
