@@ -17,6 +17,7 @@ import { getAddressInfo } from 'api/cmpd';
 import ErrorModal from './components/ErrorModal';
 import ConfirmModal from './components/ConfirmModal';
 import withAsync from '../../components/withAsync';
+import { path } from 'ramda';
 
 const HouseholdStatus = {
   New: 0,
@@ -128,10 +129,30 @@ class NewHousehold extends React.Component<
         // console.log('oooooo', value);
         // TODO: Get CMPD Address Info
     getAddressInfo(latlng.lat, latlng.lng).then(response => {
+      
       if (!response || response.data === null) {
         console.log('CMPD Division / Address not found');
+        const city = path(['city'], value);
+
         value.cmpd_division = '';
         value.cmpd_response_area = '';
+
+        if (city !== undefined) {
+          const extra_divisions = {
+            pineville: 40,
+            matthews: 41,
+            huntersville: 42,
+            'mint hill': 43,
+            cornelius: 44,
+            davidson: 45,
+            concord: 46
+          };
+
+          const found_division = path([city.toLowerCase()], extra_divisions);
+          if (found_division !== undefined) {
+            value.cmpd_division = found_division;
+          }
+        }
       } else {
         value.cmpd_division = response.data.properties.DIVISION;
         value.cmpd_response_area = response.data.properties.RA;
