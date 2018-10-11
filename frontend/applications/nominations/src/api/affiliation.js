@@ -8,10 +8,11 @@ export function getAffiliationsByType(type) {
   return get('nominations', 'affiliations', { type });
 }
 
-export function getAffiliationList(pageNumber = 1, search) {
+export function getAffiliationList(pageNumber = 1, search, sizePerPage = 50) {
   return get('nominations', 'affiliations', {
     page: pageNumber,
-    search: search
+    search: search,
+    sizePerPage
   });
 }
 

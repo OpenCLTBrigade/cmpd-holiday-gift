@@ -22,10 +22,11 @@ export default class AffiliationList extends React.Component {
     );
   }
 
-  async fetch(page, search) {
-    const response = await getAffiliationList(page, search);
+  async fetch(page, search, sizePerPage) {
+    const response = await getAffiliationList(page, search, sizePerPage);
     return {
       items: response.items,
+      page: response.page,
       totalSize: response.totalSize,
       sizePerPage: response.sizePerPage
     };
@@ -40,7 +41,8 @@ export default class AffiliationList extends React.Component {
               search={true}
               fetch={this.fetch.bind(this)}
               searchPlaceholder="Filter by name"
-              pagination={false}>
+              pagination={true}
+              sizePerPage="50">
               <TableHeaderColumn dataField="type" hidden isKey>
                 Type
               </TableHeaderColumn>
