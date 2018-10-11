@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DataTable from '../components/dataTable';
 import { TableHeaderColumn } from 'react-bootstrap-table';
+import { path } from 'ramda';
 
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -175,8 +176,7 @@ export default class List extends React.Component {
           dataFormat={this.actionCellFormatter.bind(this)}>
           Actions
         </TableHeaderColumn>
-        {user &&
-          user.role === 'admin' && (
+        {path(['claims', 'nominations', 'admin'], user) === true && (
             <TableHeaderColumn
               tdStyle={TD_STYLE_SMALL}
               thStyle={TD_STYLE_SMALL}
