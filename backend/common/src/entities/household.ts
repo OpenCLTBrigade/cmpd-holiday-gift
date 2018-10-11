@@ -19,6 +19,16 @@ import encOptions from '../util/encryption-options';
 
 import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
+export enum HouseholdStatus {
+  Drafted = 'DRAFTED',
+  Submitted = 'SUBMITTED',
+  Reviewed = 'REVIEWED',
+  ReadyToApprove = 'READY_TO_APPROVE',
+  Approved = 'APPROVED',
+  Declined = 'DECLINED',
+  Incomplete = 'INCOMPLETE'
+}
+
 @Entity('households')
 export class Household extends BaseEntity {
   private constructor(props) {
@@ -63,6 +73,9 @@ export class Household extends BaseEntity {
 
   @Column('text', { name: 'preferred_contact_method', nullable: true })
   preferredContactMethod: string;
+
+  @Column('text', { name: 'status', nullable: true })
+  status: string;
 
   @Column('boolean', { name: 'nomination_email_sent' })
   nominationEmailSent: boolean = false;
