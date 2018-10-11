@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import Box from '../../../components/box';
 import requiredValidator from '../../../../../lib/validators/required.validator';
 import FormField from '../../../../components/form/FormField';
+import { path } from 'rambda';
 
 class AddressForm extends React.Component {
   constructor() {
@@ -33,6 +34,9 @@ class AddressForm extends React.Component {
   }
 
   render() {
+    const { user } = this.props;
+    const isAdmin = path('claims.nominations.admin', user);
+
     return (
       <div>
         <Row>
@@ -113,19 +117,14 @@ class AddressForm extends React.Component {
               </Row>
               <Row>
                 <Col md={6} xs={12}>
-                  <FormField
-                    label="CMPD Division"
-                    name="address.cmpdDivision"
-                    type="text"
-                    disabled={this.props.user.role !== 'admin'}
-                  />
+                  <FormField label="CMPD Division" name="address.cmpdDivision" type="text" disabled={!isAdmin} />
                 </Col>
                 <Col md={6} xs={12}>
                   <FormField
                     label="CMPD Response Area"
                     name="address.cmpdResponseArea"
                     type="text"
-                    disabled={this.props.user.role !== 'admin'}
+                    disabled={!isAdmin}
                   />
                 </Col>
               </Row>

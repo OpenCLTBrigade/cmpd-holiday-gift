@@ -1,6 +1,6 @@
 export { Address } from './address';
 export { Affiliation } from './affiliation';
-export { Household } from './household';
+export { Household, HouseholdStatus } from './household';
 export { PhoneNumber } from './phone-number';
 export { Child } from './child';
 export { Attachment } from './attachment';

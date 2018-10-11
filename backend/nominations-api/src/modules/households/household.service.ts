@@ -5,6 +5,7 @@ import logger, { logEnd, logStart } from '../../common/util/logger';
 import { createPagedResults } from '../lib/table/table';
 import { CreateHouseholdDto } from './dto/create-household.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
+import { HouseholdStatus } from 'cmpd-common-api';
 
 const path = require('path');
 
@@ -69,18 +70,34 @@ export class HouseholdService {
 
     household.draft = false;
 
+    await this.updateHouseholdStatus({ id, status: HouseholdStatus.Submitted });
     await household.save();
   }
 
-  async submitFeedback({ id, approved, reason, message }) {
+  async updateHouseholdStatus({ id, status }: { id: number; status: HouseholdStatus }) {
+    return await Household.createQueryBuilder()
+      .update()
+      .set({ status })
+      .where('id = :id', { id: 1 })
+      .printSql()
+      .execute();
+  }
+
+  async submitFeedback({
+    id,
+    approved,
+    reason,
+    message,
+    status = approved ? HouseholdStatus.Approved : HouseholdStatus.Declined
+  }) {
     logger.info('saving feedback');
 
     const household = await Household.findOneById(id);
-
     household.reviewed = true;
     household.approved = approved;
     household.reason = reason;
 
+    await this.updateHouseholdStatus({ id, status });
     await household.save();
 
     try {
@@ -248,7 +265,8 @@ export class HouseholdService {
 
     const household = Household.fromJSON({
       nominatorId,
-      ...householdProps
+      ...householdProps,
+      status: HouseholdStatus.Drafted
     });
 
     logStart('saving household');
