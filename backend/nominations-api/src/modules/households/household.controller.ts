@@ -30,6 +30,7 @@ import { CreateHouseholdDto } from './dto/create-household.dto';
 import { SubmitNominationDto } from './dto/submit-nomination.dto';
 import { UpdateHouseholdDto } from './dto/update-household.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateHouseholdStatusDto } from './dto/update-household-status.dto';
 
 type AuthedRequest = {
   user: { id };
@@ -100,6 +101,16 @@ export class HouseholdController {
   @UseGuards(AuthGuard('bearer'))
   async removeHousehold(@Param('id') id) {
     return await this.householdService.removeHousehold(id);
+  }
+
+  @Put('/:id/status')
+  @UseGuards(AuthGuard('bearer'))
+  async updateHouseholdStatus(
+    @Param('id') id,
+    @Body(new ValidationPipe())
+    { status }: UpdateHouseholdStatusDto
+  ) {
+    return await this.householdService.updateHouseholdStatus({ id, status });
   }
 
   @Put(':id/upload')
