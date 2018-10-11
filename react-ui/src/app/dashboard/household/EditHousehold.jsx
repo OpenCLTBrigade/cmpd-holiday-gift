@@ -152,6 +152,7 @@ class NewHousehold extends React.Component<
           if (found_division !== undefined) {
             value.cmpd_division = found_division;
           }
+        }
       } else {
         value.cmpd_division = response.data.properties.DIVISION;
         value.cmpd_response_area = response.data.properties.RA;
