@@ -1,9 +1,10 @@
 import { handleErrors } from 'cmpd-common-api';
 
-import { Controller, Get, Param, Query, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Param, Query, NotFoundException, InternalServerErrorException, Req } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { AffiliationService } from './affiliation.service';
+import { baseUrl } from '../lib/misc';
 
 const errorMap = {
   default: InternalServerErrorException
@@ -17,10 +18,17 @@ export class AffiliationController {
   constructor(private readonly affiliationService: AffiliationService) {}
   //TODO: GraphQL probably better here.
   @Get()
-  async getAll(@Query('search') search = '', @Query('page') page = 1, @Query('type') type = '') {
+  async getAll(
+    @Query('search') search = '',
+    @Query('page') page = 1,
+    @Query('type') type = '',
+    @Query('sizePerPage') sizePerPage = '',
+    @Req() req
+  ) {
     const results = await this.affiliationService.query({
       search,
       type,
+      baseUrl: baseUrl(req),
       page
     });
 

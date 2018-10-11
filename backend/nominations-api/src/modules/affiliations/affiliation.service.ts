@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Affiliation, ApplicationError, createPagedResults, logger } from 'cmpd-common-api';
-import { getRepository } from 'typeorm';
+import { getRepository, Brackets } from 'typeorm';
 
 export enum ErrorCodes {
   NoAffiliationExists = 'NoAffiliationExists'
@@ -8,16 +8,28 @@ export enum ErrorCodes {
 
 @Injectable()
 export class AffiliationService {
-  async query({ type = '', search = '', page = 1, whitelist = [] } = {}) {
+  async query({ type = '', search = '', page = 1, sizePerPage = 50, whitelist = [], baseUrl = '' } = {}) {
     try {
-      const query = search && {
-        keys: ['name'],
-        search
+      let sqlQuery = Affiliation.createQueryBuilder('affiliation');
+
+      if (search) {
+        sqlQuery = sqlQuery.andWhere(searchExpression(search));
+      }
+
+      if (page) {
+        sqlQuery = await sqlQuery.skip((page - 1) * sizePerPage).take(sizePerPage);
+      }
+
+      const totalSize = await sqlQuery.getCount();
+      const results = await sqlQuery.printSql().getMany();
+
+      return {
+        items: results,
+        page,
+        baseUrl,
+        totalSize,
+        per_page: results.length
       };
-
-      let results = await getRepository(Affiliation).find({ where: type && { type } });
-
-      return results;
     } catch (error) {
       logger.error(error);
       throw new ApplicationError(error.message);
@@ -35,3 +47,8 @@ export class AffiliationService {
     }
   }
 }
+
+const searchExpression = (search: string) =>
+  new Brackets(qb => {
+    qb.where('affiliation.name like :name', { name: '%' + search + '%' });
+  });
