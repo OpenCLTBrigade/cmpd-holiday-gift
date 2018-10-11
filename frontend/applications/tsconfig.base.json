@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es5",
+    "lib": ["es6", "dom", "es5", "esnext.asynciterable"],
+    "jsx": "react",
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  }
+}
