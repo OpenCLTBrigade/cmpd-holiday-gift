@@ -132,7 +132,7 @@ class NewHousehold extends React.Component<
       
       if (!response || response.data === null) {
         console.log('CMPD Division / Address not found');
-        const city = path(['data', 'address', 'city'], this.state);
+        const city = path(['city'], value);
 
         value.cmpd_division = '';
         value.cmpd_response_area = '';
