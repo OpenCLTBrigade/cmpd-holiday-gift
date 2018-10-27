@@ -1,8 +1,8 @@
 /* eslint no-console: "off" */
 
-const faker = require('faker');
+const faker = require("faker");
 
-const config = require('../config');
+const config = require("../config");
 
 module.exports = async (db, verbose) => {
   for (let i = 1; i < 50; i++) {
@@ -15,11 +15,12 @@ module.exports = async (db, verbose) => {
       name_middle: faker.name.firstName(),
       name_last: faker.name.lastName(),
       dob: faker.date.past().toString(),
+      reason_for_nomination: faker.lorem.text(300),
       race: faker.random.arrayElement(config.raceOptions),
       gender: faker.random.arrayElement(config.genders),
       email: faker.internet.email(),
-      last4ssn: ('000' + faker.random.number(9999)).slice(-4),
-      preferred_contact_method: faker.random.arrayElement(['phone', 'email']),
+      last4ssn: ("000" + faker.random.number(9999)).slice(-4),
+      preferred_contact_method: faker.random.arrayElement(["phone", "email"]),
       draft: false,
       approved: i % 5 !== 0
     });

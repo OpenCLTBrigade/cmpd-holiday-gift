@@ -1,9 +1,9 @@
-const moment = require('moment');
+const moment = require("moment");
 
-const config = require('../config');
+const config = require("../config");
 
 module.exports = Sequelize => ({
-  name: 'household',
+  name: "household",
   fields: {
     id: {
       autoIncrement: true,
@@ -20,6 +20,10 @@ module.exports = Sequelize => ({
       defaultValue: null,
       encrypt: true
     },
+    reason_for_nomination: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     // We can't encrypt last names because of search
     name_last: {
       type: Sequelize.STRING,
@@ -30,9 +34,9 @@ module.exports = Sequelize => ({
       allowNull: false,
       encrypt: true,
       get() {
-        const dob = this.getDataValue('dob');
+        const dob = this.getDataValue("dob");
 
-        return moment(dob).format('YYYY-MM-DD');
+        return moment(dob).format("YYYY-MM-DD");
       }
     },
     race: {
@@ -84,7 +88,7 @@ module.exports = Sequelize => ({
     reason: {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: ''
+      defaultValue: ""
     },
     deleted: {
       type: Sequelize.BOOLEAN,
@@ -97,31 +101,34 @@ module.exports = Sequelize => ({
     },
     name_full: {
       type: Sequelize.VIRTUAL,
-      get: function () {
+      get: function() {
         return `${this.name_first} ${this.name_last}`;
       }
     },
     phone_numbers: {
       type: Sequelize.VIRTUAL,
-      get: function () {
-        return this.phones && this.phones.map(phone => phone.number).join(', ');
+      get: function() {
+        return this.phones && this.phones.map(phone => phone.number).join(", ");
       }
     }
   },
   scopes: {
     active: { where: { deleted: false } },
-    filteredByUser: function (user) {
-      if (user.role !== 'admin') {
+    filteredByUser: function(user) {
+      if (user.role !== "admin") {
         return { where: { nominator_id: user.id } };
       }
       return {};
     }
   },
-  associate: function (household, db) {
-    household.hasOne(db.household_address, { as: 'address', foreignKey: 'household_id' });
-    household.hasMany(db.household_phone, { as: 'phones' });
-    household.belongsTo(db.user, { as: 'nominator' });
-    household.hasMany(db.child, { as: 'children' });
-    household.hasMany(db.household_attachment, { as: 'attachment_data' });
+  associate: function(household, db) {
+    household.hasOne(db.household_address, {
+      as: "address",
+      foreignKey: "household_id"
+    });
+    household.hasMany(db.household_phone, { as: "phones" });
+    household.belongsTo(db.user, { as: "nominator" });
+    household.hasMany(db.child, { as: "children" });
+    household.hasMany(db.household_attachment, { as: "attachment_data" });
   }
 });

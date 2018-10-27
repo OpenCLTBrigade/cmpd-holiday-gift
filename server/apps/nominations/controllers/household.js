@@ -1,26 +1,36 @@
 // @flow
 
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require("express-validator/check");
 
-const db = require('../../../models');
-const logger = require('../../lib/logger');
+const db = require("../../../models");
+const logger = require("../../lib/logger");
 
-const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }];
-const formidable = require('formidable');
-const path = require('path');
-const fs = require('fs-extra');
-const { createAttachment, createMainBucket, getAttachmentUrl, getAttachments } = require('../../lib/attachment');
-const bucketName = process.env.S3_BUCKET_NAME || 'cfc-cmpd-explorers-qa';
-const sendMail = require('../../lib/mail')(path.join(__dirname, '../../nominations/mail-templates'));
+const related = [
+  { model: db.child, as: "children" },
+  { model: db.user, as: "nominator" }
+];
+const formidable = require("formidable");
+const path = require("path");
+const fs = require("fs-extra");
+const {
+  createAttachment,
+  createMainBucket,
+  getAttachmentUrl,
+  getAttachments
+} = require("../../lib/attachment");
+const bucketName = process.env.S3_BUCKET_NAME || "cfc-cmpd-explorers-qa";
+const sendMail = require("../../lib/mail")(
+  path.join(__dirname, "../../nominations/mail-templates")
+);
 
-const createTable = require('../../lib/table');
-const misc = require('../../lib/misc');
+const createTable = require("../../lib/table");
+const misc = require("../../lib/misc");
 
 // const related = [{ model: db.child, as: 'children' }, { model: db.user, as: 'nominator' }, { model: db.household_address, as: 'address' }];
 
-import type { Response } from '../../lib/typed-express';
-import type { UserRequest, AnyRole } from '../../lib/auth';
-import type { TableRequest } from '../../lib/tableApi';
+import type { Response } from "../../lib/typed-express";
+import type { UserRequest, AnyRole } from "../../lib/auth";
+import type { TableRequest } from "../../lib/tableApi";
 
 type ListRequest = {
   ...TableRequest,
@@ -28,13 +38,12 @@ type ListRequest = {
 };
 
 const childDefaults = {
-  additional_ideas: '',
+  additional_ideas: "",
   bike_want: false,
   bike_size: null,
   bike_style: null,
   clothes_want: false,
-  interests: '',
-  reason_for_nomination: ''
+  interests: ""
 };
 
 const householdDefaults = {
@@ -56,43 +65,52 @@ module.exports = {
 
       if (query.search) {
         whereClause = {
-          keys: [
-            'name_last',
-            'nominator.name_last'
-          ],
+          keys: ["name_last", "nominator.name_last"],
           search: query.search
         };
       }
 
-      const attachmentRelation = [{ model: db.household_attachment, as: 'attachment_data' }, { model: db.household_address, as: 'address' }];
+      const attachmentRelation = [
+        { model: db.household_attachment, as: "attachment_data" },
+        { model: db.household_address, as: "address" }
+      ];
 
       const pullRelated = [...related, ...attachmentRelation];
 
-      logger.info('what', { pullRelated });
+      logger.info("what", { pullRelated });
 
       const result = await table.fetch({
         page: query.page,
         where: whereClause,
         include: pullRelated,
-        scope: ['active', { method: ['filteredByUser', req.user] }]
+        scope: ["active", { method: ["filteredByUser", req.user] }]
       });
 
       res.json(result);
     } catch (err) {
       logger.error(err);
-      res.json({ error: 'error fetching data' });
+      res.json({ error: "error fetching data" });
     }
   },
 
-  getHousehold: async (req: UserRequest<AnyRole, { id: string }>, res: Response): Promise<void> => {
+  getHousehold: async (
+    req: UserRequest<AnyRole, { id: string }>,
+    res: Response
+  ): Promise<void> => {
     let household = null;
     let address = null;
     let phoneNumbers = [];
 
     try {
-      const entity = await db.household.findById(req.params.id, { include: related });
-      const addressEntity = await db.household_address.find({ where: { household_id: req.params.id } });
-      phoneNumbers = await db.household_phone.findAll({ where: { household_id: req.params.id } });
+      const entity = await db.household.findById(req.params.id, {
+        include: related
+      });
+      const addressEntity = await db.household_address.find({
+        where: { household_id: req.params.id }
+      });
+      phoneNumbers = await db.household_phone.findAll({
+        where: { household_id: req.params.id }
+      });
       household = Object.assign(entity.dataValues, entity.vault);
 
       if (household.vault) {
@@ -103,7 +121,7 @@ module.exports = {
       address = addressEntity;
 
       if (!household) {
-        throw new Error('Household not found');
+        throw new Error("Household not found");
       }
     } catch (err) {
       household = null;
@@ -125,7 +143,7 @@ module.exports = {
   },
 
   async getAttachments(req: any, res: any) {
-    logger.info('getting attachments');
+    logger.info("getting attachments");
     const { id } = req.params;
     const owner = `household-${id}`;
 
@@ -145,13 +163,13 @@ module.exports = {
     const files = [];
     const owner = `household-${id}`;
 
-    const uploadDir = path.join(process.cwd(), 'uploads');
+    const uploadDir = path.join(process.cwd(), "uploads");
 
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
     }
 
-    logger.info('uploading document for user', nominator.id);
+    logger.info("uploading document for user", nominator.id);
 
     try {
       await createMainBucket(bucketName);
@@ -167,33 +185,43 @@ module.exports = {
     form.uploadDir = uploadDir;
 
     try {
-      form.on('file', function (field, file) {
+      form.on("file", function(field, file) {
         files.push({ filename: file.name, path: file.path });
-        logger.info('uploading to s3', { filename: file.name });
+        logger.info("uploading to s3", { filename: file.name });
       });
 
       // log any errors that occur
-      form.on('error', function (err) {
-        logger.info('An error has occured: \n' + err);
+      form.on("error", function(err) {
+        logger.info("An error has occured: \n" + err);
       });
     } catch (err) {
-      logger.info('Error handling file upload', err);
+      logger.info("Error handling file upload", err);
     }
 
     // once all the files have been uploaded, send a response to the client
-    form.on('end', async function () {
+    form.on("end", async function() {
       try {
         const fileResults = [];
         for (const file of files) {
           const { filename } = file;
           const fileBuffer = await fs.readFile(file.path);
-          await createAttachment({ name: bucketName, filename: `${owner}/${filename}`, fileBuffer });
+          await createAttachment({
+            name: bucketName,
+            filename: `${owner}/${filename}`,
+            fileBuffer
+          });
 
-          logger.info('uploaded to s3', { filename });
+          logger.info("uploaded to s3", { filename });
 
-          await db.household_attachment.create({ household_id: id, path: filename });
+          await db.household_attachment.create({
+            household_id: id,
+            path: filename
+          });
           await fs.remove(file.path);
-          const url = await getAttachmentUrl({ name: bucketName, filename: `${owner}/${filename}` });
+          const url = await getAttachmentUrl({
+            name: bucketName,
+            filename: `${owner}/${filename}`
+          });
           fileResults.push({ url, filename });
         }
 
@@ -209,16 +237,16 @@ module.exports = {
   },
 
   async submitNomination(req: any, res: any): Promise<void> {
-    logger.info('submitting nominations');
+    logger.info("submitting nominations");
     const { id } = req.body;
 
     let household = undefined;
 
     try {
-      logger.info('searching for nomination');
+      logger.info("searching for nomination");
       household = await db.household.findById(id);
       if (!household) {
-        throw new Error('Household not found');
+        throw new Error("Household not found");
       }
 
       household.draft = false;
@@ -232,27 +260,32 @@ module.exports = {
     const { approved, reason, message } = req.body;
     try {
       logger.info(`Submitting feedback for ${req.params.id}`);
-      const household = await db.household.findById(req.params.id, { include: [{ model: db.user, as: 'nominator' }] });
+      const household = await db.household.findById(req.params.id, {
+        include: [{ model: db.user, as: "nominator" }]
+      });
       if (!household) {
-        throw new Error('Household not found');
+        throw new Error("Household not found");
       }
 
-      logger.info('saving feedback');
+      logger.info("saving feedback");
 
       // Message is not stored; it gets emailed
       household.reviewed = true;
       household.approved = approved;
-      household.reason = reason || '';
+      household.reason = reason || "";
 
       await household.save();
 
-      logger.info('sending feedback email');
+      logger.info("sending feedback email");
 
       try {
         if (approved) {
-          await sendMail('feedback-approved', { to: household.nominator.email, name_last: household.name_last });
+          await sendMail("feedback-approved", {
+            to: household.nominator.email,
+            name_last: household.name_last
+          });
         } else {
-          await sendMail('feedback-declined', {
+          await sendMail("feedback-declined", {
             to: household.nominator.email,
             feedbackText: message,
             reason,
@@ -260,18 +293,23 @@ module.exports = {
           });
         }
       } catch (error) {
-        logger.error('failed to send submission feedback email');
+        logger.error("failed to send submission feedback email");
       }
 
       res.json({ data: true });
     } catch (err) {
-      logger.info('feedback submission failed.', { approved, reason, message, err });
+      logger.info("feedback submission failed.", {
+        approved,
+        reason,
+        message,
+        err
+      });
       res.json({ data: false });
     }
   },
 
   async updateHousehold(req, res): Promise<void> {
-    logger.info('updateHousehold');
+    logger.info("updateHousehold");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
@@ -285,102 +323,137 @@ module.exports = {
         const payload = { ...req.body };
 
         try {
-          logger.info('finding household', id);
+          logger.info("finding household", id);
           const household = await db.household.findById(id);
-          const address = await db.household_address.find({ where: { household_id: id } });
+          const address = await db.household_address.find({
+            where: { household_id: id }
+          });
 
-          logger.info('updating household', id);
+          logger.info("updating household", id);
 
           household.update(Object.assign({}, payload.household));
 
-          logger.info('updating address', id);
+          logger.info("updating address", id);
 
           address.update(Object.assign({}, payload.address));
 
-          const numbers = await db.household_phone.findAll({ where: { household_id: id } });
+          const numbers = await db.household_phone.findAll({
+            where: { household_id: id }
+          });
 
           const removedNumbers =
             numbers &&
             numbers.filter(
               entity =>
-                payload.phoneNumbers && payload.phoneNumbers.every(json => json.number !== entity.dataValues.number)
+                payload.phoneNumbers &&
+                payload.phoneNumbers.every(
+                  json => json.number !== entity.dataValues.number
+                )
             );
           const addedNumbers =
             (payload.phoneNumbers &&
               payload.phoneNumbers.filter(
-                json => numbers && numbers.every(entity => json.number !== entity.dataValues.number)
+                json =>
+                  numbers &&
+                  numbers.every(
+                    entity => json.number !== entity.dataValues.number
+                  )
               )) ||
             [];
           const updatedNumbers =
             (payload.phoneNumbers &&
               payload.phoneNumbers.filter(
-                json => numbers && numbers.some(entity => json.number === entity.dataValues.number)
+                json =>
+                  numbers &&
+                  numbers.some(
+                    entity => json.number === entity.dataValues.number
+                  )
               )) ||
             [];
 
           for (const removed of removedNumbers) {
-            logger.info('removing number');
+            logger.info("removing number");
 
             removed.destroy();
           }
 
           for (const added of addedNumbers) {
-            logger.info('adding number');
+            logger.info("adding number");
 
-            db.household_phone.create(Object.assign({}, added, { household_id: id }));
+            db.household_phone.create(
+              Object.assign({}, added, { household_id: id })
+            );
           }
 
           for (const updated of updatedNumbers) {
-            logger.info('updating number');
+            logger.info("updating number");
 
-            const toUpdate = numbers.find(number => updated.number === number.number);
+            const toUpdate = numbers.find(
+              number => updated.number === number.number
+            );
             toUpdate.update(updated);
           }
 
-          const nominations = await db.child.findAll({ where: { household_id: id } });
+          const nominations = await db.child.findAll({
+            where: { household_id: id }
+          });
 
           const removedNominations =
             nominations &&
             nominations.filter(
               entity =>
                 payload.nominations &&
-                payload.nominations.every(json => parseInt(json.id, 10) !== parseInt(entity.id, 10))
+                payload.nominations.every(
+                  json => parseInt(json.id, 10) !== parseInt(entity.id, 10)
+                )
             );
           const addedNominations =
-            (payload.nominations && payload.nominations.filter(json => typeof json.id === 'undefined')) || [];
+            (payload.nominations &&
+              payload.nominations.filter(
+                json => typeof json.id === "undefined"
+              )) ||
+            [];
           const updatedNominations =
             (payload.nominations &&
               payload.nominations.filter(
                 json =>
                   nominations &&
-                  nominations.some(entity => parseInt(json.id, 10) === parseInt(entity.dataValues.id, 10))
+                  nominations.some(
+                    entity =>
+                      parseInt(json.id, 10) ===
+                      parseInt(entity.dataValues.id, 10)
+                  )
               )) ||
             [];
 
           for (const removed of removedNominations) {
-            logger.info('removing nomination', removed);
+            logger.info("removing nomination", removed);
 
             removed.destroy();
           }
 
           for (const added of addedNominations) {
-            logger.info('adding nomination', added);
+            logger.info("adding nomination", added);
 
-            db.child.create(Object.assign({}, childDefaults, added, { household_id: id }));
+            db.child.create(
+              Object.assign({}, childDefaults, added, { household_id: id })
+            );
           }
 
           for (const updated of updatedNominations) {
-            logger.info('updating nomination');
-            logger.info('updated nomination:', { id: updated.id });
+            logger.info("updating nomination");
+            logger.info("updated nomination:", { id: updated.id });
 
-            const toUpdate = nominations.find(nomination => nomination.id === updated.id);
+            const toUpdate = nominations.find(
+              nomination => nomination.id === updated.id
+            );
             toUpdate.update(updated);
           }
         } catch (error) {
           logger.info(error);
         }
       })
-            .then(() => res.sendStatus(200));
+      .then(() => res.sendStatus(200));
   },
 
   createHousehold: async (req: any, res: any): Promise<void> => {
@@ -391,8 +464,9 @@ module.exports = {
     const count = await db.household.count({
       where: {
         nominator_id: nominator.id,
-        deleted: false,
-      } });
+        deleted: false
+      }
+    });
     logger.info({ nominator });
     if (nomination_limit === count) {
       return res.sendStatus(403);
@@ -408,49 +482,53 @@ module.exports = {
         try {
           const { household, address, phoneNumbers, nominations } = req.body;
 
-          logger.info('creating household');
+          logger.info("creating household");
           // Create household record
           const newHousehold = await db.household.create(
-            Object.assign({}, householdDefaults, household, { nominator_id: nominator.id })
+            Object.assign({}, householdDefaults, household, {
+              nominator_id: nominator.id
+            })
           );
           const { id } = newHousehold;
 
-          logger.info('created household', { id, nominator: nominator.id });
-          logger.info('creating household_address');
+          logger.info("created household", { id, nominator: nominator.id });
+          logger.info("creating household_address");
 
           // Create address record (from address{})
           const newAddress = await db.household_address.create({
             street: address.street,
-            street2: address.street2 || '',
+            street2: address.street2 || "",
             city: address.city,
             state: address.state,
             zip: address.zip,
             cmpd_division: address.cmpd_division,
             cmpd_response_area: address.cmpd_response_area,
-            type: address.type || '',
+            type: address.type || "",
             household_id: id
           });
 
-          logger.info('created household_address', { id: newAddress.id });
+          logger.info("created household_address", { id: newAddress.id });
 
           for (const phone of phoneNumbers) {
-            logger.info('creating household_phone');
+            logger.info("creating household_phone");
             const newPhone = await db.household_phone.create({
               number: phone.number,
               type: phone.type,
               household_id: id
             });
 
-            logger.info('created household_phone', { id: newPhone.id });
+            logger.info("created household_phone", { id: newPhone.id });
           }
 
           // Create child records (from nominations[])
           for (const child of nominations) {
-            logger.info('creating child');
+            logger.info("creating child");
 
-            const newChild = await db.child.create(Object.assign({}, childDefaults, child, { household_id: id }));
+            const newChild = await db.child.create(
+              Object.assign({}, childDefaults, child, { household_id: id })
+            );
 
-            logger.info('created child', { id: newChild.id });
+            logger.info("created child", { id: newChild.id });
           }
 
           return id;
@@ -472,17 +550,17 @@ module.exports = {
   async removeHousehold(req, res) {
     const { id } = req.params;
     const nominator = Object.assign({}, req.user.dataValues);
-    const isAdmin = req.user.role === 'admin';
+    const isAdmin = req.user.role === "admin";
 
     let household = undefined;
 
     try {
-      logger.info('searching for nomination');
+      logger.info("searching for nomination");
 
       household = await db.household.findById(id);
 
       if (!household) {
-        throw new Error('Household not found');
+        throw new Error("Household not found");
       }
 
       if (!isAdmin && household.nominator_id !== nominator.id) {
