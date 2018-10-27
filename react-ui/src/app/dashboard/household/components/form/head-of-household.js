@@ -120,6 +120,15 @@ const HeadOfHousehold = () => {
                   componentClass="textarea"
                 />
               </Col>
+              <Col md={6} xs={12}>
+                <Input
+                  label="Number of children being nominated"
+                  name="household.total_children"
+                  id="totalChildren"
+                  type="number"
+                  validator={requiredValidator}
+                />
+              </Col>
             </Row>
           </Box>
         </Col>
