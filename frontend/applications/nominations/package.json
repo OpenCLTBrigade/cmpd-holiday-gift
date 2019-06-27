@@ -25,7 +25,7 @@
     "bootstrap": "^3.3.7",
     "final-form": "^4.2.1",
     "final-form-arrays": "^1.0.4",
-    "firebase": "^5.1.0",
+    "firebase": "6.2.3",
     "font-awesome": "^4.7.0",
     "neoform": "^0.4.0",
     "neoform-plain-object-helpers": "^0.1.0",
