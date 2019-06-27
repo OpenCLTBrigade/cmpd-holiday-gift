@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "preinstall": "yarn run build",
+    "_preinstall": "yarn run build",
     "build": "tsc -p tsconfig.build.json"
   },
   "engines": {
@@ -29,6 +29,5 @@
     "@nestjs/testing": "^5.0.0-rc.1",
     "ts-node-dev": "^1.0.0-pre.21"
   },
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }
