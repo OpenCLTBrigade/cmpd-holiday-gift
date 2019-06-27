@@ -11,7 +11,7 @@ export default function Restricted(Wrapped) {
       this.state = { authenticated: !AuthToken.expired() };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       // TODO: this will not catch events while the component is unmounted
       this.dropHandler = AuthToken.addHandler(event => {
         this.setState({ authenticated: event === 'login' });

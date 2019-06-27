@@ -98,7 +98,7 @@ class ShowHousehold extends React.PureComponent {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { household, schools = [] } = this.props;
 
     this.setState(() => ({ household, schools }));

@@ -19,7 +19,7 @@ export default class AsyncLifeCycle extends React.Component {
     this.state = { data: undefined, status: Status.NotStarted };
   }
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     const { async } = this.props;
 
     this.setState(() => ({ status: Status.Loading }));

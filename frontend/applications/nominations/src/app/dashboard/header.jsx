@@ -6,7 +6,7 @@ import firebase from '../../lib/firebase';
 import './header.css';
 
 export default class Header extends React.Component {
-  componentWillMount() {}
+  UNSAFE_componentWillMount() {}
 
   toggleNavCollapsed = () => {
     const body = document.querySelector('body');

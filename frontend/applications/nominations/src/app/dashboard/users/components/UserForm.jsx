@@ -20,7 +20,7 @@ export default class UserForm extends React.Component {
     this.state = { user: this.props.data.user, initial: {} };
   }
 
-  componentWillReceiveProps({ data: { user } }) {
+  UNSAFE_componentWillReceiveProps({ data: { user } }) {
     if (user.id !== this.state.initial.id) {
       this.setState({ initial: user });
     }

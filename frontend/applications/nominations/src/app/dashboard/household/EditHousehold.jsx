@@ -89,8 +89,6 @@ class NewHousehold extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ household, schools }) {}
-
   onFileChange = async file => {
     const id = getId(this.state);
 
