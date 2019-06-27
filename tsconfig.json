@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react"
+  }
+}
