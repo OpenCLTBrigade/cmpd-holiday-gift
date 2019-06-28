@@ -42,7 +42,11 @@ export default async (connection?) => {
 
         var ref = db.collection('household_children').doc();
         batch.set(ref, child);
+
+        
       }
+      var ref = db.collection('households').doc(household.id);
+      batch.update(ref, { childCount: 3 });
     }
 
     await batch.commit();
