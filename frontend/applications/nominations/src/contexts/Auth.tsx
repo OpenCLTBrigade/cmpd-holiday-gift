@@ -4,13 +4,20 @@ import firebase from 'firebase';
 export function AuthProvider(props) {
   const [state, setState] = React.useState(() => {
     const user = firebase.auth().currentUser;
-    return { initializing: !user, user };
+    return { initializing: !user, user, claims: undefined };
   });
-  function onChange(user) {
-    setState({ initializing: false, user });
+
+  async function onChange(user: firebase.User) {
+    if (user) {
+      const { claims: { claims } } = await user.getIdTokenResult();
+
+      setState({ initializing: false, user, claims });
+    } else {
+      setState({ initializing: false, user, claims: undefined });
+    }
   }
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     // listen for auth state changes
     const unsubscribe = firebase.auth().onAuthStateChanged(onChange);
     // unsubscribe to the listener when unmounting
@@ -29,6 +36,9 @@ export const useAuth = () => {
 type State = {
   initializing: boolean;
   user: firebase.User;
+  claims: {
+    [x: string]: any;
+  };
 };
 
 const AuthContext = React.createContext<State | undefined>(undefined);
