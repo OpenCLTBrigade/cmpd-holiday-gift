@@ -29,6 +29,7 @@ import AppProviders from './contexts';
 
 function AppRouter() {
   const auth = useAuth();
+  if (auth.initializing) return <span>Loading</span>;
 
   return auth.user ? <AuthenticatedApp /> : <UnauthenticatedApp />;
 }
