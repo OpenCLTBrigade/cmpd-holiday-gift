@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Dashboard from './dashboard';
-import NotFound from '../notFound';
+import Dashboard from './dashboard/Dashboard';
 import * as slips from './slips';
 
 export function AuthenticatedApp() {
@@ -12,7 +11,7 @@ export function AuthenticatedApp() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/slips/packing" component={slips.packing} />
         <Route path="/slips/bicycle" component={slips.bicycle} /> }
-        <Route path="*" component={NotFound} />
+        <Route path="*" render={() => <Redirect to="/dashboard" />} />
       </Switch>
     </Router>
   );
