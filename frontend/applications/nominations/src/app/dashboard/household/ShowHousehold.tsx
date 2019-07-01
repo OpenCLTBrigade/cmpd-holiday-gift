@@ -1,0 +1,184 @@
+import * as React from 'react';
+
+import { map } from 'ramda';
+import { Grid, Row, Col, ListGroup, ListGroupItem, ButtonToolbar, Button } from 'react-bootstrap';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import Files from './components/form/files';
+import ChildDetail from './components/ChildDetail';
+import { getHousehold } from '../../../api/household';
+import { getSchools } from '../../../api/affiliation';
+import { FeedbackModal } from './components/FeedbackModal';
+import { pathOr } from 'rambda';
+import { useAffiliations, useHousehold, useHouseholdChildren } from '../../../hooks';
+
+const getStatus = household => {
+  if (!household.reviewed) {
+    return 'Not Reviewed';
+  }
+  if (household.reviewed && household.approved) {
+    return 'Approved';
+  }
+
+  return 'Rejected';
+};
+
+const LabelText = styled.span`
+  font-weight: bold;
+`;
+const ValueText = styled.span`
+  display: block;
+`;
+
+const DoNotPrint = styled.div``;
+
+const LineItem = ({ label, text }) => (
+  <ListGroupItem>
+    <LabelText>{label}</LabelText>
+    <ValueText>{text}</ValueText>
+  </ListGroupItem>
+);
+
+const PhoneNumber = phoneNumber => (
+  <LineItem key={phoneNumber.number} label={phoneNumber.type} text={phoneNumber.number} />
+);
+const PhoneNumberList = map(PhoneNumber);
+const PhoneNumbers = ({ phoneNumbers }) => {
+  return (
+    <Row>
+      <Col xs={12}>
+        {phoneNumbers && <ListGroup>{PhoneNumberList(phoneNumbers)}</ListGroup>}
+        {!phoneNumbers && <ListGroup>No phone numbers entered!</ListGroup>}
+      </Col>
+    </Row>
+  );
+};
+
+const Address = ({ address }) => {
+  return address ? (
+    <Row>
+      <Col xs={12}>
+        <ListGroup>
+          <LineItem label="Type" text={address.type} />
+          <ListGroupItem>
+            <LabelText>Address</LabelText>
+            <ValueText>
+              {address.street} <br />
+              {address.street2 && (
+                <span>
+                  {address.street2}
+                  <br />
+                </span>
+              )}
+              {address.city}, {address.state}, {address.zip}
+            </ValueText>
+          </ListGroupItem>
+          <LineItem label="CMPD Division" text={address.cmpdDivision} />
+          <LineItem label="CMPD Response Area" text={address.cmpdResponseArea} />
+        </ListGroup>
+      </Col>
+    </Row>
+  ) : null;
+};
+
+const RowTitle = ({ title }) => (
+  <Row>
+    <Col xs={12}>
+      <h1>{title}</h1>
+    </Col>
+  </Row>
+);
+
+function ShowHousehold({ householdId, claims }) {
+  const [householdInReview, setHouseholdInReview] = React.useState(undefined);
+  const { household, loading: householdLoading } = useHousehold(householdId);
+  const { affiliations, loading: affilationsLoading } = useAffiliations();
+  const { householdChildren, loading: householdChildrenLoading } = useHouseholdChildren(householdId);
+
+  if (householdLoading || affilationsLoading || householdChildrenLoading) {
+    return null;
+  }
+  const { address } = household;
+
+  const cmpdDivision = pathOr('x', 'address.cmpdDivision', household);
+  const cmpdResponseArea = pathOr('x', 'address.cmpdResponseArea', household);
+
+  const familyNumber = `${cmpdDivision || 'x'}-${cmpdResponseArea || 'x'}-${household.id}`;
+
+  return (
+    <Grid>
+      <RowTitle title="Head of Household" />
+      <Row>
+        <Col xs={12}>
+          <ListGroup>
+            <LineItem label="Full Name" text={`${household.firstName} ${household.lastName}`} />
+            <LineItem label="Family #" text={familyNumber} />
+            <LineItem label="Email" text={household.email} />
+            <LineItem label="Gender" text={household.gender} />
+            <LineItem label="Date of Birth" text={moment(household.dob).format('LL')} />
+            <LineItem label="Last 4 SSN" text={household.last4ssn} />
+            <LineItem label="Preferred Contact Method" text={household.preferredContactMethod} />
+          </ListGroup>
+        </Col>
+      </Row>
+      <RowTitle title="Address" />
+      <Address address={address} />
+      <RowTitle title="Phone Number(s)" />
+      <PhoneNumbers phoneNumbers={household.phoneNumbers} />
+      <RowTitle title="Children" />
+      {householdChildren &&
+        householdChildren.map(child => {
+          const school = affiliations.filter(school => school.id === child.schoolId)[0];
+          return <ChildDetail key={`childRow${child.id}`} child={child} school={school} />;
+        })}
+
+      {/** TODO: Re-do with firebase storage */}
+      {/* {household && household.attachments && <Files files={household.attachments} />} */}
+
+      <RowTitle title="Review Status" />
+      <Row>
+        <Col xs={12}>
+          <ListGroup>
+            <LineItem label="Status" text={getStatus(household)} />
+          </ListGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <DoNotPrint>
+            <ButtonToolbar>
+              <Link className="btn btn-default" to="/dashboard/household">
+                Go back
+              </Link>
+              <Link className="btn btn-info" to={`/dashboard/household/edit/${household.id}`}>
+                Edit
+              </Link>
+              {!household.reviewed &&
+                claims['admin'] && (
+                  <Button bsStyle="primary" onClick={() => setHouseholdInReview(household)}>
+                    Review
+                  </Button>
+                )}
+              {claims['admin'] && (
+                <Link to={`/slips/packing?householdId=${household.id}`}>
+                  {' '}
+                  <Button bsStyle="primary">Packing Slip</Button>
+                </Link>
+              )}
+            </ButtonToolbar>
+          </DoNotPrint>
+        </Col>
+      </Row>
+      <FeedbackModal household={householdInReview} doClose={() => setHouseholdInReview(undefined)} />
+    </Grid>
+  );
+}
+const fetchData = ({ id }) => async () => {
+  const household = await getHousehold(id);
+  const schools = await getSchools().then(({ items }) => items);
+
+  return { household, schools };
+};
+
+export default ShowHousehold;
