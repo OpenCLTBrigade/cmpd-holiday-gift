@@ -12,12 +12,6 @@ import PendingUsersList from './users/PendingUsersList';
 import { NewUser, ViewUser, EditUser } from './users';
 import { getMe } from '../../api/user';
 
-const ContentTitle = () => (
-  <section className="content-header">
-    <h1>Header</h1>
-  </section>
-);
-
 export default class Dashboard extends React.Component {
   // TODO: Return AdminLTE base template and register sub-routes here
   constructor(props) {
