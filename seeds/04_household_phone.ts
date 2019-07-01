@@ -19,7 +19,7 @@ export default async (connection?) => {
       };
 
       var ref = db.collection('households').doc(household.id);
-      batch.update(ref, { phone });
+      batch.update(ref, { phoneNumbers: [phone] });
     }
     await batch.commit();
     console.log('Seeding household phones');
