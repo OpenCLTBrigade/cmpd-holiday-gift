@@ -11,6 +11,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-router": "^4.0.22",
     "@types/react-router-dom": "^4.2.3",
+    "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -31,6 +32,7 @@
     "neoform-plain-object-helpers": "^0.1.0",
     "neoform-validation": "^0.6.0",
     "querystring": "^0.2.0",
+    "rambda": "^2.11.1",
     "rambdax": "^0.8.10",
     "ramda": "^0.25.0",
     "react": "^16.8.6",
@@ -49,7 +51,7 @@
     "wretch": "^1.4.1"
   },
   "scripts": {
-    "start": "parcel public/index.html --open",
+    "start": "parcel public/index.html",
     "build": "parcel build public/index.html --detailed-report",
     "watch": "parcel watch public/index.html --out-dir ../server/public/nominations --public-url /nominations/"
   },
