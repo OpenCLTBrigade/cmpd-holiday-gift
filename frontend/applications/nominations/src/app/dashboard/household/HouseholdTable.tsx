@@ -101,7 +101,7 @@ export function HouseholdTable({ households, handleDelete, openHouseholdReview }
             thStyle={TD_STYLE_SMALL}
             dataField="draft"
             dataFormat={submittedCellFormatter}
-          />
+          >Draft?</TableHeaderColumn>
         )}
       <TableHeaderColumn
         tdStyle={TD_STYLE_LARGE}
