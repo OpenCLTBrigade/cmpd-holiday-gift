@@ -3,7 +3,7 @@ import faker from 'faker';
 import firebase from './util';
 import config from '../backend/common/src/config';
 
-function createChild(householdId) {
+function createChild(householdId, schoolId) {
   return {
     householdId,
     firstName: faker.name.firstName(),
@@ -34,16 +34,16 @@ export default async (connection?) => {
   try {
     const db = firebase.firestore();
     const households = await db.collection('households').get();
+    const affiliations = await db.collection('affiliations').get();
     const batch = db.batch();
 
     for (const household of households.docs) {
+      const school = affiliations.docs[Math.floor(Math.random() * affiliations.docs.length)];
       for (let i = 0; i < 3; i++) {
-        const child = createChild(household.id);
+        const child = createChild(household.id, school.id);
 
         var ref = db.collection('household_children').doc();
         batch.set(ref, child);
-
-        
       }
       var ref = db.collection('households').doc(household.id);
       batch.update(ref, { childCount: 3 });
