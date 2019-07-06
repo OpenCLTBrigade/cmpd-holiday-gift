@@ -4,6 +4,7 @@ import { HouseholdTable } from './HouseholdTable';
 import Box from '../components/box';
 import { Row, Col } from 'react-bootstrap';
 import { FeedbackModal } from './components/FeedbackModal';
+import { deleteNomination } from '../../../services/household';
 
 export function Households() {
   const { loading, households } = useHouseholds();
@@ -27,7 +28,7 @@ export function Households() {
             {households && (
               <HouseholdTable
                 households={households}
-                handleDelete={console.log}
+                handleDelete={deleteNomination}
                 openHouseholdReview={openHouseholdReview}
               />
             )}
