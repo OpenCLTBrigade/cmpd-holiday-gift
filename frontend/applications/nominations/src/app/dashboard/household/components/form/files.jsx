@@ -36,6 +36,7 @@ class Files extends React.PureComponent {
                   onChange={() => onChange(this.fileUpload.files)}
                   type="file"
                   label="File"
+                  accept="image/jpeg,image/png,application/pdf"
                   ref={ref => (this.fileUpload = ref)}
                 />
               </Col>
