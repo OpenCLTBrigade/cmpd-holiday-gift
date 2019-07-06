@@ -34,6 +34,52 @@ const updateData = (oldData, newData) => {
 
 const getId = state => state.id || (state.data && state.data.household && state.data.household.id);
 
+function EditHousehold({ id }) {
+  const [data, setData] = useState({
+    household: {},
+    address: {},
+    children: [],
+    schools: [],
+    phoneNumbers: [],
+    childNominations: [],
+    files: [],
+    status: HouseholdStatus.New
+  });
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const { household, loading: householdLoading } = useHousehold(id);
+  const { affiliations, loading: affilationsLoading } = useAffiliations();
+  const { householdChildren, loading: householdChildrenLoading } = useHouseholdChildren(id);
+
+  if (householdLoading || affilationsLoading || householdChildrenLoading) {
+    return null;
+  }
+
+  function onFileChange(e) {
+    console.log(e.target);
+  }
+
+  async function onAddressChange(name, value) {
+    const latlng = { ...value.latlng };
+    delete value.latlng;
+    // TODO: Get CMPD Address Info
+
+    try {
+      const response = await getAddressInfo(latlng.lat, latlng.lng);
+
+      const cmpdDivision = pathOr('', 'data.properties.DIVISION', response);
+      const cmpdResponseArea = pathOr('', 'data.properties.RA', response);
+
+      value.cmpdDivision = response.data.properties.DIVISION;
+      value.cmpdResponseArea = response.data.properties.RA;
+
+      value.type = data.address.type && data.address.type;
+      // this.onChange(name, value);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
 class NewHousehold extends React.Component {
   constructor() {
     super();
