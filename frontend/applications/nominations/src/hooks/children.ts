@@ -8,24 +8,28 @@ export function useHouseholdChildren(id?) {
 
   React.useEffect(
     () => {
-      const query = id
-        ? db.collection('household_children').where('householdId', '==', id)
-        : db.collection('household_children');
+      let unsubscribe;
+      if (id) {
+        const query = db.collection('household_children').where('householdId', '==', id);
 
-      const unsubscribe = query.onSnapshot(
-        snapshot => {
-          const householdChildren = [];
-          snapshot.forEach(doc => {
-            householdChildren.push({ id: doc.id, ...doc.data() });
-          });
-          setLoading(false);
-          setHouseholdChildren(householdChildren);
-        },
-        err => {
-          setError(err);
-        }
-      );
-      return () => unsubscribe();
+        unsubscribe = query.onSnapshot(
+          snapshot => {
+            const householdChildren = [];
+            snapshot.forEach(doc => {
+              householdChildren.push({ id: doc.id, ...doc.data() });
+            });
+            setLoading(false);
+            setHouseholdChildren(householdChildren);
+          },
+          err => {
+            setError(err);
+          }
+        );
+      } else {
+        setLoading(false);
+        setHouseholdChildren([]);
+      }
+      return () => unsubscribe && unsubscribe();
     },
     [id]
   );
