@@ -20,7 +20,7 @@ class PhoneNumbersForm extends React.PureComponent {
         <Row>
           <Col xs={12}>
             <Box title="Phone Numbers" bsStyle="danger">
-              <FieldArray name="phoneNumbers">
+              <FieldArray name="household.phoneNumbers">
                 {({ fields }) => {
                   return (
                     <div>
