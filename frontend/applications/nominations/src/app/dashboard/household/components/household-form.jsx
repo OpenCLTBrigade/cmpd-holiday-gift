@@ -28,7 +28,7 @@ const Household = ({
   return (
     <Form
       onSubmit={onSave}
-      initialValues={data}
+      initialValues={{ ...data, address: data.household.address }}
       mutators={{
         ...arrayMutators
       }}
@@ -41,6 +41,7 @@ const Household = ({
         mutators: { push, pop, remove } // injected from final-form-arrays above
       }) => {
         const { phoneNumbers, childNominations } = values;
+        console.log(values.household.phoneNumbers);
 
         return (
           <form onSubmit={handleSubmit}>
@@ -49,7 +50,7 @@ const Household = ({
             <PhoneNumbers
               removePhoneNumber={() => pop('phoneNumbers')}
               addPhoneNumber={() => push('phoneNumbers', {})}
-              phoneNumbers={phoneNumbers}
+              phoneNumbers={values.household.phoneNumbers}
             />
             <Child
               childNominations={childNominations}
