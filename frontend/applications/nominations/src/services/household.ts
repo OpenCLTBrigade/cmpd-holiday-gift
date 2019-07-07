@@ -32,12 +32,25 @@ export function updateHousehold(id, json) {
     .update(json);
 }
 
+export function updateHouseholdChildren(householdChildren: HouseholdChild[]) {
+  const batch = db.batch();
+
+  for (const child of householdChildren) {
+    var ref = db.collection('household_children').doc(child.id);
+
+    batch.set(ref, child);
+  }
+
+  return batch.commit();
+}
+
 export function submitNomination({ id }) {
   return db
     .collection('households')
     .doc(id)
     .update({
-      draft: false
+      draft: false,
+      status: HouseholdStatus.Submitted
     });
 }
 
@@ -98,3 +111,28 @@ export enum HouseholdStatus {
   Declined = 'DECLINED',
   Incomplete = 'INCOMPLETE'
 }
+
+type HouseholdChild = {
+  id: string;
+  schoolId?: string;
+  bikeSize: string;
+  bikeStyle: string;
+  clothesCoatSize: string;
+  clothesPantsSize: string;
+  clothesShirtSize: string;
+  dob: string;
+  favouriteColor: string;
+  firstName: string;
+  freeOrReducedLunch: boolean;
+  gender: boolean;
+  householdId: string;
+  interests: string;
+  last4ssn: string;
+  lastName: string;
+  middleName: string;
+  race: string;
+  reasonForNomination: string;
+  shoeSize: string;
+  wantsBike: boolean;
+  wantsClothes: boolean;
+};
