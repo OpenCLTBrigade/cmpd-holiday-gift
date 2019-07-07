@@ -7,19 +7,46 @@ export function useHousehold(id) {
   const [household, setHousehold] = React.useState<Household | undefined>();
 
   React.useEffect(() => {
-    db
-      .collection('households')
-      .doc(id)
-      .get()
-      .then(doc => {
-        const household = { id: doc.id, ...doc.data() };
-        setHousehold(household as Household);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err);
-        setLoading(false);
-      });
+    if (id) {
+      db
+        .collection('households')
+        .doc(id)
+        .get()
+        .then(doc => {
+          const household = { id: doc.id, ...doc.data() };
+          setHousehold(household as Household);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err);
+          setLoading(false);
+        });
+    } else {
+      const doc = db.collection('households').doc();
+      const household: Household = {
+        id: doc.id,
+        approved: false,
+        deleted: false,
+        dob: '',
+        draft: false,
+        email: '',
+        firstName: '',
+        last4ssn: '',
+        nominationEmailSent: false,
+        lastName: '',
+        gender: '',
+        middleName: '',
+        nominatorId: '',
+        race: '',
+        reviewed: false,
+        preferredContactMethod: '',
+
+        status: HouseholdStatus.Drafted,
+        phoneNumbers: []
+      };
+      setHousehold(household as Household);
+      setLoading(false);
+    }
   }, []);
 
   return {
@@ -60,7 +87,7 @@ export function useHouseholds() {
 
 type Household = {
   id: string;
-  address: Address;
+  address?: Address;
   approved: boolean;
   deleted: boolean;
   dob: string;
@@ -77,6 +104,7 @@ type Household = {
   preferredContactMethod: string;
   race: string;
   reviewed: boolean;
+  status: HouseholdStatus;
 };
 type Address = {
   city: string;
@@ -92,3 +120,12 @@ type Phone = {
   number: string;
   type: string;
 };
+export enum HouseholdStatus {
+  Drafted = 'DRAFTED',
+  Submitted = 'SUBMITTED',
+  Reviewed = 'REVIEWED',
+  ReadyToApprove = 'READY_TO_APPROVE',
+  Approved = 'APPROVED',
+  Declined = 'DECLINED',
+  Incomplete = 'INCOMPLETE'
+}
