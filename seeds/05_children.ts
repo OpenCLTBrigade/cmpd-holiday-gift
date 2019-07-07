@@ -2,6 +2,7 @@ import faker from 'faker';
 
 import firebase from './util';
 import config from '../backend/common/src/config';
+import { format } from 'date-fns';
 
 function createChild(householdId, schoolId) {
   return {
@@ -9,7 +10,7 @@ function createChild(householdId, schoolId) {
     firstName: faker.name.firstName(),
     middleName: faker.name.firstName(),
     lastName: faker.name.lastName(),
-    dob: faker.date.past(18).toString(),
+    dob: format(faker.date.past(18), 'YYYY-MM-DD'),
     race: faker.random.arrayElement(config.raceOptions),
     last4ssn: ('000' + faker.random.number(9999)).slice(-4).toString(),
     freeOrReducedLunch: faker.random.boolean(),
@@ -24,7 +25,16 @@ function createChild(householdId, schoolId) {
     shoeSize: faker.random.number({ min: 1, max: 9 }).toString(),
     favouriteColor: faker.random.arrayElement(['Red', 'Blue', 'Green', 'Orange']),
     interests: faker.lorem.text(50),
-    gender: faker.random.boolean()
+    gender: faker.random.boolean() ? 'M' : 'F',
+    ethnicity: faker.random.arrayElement([
+      'Asian',
+      'African American',
+      'Hispanic',
+      'White',
+      'Other',
+      'Not Given',
+      'Pacific Islander'
+    ])
   };
 }
 

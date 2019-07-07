@@ -1,6 +1,6 @@
 import { props, join, compose } from 'ramda';
 import faker from 'faker';
-
+import { format } from 'date-fns';
 import firebase from './util';
 
 import config from '../backend/common/src/config';
@@ -126,7 +126,7 @@ const createHousehold = ({ index, nominatorId }) => ({
   firstName: faker.name.firstName(),
   middleName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  dob: faker.date.past().toString(),
+  dob: format(faker.date.past(), 'YYYY-MM-DD'),
   race: faker.random.arrayElement(config.raceOptions),
   gender: faker.random.arrayElement(config.genders),
   email: faker.internet.email(),
