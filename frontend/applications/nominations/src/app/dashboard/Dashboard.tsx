@@ -37,7 +37,7 @@ export function Dashboard(props: RouteComponentProps) {
             <Route
               exact
               path="/dashboard/household/edit/:id"
-              render={rest => <EditHousehold user={user} {...rest} />}
+              render={rest => <EditHousehold user={user} householdId={rest.match.params.id} {...rest} />}
             />
             <Route exact path="/dashboard/affiliation" render={rest => <AffiliationList user={user} {...rest} />} />
             <Route
