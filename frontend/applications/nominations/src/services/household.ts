@@ -25,11 +25,15 @@ export function createHousehold(json) {
   return db.collection('households').add(json);
 }
 
-export function updateHousehold(id, json) {
+export function updateHousehold(id, json: Household) {
+  const household = {
+    ...json,
+    status: json.status === HouseholdStatus.Created ? HouseholdStatus.Drafted : json.status
+  };
   return db
     .collection('households')
     .doc(id)
-    .update(json);
+    .set(household);
 }
 
 export function updateHouseholdChildren(householdChildren: HouseholdChild[]) {
@@ -54,12 +58,17 @@ export function submitNomination({ id }) {
     });
 }
 
-export function uploadAttachment({ id, fileName, file }) {
-  const fileRef = fs.ref().child(`attachments/${id}/${fileName}`);
-  return fileRef.put(file);
+export function uploadAttachment({ id, files }: { id: string; files: FileList }) {
+  for (const file of Array.from(files)) {
+    const metadata = {
+      contentType: file.type
+    };
+    const fileRef = fs.ref().child(`attachments/${id}/${file.name}`);
+    return fileRef.put(file, metadata);
+  }
 }
 
-export function deleteAttachment({ id, fileName }) {
+export function deleteAttachment({ id, fileName }: { id: string; fileName: string }) {
   const fileRef = fs.ref().child(`attachments/${id}/${fileName}`);
   return fileRef.delete();
 }
@@ -103,6 +112,7 @@ export type Phone = {
 };
 
 export enum HouseholdStatus {
+  Created = 'CREATED',
   Drafted = 'DRAFTED',
   Submitted = 'SUBMITTED',
   Reviewed = 'REVIEWED',
