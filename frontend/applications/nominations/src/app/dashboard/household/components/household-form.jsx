@@ -28,7 +28,7 @@ const Household = ({
   return (
     <Form
       onSubmit={onSave}
-      initialValues={{ ...data, address: data.household.address }}
+      initialValues={data}
       mutators={{
         ...arrayMutators
       }}
@@ -41,7 +41,6 @@ const Household = ({
         mutators: { push, pop, remove } // injected from final-form-arrays above
       }) => {
         const { phoneNumbers, childNominations } = values;
-        console.log(values.household.phoneNumbers);
 
         return (
           <form onSubmit={handleSubmit}>
@@ -58,14 +57,19 @@ const Household = ({
               removeChild={idx => remove('childNominations', idx)}
               affiliations={affiliations}
             />
-            {status >= 1 && <Files files={data.files} onChange={onFileChange} />}
+            {data.household && data.household.status && <Files files={data.files} onChange={onFileChange} />}
             <Row>
               <Col xs={12}>
                 <ButtonToolbar>
                   <Button type="submit" disabled={disabled}>
-                    {data.household && data.household.id ? 'Update' : 'Save Draft'}
+                    {data.household && data.household.status === 'CREATED' ? 'Save Draft' : 'Update'}
                   </Button>
-                  {status === 1 && <Button onClick={onSubmit}>Submit Nomination</Button>}
+                  {data.household &&
+                    data.household.status === 'DRAFTED' && (
+                      <Button bsStyle="primary" onClick={onSubmit}>
+                        Submit Nomination
+                      </Button>
+                    )}
                 </ButtonToolbar>
               </Col>
             </Row>
