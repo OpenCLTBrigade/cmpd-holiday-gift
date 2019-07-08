@@ -7,15 +7,51 @@ export function useHousehold(id) {
   const [loading, setLoading] = React.useState(true);
   const [household, setHousehold] = React.useState<Household | undefined>();
 
-  React.useEffect(() => {
-    let unsubscribe: () => void;
-    if (id) {
-      unsubscribe = db
-        .collection('households')
-        .doc(id)
-        .onSnapshot(
+  React.useEffect(
+    () => {
+      let unsubscribe: () => void;
+
+      if (id) {
+        unsubscribe = db
+          .collection('households')
+          .doc(id)
+          .onSnapshot(
+            snapshot => {
+              const household = { id: snapshot.id, ...snapshot.data() };
+              setHousehold(household as Household);
+              setLoading(false);
+            },
+            err => {
+              setError(err);
+              setLoading(false);
+            }
+          );
+      } else {
+        const doc = db.collection('households').doc();
+        const newHousehold: Household = {
+          id: doc.id,
+          approved: false,
+          deleted: false,
+          dob: '',
+          draft: false,
+          email: '',
+          firstName: '',
+          last4ssn: '',
+          nominationEmailSent: false,
+          lastName: '',
+          gender: '',
+          middleName: '',
+          nominatorId: '',
+          race: '',
+          reviewed: false,
+          preferredContactMethod: '',
+          status: HouseholdStatus.Created,
+          phoneNumbers: []
+        };
+
+        unsubscribe = doc.onSnapshot(
           snapshot => {
-            const household = { id: snapshot.id, ...snapshot.data() };
+            const household = { id: snapshot.id, ...newHousehold, ...snapshot.data() };
             setHousehold(household as Household);
             setLoading(false);
           },
@@ -24,44 +60,12 @@ export function useHousehold(id) {
             setLoading(false);
           }
         );
-    } else {
-      const doc = db.collection('households').doc();
-      const newHousehold: Household = {
-        id: doc.id,
-        approved: false,
-        deleted: false,
-        dob: '',
-        draft: false,
-        email: '',
-        firstName: '',
-        last4ssn: '',
-        nominationEmailSent: false,
-        lastName: '',
-        gender: '',
-        middleName: '',
-        nominatorId: '',
-        race: '',
-        reviewed: false,
-        preferredContactMethod: '',
-        status: HouseholdStatus.Created,
-        phoneNumbers: []
-      };
 
-      unsubscribe = doc.onSnapshot(
-        snapshot => {
-          const household = { id: snapshot.id, ...newHousehold, ...snapshot.data() };
-          setHousehold(household as Household);
-          setLoading(false);
-        },
-        err => {
-          setError(err);
-          setLoading(false);
-        }
-      );
-
-      return () => unsubscribe && unsubscribe();
-    }
-  }, []);
+        return () => unsubscribe && unsubscribe();
+      }
+    },
+    [id]
+  );
 
   return {
     error,
@@ -116,9 +120,12 @@ export function useHouseholdAttachments(id) {
       });
   }
 
-  React.useEffect(() => {
-    loadAttachments();
-  }, []);
+  React.useEffect(
+    () => {
+      loadAttachments();
+    },
+    [id]
+  );
 
   return {
     error,
