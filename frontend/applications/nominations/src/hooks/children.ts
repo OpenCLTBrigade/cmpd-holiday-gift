@@ -18,16 +18,16 @@ export function useHouseholdChildren(id?) {
             snapshot.forEach(doc => {
               householdChildren.push({ id: doc.id, ...doc.data() });
             });
-            setLoading(false);
             setHouseholdChildren(householdChildren);
+            setLoading(false);
           },
           err => {
             setError(err);
           }
         );
       } else {
-        setLoading(false);
         setHouseholdChildren([]);
+        setLoading(false);
       }
       return () => unsubscribe && unsubscribe();
     },
