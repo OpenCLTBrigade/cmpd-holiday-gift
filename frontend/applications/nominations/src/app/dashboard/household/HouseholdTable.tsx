@@ -100,8 +100,9 @@ export function HouseholdTable({ households, handleDelete, openHouseholdReview }
             tdStyle={TD_STYLE_SMALL}
             thStyle={TD_STYLE_SMALL}
             dataField="draft"
-            dataFormat={submittedCellFormatter}
-          >Draft?</TableHeaderColumn>
+            dataFormat={submittedCellFormatter}>
+            Draft?
+          </TableHeaderColumn>
         )}
       <TableHeaderColumn
         tdStyle={TD_STYLE_LARGE}
@@ -125,5 +126,5 @@ export function HouseholdTable({ households, handleDelete, openHouseholdReview }
 }
 
 const submittedCellFormatter = (cell, row) => {
-  return row.draft === false ? <i className="fa fa-check" /> : '';
+  return row.status === 'DRAFTED' ? <i className="fa fa-check" /> : '';
 };
