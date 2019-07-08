@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import db from '../services/db';
+import { getAttachments } from '../services/household';
 
 export function useHousehold(id) {
   const [error, setError] = React.useState<false | Error>(false);
@@ -95,6 +96,35 @@ export function useHouseholds() {
     error,
     loading,
     households
+  };
+}
+
+export function useHouseholdAttachments(id) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = React.useState<false | Error>(false);
+  const [householdAttachments, setHouseholdAttachments] = useState([]);
+
+  function loadAttachments() {
+    getAttachments(id)
+      .then(files => {
+        setHouseholdAttachments(files);
+        setLoading(false);
+      })
+      .catch(error => {
+        setError(error);
+        setLoading(false);
+      });
+  }
+
+  React.useEffect(() => {
+    loadAttachments();
+  }, []);
+
+  return {
+    error,
+    loading,
+    householdAttachments,
+    loadAttachments
   };
 }
 

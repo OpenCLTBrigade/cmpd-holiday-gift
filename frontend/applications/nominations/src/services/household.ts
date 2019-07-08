@@ -58,6 +58,15 @@ export function submitNomination({ id }) {
     });
 }
 
+export async function getAttachments(id: string) {
+  const listResults = await fs.ref(`attachments/${id}`).listAll();
+  const files = await Promise.all(
+    listResults.items.map(item => item.getDownloadURL().then(url => ({ name: item.name, url })))
+  );
+
+  return files;
+}
+
 export function uploadAttachment({ id, files }: { id: string; files: FileList }) {
   for (const file of Array.from(files)) {
     const metadata = {
