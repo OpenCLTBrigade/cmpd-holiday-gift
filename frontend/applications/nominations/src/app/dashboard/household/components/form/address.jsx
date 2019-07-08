@@ -43,7 +43,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="Type"
                     controlId="formControlsSelect"
-                    name="address.type"
+                    name="household.address.type"
                     componentClass="select"
                     placeholder="select"
                     required>
@@ -56,7 +56,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="Street Address"
                     id="streetAddress"
-                    name="address.street"
+                    name="household.address.street"
                     type="search"
                     inputRef={input => (this.placesRef = input)}
                     required
@@ -67,7 +67,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="Street Address 2"
                     id="streetAddress"
-                    name="address.street2"
+                    name="household.address.street2"
                     type="text"
                     ref={FormField => (this.addressRefs.address2 = FormField)}
                     autoComplete="shipping address-line2"
@@ -79,7 +79,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="City"
                     id="city"
-                    name="address.city"
+                    name="household.address.city"
                     type="text"
                     required
                     autoComplete="shipping locality city"
@@ -90,7 +90,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="State"
                     id="state"
-                    name="address.state"
+                    name="household.address.state"
                     type="text"
                     required
                     autoComplete="shipping region state"
@@ -101,7 +101,7 @@ class AddressForm extends React.Component {
                   <FormField
                     label="Zip Code"
                     id="zip"
-                    name="address.zip"
+                    name="household.address.zip"
                     type="text"
                     required
                     pattern="(\d{5}([\-]\d{4})?)"
@@ -115,7 +115,7 @@ class AddressForm extends React.Component {
                 <Col md={6} xs={12}>
                   <FormField
                     label="CMPD Division"
-                    name="address.cmpdDivision"
+                    name="household.address.cmpdDivision"
                     type="text"
                     disabled={this.props.user.role !== 'admin'}
                   />
@@ -123,7 +123,7 @@ class AddressForm extends React.Component {
                 <Col md={6} xs={12}>
                   <FormField
                     label="CMPD Response Area"
-                    name="address.cmpdResponseArea"
+                    name="household.address.cmpdResponseArea"
                     type="text"
                     disabled={this.props.user.role !== 'admin'}
                   />
