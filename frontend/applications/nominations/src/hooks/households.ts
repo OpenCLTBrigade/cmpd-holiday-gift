@@ -7,23 +7,25 @@ export function useHousehold(id) {
   const [household, setHousehold] = React.useState<Household | undefined>();
 
   React.useEffect(() => {
+    let unsubscribe: () => void;
     if (id) {
-      db
+      unsubscribe = db
         .collection('households')
         .doc(id)
-        .get()
-        .then(doc => {
-          const household = { id: doc.id, ...doc.data() };
-          setHousehold(household as Household);
-          setLoading(false);
-        })
-        .catch(err => {
-          setError(err);
-          setLoading(false);
-        });
+        .onSnapshot(
+          snapshot => {
+            const household = { id: snapshot.id, ...snapshot.data() };
+            setHousehold(household as Household);
+            setLoading(false);
+          },
+          err => {
+            setError(err);
+            setLoading(false);
+          }
+        );
     } else {
       const doc = db.collection('households').doc();
-      const household: Household = {
+      const newHousehold: Household = {
         id: doc.id,
         approved: false,
         deleted: false,
@@ -40,12 +42,23 @@ export function useHousehold(id) {
         race: '',
         reviewed: false,
         preferredContactMethod: '',
-
-        status: HouseholdStatus.Drafted,
+        status: HouseholdStatus.Created,
         phoneNumbers: []
       };
-      setHousehold(household as Household);
-      setLoading(false);
+
+      unsubscribe = doc.onSnapshot(
+        snapshot => {
+          const household = { id: snapshot.id, ...newHousehold, ...snapshot.data() };
+          setHousehold(household as Household);
+          setLoading(false);
+        },
+        err => {
+          setError(err);
+          setLoading(false);
+        }
+      );
+
+      return () => unsubscribe && unsubscribe();
     }
   }, []);
 
@@ -121,6 +134,7 @@ type Phone = {
   type: string;
 };
 export enum HouseholdStatus {
+  Created = 'CREATED',
   Drafted = 'DRAFTED',
   Submitted = 'SUBMITTED',
   Reviewed = 'REVIEWED',
