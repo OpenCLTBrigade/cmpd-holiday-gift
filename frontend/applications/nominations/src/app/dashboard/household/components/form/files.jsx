@@ -2,50 +2,49 @@ import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Box from '../../../components/box';
 
-class Files extends React.PureComponent {
-  constructor() {
-    super();
-    this.fileUpload = undefined;
+export function Files({ files, onChange }) {
+  const fileRef = React.useRef(undefined);
+
+  function handleInputChange() {
+    onChange(fileRef.current.files);
+    fileRef.current.value = '';
   }
 
-  render() {
-    const { files, onChange } = this.props;
-    return (
-      <div>
-        <Box title="Scanned Forms" bsStyle="primary">
-          {files &&
-            files.map(file => (
-              <div key={`file-${file.filename}`}>
-                <a href={file.url} download>
-                  {file.filename}
-                </a>
-              </div>
-            ))}
+  return (
+    <div>
+      <Box title="Scanned Forms" bsStyle="primary">
+        {files &&
+          files.map(file => (
+            <div key={`file-${file.name}`}>
+              <a href={file.url} download target="_blank">
+                {file.name}
+              </a>
+            </div>
+          ))}
+        <Row>
+          <Col xs={12}>
+            <p>Save as Draft before uploading form.</p>
+            <p className="text-danger">Reminder: Nominations are not eligible for approval WITHOUT uploaded form.</p>
+          </Col>
+        </Row>
+        {/* Re-used this box in ShowHousehold */}
+        {onChange && (
           <Row>
             <Col xs={12}>
-              <p>Save as Draft before uploading form.</p>
-              <p className="text-danger">Reminder: Nominations are not eligible for approval WITHOUT uploaded form.</p>
+              <input
+                id="formControlsFile"
+                onChange={handleInputChange}
+                type="file"
+                label="File"
+                accept="image/jpeg,image/png,application/pdf"
+                ref={fileRef}
+              />
             </Col>
           </Row>
-          {/* Re-used this box in ShowHousehold */}
-          {onChange && (
-            <Row>
-              <Col xs={12}>
-                <input
-                  id="formControlsFile"
-                  onChange={() => onChange(this.fileUpload.files)}
-                  type="file"
-                  label="File"
-                  accept="image/jpeg,image/png,application/pdf"
-                  ref={ref => (this.fileUpload = ref)}
-                />
-              </Col>
-            </Row>
-          )}
-        </Box>
-      </div>
-    );
-  }
+        )}
+      </Box>
+    </div>
+  );
 }
 
 export default Files;
