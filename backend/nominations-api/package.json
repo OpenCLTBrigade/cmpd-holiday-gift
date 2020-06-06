@@ -21,7 +21,7 @@
     "@nestjs/passport": "^1.0.5",
     "@nestjs/swagger": "^1.1.4",
     "@nestjs/websockets": "^5.0.0-rc.1",
-    "apollo-server-express": "^1.3.5",
+    "apollo-server-express": "^2.14.2",
     "class-transformer": "^0.1.9",
     "cmpd-common-api": "^1.0.0",
     "cmpd-adoption-api": "^1.0.0",
