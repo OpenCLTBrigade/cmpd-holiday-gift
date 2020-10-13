@@ -76,7 +76,7 @@
     "class-validator": "^0.8.1",
     "compression": "^1.6.2",
     "date-fns": "^1.29.0",
-    "eslint": "^3.19.0",
+    "eslint": "^4.18.2",
     "eslint-plugin-dependencies": "^2.4.0",
     "eslint-plugin-html": "^2.0.1",
     "exceljs": "^0.5.1",
