@@ -65,7 +65,7 @@
     "@types/multer": "^1.3.6",
     "admin-lte": "^2.3.11",
     "aws-sdk": "^2.133.0",
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "babel": "^6.23.0",
     "babel-eslint": "^7.2.3",
     "babel-polyfill": "^6.26.0",

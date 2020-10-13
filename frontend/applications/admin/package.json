@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "autoprefixer": "7.1.2",
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "3.3.7",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
