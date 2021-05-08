@@ -103,7 +103,7 @@
     "reflect-metadata": "0.1.10",
     "sequelize": "^4.23.2",
     "sequelize-encrypted": "^1.0.0",
-    "typeorm": "^0.1.8",
+    "typeorm": "^0.2.25",
     "typeorm-encrypted": "^0.5.0"
   },
   "workspaces": {
