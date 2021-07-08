@@ -128,6 +128,7 @@ export class HouseholdService {
     household.last4ssn = householdDto.last4ssn;
     household.email = householdDto.email;
     household.preferredContactMethod = householdDto.preferredContactMethod;
+    household.reasonForNomination = householdDto.reasonForNomination;
 
     await household.save();
 

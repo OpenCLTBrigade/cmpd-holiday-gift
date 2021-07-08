@@ -138,6 +138,7 @@ const createHousehold = ({ index, nominatorId }) => ({
   preferredContactMethod: faker.random.arrayElement(['phone', 'email']),
   draft: false,
   nominationEmailSent: false,
+  reasonForNomination: 'Some really good reason',
   reviewed: false,
   deleted: false,
   approved: index % 5 !== 0

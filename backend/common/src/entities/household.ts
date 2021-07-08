@@ -64,6 +64,9 @@ export class Household extends BaseEntity {
   @Column('text', { name: 'preferred_contact_method', nullable: true })
   preferredContactMethod: string;
 
+  @Column('text', { name: 'reason_for_nomination', nullable: true })
+  reasonForNomination: string;
+
   @Column('boolean', { name: 'nomination_email_sent' })
   nominationEmailSent: boolean = false;
 

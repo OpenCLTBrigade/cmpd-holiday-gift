@@ -1,26 +1,40 @@
 import * as React from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Alert } from 'react-bootstrap';
 import Box from '../../../components/box';
 import requiredValidator from '../../../../../lib/validators/required.validator';
 import { bikeSizeMap } from '../../../../../lib/constants/bike-size';
 import FormField from '../../../../components/form/FormField';
 import { FieldArray } from 'react-final-form-arrays';
+import { pathOr } from 'rambda';
+import moment from 'moment';
 
 const bool = (myValue = '') => myValue.toLowerCase() == 'true';
+const warningAge = 14;
 
 const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) => {
   return (
     <div>
       <FieldArray name="childNominations">
-        {({ fields }) => {
+        {({ fields, ...rest }) => {
           return (
             <div>
               {fields.map((name, idx) => {
+                const dob = pathOr(new Date(), 'dob', fields.value[idx]);
+                const isTooOld =
+                  moment(dob).diff(moment('Dec 25', 'MMM DD').subtract(warningAge, 'years'), 'days') <= 0;
+
                 return (
                   <Row key={name}>
                     <Col xs={12}>
                       <Box title={`Child #${idx + 1}`} bsStyle="success">
                         <Row>
+                          {isTooOld && (
+                            <Col xs={12}>
+                              <Alert bsStyle="warning" key={name}>
+                                <strong>Warning!</strong> This child is over the age of {warningAge}.
+                              </Alert>
+                            </Col>
+                          )}
                           <Col md={6} xs={12}>
                             <FormField
                               label="First Name"
@@ -195,7 +209,7 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
                         <Row>
                           <Col md={4} xs={12}>
                             <FormField
-                              label="Child's Interests"
+                              label="Child's Interests*"
                               name={`${name}.interests`}
                               componentClass="textarea"
                               placeholder=""
@@ -203,21 +217,18 @@ const ChildForm = ({ childNominations, addChild, removeChild, affiliations }) =>
                           </Col>
                           <Col md={4} xs={12}>
                             <FormField
-                              label="Additional Ideas"
+                              label="Additional Ideas*"
                               name={`${name}.additionalIdeas`}
                               componentClass="textarea"
                             />
                           </Col>
-                          <Col md={4} xs={12}>
-                            <FormField
-                              label="Reason for nomination"
-                              name={`${name}.reasonForNomination`}
-                              componentClass="textarea"
-                              required
-                            />
-                          </Col>
                         </Row>
                         <Row>
+                          <Col xs={12}>
+                            <p>
+                              *Limit to toys that are <strong>under</strong> $50.
+                            </p>
+                          </Col>
                           <Col xs={12}>
                             <Button bsStyle="danger" onClick={() => removeChild(idx)}>
                               Remove Child
