@@ -73,7 +73,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
-    "class-validator": "^0.8.1",
+    "class-validator": "^0.14.0",
     "compression": "^1.6.2",
     "date-fns": "^1.29.0",
     "eslint": "^3.19.0",
